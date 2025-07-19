@@ -131,5 +131,19 @@ public class ComponentPool<T> : IComponentPool
       return newSize < MaxCapacity;
    }
 
+   public void Dispose()
+   {
+      GC.SuppressFinalize(this);
+      
+      foreach (ref var node in _data)
+      {
+         node.Dispose();
+      }
+
+      _data.Dispose();
+      _ids.Dispose();
+      _sparse.Dispose();
+   }
+
    private const int MaxCapacity = int.MaxValue - 100_000;
 }

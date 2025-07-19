@@ -12,6 +12,7 @@ public class ProjectOptions : BaseOptions
          BasePath = options.BasePath,
          OutputBasePath = options.OutputBasePath,
          InitialCapacityPerComponentPool = options.InitialCapacityPerComponentPool,
+         ServiceProvider = options.ServiceProvider
       };
    }
 }

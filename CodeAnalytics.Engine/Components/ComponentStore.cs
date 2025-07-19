@@ -2,7 +2,7 @@
 
 namespace CodeAnalytics.Engine.Components;
 
-public class ComponentStore
+public class ComponentStore : IDisposable
 {
    protected readonly Dictionary<Type, IComponentPool> _pools;
    protected readonly int _initialCapacity;
@@ -22,5 +22,17 @@ public class ComponentStore
       }
 
       return null;
+   }
+
+   public void Dispose()
+   {
+      GC.SuppressFinalize(this);
+      
+      foreach (var (key, pool) in _pools)
+      {
+         pool.Dispose();
+      }
+      
+      _pools.Clear();
    }
 }

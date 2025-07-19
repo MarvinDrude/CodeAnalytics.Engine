@@ -7,4 +7,16 @@
       <Nullable>enable</Nullable>
    </PropertyGroup>
 
+   <ItemGroup>
+     <ProjectReference Include="..\CodeAnalytics.Engine.Collector\CodeAnalytics.Engine.Collector.csproj" />
+     <ProjectReference Include="..\CodeAnalytics.Engine\CodeAnalytics.Engine.csproj" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <PackageReference Include="Serilog" Version="4.3.1-dev-02373" />
+     <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.1-dev-02307" />
+     <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.1-dev-02317" />
+     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.1-dev-00953" />
+   </ItemGroup>
+
 </Project>

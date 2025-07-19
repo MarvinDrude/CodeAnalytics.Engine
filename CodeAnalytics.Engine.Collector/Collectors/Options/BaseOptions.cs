@@ -13,6 +13,8 @@ public class BaseOptions
    public required NodeIdStore NodeIdStore { get; set; }
    public required StringIdStore StringIdStore { get; set; }
    
+   public required IServiceProvider ServiceProvider { get; set; }
+   
    private string? _relativePath;
    public string RelativePath => _relativePath ??= Path.GetRelativePath(BasePath, ProjectPath);
 }

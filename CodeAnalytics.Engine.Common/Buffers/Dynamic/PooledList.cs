@@ -41,9 +41,9 @@ public struct PooledList<T> : IEquatable<PooledList<T>>, IDisposable
          ref var reference = ref MemoryMarshal.GetReference(_owner.Span);
          Unsafe.Add(ref reference, index) = value;
 
-         if (index > _index)
+         if (index + 1 > _index)
          {
-            _index = index;
+            _index = index + 1;
          }
       }
    }

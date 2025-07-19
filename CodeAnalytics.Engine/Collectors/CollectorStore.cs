@@ -3,7 +3,7 @@ using CodeAnalytics.Engine.Ids;
 
 namespace CodeAnalytics.Engine.Collectors;
 
-public sealed class CollectorStore
+public sealed class CollectorStore : IDisposable
 {
    public required NodeIdStore NodeIdStore { get; init; }
    public required StringIdStore StringIdStore { get; init; }
@@ -15,5 +15,10 @@ public sealed class CollectorStore
    {
       ComponentStore.Merge(collectorStore.ComponentStore);
       LineCountStore.Merge(collectorStore.LineCountStore);
+   }
+
+   public void Dispose()
+   {
+      ComponentStore.Dispose();
    }
 }

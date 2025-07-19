@@ -8,12 +8,22 @@ public static class SymbolExtensions
 {
    public static string GenerateId(this ISymbol symbol)
    {
+      var bytes = SHA256.HashData(MemoryMarshal.AsBytes(symbol.GenerateSeedId().AsSpan()));
+      return Convert.ToHexStringLower(bytes);
+   }
+   
+   public static string GenerateSeedId(this ISymbol symbol)
+   {
       if (symbol.GetDocumentationCommentId() is not { } seed)
       {
          seed = symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
       }
+
+      if (symbol is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
+      {
+         seed = $"LF:{seed}";
+      }
       
-      var bytes = SHA256.HashData(MemoryMarshal.AsBytes(seed.AsSpan()));
-      return Convert.ToHexStringLower(bytes);
+      return seed;
    }
 }

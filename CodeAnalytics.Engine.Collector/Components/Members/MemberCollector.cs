@@ -1,9 +1,11 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Components.Common;
 using CodeAnalytics.Engine.Collector.Components.Interfaces;
+using CodeAnalytics.Engine.Collector.Walkers.Members;
 using CodeAnalytics.Engine.Contracts.Components.Members;
 using CodeAnalytics.Engine.Enums.Symbols;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CodeAnalytics.Engine.Collector.Components.Members;
 
@@ -40,27 +42,50 @@ public sealed class MemberCollector
       ref var attributeSet = ref component.AttributeIds;
       AttributeCollector.Apply(ref attributeSet, symbol.GetAttributes(), context);
 
-      GetInnerMemberUsages(symbol, ref component);
+      GetInnerMemberUsages(symbol, context, ref component);
       
       return true;
    }
 
-   private static void GetInnerMemberUsages(ISymbol symbol, ref MemberComponent component)
+   private static void GetInnerMemberUsages(ISymbol symbol, CollectContext context, ref MemberComponent component)
    {
       switch (symbol)
       {
          case IMethodSymbol method:
-            GetInnerMemberUsages(method, ref component);
+            GetInnerMemberUsages(method, context, ref component);
             break;
          case IPropertySymbol property:
-            if (property.GetMethod is not null) GetInnerMemberUsages(property.GetMethod, ref component);
-            if (property.SetMethod is not null) GetInnerMemberUsages(property.SetMethod, ref component);
+            if (property.GetMethod is not null) GetInnerMemberUsages(property.GetMethod, context, ref component);
+            if (property.SetMethod is not null) GetInnerMemberUsages(property.SetMethod, context, ref component);
             break;
       }
    }
 
-   private static void GetInnerMemberUsages(IMethodSymbol method, ref MemberComponent component)
+   private static void GetInnerMemberUsages(IMethodSymbol method, CollectContext context, ref MemberComponent component)
    {
+      foreach (var reference in method.DeclaringSyntaxReferences)
+      {
+         if (reference.GetSyntax() is not { } syntax
+             || syntax.SyntaxTree.FilePath != context.SyntaxTree.FilePath)
+         {
+            continue;
+         }
+
+         var operation = context.SemanticModel.GetOperation(syntax, context.CancellationToken);
+         var body = operation switch
+         {
+            IMethodBodyOperation mbo => mbo.BlockBody as IOperation ?? mbo.ExpressionBody,
+            IConstructorBodyOperation cbo => cbo.BlockBody,
+            _ => operation
+         };
+
+         if (body is null) continue;
+         
+         var walker = new MethodOperationWalker(context);
+         walker.Visit(body);
       
+         component.InnerMemberUsages = walker.MemberUsages;
+         return;
+      }
    }
 }

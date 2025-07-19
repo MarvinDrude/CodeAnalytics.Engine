@@ -40,6 +40,7 @@ public struct MemberComponent
    public void Dispose()
    {
       AttributeIds.Dispose();
+      InnerMemberUsages.Dispose();
    }
    
    public bool Equals(MemberComponent other)

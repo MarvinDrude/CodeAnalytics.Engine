@@ -7,11 +7,6 @@
    </PropertyGroup>
 
    <ItemGroup>
-     <Folder Include="Archetypes\" />
-     <Folder Include="Components\" />
-   </ItemGroup>
-
-   <ItemGroup>
      <ProjectReference Include="..\CodeAnalytics.Engine.Common\CodeAnalytics.Engine.Common.csproj" />
    </ItemGroup>
 

@@ -1,8 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using CodeAnalytics.Engine.Common.Buffers.Dynamic;
 using CodeAnalytics.Engine.Contracts.Components.Inerfaces;
+using CodeAnalytics.Engine.Contracts.Enums.Intermediate;
 using CodeAnalytics.Engine.Contracts.Enums.Symbols;
 using CodeAnalytics.Engine.Contracts.Ids;
+using CodeAnalytics.Engine.Contracts.Intermediate.Members;
 
 namespace CodeAnalytics.Engine.Contracts.Components.Members;
 
@@ -26,6 +28,7 @@ public struct MemberComponent
    public NodeId ContainingTypeId = NodeId.Empty;
    
    public PooledSet<NodeId> AttributeIds = [];
+   public PooledList<MemberUsageInfo> InnerMemberUsages;
 
    public MemberComponent()
    {

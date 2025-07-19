@@ -27,7 +27,7 @@ public sealed partial class ProjectCollector
 
    public async Task<Result<CollectorStore, Error<string>>> Collect(CancellationToken ct = default)
    {
-      var stopwatch = Stopwatch.StartNew();
+      var start = Stopwatch.GetTimestamp();
       var info = await Bootstrapper.GetProjectByPath(_options.ProjectPath, ct);
       
       if (info?.Compilation is null || info.Workspace is null)
@@ -44,7 +44,11 @@ public sealed partial class ProjectCollector
          LineCountStore = new LineCountStore()
       };
 
+      var loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
+      start = Stopwatch.GetTimestamp();
+      
       LogStartProjectCollect(_options.ProjectPath);
+      LogStartupTime(loadingTime);
       long nodesIterated = 0;
 
       foreach (var tree in info.Compilation.SyntaxTrees)
@@ -76,8 +80,10 @@ public sealed partial class ProjectCollector
             HandleNode(_context);
          }
       }
+
+      loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
       
-      LogNodesRan(nodesIterated);
+      LogNodesRan(nodesIterated, loadingTime);
       return store;
    }
 

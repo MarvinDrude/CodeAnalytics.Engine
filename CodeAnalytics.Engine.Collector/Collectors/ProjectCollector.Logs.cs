@@ -14,7 +14,14 @@ public sealed partial class ProjectCollector
    [LoggerMessage(
       EventId = 1,
       Level = LogLevel.Information,
-      Message = "Ran through {Count} nodes in project."
+      Message = "Ran through {Count} nodes in project. Took: {LoadingTime}."
    )]
-   private partial void LogNodesRan(long count);
+   private partial void LogNodesRan(long count, TimeSpan loadingTime);
+   
+   [LoggerMessage(
+      EventId = 2,
+      Level = LogLevel.Information,
+      Message = "Project startup time: {LoadingTime}."
+   )]
+   private partial void LogStartupTime(TimeSpan loadingTime);
 }

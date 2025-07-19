@@ -25,6 +25,9 @@ public struct PropertyComponent
       set => Flags.Set(HasSetterIndex, value);
    }
 
+   public int GetterCyclomaticComplexity;
+   public int SetterCyclomaticComplexity;
+
    public PropertyComponent()
    {
       

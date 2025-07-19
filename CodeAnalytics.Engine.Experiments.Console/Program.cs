@@ -1,4 +1,5 @@
 ﻿
+using CodeAnalytics.Engine.Analyze;
 using CodeAnalytics.Engine.Collector.Collectors;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Ids;
@@ -20,6 +21,7 @@ serviceCollection.AddLogging(lb =>
 });
 
 var provider = serviceCollection.BuildServiceProvider();
+Bootstrapper.InitLocators();
 
 var collector = new ProjectCollector(new ProjectOptions()
 {
@@ -33,4 +35,5 @@ var collector = new ProjectCollector(new ProjectOptions()
 });
 
 var res = await collector.Collect();
+var analyze = new AnalyzeStore(res.Success!);
 _ = "";

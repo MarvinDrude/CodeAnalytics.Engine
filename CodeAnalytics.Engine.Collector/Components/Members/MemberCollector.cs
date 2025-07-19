@@ -39,7 +39,28 @@ public sealed class MemberCollector
       
       ref var attributeSet = ref component.AttributeIds;
       AttributeCollector.Apply(ref attributeSet, symbol.GetAttributes(), context);
+
+      GetInnerMemberUsages(symbol, ref component);
       
       return true;
+   }
+
+   private static void GetInnerMemberUsages(ISymbol symbol, ref MemberComponent component)
+   {
+      switch (symbol)
+      {
+         case IMethodSymbol method:
+            GetInnerMemberUsages(method, ref component);
+            break;
+         case IPropertySymbol property:
+            if (property.GetMethod is not null) GetInnerMemberUsages(property.GetMethod, ref component);
+            if (property.SetMethod is not null) GetInnerMemberUsages(property.SetMethod, ref component);
+            break;
+      }
+   }
+
+   private static void GetInnerMemberUsages(IMethodSymbol method, ref MemberComponent component)
+   {
+      
    }
 }

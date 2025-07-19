@@ -10,6 +10,8 @@ public struct ConstructorComponent
 {
    public NodeId NodeId => Id;
    public NodeId Id = NodeId.Empty;
+
+   public int CyclomaticComplexity;
    
    public ConstructorComponent()
    {

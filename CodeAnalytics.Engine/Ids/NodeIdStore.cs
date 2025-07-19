@@ -24,7 +24,8 @@ public sealed class NodeIdStore : IdStoreBase, INodeIdStore
    {
    }
 
-   public NodeId GetOrAdd(ISymbol symbol)
+   public NodeId GetOrAdd<TSymbol>(TSymbol symbol)
+      where TSymbol : ISymbol
    {
       return GetOrAdd(symbol.GenerateId());
    }

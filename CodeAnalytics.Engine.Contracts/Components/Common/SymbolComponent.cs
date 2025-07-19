@@ -24,6 +24,12 @@ public struct SymbolComponent
       
    }
 
+   public void Dispose()
+   {
+      FileLocations.Dispose();
+      Projects.Dispose();
+   }
+
    public bool Equals(SymbolComponent other)
    {
       return Id.Equals(other.Id);

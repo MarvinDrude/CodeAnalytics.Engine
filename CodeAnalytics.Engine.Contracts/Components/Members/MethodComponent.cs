@@ -42,6 +42,11 @@ public struct MethodComponent
    private const int IsAbstractIndex = 1;
    private const int IsOverrideIndex = 2;
    
+   public void Dispose()
+   {
+      
+   }
+   
    public bool Equals(MethodComponent other)
    {
       return Id.Equals(other.Id);

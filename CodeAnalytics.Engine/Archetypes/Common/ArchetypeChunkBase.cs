@@ -10,4 +10,19 @@ public abstract class ArchetypeChunkBase<TArchetype>
    protected PooledList<TArchetype> _entries;
    
    public ref PooledList<TArchetype> Entries => ref _entries;
+
+   public void Dispose()
+   {
+      if (_entries.IsDisposed)
+      {
+         return;
+      }
+
+      foreach (ref var entry in _entries)
+      {
+         entry.Dispose();
+      }
+      
+      _entries.Dispose();
+   }
 }

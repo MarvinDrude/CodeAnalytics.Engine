@@ -34,6 +34,11 @@ public struct MemberComponent
    
    private const int IsStaticIndex = 0;
    
+   public void Dispose()
+   {
+      AttributeIds.Dispose();
+   }
+   
    public bool Equals(MemberComponent other)
    {
       return Id.Equals(other.Id);

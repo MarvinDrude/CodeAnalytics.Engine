@@ -27,6 +27,19 @@ public struct TypeComponent
       
    }
    
+   public void Dispose()
+   {
+      DirectInterfaceIds.Dispose();
+      InterfaceIds.Dispose();
+      
+      ConstructorIds.Dispose();
+      MethodIds.Dispose();
+      PropertyIds.Dispose();
+      FieldIds.Dispose();
+      
+      AttributeIds.Dispose();
+   }
+   
    public bool Equals(TypeComponent other)
    {
       return Id.Equals(other.Id);

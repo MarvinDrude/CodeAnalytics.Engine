@@ -32,6 +32,11 @@ public struct FieldComponent
    
    private const int IsConstIndex = 0;
    private const int IsReadOnlyIndex = 1;
+
+   public void Dispose()
+   {
+      
+   }
    
    public bool Equals(FieldComponent other)
    {

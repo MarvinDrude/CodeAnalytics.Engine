@@ -1,6 +1,8 @@
-﻿namespace CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
+﻿using CodeAnalytics.Engine.Contracts.Ids;
 
-public interface IArchetype
+namespace CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
+
+public interface IArchetype : IDisposable
 {
-   
+   public NodeId NodeId { get; }
 }

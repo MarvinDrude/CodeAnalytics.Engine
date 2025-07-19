@@ -15,6 +15,11 @@ public struct ConstructorComponent
    {
       
    }
+
+   public void Dispose()
+   {
+      
+   }
    
    public bool Equals(ConstructorComponent other)
    {

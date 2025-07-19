@@ -2,6 +2,7 @@
 using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
 using CodeAnalytics.Engine.Contracts.Components.Common;
 using CodeAnalytics.Engine.Contracts.Components.Types;
+using CodeAnalytics.Engine.Contracts.Ids;
 
 namespace CodeAnalytics.Engine.Contracts.Archetypes.Types;
 
@@ -9,9 +10,18 @@ namespace CodeAnalytics.Engine.Contracts.Archetypes.Types;
 public struct ClassArchetype 
    : IEquatable<ClassArchetype>, IArchetype
 {
+   public NodeId NodeId => Symbol.Id;
+   
    public SymbolComponent Symbol;
    public TypeComponent Type;
    public ClassComponent Class;
+   
+   public void Dispose()
+   {
+      Symbol.Dispose();
+      Type.Dispose();
+      Class.Dispose();
+   }
    
    public bool Equals(ClassArchetype other)
    {

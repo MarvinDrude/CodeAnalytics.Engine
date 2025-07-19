@@ -33,6 +33,11 @@ public struct PropertyComponent
    private const int HasGetterIndex = 0;
    private const int HasSetterIndex = 1;
    
+   public void Dispose()
+   {
+      
+   }
+   
    public bool Equals(PropertyComponent other)
    {
       return Id.Equals(other.Id);

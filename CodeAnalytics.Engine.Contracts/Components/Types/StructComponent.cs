@@ -33,6 +33,11 @@ public struct StructComponent
    private const int IsRefIndex = 0;
    private const int IsReadOnlyIndex = 1;
    
+   public void Dispose()
+   {
+      
+   }
+   
    public bool Equals(StructComponent other)
    {
       return Id.Equals(other.Id);

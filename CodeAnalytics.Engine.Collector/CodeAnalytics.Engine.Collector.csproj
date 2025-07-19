@@ -13,4 +13,9 @@
      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.0.0-2.25368.102" />
    </ItemGroup>
 
+   <ItemGroup>
+     <ProjectReference Include="..\CodeAnalytics.Engine.Contracts\CodeAnalytics.Engine.Contracts.csproj" />
+     <ProjectReference Include="..\CodeAnalytics.Engine\CodeAnalytics.Engine.csproj" />
+   </ItemGroup>
+
 </Project>

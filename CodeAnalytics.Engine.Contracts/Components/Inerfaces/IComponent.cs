@@ -2,7 +2,7 @@
 
 namespace CodeAnalytics.Engine.Contracts.Components.Inerfaces;
 
-public interface IComponent
+public interface IComponent : IDisposable
 {
    public NodeId NodeId { get; }
 }

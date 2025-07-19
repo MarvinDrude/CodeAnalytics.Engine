@@ -42,6 +42,11 @@ public struct ClassComponent
    private const int IsAbstractIndex = 1;
    private const int IsSealedIndex = 2;
    
+   public void Dispose()
+   {
+      
+   }
+   
    public bool Equals(ClassComponent other)
    {
       return Id.Equals(other.Id);

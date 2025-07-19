@@ -16,6 +16,11 @@ public struct InterfaceComponent
       
    }
    
+   public void Dispose()
+   {
+      
+   }
+   
    public bool Equals(InterfaceComponent other)
    {
       return Id.Equals(other.Id);

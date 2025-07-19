@@ -20,6 +20,11 @@ public struct EnumComponent
       
    }
    
+   public void Dispose()
+   {
+      ValueIds.Dispose();
+   }
+   
    public bool Equals(EnumComponent other)
    {
       return Id.Equals(other.Id);

@@ -66,4 +66,6 @@ public readonly struct NodeId
    {
       return !(left == right);
    }
+   
+   public static implicit operator int(NodeId nodeId) => nodeId.Value;
 }

@@ -64,4 +64,6 @@ public readonly struct StringId
    {
       return !(left == right);
    }
+   
+   public static implicit operator int(StringId stringId) => stringId.Value;
 }

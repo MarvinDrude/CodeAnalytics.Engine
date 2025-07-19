@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CodeAnalytics.Engine.Common\CodeAnalytics.Engine.Common.csproj" />
+    <ProjectReference Include="..\CodeAnalytics.Engine.Contracts\CodeAnalytics.Engine.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

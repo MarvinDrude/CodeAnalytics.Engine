@@ -1,11 +1,17 @@
-﻿namespace CodeAnalytics.Engine.Common.Results;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public struct Result<TSuccess, TError>
+namespace CodeAnalytics.Engine.Common.Results;
+
+public readonly struct Result<TSuccess, TError>
 {
-   public bool IsSuccess;
+   public readonly bool IsSuccess;
+   
+   [MemberNotNullWhen(true, nameof(Success))]
+   [MemberNotNullWhen(false, nameof(Error))]
+   public bool HasValue => IsSuccess;
 
-   public TSuccess? Success;
-   public TError? Error;
+   public readonly TSuccess? Success;
+   public readonly TError? Error;
 
    public Result(TSuccess success)
    {
@@ -17,6 +23,11 @@ public struct Result<TSuccess, TError>
    {
       IsSuccess = false;
       Error = error;
+   }
+
+   public override string ToString()
+   {
+      return HasValue ? $"SUCCESS: {Success.ToString()}" : $"ERROR: {Error.ToString()}";
    }
    
    public static implicit operator Result<TSuccess, TError>(TSuccess success) => new(success);

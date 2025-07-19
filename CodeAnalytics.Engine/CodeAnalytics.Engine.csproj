@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.0.0-2.25368.102" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Serialization\" />
+  </ItemGroup>
+
 </Project>

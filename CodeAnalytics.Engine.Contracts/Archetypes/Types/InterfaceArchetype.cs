@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
 using CodeAnalytics.Engine.Contracts.Components.Common;
 using CodeAnalytics.Engine.Contracts.Components.Types;
 
@@ -6,7 +7,7 @@ namespace CodeAnalytics.Engine.Contracts.Archetypes.Types;
 
 [StructLayout(LayoutKind.Auto)]
 public struct InterfaceArchetype 
-   : IEquatable<InterfaceArchetype>
+   : IEquatable<InterfaceArchetype>, IArchetype
 {
    public SymbolComponent Symbol;
    public TypeComponent Type;

@@ -1,12 +1,14 @@
 ﻿using System.Runtime.InteropServices;
+using CodeAnalytics.Engine.Contracts.Components.Inerfaces;
 using CodeAnalytics.Engine.Contracts.Ids;
 
 namespace CodeAnalytics.Engine.Contracts.Components.Members;
 
 [StructLayout(LayoutKind.Auto)]
 public struct ConstructorComponent 
-   : IEquatable<ConstructorComponent>
+   : IEquatable<ConstructorComponent>, IComponent
 {
+   public NodeId NodeId => Id;
    public NodeId Id = NodeId.Empty;
    
    public ConstructorComponent()

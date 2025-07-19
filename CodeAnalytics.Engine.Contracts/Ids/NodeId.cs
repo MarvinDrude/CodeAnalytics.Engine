@@ -8,6 +8,8 @@ public readonly struct NodeId
    : IEquatable<NodeId>
 {
    public static readonly NodeId Empty = new NodeId(-1, null);
+
+   public bool IsEmpty => Empty == this;
    
    public readonly int Value;
    public readonly INodeIdStore? Store;

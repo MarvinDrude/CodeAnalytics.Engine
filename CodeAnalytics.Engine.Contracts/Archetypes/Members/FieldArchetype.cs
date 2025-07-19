@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
 using CodeAnalytics.Engine.Contracts.Components.Common;
 using CodeAnalytics.Engine.Contracts.Components.Members;
 
@@ -6,7 +7,7 @@ namespace CodeAnalytics.Engine.Contracts.Archetypes.Members;
 
 [StructLayout(LayoutKind.Auto)]
 public struct FieldArchetype 
-   : IEquatable<FieldArchetype>
+   : IEquatable<FieldArchetype>, IArchetype
 {
    public SymbolComponent Symbol;
    public MemberComponent Member;

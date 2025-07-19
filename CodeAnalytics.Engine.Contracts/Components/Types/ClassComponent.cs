@@ -1,13 +1,15 @@
 ﻿using System.Runtime.InteropServices;
 using CodeAnalytics.Engine.Common.Buffers.Dynamic;
+using CodeAnalytics.Engine.Contracts.Components.Inerfaces;
 using CodeAnalytics.Engine.Contracts.Ids;
 
 namespace CodeAnalytics.Engine.Contracts.Components.Types;
 
 [StructLayout(LayoutKind.Auto)]
 public struct ClassComponent
-   : IEquatable<ClassComponent>
+   : IEquatable<ClassComponent>, IComponent
 {
+   public NodeId NodeId => Id;
    public NodeId Id = NodeId.Empty;
    public PackedBools Flags;
 

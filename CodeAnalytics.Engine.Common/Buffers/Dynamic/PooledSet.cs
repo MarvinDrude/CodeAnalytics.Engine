@@ -44,9 +44,16 @@ public struct PooledSet<T> : IDisposable
       return true;
    }
 
+   [MethodImpl(MethodImplOptions.AggressiveInlining)]
    public void AddRange(params T[] items)
    {
       AddSpanRange(items);
+   }
+
+   [MethodImpl(MethodImplOptions.AggressiveInlining)]
+   public void AddRange(scoped in PooledSet<T> items)
+   {
+      AddSpanRange(items.WrittenSpan);
    }
    
    public void AddSpanRange(scoped in ReadOnlySpan<T> span)

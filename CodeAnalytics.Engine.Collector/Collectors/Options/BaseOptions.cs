@@ -1,7 +1,11 @@
-﻿using CodeAnalytics.Engine.Ids;
+﻿using System.Text.Json.Serialization;
+using CodeAnalytics.Engine.Ids;
 
 namespace CodeAnalytics.Engine.Collector.Collectors.Options;
 
+[JsonPolymorphic]
+[JsonDerivedType(typeof(ProjectOptions), "project")]
+[JsonDerivedType(typeof(SolutionOptions), "solution")]
 public class BaseOptions
 {
    public required string ProjectPath { get; set; }

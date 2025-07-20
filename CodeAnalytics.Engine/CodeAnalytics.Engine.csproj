@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Analyze\Analyzers\Common\" />
+    <Folder Include="Analyze\Analyzers\Methods\" />
   </ItemGroup>
 
 </Project>

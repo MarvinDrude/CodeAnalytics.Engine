@@ -1,14 +1,35 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Security.Cryptography;
-
-Console.WriteLine("Hello, World!");
-
-public class Test
+﻿
+public interface ITest<T>
+   where T : BaseClass
 {
+   public void Run(string a);
+}
+
+public class Test : BaseClass, ITest<BaseClass>, IDisposable
+{
+   public string? Tests { get; set; }
+   public string? Testss;
    
-   public static void Run(string a, string[] test, out bool ha)
+   public void Run(string a)
    {
-      ha = true;
+      var bb = "";
+
+      Action<string> aaaa = (aaaa) =>
+      {
+         var bb = "aaa";
+         bb = "a";
+         bb = "a";
+         bb = "a";
+      };
+      
+      a = "";
+      Tests = "";
+   }
+
+   public void Dispose()
+   {
+      
    }
 }
+
+public abstract class BaseClass;

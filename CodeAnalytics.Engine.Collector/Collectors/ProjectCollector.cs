@@ -3,6 +3,8 @@ using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Collector.Syntax.Interfaces;
 using CodeAnalytics.Engine.Collector.Syntax.Providers;
+using CodeAnalytics.Engine.Collector.TextRendering;
+using CodeAnalytics.Engine.Collector.TextRendering.Themes;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Results;
 using CodeAnalytics.Engine.Common.Results.Errors;
@@ -71,6 +73,7 @@ public sealed partial class ProjectCollector
             Document = document,
             CancellationToken = ct,
          };
+         await HandleText(_context);
 
          foreach (var node in root.DescendantNodesAndSelf())
          {
@@ -85,6 +88,14 @@ public sealed partial class ProjectCollector
       
       LogNodesRan(nodesIterated, loadingTime);
       return store;
+   }
+
+   private async Task HandleText(CollectContext context)
+   {
+      var tokenizer = new TextTokenizer(context, CodeTheme.Default);
+      var spans = await tokenizer.Tokenize();
+
+      _ = "";
    }
 
    private void HandleNode(CollectContext context)

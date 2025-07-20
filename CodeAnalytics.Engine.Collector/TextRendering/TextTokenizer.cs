@@ -2,7 +2,11 @@
 using CodeAnalytics.Engine.Collector.TextRendering.Themes;
 using CodeAnalytics.Engine.Common.Buffers.Dynamic;
 using CodeAnalytics.Engine.Contracts.TextRendering;
+using CodeAnalytics.Engine.Extensions.Symbols;
+using CodeAnalytics.Engine.Extensions.System;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Classification;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace CodeAnalytics.Engine.Collector.TextRendering;
@@ -74,6 +78,8 @@ public sealed class TextTokenizer
          var type = classifiedSpan.ClassificationType;
          var syntaxSpan = new SyntaxSpan(GetText(classifiedSpan.TextSpan), GetColor(type));
          
+         ApplyContext(ref syntaxSpan, classifiedSpan);
+         
          list.Add(syntaxSpan);
          start = classified.End;
       }
@@ -93,5 +99,99 @@ public sealed class TextTokenizer
    {
       return _theme.Colors.GetValueOrDefault(type ?? string.Empty)
          ?? _theme.Colors[CodeTheme.DefaultColorKeyName];
+   }
+
+   private void ApplyContext(ref SyntaxSpan span, ClassifiedSpan classified)
+   {
+      switch (classified.ClassificationType)
+      {
+         case ClassificationTypeNames.NamespaceName:
+            break;
+         
+         case ClassificationTypeNames.ClassName:
+         case ClassificationTypeNames.RecordClassName:
+         case ClassificationTypeNames.StructName:
+         case ClassificationTypeNames.RecordStructName:
+         case ClassificationTypeNames.InterfaceName:
+         case ClassificationTypeNames.EnumName:
+         case ClassificationTypeNames.MethodName:
+         case ClassificationTypeNames.ExtensionMethodName:
+         case ClassificationTypeNames.FieldName:
+         case ClassificationTypeNames.PropertyName:
+            ApplySymbolContext(ref span, classified);
+            break;
+         
+         case ClassificationTypeNames.ParameterName:
+            ApplyParameterSymbolContext(ref span, classified);
+            break;
+         
+         case ClassificationTypeNames.LocalName:
+            ApplyLocalNameContext(ref span, classified);
+            break;
+      }
+   }
+
+   private void ApplySymbolContext(ref SyntaxSpan span, ClassifiedSpan classified)
+   {
+      var (node, symbol) = GetSymbolFromContext(classified);
+      if (symbol is null) return;
+      
+      span.Reference = _context.Store.NodeIdStore.GetOrAdd(symbol.OriginalDefinition);
+
+      span.IsDeclaration = node is ClassDeclarationSyntax
+         or InterfaceDeclarationSyntax
+         or StructDeclarationSyntax
+         or EnumDeclarationSyntax
+         or MethodDeclarationSyntax
+         or FieldDeclarationSyntax
+         or PropertyDeclarationSyntax;
+   }
+   
+   private void ApplyParameterSymbolContext(ref SyntaxSpan span, ClassifiedSpan classified)
+   {
+      var (node, symbol) = GetSymbolFromContext(classified);
+
+      if (symbol is not IParameterSymbol parameter 
+          || symbol?.ContainingSymbol is not IMethodSymbol { OriginalDefinition: { } method })
+      {
+         return;
+      }
+
+      var stringId = parameter.GenerateParameterId(method);
+      span.Reference = _context.Store.NodeIdStore.GetOrAdd(stringId);
+   }
+
+   private void ApplyLocalNameContext(ref SyntaxSpan span, ClassifiedSpan classified)
+   {
+      var (node, symbol) = GetSymbolFromContext(classified);
+
+      if (symbol?.Locations is [var reference])
+      {
+         span.StringReference = reference.ToString().GenerateId();
+      }
+   }
+
+   private (SyntaxNode node, ISymbol? symbol) GetSymbolFromContext(ClassifiedSpan classified)
+   {
+      var node = _context.SyntaxNode.FindNode(classified.TextSpan);
+
+      node = node switch
+      {
+         SimpleBaseTypeSyntax baseTypeSyntax => baseTypeSyntax.Type,
+         TypeConstraintSyntax typeConstraintSyntax => typeConstraintSyntax.Type,
+         _ => node
+      };
+      
+      if (_context.SemanticModel.GetSymbolInfo(node) is not { Symbol: { } symbol })
+      {
+         if (_context.SemanticModel.GetDeclaredSymbol(node) is not { OriginalDefinition: { } declaration })
+         {
+            return (node, null);
+         }
+         
+         symbol = declaration;
+      }
+
+      return (node, symbol);
    }
 }

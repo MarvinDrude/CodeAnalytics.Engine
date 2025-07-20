@@ -34,7 +34,7 @@ public struct PooledList<T> : IEquatable<PooledList<T>>, IDisposable
       set {
          if (_length == _index)
          {
-            var newLength = _length + 1;
+            var newLength = (int)Math.Min((long)Math.Max(_length, 1) * 2, int.MaxValue);
             EnsureSize(newLength);
          }
          
@@ -73,8 +73,7 @@ public struct PooledList<T> : IEquatable<PooledList<T>>, IDisposable
    {
       if (_length == _index)
       {
-         var newLength = _length + 1;
-         EnsureSize(newLength);
+         EnsureSize((int)Math.Min((long)Math.Max(_length, 1) * 2, int.MaxValue));
       }
 
       ref var reference = ref MemoryMarshal.GetReference(_owner.Span);
@@ -129,7 +128,7 @@ public struct PooledList<T> : IEquatable<PooledList<T>>, IDisposable
       }
 
       var lastOwner = _owner;
-      _owner = MemoryAllocator<T>.CreatePooled((int)Math.Min((long)size * size, int.MaxValue));
+      _owner = MemoryAllocator<T>.CreatePooled(size);
 
       lastOwner.Span.CopyTo(_owner.Span);
       lastOwner.Dispose();

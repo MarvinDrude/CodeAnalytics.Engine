@@ -27,7 +27,7 @@ public sealed class TextTokenizer
    public async Task<PooledList<SyntaxSpan>> Tokenize(CancellationToken ct = default)
    {
       var lineCount = _context.SourceText.Lines.Count;
-      var list = new PooledList<SyntaxSpan>(lineCount * 3);
+      var list = new PooledList<SyntaxSpan>(64);
 
       for (var e = 0; e < lineCount; e++)
       {
@@ -159,6 +159,7 @@ public sealed class TextTokenizer
 
       var stringId = parameter.GenerateParameterId(method);
       span.Reference = _context.Store.NodeIdStore.GetOrAdd(stringId);
+      //span.StringReference = stringId;
    }
 
    private void ApplyLocalNameContext(ref SyntaxSpan span, ClassifiedSpan classified)

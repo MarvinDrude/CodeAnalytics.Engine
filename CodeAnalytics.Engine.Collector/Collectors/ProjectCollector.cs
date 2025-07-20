@@ -6,9 +6,14 @@ using CodeAnalytics.Engine.Collector.Syntax.Providers;
 using CodeAnalytics.Engine.Collector.TextRendering;
 using CodeAnalytics.Engine.Collector.TextRendering.Themes;
 using CodeAnalytics.Engine.Collectors;
+using CodeAnalytics.Engine.Common.Buffers;
+using CodeAnalytics.Engine.Common.Buffers.Dynamic;
 using CodeAnalytics.Engine.Common.Results;
 using CodeAnalytics.Engine.Common.Results.Errors;
 using CodeAnalytics.Engine.Components;
+using CodeAnalytics.Engine.Contracts.TextRendering;
+using CodeAnalytics.Engine.Serialization.Collections;
+using CodeAnalytics.Engine.Serialization.TextRendering;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -94,8 +99,28 @@ public sealed partial class ProjectCollector
    {
       var tokenizer = new TextTokenizer(context, CodeTheme.Default);
       var spans = await tokenizer.Tokenize();
+      var writer = new ByteWriter(stackalloc byte[512]);
+      byte[] data;
+      string createPath;
+      
+      try
+      {
+         var fileRelativePath = context.GetRelativePath(context.SyntaxTree.FilePath);
+         createPath = Path.Combine(context.Options.OutputBasePath, fileRelativePath);
 
-      _ = "";
+         Directory.CreateDirectory(Path.GetDirectoryName(createPath) ?? string.Empty);
+         createPath = Path.ChangeExtension(createPath, "csspan");
+
+         PooledListSerializer<SyntaxSpan, SyntaxSpanSerializer>.Serialize(ref writer, ref spans);
+         data = writer.WrittenSpan.ToArray();
+      }
+      finally
+      {
+         spans.Dispose();
+         writer.Dispose();
+      }
+
+      await File.WriteAllBytesAsync(createPath, data);
    }
 
    private void HandleNode(CollectContext context)

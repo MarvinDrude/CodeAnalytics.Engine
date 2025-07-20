@@ -11,8 +11,8 @@ public struct SyntaxSpan
    public NodeId Reference = NodeId.Empty;
    public string StringReference = string.Empty;
    
-   public readonly string RawText;
-   public readonly string Color;
+   public string RawText;
+   public string Color;
 
    public PackedBools Flags;
    

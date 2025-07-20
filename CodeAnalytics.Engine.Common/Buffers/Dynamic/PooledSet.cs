@@ -19,7 +19,7 @@ public struct PooledSet<T> : IDisposable
       get => _list[index];
       set => _list[index] = value;
    }
-   
+
    private PooledList<T> _list;
 
    public PooledSet(int initialCapacity)

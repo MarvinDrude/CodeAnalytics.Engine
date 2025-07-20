@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Serialization\" />
+    <Folder Include="Serialization\Components\Common\" />
+    <Folder Include="Serialization\Components\Members\" />
+    <Folder Include="Serialization\Components\Types\" />
   </ItemGroup>
 
 </Project>

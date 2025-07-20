@@ -16,21 +16,21 @@ public sealed class AnalyzeStore : IDisposable
    public FieldArchetypeChunk FieldChunk { get; }
    public PropertyArchetypeChunk PropertyChunk { get; }
 
-   private readonly CollectorStore _store;
-   
-   public AnalyzeStore(CollectorStore store)
-   {
-      _store = store;
+   public CollectorStore Inner { get; }
 
-      ClassChunk = new ClassArchetypeChunk(store.ComponentStore);
-      EnumChunk = new EnumArchetypeChunk(store.ComponentStore);
-      StructChunk = new StructArchetypeChunk(store.ComponentStore);
-      InterfaceChunk = new InterfaceArchetypeChunk(store.ComponentStore);
+   public AnalyzeStore(CollectorStore inner)
+   {
+      Inner = inner;
+
+      ClassChunk = new ClassArchetypeChunk(inner.ComponentStore);
+      EnumChunk = new EnumArchetypeChunk(inner.ComponentStore);
+      StructChunk = new StructArchetypeChunk(inner.ComponentStore);
+      InterfaceChunk = new InterfaceArchetypeChunk(inner.ComponentStore);
       
-      ConstructorChunk = new ConstructorArchetypeChunk(store.ComponentStore);
-      MethodChunk = new MethodArchetypeChunk(store.ComponentStore);
-      FieldChunk = new FieldArchetypeChunk(store.ComponentStore);
-      PropertyChunk = new PropertyArchetypeChunk(store.ComponentStore);
+      ConstructorChunk = new ConstructorArchetypeChunk(inner.ComponentStore);
+      MethodChunk = new MethodArchetypeChunk(inner.ComponentStore);
+      FieldChunk = new FieldArchetypeChunk(inner.ComponentStore);
+      PropertyChunk = new PropertyArchetypeChunk(inner.ComponentStore);
    }
 
    public void Dispose()

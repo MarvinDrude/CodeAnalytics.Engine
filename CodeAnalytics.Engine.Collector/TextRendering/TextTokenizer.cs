@@ -77,12 +77,11 @@ public sealed class TextTokenizer
          list.Add(syntaxSpan);
          start = classified.End;
       }
+
+      if (start >= lineSpan.End) return;
       
-      if (start < lineSpan.End)
-      {
-         var ending = new TextSpan(start, lineSpan.End - start);
-         list.Add(new SyntaxSpan(GetText(ending), GetColor()));
-      }
+      var ending = new TextSpan(start, lineSpan.End - start);
+      list.Add(new SyntaxSpan(GetText(ending), GetColor()));
    }
    
    private string GetText(TextSpan span)

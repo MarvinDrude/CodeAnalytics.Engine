@@ -1,4 +1,6 @@
 ﻿
+using CodeAnalytics.Engine.Analyze;
+using CodeAnalytics.Engine.Analyze.Analyzers.Types;
 using CodeAnalytics.Engine.Collector.Collectors;
 using CodeAnalytics.Engine.Collector.Console.Options;
 using CodeAnalytics.Engine.Collectors;
@@ -59,7 +61,7 @@ else
 if (result is { IsSuccess: true, Success: { } store })
 {
    ProgramLogger.LogFinishedCollecting(logger);
-   
+   var t = new TypesPerProjectCountAnalyzer().Analyze(new AnalyzeStore(store));
    await File.WriteAllBytesAsync(
       Path.Combine(collectOptions.OutputBasePath, "data.caec"), 
       store.ToMemory());

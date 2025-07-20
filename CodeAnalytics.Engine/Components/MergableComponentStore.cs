@@ -26,7 +26,7 @@ public sealed class MergableComponentStore : ComponentStore
 
    public void Merge(MergableComponentStore source)
    {
-      foreach (var (type, pool) in _pools)
+      foreach (var (type, pool) in source._pools)
       {
          if (!_pools.TryGetValue(type, out var target))
          {

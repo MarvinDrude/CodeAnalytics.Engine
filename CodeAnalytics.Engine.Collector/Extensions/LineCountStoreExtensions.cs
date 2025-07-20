@@ -24,18 +24,26 @@ public static class LineCountStoreExtensions
 
       if (!store.LineCountsPerFile.TryGetValue(syntaxPathId, out _))
       {
-         store.LineCountsPerFile[syntaxPathId] = store.ParseLineStats(text, 0, text.Length);
+         store.LineCountsPerFile[syntaxPathId] = store.ParseLineStats(context, text, 0, text.Length);
       }
 
       var span = node.FullSpan;
-      var stats = store.ParseLineStats(text, span.Start, span.End);
+      var stats = store.ParseLineStats(context, text, span.Start, span.End);
 
       store.AddToNode(id, syntaxPathId, stats);
    }
 
-   public static LineCountStats ParseLineStats(this LineCountStore store, SourceText text, int start, int stop)
+   public static LineCountStats ParseLineStats(
+      this LineCountStore store, 
+      CollectContext context,
+      SourceText text, 
+      int start,
+      int stop)
    {
-      var stats = new LineCountStats();
+      var stats = new LineCountStats()
+      {
+         ProjectId = context.Store.StringIdStore.GetOrAdd(context.Options.RelativePath)
+      };
 
       var startLine = text.Lines.GetLineFromPosition(start).LineNumber;
       var endLine = text.Lines.GetLineFromPosition(stop).LineNumber;

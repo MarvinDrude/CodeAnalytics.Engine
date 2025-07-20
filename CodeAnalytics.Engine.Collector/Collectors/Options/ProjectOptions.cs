@@ -8,7 +8,7 @@ public class ProjectOptions : BaseOptions
       {
          NodeIdStore = options.NodeIdStore,
          StringIdStore =  options.StringIdStore,
-         ProjectPath = options.ProjectPath,
+         Path = options.Path,
          BasePath = options.BasePath,
          OutputBasePath = options.OutputBasePath,
          InitialCapacityPerComponentPool = options.InitialCapacityPerComponentPool,

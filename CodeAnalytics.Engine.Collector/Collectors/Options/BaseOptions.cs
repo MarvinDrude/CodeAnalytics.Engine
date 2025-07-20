@@ -8,7 +8,10 @@ namespace CodeAnalytics.Engine.Collector.Collectors.Options;
 [JsonDerivedType(typeof(SolutionOptions), "solution")]
 public class BaseOptions
 {
-   public required string ProjectPath { get; set; }
+   /// <summary>
+   /// Either a project or solution file path
+   /// </summary>
+   public required string Path { get; set; }
    public required string BasePath { get; set; }
    public required string OutputBasePath { get; set; }
    
@@ -20,5 +23,5 @@ public class BaseOptions
    public required IServiceProvider ServiceProvider { get; set; }
    
    private string? _relativePath;
-   public string RelativePath => _relativePath ??= Path.GetRelativePath(BasePath, ProjectPath);
+   public string RelativePath => _relativePath ??= System.IO.Path.GetRelativePath(BasePath, Path);
 }

@@ -28,7 +28,7 @@ public sealed partial class ProjectCollector
    public async Task<Result<CollectorStore, Error<string>>> Collect(CancellationToken ct = default)
    {
       var start = Stopwatch.GetTimestamp();
-      var info = await Bootstrapper.GetProjectByPath(_options.ProjectPath, ct);
+      var info = await Bootstrapper.GetProjectByPath(_options.Path, ct);
       
       if (info?.Compilation is null || info.Workspace is null)
       {
@@ -47,7 +47,7 @@ public sealed partial class ProjectCollector
       var loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
       start = Stopwatch.GetTimestamp();
       
-      LogStartProjectCollect(_options.ProjectPath);
+      LogStartProjectCollect(_options.Path);
       LogStartupTime(loadingTime);
       long nodesIterated = 0;
 

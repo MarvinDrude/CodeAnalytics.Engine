@@ -7,7 +7,6 @@ using CodeAnalytics.Engine.Collector.TextRendering;
 using CodeAnalytics.Engine.Collector.TextRendering.Themes;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Buffers;
-using CodeAnalytics.Engine.Common.Buffers.Dynamic;
 using CodeAnalytics.Engine.Common.Results;
 using CodeAnalytics.Engine.Common.Results.Errors;
 using CodeAnalytics.Engine.Components;

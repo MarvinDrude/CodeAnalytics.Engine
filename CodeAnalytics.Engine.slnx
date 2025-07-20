@@ -6,7 +6,10 @@
   <Folder Name="/TestContainerProjects/">
     <Project Path="CodeAnalytics.Engine.TestContainer.SimpleOne\CodeAnalytics.Engine.TestContainer.SimpleOne.csproj" Type="Classic C#" />
   </Folder>
-  <Folder Name="/Web/" />
+  <Folder Name="/Web/">
+    <Project Path="CodeAnalytics.Web\CodeAnalytics.Web.Client\CodeAnalytics.Web.Client.csproj" Type="Classic C#" />
+    <Project Path="CodeAnalytics.Web\CodeAnalytics.Web\CodeAnalytics.Web.csproj" Type="Classic C#" />
+  </Folder>
   <Project Path="CodeAnalytics.Engine.Collector\CodeAnalytics.Engine.Collector.csproj" Type="Classic C#" />
   <Project Path="CodeAnalytics.Engine.Common\CodeAnalytics.Engine.Common.csproj" Type="Classic C#" />
   <Project Path="CodeAnalytics.Engine.Contracts\CodeAnalytics.Engine.Contracts.csproj" Type="Classic C#" />

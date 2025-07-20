@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Serialization\Components\Members\" />
+    <Folder Include="Serialization\Stores\" />
   </ItemGroup>
 
 </Project>

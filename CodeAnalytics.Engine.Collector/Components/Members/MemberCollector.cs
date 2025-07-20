@@ -42,26 +42,30 @@ public sealed class MemberCollector
       ref var attributeSet = ref component.AttributeIds;
       AttributeCollector.Apply(ref attributeSet, symbol.GetAttributes(), context);
 
-      GetInnerMemberUsages(symbol, context, ref component);
+      if (!GetInnerMemberUsages(symbol, context, ref component))
+      {
+         component.InnerMemberUsages = [];
+      }
       
       return true;
    }
 
-   private static void GetInnerMemberUsages(ISymbol symbol, CollectContext context, ref MemberComponent component)
+   private static bool GetInnerMemberUsages(ISymbol symbol, CollectContext context, ref MemberComponent component)
    {
       switch (symbol)
       {
          case IMethodSymbol method:
-            GetInnerMemberUsages(method, context, ref component);
-            break;
+            return GetInnerMemberUsages(method, context, ref component);
          case IPropertySymbol property:
-            if (property.GetMethod is not null) GetInnerMemberUsages(property.GetMethod, context, ref component);
-            if (property.SetMethod is not null) GetInnerMemberUsages(property.SetMethod, context, ref component);
+            if (property.GetMethod is not null) return GetInnerMemberUsages(property.GetMethod, context, ref component);
+            if (property.SetMethod is not null) return GetInnerMemberUsages(property.SetMethod, context, ref component);
             break;
       }
+
+      return false;
    }
 
-   private static void GetInnerMemberUsages(IMethodSymbol method, CollectContext context, ref MemberComponent component)
+   private static bool GetInnerMemberUsages(IMethodSymbol method, CollectContext context, ref MemberComponent component)
    {
       foreach (var reference in method.DeclaringSyntaxReferences)
       {
@@ -85,7 +89,9 @@ public sealed class MemberCollector
          walker.Visit(body);
       
          component.InnerMemberUsages = walker.MemberUsages;
-         return;
+         return true;
       }
+
+      return false;
    }
 }

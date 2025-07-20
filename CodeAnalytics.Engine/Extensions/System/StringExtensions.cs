@@ -1,4 +1,6 @@
-﻿using CodeAnalytics.Engine.Common.Buffers;
+﻿using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using CodeAnalytics.Engine.Common.Buffers;
 
 namespace CodeAnalytics.Engine.Extensions.System;
 
@@ -23,5 +25,11 @@ public static class StringExtensions
       }
       
       return writer.WrittenSpan.ToString();
+   }
+
+   public static string GenerateId(this string str)
+   {
+      var bytes = SHA256.HashData(MemoryMarshal.AsBytes(str.AsSpan()));
+      return Convert.ToHexStringLower(bytes);
    }
 }

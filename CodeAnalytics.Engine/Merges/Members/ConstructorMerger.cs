@@ -7,6 +7,6 @@ public sealed class ConstructorMerger : IComponentMerger<ConstructorComponent>
 {
    public static void Merge(ref ConstructorComponent target, ref ConstructorComponent source)
    {
-      // nothing to merge yet
+      target.ParameterIds.AddRange(source.ParameterIds);
    }
 }

@@ -33,6 +33,8 @@ public struct MethodComponent
 
    public int CyclomaticComplexity;
    
+   public PooledSet<NodeId> ParameterIds = [];
+   
    public MethodComponent()
    {
       
@@ -44,7 +46,7 @@ public struct MethodComponent
    
    public void Dispose()
    {
-      
+      ParameterIds.Dispose();
    }
    
    public bool Equals(MethodComponent other)

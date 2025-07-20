@@ -1,39 +1,41 @@
 ﻿using System.Runtime.InteropServices;
 using CodeAnalytics.Engine.Common.Buffers.Dynamic;
 using CodeAnalytics.Engine.Contracts.Components.Inerfaces;
+using CodeAnalytics.Engine.Contracts.Enums.Components;
 using CodeAnalytics.Engine.Contracts.Ids;
 
 namespace CodeAnalytics.Engine.Contracts.Components.Members;
 
 [StructLayout(LayoutKind.Auto)]
-public struct ConstructorComponent 
-   : IEquatable<ConstructorComponent>, IComponent
+public struct ParameterComponent
+   : IEquatable<ParameterComponent>, IComponent
 {
    public NodeId NodeId => Id;
    public NodeId Id = NodeId.Empty;
 
-   public int CyclomaticComplexity;
+   public NodeId TypeId = NodeId.Empty;
+   public ParameterModifier Modifiers;
    
-   public PooledSet<NodeId> ParameterIds = [];
-   
-   public ConstructorComponent()
+   public PooledSet<NodeId> AttributeIds = [];
+
+   public ParameterComponent()
    {
-      
+      Modifiers = ParameterModifier.None;
    }
 
    public void Dispose()
    {
-      ParameterIds.Dispose();
+      AttributeIds.Dispose();
    }
-   
-   public bool Equals(ConstructorComponent other)
+
+   public bool Equals(ParameterComponent other)
    {
       return Id.Equals(other.Id);
    }
 
    public override bool Equals(object? obj)
    {
-      return obj is ConstructorComponent other && Equals(other);
+      return obj is ParameterComponent other && Equals(other);
    }
 
    public override int GetHashCode()
@@ -41,12 +43,12 @@ public struct ConstructorComponent
       return HashCode.Combine(Id);
    }
 
-   public static bool operator ==(ConstructorComponent left, ConstructorComponent right)
+   public static bool operator ==(ParameterComponent left, ParameterComponent right)
    {
       return left.Equals(right);
    }
 
-   public static bool operator !=(ConstructorComponent left, ConstructorComponent right)
+   public static bool operator !=(ParameterComponent left, ParameterComponent right)
    {
       return !(left == right);
    }

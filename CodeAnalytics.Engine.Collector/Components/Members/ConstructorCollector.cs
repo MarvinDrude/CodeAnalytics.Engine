@@ -2,6 +2,9 @@
 using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Components.Interfaces;
 using CodeAnalytics.Engine.Contracts.Components.Members;
+using CodeAnalytics.Engine.Contracts.Ids;
+using CodeAnalytics.Engine.Extensions.Symbols;
+using CodeAnalytics.Engine.Merges.Members;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -20,6 +23,31 @@ public sealed class ConstructorCollector
       };
 
       component.CyclomaticComplexity = CalculateComplexity(symbol, context, ref component);
+      
+      foreach (var parameter in symbol.Parameters)
+      {
+         var id = NodeId.Empty;
+
+         if (context.AddSubComponentsImmediately
+             && ParameterCollector.TryParse(parameter, context, out var parameterComponent))
+         {
+            id = parameterComponent.Id;
+            
+            var pool = store.ComponentStore.GetOrCreatePool<ParameterComponent, ParameterMerger>();
+            pool.Add(ref parameterComponent);
+         }
+
+         if (id.IsEmpty && !context.AddSubComponentsImmediately)
+         {
+            id = store.NodeIdStore.GetOrAdd(parameter.GenerateParameterId(symbol));
+         }
+
+         if (!id.IsEmpty)
+         {
+            component.ParameterIds.Add(id);
+         }
+      }
+      
       return true;
    }
    

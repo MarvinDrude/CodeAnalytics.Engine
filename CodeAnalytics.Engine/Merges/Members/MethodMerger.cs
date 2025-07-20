@@ -12,5 +12,7 @@ public sealed class MethodMerger : IComponentMerger<MethodComponent>
       target.IsAbstract = target.IsAbstract || source.IsAbstract;
       target.IsAsync = target.IsAsync || source.IsAsync;
       target.IsOverride = target.IsOverride || source.IsOverride;
+      
+      target.ParameterIds.AddRange(source.ParameterIds);
    }
 }

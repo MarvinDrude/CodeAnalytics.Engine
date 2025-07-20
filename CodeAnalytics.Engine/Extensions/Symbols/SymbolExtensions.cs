@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using CodeAnalytics.Engine.Extensions.System;
 using Microsoft.CodeAnalysis;
 
 namespace CodeAnalytics.Engine.Extensions.Symbols;
@@ -8,8 +9,7 @@ public static class SymbolExtensions
 {
    public static string GenerateId(this ISymbol symbol)
    {
-      var bytes = SHA256.HashData(MemoryMarshal.AsBytes(symbol.GenerateSeedId().AsSpan()));
-      return Convert.ToHexStringLower(bytes);
+      return symbol.GenerateSeedId().GenerateId();
    }
    
    public static string GenerateSeedId(this ISymbol symbol)

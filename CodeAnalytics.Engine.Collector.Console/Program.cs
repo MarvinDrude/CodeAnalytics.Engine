@@ -51,7 +51,7 @@ if (collectOptions.Path.ToLower().EndsWith(".csproj"))
 else
 {
    var options = CollectOptions.CreateSolutionOptions(collectOptions, provider);
-   var collector = new SolutionCollector(options);
+   await using var collector = new SolutionCollector(options);
 
    result = await collector.Collect();
 }
@@ -61,7 +61,7 @@ if (result is { IsSuccess: true, Success: { } store })
    ProgramLogger.LogFinishedCollecting(logger);
    
    await File.WriteAllBytesAsync(
-      Path.Combine(collectOptions.OutputBasePath, "data.json"), 
+      Path.Combine(collectOptions.OutputBasePath, "data.caec"), 
       store.ToMemory());
 }
 else

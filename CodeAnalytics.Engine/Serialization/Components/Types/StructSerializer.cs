@@ -6,7 +6,7 @@ using CodeAnalytics.Engine.Serialization.Ids;
 
 namespace CodeAnalytics.Engine.Serialization.Components.Types;
 
-public sealed class StructSerailizer : ISerializer<StructComponent>
+public sealed class StructSerializer : ISerializer<StructComponent>
 {
    public static void Serialize(ref ByteWriter writer, ref StructComponent ob)
    {

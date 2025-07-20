@@ -2,6 +2,7 @@
 using CodeAnalytics.Engine.Analyze;
 using CodeAnalytics.Engine.Collector.Collectors;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
+using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Ids;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,4 +37,8 @@ var collector = new ProjectCollector(new ProjectOptions()
 
 var res = await collector.Collect();
 var analyze = new AnalyzeStore(res.Success!);
+
+var bytes = res.Success!.ToMemory();
+var res2 = CollectorStore.FromMemory(bytes);
+
 _ = "";

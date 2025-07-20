@@ -1,5 +1,7 @@
-﻿using CodeAnalytics.Engine.Components;
+﻿using CodeAnalytics.Engine.Common.Buffers;
+using CodeAnalytics.Engine.Components;
 using CodeAnalytics.Engine.Ids;
+using CodeAnalytics.Engine.Serialization.Stores;
 
 namespace CodeAnalytics.Engine.Collectors;
 
@@ -20,5 +22,30 @@ public sealed class CollectorStore : IDisposable
    public void Dispose()
    {
       ComponentStore.Dispose();
+   }
+
+   public Memory<byte> ToMemory()
+   {
+      var writer = new ByteWriter(stackalloc byte[512], 2048);
+
+      try
+      {
+         var self = this;
+         CollectorStoreSerializer.Serialize(ref writer, ref self);
+         
+         return writer.WrittenSpan.ToArray();
+      }
+      finally
+      {
+         writer.Dispose();
+      }
+   }
+   
+   public static CollectorStore? FromMemory(Memory<byte> memory)
+   {
+      var reader = new ByteReader(memory.Span);
+
+      return CollectorStoreSerializer.TryDeserialize(ref reader, out var store) 
+         ? store : null;
    }
 }

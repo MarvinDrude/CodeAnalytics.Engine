@@ -20,6 +20,12 @@ public sealed class CollectContext
    
    public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
    public bool AddSubComponentsImmediately { get; set; } = true;
+
+   public void ResetSymbol()
+   {
+      _fetched = false;
+      _symbol = null;
+   }
    
    public ISymbol? Symbol
    {

@@ -1,8 +1,10 @@
 using System.Text.Json;
+using CodeAnalytics.Web.Common.Services.Data;
 using CodeAnalytics.Web.Common.Services.Source;
 using CodeAnalytics.Web.Components;
 using CodeAnalytics.Web.Endpoints;
 using CodeAnalytics.Web.Options;
+using CodeAnalytics.Web.Services.Data;
 using CodeAnalytics.Web.Services.Source;
 using Microsoft.AspNetCore.Http.Json;
 
@@ -22,8 +24,12 @@ builder.Services.Configure<CodeOptions>(builder.Configuration.GetSection("Code")
 
 builder.Services.AddSingleton<ISourceTextService, ServerSourceTextService>();
 builder.Services.AddSingleton<IExplorerService, ServerExplorerService>();
+builder.Services.AddSingleton<IDataService, ServerDataService>();
 
 var app = builder.Build();
+
+var dataService = app.Services.GetRequiredService<IDataService>();
+await dataService.GetAnalyzeStore();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

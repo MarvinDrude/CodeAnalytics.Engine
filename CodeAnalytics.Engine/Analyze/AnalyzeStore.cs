@@ -1,6 +1,9 @@
 ﻿using CodeAnalytics.Engine.Archetypes.Members;
 using CodeAnalytics.Engine.Archetypes.Types;
 using CodeAnalytics.Engine.Collectors;
+using CodeAnalytics.Engine.Common.Buffers.Dynamic;
+using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
+using CodeAnalytics.Engine.Contracts.Ids;
 
 namespace CodeAnalytics.Engine.Analyze;
 
@@ -18,6 +21,8 @@ public sealed class AnalyzeStore : IDisposable
 
    public CollectorStore Inner { get; }
 
+   public HashSet<NodeId> ContainingDeclarationIds { get; } = [];
+
    public AnalyzeStore(CollectorStore inner)
    {
       Inner = inner;
@@ -31,8 +36,33 @@ public sealed class AnalyzeStore : IDisposable
       MethodChunk = new MethodArchetypeChunk(inner.ComponentStore);
       FieldChunk = new FieldArchetypeChunk(inner.ComponentStore);
       PropertyChunk = new PropertyArchetypeChunk(inner.ComponentStore);
+      
+      InitContainingDeclarations();
    }
 
+   private void InitContainingDeclarations()
+   {
+      InitContainingDeclaration(ref ClassChunk.Entries);
+      InitContainingDeclaration(ref EnumChunk.Entries);
+      InitContainingDeclaration(ref StructChunk.Entries);
+      InitContainingDeclaration(ref InterfaceChunk.Entries);
+      
+      InitContainingDeclaration(ref ConstructorChunk.Entries);
+      InitContainingDeclaration(ref MethodChunk.Entries);
+      InitContainingDeclaration(ref FieldChunk.Entries);
+      InitContainingDeclaration(ref PropertyChunk.Entries);
+   }
+
+   private void InitContainingDeclaration<TArchetype>(
+      ref PooledList<TArchetype> archetypes)
+      where TArchetype : IArchetype, IEquatable<TArchetype>
+   {
+      foreach (ref var archetype in archetypes)
+      {
+         ContainingDeclarationIds.Add(archetype.NodeId);
+      }
+   }
+   
    public void Dispose()
    {
       ClassChunk.Dispose();

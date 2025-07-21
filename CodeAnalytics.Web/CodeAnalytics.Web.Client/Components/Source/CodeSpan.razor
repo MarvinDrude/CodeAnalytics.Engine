@@ -1,6 +1,10 @@
 ﻿@using CodeAnalytics.Engine.Contracts.TextRendering
 
-<span style="color: @Span.Color;">@Span.RawText</span>
+<span
+   data-id="@Span.Reference.Value"
+   style="color: @Span.Color;">
+   @Span.RawText
+</span>
 
 @code {
    

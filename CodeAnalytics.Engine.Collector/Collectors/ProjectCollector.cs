@@ -82,6 +82,7 @@ public sealed partial class ProjectCollector
          foreach (var node in root.DescendantNodesAndSelf())
          {
             _context.SyntaxNode = node;
+            _context.ResetSymbol();
             nodesIterated++;
             
             HandleNode(_context);

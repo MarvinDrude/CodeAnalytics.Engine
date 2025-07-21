@@ -18,4 +18,8 @@
      <ProjectReference Include="..\..\CodeAnalytics.Web.Common\CodeAnalytics.Web.Common.csproj" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Components\Explorer\" />
+   </ItemGroup>
+
 </Project>

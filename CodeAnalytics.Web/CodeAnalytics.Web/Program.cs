@@ -19,7 +19,9 @@ builder.Services.Configure<JsonOptions>(x =>
 });
 
 builder.Services.Configure<CodeOptions>(builder.Configuration.GetSection("Code"));
+
 builder.Services.AddSingleton<ISourceTextService, ServerSourceTextService>();
+builder.Services.AddSingleton<IExplorerService, ServerExplorerService>();
 
 var app = builder.Build();
 

@@ -1,17 +1,31 @@
 ﻿@using CodeAnalytics.Engine.Contracts.TextRendering
 
 <div class="code-viewer">
-   <pre>
-      @{
-         var remaining = Spans.AsSpan();
-      }
+   @{
+      var remaining = Spans.AsSpan();
+      var lineCount = 0;
+   }
+   <pre class="text">
       @while (remaining.Length > 0)
       {
-         @GetLineFragment(remaining, out var consumed);
+         @GetLineFragment(remaining, out var consumed)
+;
          remaining = remaining[consumed..];
+         lineCount++;
          <br/>
       }
    </pre>
+   <div class="line-numbers">
+      <div class="numbers">
+         @for (var e = 0; e < lineCount; e++)
+         {
+            <div class="line-number">@(e + 1)</div>
+         }
+      </div>
+      <div class="padder">
+         
+      </div>
+   </div>
 </div>
 
 @code {

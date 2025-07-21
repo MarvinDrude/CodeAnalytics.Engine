@@ -1,8 +1,39 @@
 ﻿.code-viewer {
     background-color: #1d1d1d;
-    font-size: 15px;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-areas: "numbers text";
 }
 
 .code-viewer span {
-    font-size: 15px;
+    font-size: 20px;
+}
+
+.code-viewer .line-numbers {
+    grid-area: numbers;
+    user-select: none;
+    display: flex;
+}
+
+.code-viewer .line-numbers .numbers {
+    display: block;
+}
+
+.code-viewer .line-numbers .padder {
+    height: 100%;
+    width: 30px;
+    border-left: 1px solid rgba(100,100,100,0.2);
+}
+
+.code-viewer .line-number {
+    padding-right: 10px;
+    display: block;
+    line-height: 25px;
+    color: rgba(200,200,200,0.7);
+}
+
+.code-viewer .text {
+    grid-area: text;
+    line-height: 25px;
 }

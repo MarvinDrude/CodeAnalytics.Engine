@@ -49,7 +49,6 @@ public sealed class ServerDataService : IDataService
 
       _analyzeStore = new AnalyzeStore(
          Serializer<CollectorStore, CollectorStoreSerializer>.FromMemory(bytes));
-      _analyzeStore.Inner.ComponentStore.Trim();
       
       IsInitialized = true;
    }

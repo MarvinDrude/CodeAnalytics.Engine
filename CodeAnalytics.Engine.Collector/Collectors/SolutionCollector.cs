@@ -88,7 +88,7 @@ public sealed partial class SolutionCollector : IAsyncDisposable
          return null;
       }
 
-      success.ComponentStore.Trim();
+      //success.ComponentStore.Trim();
       return success;
    }
    

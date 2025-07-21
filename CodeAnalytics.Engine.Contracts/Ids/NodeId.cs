@@ -1,9 +1,11 @@
-﻿using CodeAnalytics.Engine.Common.Results;
+﻿using System.Runtime.InteropServices;
+using CodeAnalytics.Engine.Common.Results;
 using CodeAnalytics.Engine.Common.Results.Errors;
 using CodeAnalytics.Engine.Contracts.Ids.Interfaces;
 
 namespace CodeAnalytics.Engine.Contracts.Ids;
 
+[StructLayout(LayoutKind.Auto)]
 public readonly struct NodeId 
    : IEquatable<NodeId>
 {

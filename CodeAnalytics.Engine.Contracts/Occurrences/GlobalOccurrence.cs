@@ -1,0 +1,17 @@
+﻿using System.Collections.Concurrent;
+using CodeAnalytics.Engine.Contracts.Ids;
+
+namespace CodeAnalytics.Engine.Contracts.Occurrences;
+
+public sealed class GlobalOccurrence
+{
+   public ConcurrentDictionary<StringId, ProjectOccurrence> ProjectOccurrences { get; init; } = [];
+
+   public ProjectOccurrence GetOrCreateByProject(StringId pathId)
+   {
+      return ProjectOccurrences.GetOrAdd(pathId, (_) => new ProjectOccurrence()
+      {
+         PathId = pathId
+      });
+   }
+}

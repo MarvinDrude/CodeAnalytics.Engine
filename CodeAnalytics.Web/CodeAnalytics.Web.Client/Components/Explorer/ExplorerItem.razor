@@ -29,9 +29,9 @@
    </div>
 </div>
 
-@if (Item.Children.Count > 0)
+@if (Item.Children.Count > 0 && Item.IsExpanded)
 {
-   <div class="increased" style="@(Item.IsExpanded ? "" : "display: none;")">
+   <div class="increased">
       @foreach (var child in Item.Children)
       {
          <ExplorerItem Item="@child"></ExplorerItem>

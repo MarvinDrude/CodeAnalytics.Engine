@@ -1,5 +1,6 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Ids;
+using CodeAnalytics.Engine.Occurrences;
 
 namespace CodeAnalytics.Engine.Collector.Console.Options;
 
@@ -20,6 +21,7 @@ public sealed class CollectOptions
       {
          NodeIdStore = new NodeIdStore("NodeIdStore"),
          StringIdStore = new StringIdStore("StringIdStore"),
+         Occurrences = new OccurrenceRegistry(),
          ServiceProvider = serviceProvider,
          BasePath = options.BasePath,
          OutputBasePath = options.OutputBasePath,
@@ -36,6 +38,7 @@ public sealed class CollectOptions
       {
          NodeIdStore = new NodeIdStore("NodeIdStore"),
          StringIdStore = new StringIdStore("StringIdStore"),
+         Occurrences = new OccurrenceRegistry(),
          ServiceProvider = serviceProvider,
          BasePath = options.BasePath,
          OutputBasePath = options.OutputBasePath,

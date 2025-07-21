@@ -13,7 +13,10 @@ public sealed class ProjectOccurrence
    {
       if (!FileOccurrences.TryGetValue(pathId, out var fileOccurrence))
       {
-         fileOccurrence = FileOccurrences[pathId] = new FileOccurrence();
+         fileOccurrence = FileOccurrences[pathId] = new FileOccurrence()
+         {
+            PathId = pathId,
+         };
       }
 
       return fileOccurrence;

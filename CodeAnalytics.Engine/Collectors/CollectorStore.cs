@@ -1,6 +1,7 @@
 ﻿using CodeAnalytics.Engine.Common.Buffers;
 using CodeAnalytics.Engine.Components;
 using CodeAnalytics.Engine.Ids;
+using CodeAnalytics.Engine.Occurrences;
 using CodeAnalytics.Engine.Serialization.Stores;
 
 namespace CodeAnalytics.Engine.Collectors;
@@ -9,6 +10,8 @@ public sealed class CollectorStore : IDisposable
 {
    public required NodeIdStore NodeIdStore { get; init; }
    public required StringIdStore StringIdStore { get; init; }
+   
+   public required OccurrenceRegistry Occurrences { get; init; }
    
    public required MergableComponentStore ComponentStore { get; init; }
    public required LineCountStore LineCountStore { get; init; }

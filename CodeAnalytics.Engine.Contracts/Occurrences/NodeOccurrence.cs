@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using CodeAnalytics.Engine.Common.Buffers.Dynamic;
+﻿using CodeAnalytics.Engine.Common.Buffers.Dynamic;
 using CodeAnalytics.Engine.Contracts.TextRendering;
 
 namespace CodeAnalytics.Engine.Contracts.Occurrences;
@@ -9,6 +8,21 @@ public sealed class NodeOccurrence
 {
    public List<SyntaxSpan> LineSpans { get; init; } = [];
    public int SpanIndex { get; init; }
+
+   private PackedBools _packed;
+   public byte Flags
+   {
+      get => _packed.RawByte;
+      set => _packed = new PackedBools(value);
+   }
+
+   public bool IsDeclaration
+   {
+      get => _packed.Get(IsDeclarationIndex);
+      set => _packed.Set(IsDeclarationIndex, value);
+   }
+
+   private const int IsDeclarationIndex = 0;
    
    public bool Equals(NodeOccurrence? other)
    {

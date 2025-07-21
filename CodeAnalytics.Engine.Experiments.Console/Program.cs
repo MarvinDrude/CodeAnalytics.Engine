@@ -4,6 +4,7 @@ using CodeAnalytics.Engine.Collector.Collectors;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Ids;
+using CodeAnalytics.Engine.Occurrences;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -28,6 +29,7 @@ var collector = new ProjectCollector(new ProjectOptions()
 {
    NodeIdStore = new NodeIdStore("NodeIds"),
    StringIdStore = new StringIdStore("StringIds"),
+   Occurrences = new OccurrenceRegistry(),
    OutputBasePath = @"C:\content",
    Path = @"C:\Users\marvi\source\repos\CodeAnalytics.Engine\CodeAnalytics.Engine.TestContainer.SimpleOne\CodeAnalytics.Engine.TestContainer.SimpleOne.csproj",
    BasePath = @"C:\Users\marvi\source\repos\",

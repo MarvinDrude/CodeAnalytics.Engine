@@ -1,6 +1,11 @@
 ﻿using System.Collections.Concurrent;
+using CodeAnalytics.Engine.Collectors;
+using CodeAnalytics.Engine.Components;
+using CodeAnalytics.Engine.Contracts.Components.Common;
 using CodeAnalytics.Engine.Contracts.Ids;
 using CodeAnalytics.Engine.Contracts.Occurrences;
+using CodeAnalytics.Engine.Contracts.TextRendering;
+using CodeAnalytics.Engine.Merges.Common;
 
 namespace CodeAnalytics.Engine.Occurrences;
 
@@ -18,6 +23,33 @@ public sealed class OccurrenceRegistry
       foreach (var (key, value) in dict)
       {
          CreateKeyValue(key, value);
+      }
+   }
+
+   public void AddOccurrence(
+      ref SyntaxSpan span, List<SyntaxSpan> lineSpans, 
+      StringId projectId, StringId fileId, int index)
+   {
+      var all = GetOrCreate(span.Reference);
+      var project = all.GetOrCreateByProject(projectId);
+      var file = project.GetOrCreate(fileId);
+      
+      file.LineOccurrences.Add(new NodeOccurrence()
+      {
+         LineSpans = lineSpans,
+         IsDeclaration = span.IsDeclaration,
+         SpanIndex = index
+      });
+   }
+
+   public void Clean(MergableComponentPool<SymbolComponent, SymbolMerger> pool)
+   {
+      foreach (var key in _byNodes.Keys.ToList())
+      {
+         if (!pool.TryGetSlot(key, out _))
+         {
+            _byNodes.TryRemove(key, out _);
+         }
       }
    }
 

@@ -49,6 +49,7 @@ public sealed class CollectorStoreSerializer : ISerializer<CollectorStore>
          NodeIdStore = idNodeStore,
          ComponentStore = componentStore,
          LineCountStore = lineCountStore,
+         Occurrences = null! // TODO: Change
       };
       
       StringIdStore.Current = null;

@@ -1,5 +1,6 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Collectors;
+using CodeAnalytics.Engine.Contracts.Ids;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -20,6 +21,9 @@ public sealed class CollectContext
    
    public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
    public bool AddSubComponentsImmediately { get; set; } = true;
+   
+   public StringId ProjectId { get; set; } = StringId.Empty;
+   public StringId FileId { get; set; } = StringId.Empty;
 
    public void ResetSymbol()
    {

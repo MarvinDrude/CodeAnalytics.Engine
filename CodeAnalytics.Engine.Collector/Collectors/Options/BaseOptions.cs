@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using CodeAnalytics.Engine.Ids;
+using CodeAnalytics.Engine.Occurrences;
 
 namespace CodeAnalytics.Engine.Collector.Collectors.Options;
 
@@ -19,6 +20,7 @@ public class BaseOptions
    
    public required NodeIdStore NodeIdStore { get; set; }
    public required StringIdStore StringIdStore { get; set; }
+   public required OccurrenceRegistry Occurrences { get; set; }
    
    public required IServiceProvider ServiceProvider { get; set; }
    

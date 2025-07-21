@@ -10,7 +10,9 @@ using CodeAnalytics.Engine.Common.Buffers;
 using CodeAnalytics.Engine.Common.Results;
 using CodeAnalytics.Engine.Common.Results.Errors;
 using CodeAnalytics.Engine.Components;
+using CodeAnalytics.Engine.Contracts.Components.Common;
 using CodeAnalytics.Engine.Contracts.TextRendering;
+using CodeAnalytics.Engine.Merges.Common;
 using CodeAnalytics.Engine.Serialization.Collections;
 using CodeAnalytics.Engine.Serialization.TextRendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +48,7 @@ public sealed partial class ProjectCollector
       {
          NodeIdStore = _options.NodeIdStore,
          StringIdStore = _options.StringIdStore,
+         Occurrences = _options.Occurrences,
          ComponentStore = new MergableComponentStore(_options.InitialCapacityPerComponentPool),
          LineCountStore = new LineCountStore()
       };
@@ -77,6 +80,13 @@ public sealed partial class ProjectCollector
             Document = document,
             CancellationToken = ct,
          };
+         
+         var projectPath = _context.GetRelativePath(_context.Options.Path);
+         _context.ProjectId = _context.Store.StringIdStore.GetOrAdd(projectPath);
+
+         var filePath = _context.GetRelativePath(_context.SyntaxTree.FilePath);
+         _context.FileId = _context.Store.StringIdStore.GetOrAdd(filePath);
+         
          await HandleText(_context);
 
          foreach (var node in root.DescendantNodesAndSelf())
@@ -90,6 +100,10 @@ public sealed partial class ProjectCollector
       }
 
       loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
+      if (_options.IsProjectOnly)
+      {
+         _options.Occurrences.Clean(store.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>());
+      }
       
       LogNodesRan(nodesIterated, loadingTime);
       return store;
@@ -100,6 +114,7 @@ public sealed partial class ProjectCollector
       var tokenizer = new TextTokenizer(context, CodeTheme.Default);
       var spans = await tokenizer.Tokenize();
       var writer = new ByteWriter(stackalloc byte[512]);
+      
       byte[] data;
       string createPath;
       

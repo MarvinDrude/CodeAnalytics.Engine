@@ -52,10 +52,15 @@ public sealed class TextTokenizer
       List<ClassifiedSpan> classifiedSpans)
    {
       var start = lineSpan.Start;
+      List<SyntaxSpan> lineSpans = [];
       
       if (classifiedSpans.Count == 0)
       {
-         list.Add(new SyntaxSpan(GetText(lineSpan), GetColor()));
+         var empty = new SyntaxSpan(GetText(lineSpan), GetColor());
+         
+         list.Add(empty);
+         lineSpans.Add(empty);
+         
          return;
       }
 
@@ -71,23 +76,30 @@ public sealed class TextTokenizer
          {
             var unclassified = new TextSpan(start, classified.Start - start);
             start = classified.Start;
+
+            var empty = new SyntaxSpan(GetText(unclassified), GetColor());
             
-            list.Add(new SyntaxSpan(GetText(unclassified), GetColor()));
+            list.Add(empty);
+            lineSpans.Add(empty);
          }
          
          var type = classifiedSpan.ClassificationType;
          var syntaxSpan = new SyntaxSpan(GetText(classifiedSpan.TextSpan), GetColor(type));
          
-         ApplyContext(ref syntaxSpan, classifiedSpan);
+         ApplyContext(ref syntaxSpan, classifiedSpan, lineSpans, ref list);
          
          list.Add(syntaxSpan);
+         lineSpans.Add(syntaxSpan);
          start = classified.End;
       }
 
       if (start >= lineSpan.End) return;
       
       var ending = new TextSpan(start, lineSpan.End - start);
-      list.Add(new SyntaxSpan(GetText(ending), GetColor()));
+      var endingSpan = new SyntaxSpan(GetText(ending), GetColor());
+      
+      list.Add(endingSpan);
+      lineSpans.Add(endingSpan);
    }
    
    private string GetText(TextSpan span)
@@ -101,7 +113,9 @@ public sealed class TextTokenizer
          ?? _theme.Colors[CodeTheme.DefaultColorKeyName];
    }
 
-   private void ApplyContext(ref SyntaxSpan span, ClassifiedSpan classified)
+   private void ApplyContext(
+      ref SyntaxSpan span, ClassifiedSpan classified, 
+      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list)
    {
       switch (classified.ClassificationType)
       {
@@ -118,7 +132,7 @@ public sealed class TextTokenizer
          case ClassificationTypeNames.ExtensionMethodName:
          case ClassificationTypeNames.FieldName:
          case ClassificationTypeNames.PropertyName:
-            ApplySymbolContext(ref span, classified);
+            ApplySymbolContext(ref span, classified, lineSpans, ref list);
             break;
          
          case ClassificationTypeNames.ParameterName:
@@ -131,13 +145,14 @@ public sealed class TextTokenizer
       }
    }
 
-   private void ApplySymbolContext(ref SyntaxSpan span, ClassifiedSpan classified)
+   private void ApplySymbolContext(
+      ref SyntaxSpan span, ClassifiedSpan classified, 
+      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list)
    {
       var (node, symbol) = GetSymbolFromContext(classified);
       if (symbol is null) return;
       
       span.Reference = _context.Store.NodeIdStore.GetOrAdd(symbol.OriginalDefinition);
-
       span.IsDeclaration = node is ClassDeclarationSyntax
          or InterfaceDeclarationSyntax
          or StructDeclarationSyntax
@@ -145,6 +160,10 @@ public sealed class TextTokenizer
          or MethodDeclarationSyntax
          or FieldDeclarationSyntax
          or PropertyDeclarationSyntax;
+
+      _context.Store.Occurrences.AddOccurrence(
+         ref span, lineSpans, _context.ProjectId, 
+         _context.FileId, list.Count);
    }
    
    private void ApplyParameterSymbolContext(ref SyntaxSpan span, ClassifiedSpan classified)

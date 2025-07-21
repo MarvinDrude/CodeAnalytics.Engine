@@ -3,6 +3,8 @@ using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Extensions;
 using CodeAnalytics.Engine.Common.Threading.Pools;
 using CodeAnalytics.Engine.Components;
+using CodeAnalytics.Engine.Contracts.Components.Common;
+using CodeAnalytics.Engine.Merges.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -51,6 +53,7 @@ public sealed partial class SolutionCollector : IAsyncDisposable
       {
          NodeIdStore = _options.NodeIdStore,
          StringIdStore = _options.StringIdStore,
+         Occurrences = _options.Occurrences,
          ComponentStore = new MergableComponentStore(_options.InitialCapacityPerComponentPool),
          LineCountStore = new LineCountStore()
       };
@@ -62,6 +65,8 @@ public sealed partial class SolutionCollector : IAsyncDisposable
             result.Merge(project);
          }
       }
+      
+      _options.Occurrences.Clean(result.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>());
       
       return result;
    }
@@ -88,7 +93,6 @@ public sealed partial class SolutionCollector : IAsyncDisposable
          return null;
       }
 
-      //success.ComponentStore.Trim();
       return success;
    }
    

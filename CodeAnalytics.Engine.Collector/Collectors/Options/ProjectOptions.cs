@@ -2,6 +2,8 @@
 
 public class ProjectOptions : BaseOptions
 {
+   public bool IsProjectOnly { get; set; } = true;
+   
    public static ProjectOptions Create(SolutionOptions options)
    {
       return new ProjectOptions()
@@ -12,7 +14,9 @@ public class ProjectOptions : BaseOptions
          BasePath = options.BasePath,
          OutputBasePath = options.OutputBasePath,
          InitialCapacityPerComponentPool = options.InitialCapacityPerComponentPool,
-         ServiceProvider = options.ServiceProvider
+         ServiceProvider = options.ServiceProvider,
+         Occurrences = options.Occurrences,
+         IsProjectOnly = false
       };
    }
 }

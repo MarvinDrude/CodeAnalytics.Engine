@@ -1,0 +1,47 @@
+﻿@page "/source/{*path}"
+@using CodeAnalytics.Engine.Contracts.TextRendering
+@using CodeAnalytics.Web.Common.Services.Source
+@using CodeAnalytics.Web.Client.Components.Source
+
+@inject ISourceTextService SourceTextService
+
+@if (_isError)
+{
+   @_errorMessage
+}
+else
+{
+   @if (_initialized)
+   {
+      <CodeViewer Spans="_spans"></CodeViewer>
+   }
+}
+
+@code {
+
+   [Parameter]
+   public required string Path { get; set; }
+
+   private SyntaxSpan[] _spans;
+   
+   private bool _isError = false;
+   private bool _initialized = false;
+   
+   private string? _errorMessage;
+   
+   protected override async Task OnInitializedAsync()
+   {
+      var spansResult = await SourceTextService.GetSyntaxSpansByPath(Path);
+
+      if (spansResult is not { Success: { } spans, IsSuccess: true })
+      {
+         _isError = true;
+         _errorMessage = spansResult.Error.Detail;
+         return;
+      }
+
+      _spans = spans;
+      _initialized = true;
+   }
+
+}

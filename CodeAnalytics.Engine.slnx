@@ -7,6 +7,7 @@
     <Project Path="CodeAnalytics.Engine.TestContainer.SimpleOne\CodeAnalytics.Engine.TestContainer.SimpleOne.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/Web/">
+    <Project Path="CodeAnalytics.Web.Common\CodeAnalytics.Web.Common.csproj" Type="Classic C#" />
     <Project Path="CodeAnalytics.Web\CodeAnalytics.Web.Client\CodeAnalytics.Web.Client.csproj" Type="Classic C#" />
     <Project Path="CodeAnalytics.Web\CodeAnalytics.Web\CodeAnalytics.Web.csproj" Type="Classic C#" />
   </Folder>

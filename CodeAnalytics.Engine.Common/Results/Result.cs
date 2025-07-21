@@ -2,16 +2,16 @@
 
 namespace CodeAnalytics.Engine.Common.Results;
 
-public readonly struct Result<TSuccess, TError>
+public struct Result<TSuccess, TError>
 {
-   public readonly bool IsSuccess;
+   public bool IsSuccess;
    
    [MemberNotNullWhen(true, nameof(Success))]
    [MemberNotNullWhen(false, nameof(Error))]
    public bool HasValue => IsSuccess;
 
-   public readonly TSuccess? Success;
-   public readonly TError? Error;
+   public TSuccess? Success;
+   public TError? Error;
 
    public Result(TSuccess success)
    {

@@ -7,6 +7,9 @@
    </PropertyGroup>
 
    <ItemGroup>
+      <ProjectReference Include="..\..\CodeAnalytics.Engine.Contracts\CodeAnalytics.Engine.Contracts.csproj" />
+      <ProjectReference Include="..\..\CodeAnalytics.Engine\CodeAnalytics.Engine.csproj" />
+      <ProjectReference Include="..\..\CodeAnalytics.Web.Common\CodeAnalytics.Web.Common.csproj" />
       <ProjectReference Include="..\CodeAnalytics.Web.Client\CodeAnalytics.Web.Client.csproj"/>
       <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.0-preview.5.25277.114"/>
    </ItemGroup>

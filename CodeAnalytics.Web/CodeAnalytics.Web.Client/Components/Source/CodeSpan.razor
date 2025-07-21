@@ -1,0 +1,10 @@
+﻿@using CodeAnalytics.Engine.Contracts.TextRendering
+
+<span style="color: @Span.Color;">@Span.RawText</span>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required SyntaxSpan Span { get; set; }
+   
+}

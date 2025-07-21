@@ -1,0 +1,14 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using CodeAnalytics.Engine.Contracts.TextRendering
+
+@foreach (var span in Spans)
+{
+   <CodeSpan Span="@span"></CodeSpan>
+}
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required List<SyntaxSpan> Spans { get; set; }
+   
+}

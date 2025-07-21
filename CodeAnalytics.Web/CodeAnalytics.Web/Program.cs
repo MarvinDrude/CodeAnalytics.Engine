@@ -1,4 +1,9 @@
+using System.Text.Json;
+using CodeAnalytics.Web.Common.Services.Source;
 using CodeAnalytics.Web.Components;
+using CodeAnalytics.Web.Endpoints;
+using CodeAnalytics.Web.Options;
+using CodeAnalytics.Web.Services.Source;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
    .AddInteractiveServerComponents()
    .AddInteractiveWebAssemblyComponents();
+
+builder.Services.Configure<JsonSerializerOptions>(x =>
+{
+   x.IncludeFields = true;
+});
+
+builder.Services.Configure<CodeOptions>(builder.Configuration.GetSection("Code"));
+builder.Services.AddSingleton<ISourceTextService, ServerSourceTextService>();
 
 var app = builder.Build();
 
@@ -22,8 +35,9 @@ else
 }
 
 app.UseHttpsRedirection();
-
 app.UseAntiforgery();
+
+EndpointMapper.Map(app);
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()

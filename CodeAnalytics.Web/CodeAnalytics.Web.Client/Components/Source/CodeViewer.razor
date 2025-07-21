@@ -1,0 +1,37 @@
+﻿@using CodeAnalytics.Engine.Contracts.TextRendering
+
+<div class="code-viewer">
+   <pre>
+      @{
+         var remaining = Spans.AsSpan();
+      }
+      @while (remaining.Length > 0)
+      {
+         @GetLineFragment(remaining, out var consumed);
+         remaining = remaining[consumed..];
+         <br/>
+      }
+   </pre>
+</div>
+
+@code {
+
+   [Parameter, EditorRequired]
+   public required SyntaxSpan[] Spans { get; set; }
+   
+   private RenderFragment GetLineFragment(scoped in ReadOnlySpan<SyntaxSpan> spans, out int consumed)
+   {
+      List<SyntaxSpan> lineSpans = [];
+      var i = 0;
+      
+      while (i < spans.Length && !spans[i].IsLineBreak)
+      {
+         lineSpans.Add(spans[i]);
+         i++;
+      }
+
+      consumed = i + ((i < spans.Length && spans[i].IsLineBreak) ? 1 : 0);
+
+      return @<CodeLine Spans="@lineSpans"></CodeLine>;
+   }
+}

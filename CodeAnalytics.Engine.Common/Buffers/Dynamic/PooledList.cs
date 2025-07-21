@@ -135,6 +135,22 @@ public struct PooledList<T> : IEquatable<PooledList<T>>, IDisposable
 
       _length = _owner.Length;
    }
+
+   public void Trim()
+   {
+      if (_index >= _length)
+      {
+         return;
+      }
+      
+      var lastOwner = _owner;
+      _owner = MemoryAllocator<T>.CreatePooled(_index);
+      
+      lastOwner.Span[.._index].CopyTo(_owner.Span);
+      lastOwner.Dispose();
+
+      _length = _index;
+   }
    
    public Span<T>.Enumerator GetEnumerator() => WrittenSpan.GetEnumerator();
 

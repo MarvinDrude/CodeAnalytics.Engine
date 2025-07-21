@@ -20,6 +20,8 @@ public class ComponentPool<T> : IComponentPool
    protected PooledList<NodeId> _ids;
    protected PooledList<int> _sparse;
 
+   protected bool _trimmed;
+
    public ComponentPool(int initialCapacity)
    {
       if (initialCapacity <= 1)
@@ -39,6 +41,11 @@ public class ComponentPool<T> : IComponentPool
    
    public Result<int, Error<string>> Add(ref T component)
    {
+      if (_trimmed)
+      {
+         return new Error<string>("Cannot add more once the component pool has been trimmed.");
+      }
+      
       int nodeId = component.NodeId;
 
       if (nodeId < 0)
@@ -129,6 +136,15 @@ public class ComponentPool<T> : IComponentPool
       _sparse.Fill(-1, oldSize);
 
       return newSize < MaxCapacity;
+   }
+
+   public void Trim()
+   {
+      _trimmed = true;
+      
+      _data.Trim();
+      _ids.Trim();
+      _sparse.Trim();
    }
 
    public void Dispose()

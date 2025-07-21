@@ -82,13 +82,14 @@ public sealed partial class SolutionCollector : IAsyncDisposable
       Interlocked.Increment(ref _currentProjectCount);
       LogUpdateProjectCount(_currentProjectCount, _maxProjectCount);
 
-      if (result is { IsSuccess: false, Error: { } error })
+      if (result is not { IsSuccess: true, Success: { } success })
       {
-         LogProjectError(projectPath, error.Detail);
+         LogProjectError(projectPath, result.Error.Detail);
          return null;
       }
-      
-      return result.Success;
+
+      success.ComponentStore.Trim();
+      return success;
    }
    
    public async ValueTask DisposeAsync()

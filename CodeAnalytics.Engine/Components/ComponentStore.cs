@@ -12,6 +12,14 @@ public class ComponentStore : IDisposable
       _pools = new Dictionary<Type, IComponentPool>();
       _initialCapacity = initialCapacity;
    }
+
+   public void Trim()
+   {
+      foreach (var (key, pool) in _pools)
+      {
+         pool.Trim();
+      }
+   }
    
    public ComponentPool<TComponent>? GetPool<TComponent>()
       where TComponent : IComponent, IEquatable<TComponent>

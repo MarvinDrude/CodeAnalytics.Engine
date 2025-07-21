@@ -2,5 +2,5 @@
 
 public interface IComponentPool : IDisposable
 {
-   
+   public void Trim();
 }

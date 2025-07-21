@@ -11,6 +11,8 @@ builder.Services.Configure<JsonSerializerOptions>(x =>
 });
 
 builder.Services.AddScoped<ISourceTextService, ClientSourceTextService>();
+builder.Services.AddScoped<IExplorerService, ClientExplorerService>();
+
 builder.Services.AddScoped(_ => new HttpClient
 {
    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)

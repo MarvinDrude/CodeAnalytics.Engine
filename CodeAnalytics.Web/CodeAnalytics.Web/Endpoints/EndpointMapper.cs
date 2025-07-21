@@ -8,6 +8,8 @@ public static class EndpointMapper
    public static void Map(IEndpointRouteBuilder endpoints)
    {
       var source = endpoints.MapGroup(SourceApiConstants.BasePath);
+      
       GetSourceTextSpansEndpoint.Map(source);
+      GetExplorerTreeItemsEndpoint.Map(source);
    }
 }

@@ -18,7 +18,7 @@ public readonly struct StringId
       Store = store;
    }
 
-   public Result<string, Error<string>> GetString()
+   public Result<string?, Error<string>> GetString()
    {
       if (Store is null)
       {

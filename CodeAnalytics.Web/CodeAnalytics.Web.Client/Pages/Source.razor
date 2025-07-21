@@ -29,8 +29,16 @@
 
 @code {
 
+   private string? _path;
    [Parameter]
-   public required string Path { get; set; }
+   public required string Path { 
+      get => _path ?? string.Empty;
+      set
+      {
+         _path = value;
+         _ = InvokeAsync(OnFileChange);
+      } 
+   }
 
    private SyntaxSpan[] _spans = [];
    
@@ -41,6 +49,12 @@
    
    protected override async Task OnInitializedAsync()
    {
+      await OnFileChange();
+   }
+
+   private async Task OnFileChange()
+   {
+      _initialized = false;
       var spansResult = await SourceTextService.GetSyntaxSpansByPath(Path);
 
       if (spansResult is not { Success: { } spans, IsSuccess: true })
@@ -52,6 +66,7 @@
 
       _spans = spans;
       _initialized = true;
+      
+      await InvokeAsync(StateHasChanged);
    }
-
 }

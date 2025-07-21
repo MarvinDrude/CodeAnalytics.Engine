@@ -32,7 +32,7 @@ public sealed partial class CodeTheme
          [ClassificationTypeNames.RecordClassName] = "#4EC9B0",
          [ClassificationTypeNames.DelegateName] = "#4EC9B0",
          [ClassificationTypeNames.EnumName] = "#4EC9B0",
-         [ClassificationTypeNames.InterfaceName] = "#4EC9B0",
+         [ClassificationTypeNames.InterfaceName] = "#b8d7a3",
          [ClassificationTypeNames.ModuleName] = "#4EC9B0",
          [ClassificationTypeNames.StructName] = "#4EC9B0",
          [ClassificationTypeNames.RecordStructName] = "#4EC9B0",

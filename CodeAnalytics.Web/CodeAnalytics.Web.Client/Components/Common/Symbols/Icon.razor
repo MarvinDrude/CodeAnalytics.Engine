@@ -1,0 +1,28 @@
+﻿
+<span
+   style="font-variation-settings: 'FILL' @(IsFilled ? 1 : 0), 'wght' @(Weight), 'GRAD' @(Grade), 'opsz' @(OpticalSize);@(Color is null ? "" : $"color: {Color}")" 
+   class="material-symbols-outlined">
+   @Name
+</span>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required string Name { get; set; }
+
+   [Parameter]
+   public bool IsFilled { get; set; } = false;
+   
+   [Parameter]
+   public int Weight { get; set; } = 300;
+   
+   [Parameter]
+   public int Grade { get; set; } = 0;
+   
+   [Parameter]
+   public int OpticalSize { get; set; } = 24;
+   
+   [Parameter]
+   public string? Color { get; set; }
+   
+}

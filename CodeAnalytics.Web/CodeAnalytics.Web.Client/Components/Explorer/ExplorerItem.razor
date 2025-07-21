@@ -1,11 +1,28 @@
-﻿@using CodeAnalytics.Web.Common.Models.Explorer
+﻿@using CodeAnalytics.Web.Common.Enums.Explorer
+@using CodeAnalytics.Web.Common.Models.Explorer
+@using CodeAnalytics.Web.Client.Components.Common.Symbols
 
-<div class="entry">
+@inject NavigationManager Navigation
+
+<div class="entry" @onclick="OnClickHeader">
    <div class="collapse">
-      
+      @if (Item.Type is ExplorerTreeItemType.Folder)
+      {
+         <Icon Name="@(Item.IsExpanded ? "keyboard_arrow_down" : "keyboard_arrow_right")" />
+      }
    </div>
    <div class="icon">
-      
+      @switch (Item.Type)
+      {
+         case ExplorerTreeItemType.Folder:
+            <Icon Name="@(Item.IsExpanded ? "folder_open" : "folder")" IsFilled Color="#ffdb74" />
+            break;
+         case ExplorerTreeItemType.CsFile:
+            <Icon Name="code" Color="@GetFileColor(Item.Type)" IsFilled />
+            break;
+         default:
+            throw new ArgumentOutOfRangeException();
+      }
    </div>
    <div class="name">
       @Item.Name
@@ -26,7 +43,22 @@
    
    [Parameter, EditorRequired]
    public required ExplorerTreeItem Item { get; set; }
-   
-   
-   
+
+   public void OnClickHeader()
+   {
+      if (Item.IsFolder)
+      {
+         Item.IsExpanded = !Item.IsExpanded;
+         return;
+      }
+      
+      Navigation.NavigateTo($"/source/{Item.Path}");
+   }
+
+   private string GetFileColor(ExplorerTreeItemType type) => type switch
+   {
+      ExplorerTreeItemType.CsFile => "#5fad65",
+      _ => "#ffffff"
+   };
+
 }

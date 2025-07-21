@@ -112,12 +112,13 @@ public class ComponentPool<T> : IComponentPool
    public bool TryGetSlot(NodeId nodeId, out int slot)
    {
       int nodeIdIndex = nodeId;
-      if (nodeIdIndex >= Capacity || nodeIdIndex < 0)
+      if (nodeIdIndex >= Capacity || nodeIdIndex < 0 
+            || nodeIdIndex >= _sparse.Count)
       {
          slot = -1;
          return false;
       }
-      
+
       slot = _sparse[nodeIdIndex];
       return slot > -1 && slot < Count && _ids[slot] == nodeId;
    }

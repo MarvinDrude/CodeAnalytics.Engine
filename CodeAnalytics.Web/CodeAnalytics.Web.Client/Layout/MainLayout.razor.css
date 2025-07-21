@@ -1,3 +1,10 @@
+nav {
+    height: var(--nav-height);
+    width: 100svw;
+    background-color: rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(100,100,100,0.3);
+}
+
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;
@@ -12,9 +19,9 @@
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}

@@ -6,11 +6,11 @@
 
 @inject ISourceTextService SourceTextService
 
-<div>
-   <div>
+<div class="sources">
+   <div class="left">
       <FileExplorer></FileExplorer>
    </div>
-   <div>
+   <div class="right">
       @if (_isError)
       {
          @_errorMessage

@@ -60,7 +60,7 @@ public sealed class ServerExplorerService : IExplorerService
       {
          var folder = new ExplorerTreeItem
          {
-            Name = Path.GetDirectoryName(directory) ?? "Unknown",
+            Name = Path.GetFileName(subDirectory) ?? "Unknown",
             Path = Path.GetRelativePath(Options.DataFolderPath, subDirectory),
             Type = ExplorerTreeItemType.Folder,
             Children = Traverse(subDirectory)

@@ -1,6 +1,26 @@
 ﻿@using CodeAnalytics.Web.Common.Models.Explorer
 
+<div class="entry">
+   <div class="collapse">
+      
+   </div>
+   <div class="icon">
+      
+   </div>
+   <div class="name">
+      @Item.Name
+   </div>
+</div>
 
+@if (Item.Children.Count > 0)
+{
+   <div class="increased" style="@(Item.IsExpanded ? "" : "display: none;")">
+      @foreach (var child in Item.Children)
+      {
+         <ExplorerItem Item="@child"></ExplorerItem>
+      }      
+   </div>
+}
 
 @code {
    

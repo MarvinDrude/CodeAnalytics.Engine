@@ -14,6 +14,7 @@
 
    <ItemGroup>
      <ProjectReference Include="..\..\CodeAnalytics.Engine.Common\CodeAnalytics.Engine.Common.csproj" />
+     <ProjectReference Include="..\..\CodeAnalytics.Engine\CodeAnalytics.Engine.csproj" />
      <ProjectReference Include="..\..\CodeAnalytics.Web.Common\CodeAnalytics.Web.Common.csproj" />
    </ItemGroup>
 

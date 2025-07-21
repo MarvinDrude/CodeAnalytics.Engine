@@ -4,6 +4,7 @@ using CodeAnalytics.Web.Components;
 using CodeAnalytics.Web.Endpoints;
 using CodeAnalytics.Web.Options;
 using CodeAnalytics.Web.Services.Source;
+using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +13,9 @@ builder.Services.AddRazorComponents()
    .AddInteractiveServerComponents()
    .AddInteractiveWebAssemblyComponents();
 
-builder.Services.Configure<JsonSerializerOptions>(x =>
+builder.Services.Configure<JsonOptions>(x =>
 {
-   x.IncludeFields = true;
+   x.SerializerOptions.IncludeFields = true;
 });
 
 builder.Services.Configure<CodeOptions>(builder.Configuration.GetSection("Code"));

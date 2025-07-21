@@ -11,4 +11,9 @@
      <ProjectReference Include="..\CodeAnalytics.Engine.Contracts\CodeAnalytics.Engine.Contracts.csproj" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Models\" />
+     <Folder Include="Responses\Source\" />
+   </ItemGroup>
+
 </Project>

@@ -25,6 +25,11 @@ public struct Result<TSuccess, TError>
       Error = error;
    }
 
+   public Result()
+   {
+      IsSuccess = false;
+   }
+
    public override string ToString()
    {
       return HasValue ? $"SUCCESS: {Success.ToString()}" : $"ERROR: {Error.ToString()}";

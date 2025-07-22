@@ -3,18 +3,24 @@
 
 @inject IExplorerService ExplorerService
 
-<div class="explorer">
-   @if (_initialized)
-   {
-      foreach (var root in _roots)
+@if (IsVisible)
+{
+   <div class="explorer">
+      @if (_initialized)
       {
-         <ExplorerItem Item="@root"></ExplorerItem>
+         foreach (var root in _roots)
+         {
+            <ExplorerItem Item="@root"></ExplorerItem>
+         }
       }
-   }
-</div>
+   </div>
+}
 
 @code {
 
+   [Parameter]
+   public bool IsVisible { get; set; }
+   
    private bool _initialized = false;
    private List<ExplorerTreeItem> _roots = [];
    

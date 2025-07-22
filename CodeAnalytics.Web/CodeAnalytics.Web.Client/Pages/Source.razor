@@ -1,4 +1,6 @@
 ﻿@page "/source/{*path}"
+@using System.Runtime.CompilerServices
+@using CodeAnalytics.Engine.Contracts.Occurrences
 @using CodeAnalytics.Engine.Contracts.TextRendering
 @using CodeAnalytics.Web.Common.Services.Source
 @using CodeAnalytics.Web.Client.Components.Source
@@ -6,24 +8,26 @@
 
 @inject ISourceTextService SourceTextService
 
-<div class="sources">
-   <div class="left">
-      <FileExplorer></FileExplorer>
-   </div>
-   <div class="right">
-      @if (_isError)
-      {
-         @_errorMessage
-      }
-      else
-      {
-         @if (_initialized)
+<CascadingValue Name="OccurrenceChanged" Value="_onOccurrenceChange">
+   <div class="sources">
+      <div class="left">
+         <LeftBar Occurrence="@Occurrence"></LeftBar>
+      </div>
+      <div class="right">
+         @if (_isError)
          {
-            <CodeViewer Spans="_spans"></CodeViewer>
+            @_errorMessage
          }
-      }
+         else
+         {
+            @if (_initialized)
+            {
+               <CodeViewer Spans="_spans"></CodeViewer>
+            }
+         }
+      </div>
    </div>
-</div>
+</CascadingValue>
 
 @code {
 
@@ -37,6 +41,8 @@
          _ = InvokeAsync(OnFileChange);
       } 
    }
+   
+   public GlobalOccurrence? Occurrence { get; set; }
 
    private SyntaxSpan[] _spans = [];
    
@@ -44,10 +50,18 @@
    private bool _initialized = false;
    
    private string? _errorMessage;
+   private EventCallback<GlobalOccurrence?> _onOccurrenceChange;
    
    protected override async Task OnInitializedAsync()
    {
+      _onOccurrenceChange = EventCallback.Factory.Create<GlobalOccurrence?>(this, OnOccurrenceChanged);
       await OnFileChange();
+   }
+
+   private Task OnOccurrenceChanged(GlobalOccurrence? occurrence)
+   {
+      Occurrence = occurrence;
+      return Task.CompletedTask;
    }
 
    private async Task OnFileChange()

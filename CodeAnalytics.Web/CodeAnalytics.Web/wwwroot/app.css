@@ -34,6 +34,8 @@
     --nav-height: 70px;
     --main-color: #2D68F6;
     --background-color: #1d1d1d;
+    
+    --main-color-40: rgba(45,104,246,0.4);
 }
 
 body {

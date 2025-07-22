@@ -1,4 +1,5 @@
 ﻿@using CodeAnalytics.Engine.Contracts.Ids
+@using CodeAnalytics.Engine.Contracts.Occurrences
 @using CodeAnalytics.Engine.Contracts.TextRendering
 @using CodeAnalytics.Web.Common.Services.Data
 
@@ -29,11 +30,13 @@ else
    [Parameter, EditorRequired]
    public required SyntaxSpan Span { get; set; }
 
+   [CascadingParameter(Name = "OccurrenceChanged")]
+   public EventCallback<GlobalOccurrence> OccurrenceChanged { get; set; }
+   
    private async Task OnClick()
    {
       var occurrence = await OccurrenceService.GetOccurrences(Span.Reference.Value);
-
-      _ = "";
+      await OccurrenceChanged.InvokeAsync(occurrence);
    }
 
    private bool IsClickable => !Span.Reference.IsEmpty;

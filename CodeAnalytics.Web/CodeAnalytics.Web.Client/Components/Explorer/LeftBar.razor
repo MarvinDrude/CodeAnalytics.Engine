@@ -1,0 +1,23 @@
+﻿@using CodeAnalytics.Engine.Contracts.Occurrences
+
+<div class="header">
+   <a class="a @(IsOccurrence ? "" : "active")" @onclick="() => OnClick(false)">File Tree</a>
+   <a class="a @(IsOccurrence ? "active" : "")" @onclick="() => OnClick(true)">Occurrences</a>
+</div>
+
+<Occurrences IsVisible="@IsOccurrence" Occurrence="@Occurrence"></Occurrences>
+<FileExplorer IsVisible="@(!IsOccurrence)"></FileExplorer>
+
+@code {
+   
+   [Parameter]
+   public bool IsOccurrence { get; set; }
+   
+   [Parameter]
+   public GlobalOccurrence? Occurrence { get; set; }
+
+   private void OnClick(bool isOccurrence)
+   {
+      IsOccurrence = isOccurrence;
+   }
+}

@@ -53,6 +53,11 @@ public sealed class OccurrenceRegistry
       }
    }
 
+   public GlobalOccurrence? Get(NodeId nodeId)
+   {
+      return _byNodes.GetValueOrDefault(nodeId)?.Value ?? null;
+   }
+
    public GlobalOccurrence GetOrCreate(NodeId nodeId)
    {
       var lazy = _byNodes.GetOrAdd(nodeId, _ => new Lazy<GlobalOccurrence>(
@@ -69,6 +74,6 @@ public sealed class OccurrenceRegistry
 
    private void CreateKeyValue(NodeId nodeId, GlobalOccurrence occurrence)
    {
-      _byNodes[nodeId] = new Lazy<GlobalOccurrence>(() => occurrence);
+      _byNodes[nodeId] = new Lazy<GlobalOccurrence>(occurrence);
    }
 }

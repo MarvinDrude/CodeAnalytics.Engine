@@ -4,6 +4,7 @@ using CodeAnalytics.Engine.Common.Buffers;
 using CodeAnalytics.Engine.Contracts.Serialization;
 using CodeAnalytics.Engine.Ids;
 using CodeAnalytics.Engine.Serialization.Ids;
+using CodeAnalytics.Engine.Serialization.Occurrence;
 
 namespace CodeAnalytics.Engine.Serialization.Stores;
 
@@ -22,6 +23,9 @@ public sealed class CollectorStoreSerializer : ISerializer<CollectorStore>
       
       LineCountStoreSerializer.Serialize(ref writer, ref lineCountStore);
       MergableComponentStoreSerializer.Serialize(ref writer, ref componentStore);
+      
+      var occurrences = ob.Occurrences;
+      OccurrenceRegistrySerializer.Serialize(ref writer, ref occurrences);
    }
 
    public static bool TryDeserialize(ref ByteReader reader, [MaybeNullWhen(false)] out CollectorStore ob)
@@ -43,13 +47,19 @@ public sealed class CollectorStoreSerializer : ISerializer<CollectorStore>
          return false;
       }
 
+      if (!OccurrenceRegistrySerializer.TryDeserialize(ref reader, out var occurrences))
+      {
+         ob = null;
+         return false;
+      }
+
       ob = new CollectorStore()
       {
          StringIdStore = idStringStore,
          NodeIdStore = idNodeStore,
          ComponentStore = componentStore,
          LineCountStore = lineCountStore,
-         Occurrences = null! // TODO: Change
+         Occurrences = occurrences
       };
       
       StringIdStore.Current = null;

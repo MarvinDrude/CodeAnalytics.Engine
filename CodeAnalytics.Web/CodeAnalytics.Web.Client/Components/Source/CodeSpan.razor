@@ -1,8 +1,10 @@
-﻿@using CodeAnalytics.Engine.Contracts.TextRendering
+﻿@using CodeAnalytics.Engine.Contracts.Ids
+@using CodeAnalytics.Engine.Contracts.TextRendering
 
 <span
    data-id="@Span.Reference.Value"
-   style="color: @Span.Color;">
+   style="color: @Span.Color;"
+   class="@(GetClasses() ?? string.Empty)">
    @Span.RawText
 </span>
 
@@ -10,5 +12,15 @@
    
    [Parameter, EditorRequired]
    public required SyntaxSpan Span { get; set; }
+
+   private string? GetClasses()
+   {
+      if (!Span.Reference.IsEmpty)
+      {
+         return "clickable ref";
+      }
+
+      return null;
+   }
    
 }

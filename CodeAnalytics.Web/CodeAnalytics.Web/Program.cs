@@ -25,6 +25,7 @@ builder.Services.Configure<CodeOptions>(builder.Configuration.GetSection("Code")
 builder.Services.AddSingleton<ISourceTextService, ServerSourceTextService>();
 builder.Services.AddSingleton<IExplorerService, ServerExplorerService>();
 builder.Services.AddSingleton<IDataService, ServerDataService>();
+builder.Services.AddSingleton<IOccurrenceService, ServerOccurrenceService>();
 
 var app = builder.Build();
 

@@ -1,18 +1,43 @@
 ﻿@using CodeAnalytics.Engine.Contracts.Ids
 @using CodeAnalytics.Engine.Contracts.TextRendering
+@using CodeAnalytics.Web.Common.Services.Data
 
-<span
-   data-id="@Span.Reference.Value"
-   style="color: @Span.Color;"
-   class="@(GetClasses() ?? string.Empty)">
-   @Span.RawText
-</span>
+@inject IOccurrenceService OccurrenceService
+
+@if (IsClickable)
+{
+   <span
+      data-id="@Span.Reference.Value"
+      style="color: @Span.Color;"
+      class="@(GetClasses() ?? string.Empty)"
+      @onclick="OnClick">
+      @Span.RawText
+   </span>
+}
+else
+{
+   <span
+      data-id="@Span.Reference.Value"
+      style="color: @Span.Color;"
+      class="@(GetClasses() ?? string.Empty)">
+      @Span.RawText
+   </span>
+}
 
 @code {
    
    [Parameter, EditorRequired]
    public required SyntaxSpan Span { get; set; }
 
+   private async Task OnClick()
+   {
+      var occurrence = await OccurrenceService.GetOccurrences(Span.Reference.Value);
+
+      _ = "";
+   }
+
+   private bool IsClickable => !Span.Reference.IsEmpty;
+   
    private string? GetClasses()
    {
       if (!Span.Reference.IsEmpty)

@@ -6,12 +6,18 @@ namespace CodeAnalytics.Engine.Contracts.Occurrences;
 public sealed class GlobalOccurrence
 {
    public ConcurrentDictionary<StringId, ProjectOccurrence> ProjectOccurrences { get; init; } = [];
-
+   
    public ProjectOccurrence GetOrCreateByProject(StringId pathId)
    {
       return ProjectOccurrences.GetOrAdd(pathId, (_) => new ProjectOccurrence()
       {
          PathId = pathId
       });
+   }
+
+   public Dictionary<StringId, ProjectOccurrence> ToDictionary()
+   {
+      return ProjectOccurrences
+         .ToDictionary();
    }
 }

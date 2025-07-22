@@ -1,0 +1,17 @@
+﻿
+<span class="svg" style="width: @(Width)px; height: @(Height)px;">
+   @ChildContent
+</span>
+
+@code {
+   
+   [Parameter]
+   public int Width { get; set; }
+   
+   [Parameter]
+   public int Height { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required RenderFragment ChildContent { get; set; }
+   
+}

@@ -14,7 +14,7 @@
 .sources > .left {
     width: 550px;
     resize: horizontal;
-    overflow: auto;
+    overflow: hidden;
     min-width: 50px;
     max-width: 80%;
 }

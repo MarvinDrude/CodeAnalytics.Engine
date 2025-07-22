@@ -12,7 +12,7 @@
 <CascadingValue Name="OccurrenceChanged" Value="_onOccurrenceChange">
    <div class="sources">
       <div class="left">
-         <LeftBar Occurrence="@Occurrence"></LeftBar>
+         <LeftBar @ref="@_leftBarRef" Occurrence="@Occurrence"></LeftBar>
       </div>
       <div class="right">
          @if (_isError)
@@ -52,6 +52,8 @@
    
    private string? _errorMessage;
    private EventCallback<OccurrenceState?> _onOccurrenceChange;
+
+   private LeftBar? _leftBarRef;
    
    protected override async Task OnInitializedAsync()
    {
@@ -62,6 +64,8 @@
    private Task OnOccurrenceChanged(OccurrenceState? occurrence)
    {
       Occurrence = occurrence;
+      _leftBarRef?.SetTab(Occurrence is not null);
+
       return Task.CompletedTask;
    }
 

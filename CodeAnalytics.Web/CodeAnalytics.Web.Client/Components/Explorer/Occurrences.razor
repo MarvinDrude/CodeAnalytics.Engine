@@ -1,6 +1,5 @@
-﻿@using CodeAnalytics.Engine.Contracts.Occurrences
-@using CodeAnalytics.Web.Client.Components.Source
-@using CodeAnalytics.Web.Common.Models.Occurrences
+﻿@using CodeAnalytics.Web.Common.Models.Occurrences
+@using CodeAnalytics.Web.Client.Components.Explorer.Occurrence
 
 @if (IsVisible)
 {
@@ -11,17 +10,11 @@
       }
       else
       {
-         @foreach (var (projectId, project) in OccurrenceState.Occurrence.ProjectOccurrences)
+         @foreach (var (_, project) in OccurrenceState.Occurrence.ProjectOccurrences)
          {
-            
-            
-            @foreach (var (fileId, file) in project.FileOccurrences)
-            {
-               @foreach (var line in file.LineOccurrences)
-               {
-                  <pre><CodeLine Spans="@line.LineSpans" /></pre>
-               }
-            }
+            <ProjectOccurrences 
+               OccurrenceState="OccurrenceState" 
+               Project="project" />
          }
       }
    </div>

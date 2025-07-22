@@ -2,7 +2,14 @@
 .occurrences {
     height: calc(100% - 40px);
     max-height: calc(100% - 40px);
-    overflow: auto;
+    overflow: hidden;
     background-color: rgba(0,0,0,0.1);
     border-right: 1px solid rgba(100,100,100,0.3);
+}
+
+.notice {
+    color: #fff;
+    padding: 20px;
+    font-size: 17px;
+    display: block;
 }

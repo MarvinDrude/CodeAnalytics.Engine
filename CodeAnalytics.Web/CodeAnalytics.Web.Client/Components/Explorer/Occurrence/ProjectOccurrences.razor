@@ -1,0 +1,47 @@
+﻿@using CodeAnalytics.Engine.Contracts.Occurrences
+@using CodeAnalytics.Web.Common.Models.Occurrences
+@using CodeAnalytics.Web.Client.Components.Common.Symbols
+
+<div class="project">
+   <div class="header" @onclick="@OnHeaderClick">
+      <div class="collapse">
+         <Icon Name="@(_isExpanded ? "keyboard_arrow_down" : "keyboard_arrow_right")" />
+      </div>
+      <div class="icon">
+         <Icon Name="folder_code" IsFilled />
+      </div>
+      <div class="name" title="@(ProjectName)">
+         @(ProjectName)
+      </div>
+   </div>
+   <div class="content">
+      @if (_isExpanded)
+      {
+         @foreach (var (_, file) in Project.FileOccurrences)
+         {
+            <FileOccurrences 
+               OccurrenceState="OccurrenceState" 
+               File="file" />
+         }
+      }
+   </div>
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required OccurrenceState OccurrenceState { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required ProjectOccurrence Project { get; set; }
+
+   private bool _isExpanded = true;
+
+   private string ProjectName => Path.GetFileName(Path.GetFileNameWithoutExtension(ProjectPath));
+   private string ProjectPath => OccurrenceState.Strings.GetValueOrDefault(Project.PathId.Value) ?? "Unknown.Project.Name";
+   
+   private void OnHeaderClick()
+   {
+      _isExpanded = !_isExpanded;
+   }
+}

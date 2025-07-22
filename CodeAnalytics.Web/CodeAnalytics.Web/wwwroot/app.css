@@ -36,6 +36,10 @@
     --background-color: #1d1d1d;
     
     --main-color-40: rgba(45,104,246,0.4);
+    --main-color-30: rgba(45,104,246,0.3);
+    --main-color-20: rgba(45,104,246,0.2);
+    --main-color-10: rgba(45,104,246,0.1);
+    --main-color-5: rgba(45,104,246,0.05);
 }
 
 body {

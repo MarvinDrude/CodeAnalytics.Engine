@@ -1,0 +1,26 @@
+﻿@using CodeAnalytics.Engine.Contracts.Occurrences
+@using CodeAnalytics.Web.Common.Models.Occurrences
+@using CodeAnalytics.Web.Client.Components.Source
+
+<div class="file">
+   <div class="header">
+      
+   </div>
+</div>
+
+@foreach (var line in File.LineOccurrences)
+{
+   <pre><CodeLine Spans="@line.LineSpans" /></pre>
+}
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required OccurrenceState OccurrenceState { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required FileOccurrence File { get; set; }
+   
+   private string FilePath => 
+   
+}

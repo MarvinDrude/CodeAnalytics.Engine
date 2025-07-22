@@ -17,6 +17,11 @@
    [Parameter]
    public OccurrenceState? Occurrence { get; set; }
 
+   public void SetTab(bool isOccurrence)
+   {
+      IsOccurrence = isOccurrence;
+   }
+   
    private void OnClick(bool isOccurrence)
    {
       IsOccurrence = isOccurrence;

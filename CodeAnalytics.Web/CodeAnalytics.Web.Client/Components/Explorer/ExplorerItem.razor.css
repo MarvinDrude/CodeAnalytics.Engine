@@ -10,6 +10,9 @@
     height: var(--height);
     line-height: var(--height);
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     transition: .1s ease all;
 }
 
@@ -19,6 +22,9 @@
 
 .entry .name {
     font-size: 18px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .entry .icon,

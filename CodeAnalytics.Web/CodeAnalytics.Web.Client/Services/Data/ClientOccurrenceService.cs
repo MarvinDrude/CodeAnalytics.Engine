@@ -18,7 +18,7 @@ public sealed class ClientOccurrenceService : IOccurrenceService
 
    public async Task<Dictionary<int, string>?> GetOccurrenceStrings(int rawNodeId)
    {
-      var url = $"{DataApiConstants.FullPathGetOccurrences}?rawNodeId={rawNodeId}";
+      var url = $"{DataApiConstants.FullPathGetOccurrenceStrings}?rawNodeId={rawNodeId}";
       var strings = await _client.GetFromJsonAsync<Dictionary<int, string>>(url);
 
       return strings;

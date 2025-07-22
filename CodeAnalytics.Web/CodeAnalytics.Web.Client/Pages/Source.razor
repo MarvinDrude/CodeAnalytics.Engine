@@ -67,12 +67,12 @@
       await OnFileChange();
    }
 
-   private Task OnOccurrenceChanged(OccurrenceState? occurrence)
+   private async Task OnOccurrenceChanged(OccurrenceState? occurrence)
    {
       Occurrence = occurrence;
       _leftBarRef?.SetTab(Occurrence is not null);
 
-      return Task.CompletedTask;
+      await InvokeAsync(StateHasChanged);
    }
 
    private async Task OnFileChange()

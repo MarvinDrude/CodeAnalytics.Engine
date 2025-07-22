@@ -149,9 +149,28 @@ public sealed class TextTokenizer
          case ClassificationTypeNames.LocalName:
             ApplyLocalNameContext(ref span, classified);
             break;
+         
+         case ClassificationTypeNames.Keyword when span.RawText == "var":
+            ApplyVarContext(ref span, classified, lineSpans, ref list, lineNumber);
+            break;
+            
       }
    }
 
+   private void ApplyVarContext(
+      ref SyntaxSpan span, ClassifiedSpan classified, 
+      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list,
+      int lineNumber)
+   {
+      var (node, symbol) = GetSymbolFromContext(classified);
+      if (symbol is null) return;
+      
+      span.Reference = _context.Store.NodeIdStore.GetOrAdd(symbol.OriginalDefinition);
+      _context.Store.Occurrences.AddOccurrence(
+         ref span, lineSpans, _context.ProjectId, 
+         _context.FileId, list.Count, lineNumber);
+   }
+   
    private void ApplySymbolContext(
       ref SyntaxSpan span, ClassifiedSpan classified, 
       List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list,

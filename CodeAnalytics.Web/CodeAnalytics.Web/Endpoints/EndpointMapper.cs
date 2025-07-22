@@ -12,6 +12,7 @@ public static class EndpointMapper
       var data = endpoints.MapGroup(DataApiConstants.BasePath);
 
       GetOccurrencesEndpoint.Map(data);
+      GetOccurrenceStringsEndpoint.Map(data);
       
       var source = endpoints.MapGroup(SourceApiConstants.BasePath);
       

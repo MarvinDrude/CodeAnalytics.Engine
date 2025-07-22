@@ -5,6 +5,8 @@ namespace CodeAnalytics.Engine.Contracts.Occurrences;
 
 public sealed class GlobalOccurrence
 {
+   public required NodeId NodeId { get; set; }
+   
    public ConcurrentDictionary<StringId, ProjectOccurrence> ProjectOccurrences { get; init; } = [];
    
    public ProjectOccurrence GetOrCreateByProject(StringId pathId)

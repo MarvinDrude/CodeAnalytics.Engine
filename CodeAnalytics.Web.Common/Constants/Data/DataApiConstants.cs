@@ -6,4 +6,7 @@ public static class DataApiConstants
    
    public const string PathGetOccurrences = "/GetOccurrences";
    public const string FullPathGetOccurrences = BasePath + PathGetOccurrences;
+   
+   public const string PathGetOccurrenceStrings = "/GetOccurrenceStrings";
+   public const string FullPathGetOccurrenceStrings = BasePath + PathGetOccurrenceStrings;
 }

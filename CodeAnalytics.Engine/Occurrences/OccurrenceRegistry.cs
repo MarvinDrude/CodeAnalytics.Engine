@@ -61,7 +61,10 @@ public sealed class OccurrenceRegistry
    public GlobalOccurrence GetOrCreate(NodeId nodeId)
    {
       var lazy = _byNodes.GetOrAdd(nodeId, _ => new Lazy<GlobalOccurrence>(
-         () => new GlobalOccurrence(),
+         () => new GlobalOccurrence()
+         {
+            NodeId = nodeId
+         },
          LazyThreadSafetyMode.ExecutionAndPublication));
       
       return lazy.Value;

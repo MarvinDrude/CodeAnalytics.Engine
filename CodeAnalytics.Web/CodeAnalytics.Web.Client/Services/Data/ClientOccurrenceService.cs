@@ -1,4 +1,5 @@
-﻿using CodeAnalytics.Engine.Contracts.Occurrences;
+﻿using System.Net.Http.Json;
+using CodeAnalytics.Engine.Contracts.Occurrences;
 using CodeAnalytics.Engine.Serialization;
 using CodeAnalytics.Engine.Serialization.Occurrence;
 using CodeAnalytics.Web.Common.Constants.Data;
@@ -13,6 +14,14 @@ public sealed class ClientOccurrenceService : IOccurrenceService
    public ClientOccurrenceService(HttpClient client)
    {
       _client = client;
+   }
+
+   public async Task<Dictionary<int, string>?> GetOccurrenceStrings(int rawNodeId)
+   {
+      var url = $"{DataApiConstants.FullPathGetOccurrences}?rawNodeId={rawNodeId}";
+      var strings = await _client.GetFromJsonAsync<Dictionary<int, string>>(url);
+
+      return strings;
    }
    
    public async Task<GlobalOccurrence?> GetOccurrences(int rawNodeId)

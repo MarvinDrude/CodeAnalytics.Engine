@@ -1,6 +1,8 @@
-﻿@using CodeAnalytics.Engine.Contracts.Ids
+﻿@using CodeAnalytics.Engine.Common.Extensions
+@using CodeAnalytics.Engine.Contracts.Ids
 @using CodeAnalytics.Engine.Contracts.Occurrences
 @using CodeAnalytics.Engine.Contracts.TextRendering
+@using CodeAnalytics.Web.Common.Models.Occurrences
 @using CodeAnalytics.Web.Common.Services.Data
 
 @inject IOccurrenceService OccurrenceService
@@ -31,12 +33,30 @@ else
    public required SyntaxSpan Span { get; set; }
 
    [CascadingParameter(Name = "OccurrenceChanged")]
-   public EventCallback<GlobalOccurrence> OccurrenceChanged { get; set; }
+   public EventCallback<OccurrenceState?> OccurrenceChanged { get; set; }
    
    private async Task OnClick()
    {
-      var occurrence = await OccurrenceService.GetOccurrences(Span.Reference.Value);
-      await OccurrenceChanged.InvokeAsync(occurrence);
+      var taskOccurrence = OccurrenceService.GetOccurrences(Span.Reference.Value);
+      var taskStrings = OccurrenceService.GetOccurrenceStrings(Span.Reference.Value);
+
+      await Task.WhenAll(taskOccurrence)
+         .WithAggregateException();
+
+      var occurrence = await taskOccurrence;
+      var strings = await taskStrings;
+
+      if (occurrence is null || strings is null)
+      {
+         await OccurrenceChanged.InvokeAsync(null);
+         return;
+      }
+      
+      await OccurrenceChanged.InvokeAsync(new OccurrenceState()
+      {
+         Occurrence = occurrence,
+         Strings = strings
+      });
    }
 
    private bool IsClickable => !Span.Reference.IsEmpty;

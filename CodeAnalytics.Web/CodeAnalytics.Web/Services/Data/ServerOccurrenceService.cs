@@ -12,6 +12,36 @@ public sealed class ServerOccurrenceService : IOccurrenceService
    {
       _dataService = dataService;
    }
+
+   public async Task<Dictionary<int, string>?> GetOccurrenceStrings(int rawNodeId)
+   {
+      var store = await _dataService.GetAnalyzeStore();
+      if (store.Inner.Occurrences.Get(new NodeId(rawNodeId, null)) is not { } occurrence)
+      {
+         return null;
+      }
+
+      HashSet<StringId> ids = [];
+      foreach (var (key, project) in occurrence.ProjectOccurrences)
+      {
+         ids.Add(key);
+         foreach (var (fileId, _) in project.FileOccurrences)
+         {
+            ids.Add(fileId);
+         }
+      }
+
+      Dictionary<int, string> result = [];
+      foreach (var id in ids)
+      {
+         if (store.Inner.StringIdStore.GetById(id) is { } str)
+         {
+            result[id] = str;
+         }
+      }
+
+      return result;
+   }
    
    public async Task<GlobalOccurrence?> GetOccurrences(int rawNodeId)
    {

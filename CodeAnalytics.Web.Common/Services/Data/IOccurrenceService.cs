@@ -5,5 +5,7 @@ namespace CodeAnalytics.Web.Common.Services.Data;
 
 public interface IOccurrenceService
 {
+   public Task<Dictionary<int, string>?> GetOccurrenceStrings(int rawNodeId);
+   
    public Task<GlobalOccurrence?> GetOccurrences(int rawNodeId);
 }

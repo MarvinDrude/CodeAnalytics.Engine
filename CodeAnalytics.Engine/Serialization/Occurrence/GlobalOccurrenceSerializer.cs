@@ -12,6 +12,9 @@ public sealed class GlobalOccurrenceSerializer : ISerializer<GlobalOccurrence>
 {
    public static void Serialize(ref ByteWriter writer, ref GlobalOccurrence ob)
    {
+      var nodeId = ob.NodeId;
+      NodeIdSerializer.Serialize(ref writer, ref nodeId);
+      
       var dict = ob.ToDictionary();
       DictionarySerializer<StringId, StringIdSerializer, ProjectOccurrence, ProjectOccurrenceSerializer>
          .Serialize(ref writer, ref dict);
@@ -21,13 +24,21 @@ public sealed class GlobalOccurrenceSerializer : ISerializer<GlobalOccurrence>
    {
       ob = null;
 
+      if (!NodeIdSerializer.TryDeserialize(ref reader, out var nodeId))
+      {
+         return false;
+      }
+      
       if (!DictionarySerializer<StringId, StringIdSerializer, ProjectOccurrence, ProjectOccurrenceSerializer>
              .TryDeserialize(ref reader, out var dict))
       {
          return false;
       }
 
-      ob = new GlobalOccurrence();
+      ob = new GlobalOccurrence()
+      {
+         NodeId = nodeId,
+      };
 
       foreach (var (key, value) in dict)
       {

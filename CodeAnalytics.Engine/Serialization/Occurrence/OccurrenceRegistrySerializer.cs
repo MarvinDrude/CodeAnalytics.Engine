@@ -28,7 +28,7 @@ public sealed class OccurrenceRegistrySerializer : ISerializer<OccurrenceRegistr
       {
          return false;
       }
-
+      
       ob = new OccurrenceRegistry(dict);
       return true;
    }

@@ -1,0 +1,44 @@
+﻿@using CodeAnalytics.Engine.Contracts.Occurrences
+@using CodeAnalytics.Engine.Contracts.TextRendering
+@using CodeAnalytics.Web.Common.Models.Occurrences
+
+@foreach (var span in _spans)
+{
+   @if (OccurrenceState.Occurrence.NodeId == span.Reference)
+   {
+      <span style="color: @span.Color;" class="highlight">
+         @span.RawText
+      </span>
+   }
+   else
+   {
+      <span style="color: @span.Color;">
+         @span.RawText
+      </span>
+   }
+}
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required OccurrenceState OccurrenceState { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required NodeOccurrence Node { get; set; }
+
+   private List<SyntaxSpan> _spans = [];
+
+   protected override void OnInitialized()
+   {
+      var first = Node.LineSpans.FindIndex(s => !string.IsNullOrWhiteSpace(s.RawText));
+      if (first == -1)
+      {
+         _spans = [];
+         return;
+      }
+      
+      var last = Node.LineSpans.FindLastIndex(s => !string.IsNullOrWhiteSpace(s.RawText));
+      _spans = Node.LineSpans.GetRange(first, last - first + 1);
+   }
+
+}

@@ -4,12 +4,14 @@
    @{
       var remaining = Spans.AsSpan();
       var lineCount = 0;
+      var total = 0;
    }
    <pre class="text">
       @while (remaining.Length > 0)
       {
-         @GetLineFragment(remaining, out var consumed)
-;
+         @GetLineFragment(remaining, total, out var consumed)
+
+         total += consumed;
          remaining = remaining[consumed..];
          lineCount++;
          <br/>
@@ -32,8 +34,8 @@
 
    [Parameter, EditorRequired]
    public required SyntaxSpan[] Spans { get; set; }
-   
-   private RenderFragment GetLineFragment(scoped in ReadOnlySpan<SyntaxSpan> spans, out int consumed)
+
+   private RenderFragment GetLineFragment(scoped in ReadOnlySpan<SyntaxSpan> spans, int total, out int consumed)
    {
       List<SyntaxSpan> lineSpans = [];
       var i = 0;
@@ -46,6 +48,6 @@
 
       consumed = i + ((i < spans.Length && spans[i].IsLineBreak) ? 1 : 0);
 
-      return @<CodeLine Spans="@lineSpans"></CodeLine>;
+      return @<CodeLine Spans="@lineSpans" Offset="@total"></CodeLine>;
    }
 }

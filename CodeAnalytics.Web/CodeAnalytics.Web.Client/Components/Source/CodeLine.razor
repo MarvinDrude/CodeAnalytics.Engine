@@ -1,12 +1,15 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using CodeAnalytics.Engine.Contracts.TextRendering
 
-@foreach (var span in Spans)
+@for (var e = 0; e < Spans.Count; e++)
 {
-   <CodeSpan Span="@span"></CodeSpan>
+   <CodeSpan Span="@Spans[e]" Index="@(Offset + e)"></CodeSpan>
 }
 
 @code {
+   
+   [Parameter, EditorRequired]
+   public required int Offset { get; set; }
    
    [Parameter, EditorRequired]
    public required List<SyntaxSpan> Spans { get; set; }

@@ -1,15 +1,14 @@
 ﻿@using CodeAnalytics.Engine.Common.Extensions
-@using CodeAnalytics.Engine.Contracts.Ids
-@using CodeAnalytics.Engine.Contracts.Occurrences
 @using CodeAnalytics.Engine.Contracts.TextRendering
 @using CodeAnalytics.Web.Common.Models.Occurrences
 @using CodeAnalytics.Web.Common.Services.Data
 
 @inject IOccurrenceService OccurrenceService
+@inject IJSRuntime JsRuntime
 
 @if (IsClickable)
 {
-   <span
+   <span @ref="_preRef"
       data-id="@Span.Reference.Value"
       style="color: @Span.Color;"
       class="@(GetClasses() ?? string.Empty)"
@@ -19,7 +18,7 @@
 }
 else
 {
-   <span
+   <span @ref="_preRef"
       data-id="@Span.Reference.Value"
       style="color: @Span.Color;"
       class="@(GetClasses() ?? string.Empty)">
@@ -30,11 +29,31 @@ else
 @code {
    
    [Parameter, EditorRequired]
+   public required int Index { get; set; }
+   
+   [Parameter, EditorRequired]
    public required SyntaxSpan Span { get; set; }
 
    [CascadingParameter(Name = "OccurrenceChanged")]
    public EventCallback<OccurrenceState?> OccurrenceChanged { get; set; }
    
+   [CascadingParameter(Name = "SymbolIndex")]
+   public int? SymbolIndex { get; set; }
+   
+   private bool _firstRender = true;
+   private ElementReference? _preRef;
+
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if (_firstRender 
+          && SymbolIndex == Index 
+          && _preRef is not null)
+      {
+         await JsRuntime.InvokeVoidAsync("scrollToElement", _preRef);
+         _firstRender = false;
+      }
+   }
+
    private async Task OnClick()
    {
       var taskOccurrence = OccurrenceService.GetOccurrences(Span.Reference.Value);
@@ -63,6 +82,11 @@ else
    
    private string? GetClasses()
    {
+      if (SymbolIndex == Index)
+      {
+         return Span.Reference.IsEmpty ? "mark" : "mark clickable ref";
+      }
+      
       if (!Span.Reference.IsEmpty)
       {
          return "clickable ref";

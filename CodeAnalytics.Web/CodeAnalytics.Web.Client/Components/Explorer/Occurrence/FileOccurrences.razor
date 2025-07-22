@@ -1,17 +1,26 @@
 ﻿@using CodeAnalytics.Engine.Contracts.Occurrences
 @using CodeAnalytics.Web.Common.Models.Occurrences
-@using CodeAnalytics.Web.Client.Components.Source
+
+@inject NavigationManager NavigationManager
 
 <div class="file">
    <div class="header">
-      
+      @RelativePath
+   </div>
+   <div class="content">
+      @foreach (var line in File.LineOccurrences)
+      {
+         <div class="line" @onclick="() => OnLineClick(line)">
+            <div class="number">
+               12
+            </div>
+            <div class="text">
+               <pre><LineOccurrences OccurrenceState="@OccurrenceState" Node="@line" /></pre>
+            </div>
+         </div>
+      }
    </div>
 </div>
-
-@foreach (var line in File.LineOccurrences)
-{
-   <pre><CodeLine Spans="@line.LineSpans" /></pre>
-}
 
 @code {
    
@@ -19,8 +28,17 @@
    public required OccurrenceState OccurrenceState { get; set; }
    
    [Parameter, EditorRequired]
+   public required string ProjectPath { get; set; }
+   
+   [Parameter, EditorRequired]
    public required FileOccurrence File { get; set; }
-   
-   private string FilePath => 
-   
+
+   private string RelativePath => Path.GetRelativePath(ProjectPath.Replace('\\', '/'), FilePath.Replace('\\', '/'));
+   private string FilePath => OccurrenceState.Strings.GetValueOrDefault(File.PathId) ?? "Unknown.Path";
+
+   private void OnLineClick(NodeOccurrence line)
+   {
+      NavigationManager.NavigateTo($"/source/{FilePath.Replace('\\', '/').TrimStart('/')}?symbol={line.SpanIndex}");
+   }
+
 }

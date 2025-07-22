@@ -1,5 +1,6 @@
 ﻿@page "/source/{*path}"
 @using System.Runtime.CompilerServices
+@using System.Web
 @using CodeAnalytics.Engine.Contracts.Occurrences
 @using CodeAnalytics.Engine.Contracts.TextRendering
 @using CodeAnalytics.Web.Common.Services.Source
@@ -10,28 +11,33 @@
 @inject ISourceTextService SourceTextService
 
 <CascadingValue Name="OccurrenceChanged" Value="_onOccurrenceChange">
-   <div class="sources">
-      <div class="left">
-         <LeftBar @ref="@_leftBarRef" Occurrence="@Occurrence"></LeftBar>
-      </div>
-      <div class="right">
-         @if (_isError)
-         {
-            @_errorMessage
-         }
-         else
-         {
-            @if (_initialized)
+   <CascadingValue Name="SymbolIndex" Value="Symbol">
+      <div class="sources">
+         <div class="left">
+            <LeftBar @ref="@_leftBarRef" Occurrence="@Occurrence"></LeftBar>
+         </div>
+         <div class="right">
+            @if (_isError)
             {
-               <CodeViewer Spans="_spans"></CodeViewer>
+               @_errorMessage
             }
-         }
+            else
+            {
+               @if (_initialized)
+               {
+                  <CodeViewer Spans="_spans"></CodeViewer>
+               }
+            }
+         </div>
       </div>
-   </div>
+   </CascadingValue>
 </CascadingValue>
 
 @code {
 
+   [SupplyParameterFromQuery]
+   public int? Symbol { get; set; }
+   
    private string? _path;
    [Parameter]
    public required string Path { 

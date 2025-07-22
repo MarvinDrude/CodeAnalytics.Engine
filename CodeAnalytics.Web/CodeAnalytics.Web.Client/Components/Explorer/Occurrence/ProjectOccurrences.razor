@@ -20,8 +20,9 @@
          @foreach (var (_, file) in Project.FileOccurrences)
          {
             <FileOccurrences 
-               OccurrenceState="OccurrenceState" 
-               File="file" />
+               OccurrenceState="@OccurrenceState" 
+               ProjectPath="@ProjectPath"
+               File="@file" />
          }
       }
    </div>
@@ -37,7 +38,7 @@
 
    private bool _isExpanded = true;
 
-   private string ProjectName => Path.GetFileName(Path.GetFileNameWithoutExtension(ProjectPath));
+   private string ProjectName => Path.GetFileName(Path.GetFileNameWithoutExtension(ProjectPath.Replace('\\', '/')));
    private string ProjectPath => OccurrenceState.Strings.GetValueOrDefault(Project.PathId.Value) ?? "Unknown.Project.Name";
    
    private void OnHeaderClick()

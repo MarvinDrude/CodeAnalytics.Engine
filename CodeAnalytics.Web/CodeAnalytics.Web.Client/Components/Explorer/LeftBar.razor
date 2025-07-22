@@ -7,7 +7,7 @@
 </div>
 
 <Occurrences IsVisible="@IsOccurrence" OccurrenceState="@Occurrence"></Occurrences>
-<FileExplorer IsVisible="@(!IsOccurrence)"></FileExplorer>
+<FileExplorer @ref="_fileExplorerRef" IsVisible="@(!IsOccurrence)"></FileExplorer>
 
 @code {
    
@@ -17,9 +17,16 @@
    [Parameter]
    public OccurrenceState? Occurrence { get; set; }
 
+   private FileExplorer? _fileExplorerRef;
+
    public void SetTab(bool isOccurrence)
    {
       IsOccurrence = isOccurrence;
+   }
+
+   public void SetCurrentlyActiveFile(string path)
+   {
+      _fileExplorerRef?.SetCurrentlyActiveFile(path);
    }
    
    private void OnClick(bool isOccurrence)

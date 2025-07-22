@@ -14,6 +14,7 @@
 
    <ItemGroup>
      <Folder Include="Responses\Source\" />
+     <Folder Include="Utils\" />
    </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿@using CodeAnalytics.Web.Common.Models.Explorer
+﻿@using CodeAnalytics.Web.Common.Enums.Explorer
+@using CodeAnalytics.Web.Common.Models.Explorer
 @using CodeAnalytics.Web.Common.Services.Source
 
 @inject IExplorerService ExplorerService
@@ -22,12 +23,109 @@
    public bool IsVisible { get; set; }
    
    private bool _initialized = false;
+   
    private List<ExplorerTreeItem> _roots = [];
+   private string? _lastPath;
+
+   private List<ExplorerTreeItem> _selected = [];
    
    protected override async Task OnInitializedAsync()
    {
       _roots = await ExplorerService.GetExplorerTreeItems();
-
       _initialized = true;
+
+      if (_lastPath is not null)
+      {
+         SetCurrentlyActiveFile(_lastPath);
+      }
+   }
+
+   public void SetCurrentlyActiveFile(string path)
+   {
+      ClearSelected();
+      var root = new ExplorerTreeItem()
+      {
+         Name = "",
+         Path = "/",
+         Type = ExplorerTreeItemType.Folder,
+         Children = _roots
+      };
+      
+      if (TryGetPathNodes(root, path, out var nodes))
+      {
+         foreach (var node in nodes)
+         {
+            node.IsExpanded = true;
+            node.IsSelected = !node.IsFolder;
+            
+            if (node.IsSelected)
+            {
+               _selected.Add(node);
+            }
+         }
+      }
+
+      _lastPath = path;
+      StateHasChanged();
+   }
+
+   private void ClearSelected()
+   {
+      foreach (var selected in _selected)
+      {
+         selected.IsSelected = false;
+      }
+
+      _selected = [];
+   }
+   
+   private bool TryGetPathNodes(
+      ExplorerTreeItem root,
+      string path,
+      out List<ExplorerTreeItem> nodes)
+   {
+      path = path.Replace("\\", "/");
+      nodes = new List<ExplorerTreeItem>(8);
+      var span = path.AsSpan().Trim('/');
+
+      var current = root;
+      nodes.Add(current);
+
+      while (!span.IsEmpty)
+      {
+         var slash = span.IndexOf('/');
+         ReadOnlySpan<char> seg;
+         if (slash < 0)
+         {
+            seg = span;
+            span = ReadOnlySpan<char>.Empty;
+         }
+         else
+         {
+            seg = span[..slash];
+            span = span[(slash + 1)..];
+         }
+
+         ExplorerTreeItem? next = null;
+         foreach (var child in current.Children)
+         {
+            if (seg.SequenceEqual(child.Name.AsSpan()))
+            {
+               next = child;
+               break;
+            }
+         }
+
+         if (next is null)
+         {
+            nodes.Clear();
+            return false;
+         }
+
+         current = next;
+         nodes.Add(current);
+      }
+
+      return true;
    }
 }

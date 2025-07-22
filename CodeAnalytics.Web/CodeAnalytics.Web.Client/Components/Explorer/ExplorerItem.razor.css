@@ -16,7 +16,8 @@
     transition: .1s ease all;
 }
 
-.entry:hover {
+.entry:hover,
+.entry.selected {
     background-color: rgba(100,100,100,0.2);
 }
 

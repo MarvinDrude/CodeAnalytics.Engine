@@ -22,7 +22,57 @@ public sealed class NodeOccurrence
       set => _packed.Set(IsDeclarationIndex, value);
    }
 
-   private const int IsDeclarationIndex = 0;
+   private int _lineNumber = 0;
+
+   public int LineNumber
+   {
+      get => _lineNumber;
+      set
+      {
+         HasLineNumber = value > 0;
+         
+         switch (value)
+         {
+            case < byte.MaxValue:
+               IsLineNumberByte = true;
+               IsLineNumberUshort = false;
+               break;
+            case < ushort.MaxValue:
+               IsLineNumberUshort = true;
+               IsLineNumberByte = false;
+               break;
+            default:
+               IsLineNumberByte = false;
+               IsLineNumberUshort = false;
+               break;
+         }
+         
+         _lineNumber = Math.Max(value, 0);
+      }
+   }
+   
+   public bool IsLineNumberUshort
+   {
+      get => _packed.Get(LineNumberUshortIndex);
+      private set => _packed.Set(LineNumberUshortIndex, value);
+   }
+   
+   public bool IsLineNumberByte
+   {
+      get => _packed.Get(LineNumberByteIndex);
+      private set => _packed.Set(LineNumberByteIndex, value);
+   }
+
+   public bool HasLineNumber
+   {
+      get => _packed.Get(HasLineNumberIndex);
+      private set => _packed.Set(HasLineNumberIndex, value);
+   }
+
+   public const int LineNumberUshortIndex = 3;
+   public const int LineNumberByteIndex = 2;
+   public const int HasLineNumberIndex = 1;
+   public const int IsDeclarationIndex = 0;
    
    public bool Equals(NodeOccurrence? other)
    {

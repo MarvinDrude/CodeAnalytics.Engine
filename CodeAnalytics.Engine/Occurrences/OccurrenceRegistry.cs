@@ -28,7 +28,8 @@ public sealed class OccurrenceRegistry
 
    public void AddOccurrence(
       ref SyntaxSpan span, List<SyntaxSpan> lineSpans, 
-      StringId projectId, StringId fileId, int index)
+      StringId projectId, StringId fileId, int index,
+      int lineNumber)
    {
       var all = GetOrCreate(span.Reference);
       var project = all.GetOrCreateByProject(projectId);
@@ -38,7 +39,8 @@ public sealed class OccurrenceRegistry
       {
          LineSpans = lineSpans,
          IsDeclaration = span.IsDeclaration,
-         SpanIndex = index
+         SpanIndex = index,
+         LineNumber = lineNumber,
       });
    }
 

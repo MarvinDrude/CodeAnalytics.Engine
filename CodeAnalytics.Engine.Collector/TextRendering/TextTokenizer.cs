@@ -39,7 +39,7 @@ public sealed class TextTokenizer
             .OrderBy(c => c.TextSpan.Start)
             .ToList();
          
-         TokenizeLine(ref list, lineSpan, classified);
+         TokenizeLine(ref list, lineSpan, classified, e + 1);
          list.Add(new SyntaxSpan(string.Empty, string.Empty, isLineBreak: true));
       }
 
@@ -49,7 +49,8 @@ public sealed class TextTokenizer
    private void TokenizeLine(
       ref PooledList<SyntaxSpan> list, 
       TextSpan lineSpan, 
-      List<ClassifiedSpan> classifiedSpans)
+      List<ClassifiedSpan> classifiedSpans,
+      int lineNumber)
    {
       var start = lineSpan.Start;
       List<SyntaxSpan> lineSpans = [];
@@ -86,7 +87,12 @@ public sealed class TextTokenizer
          var type = classifiedSpan.ClassificationType;
          var syntaxSpan = new SyntaxSpan(GetText(classifiedSpan.TextSpan), GetColor(type));
          
-         ApplyContext(ref syntaxSpan, classifiedSpan, lineSpans, ref list);
+         ApplyContext(
+            ref syntaxSpan, 
+            classifiedSpan, 
+            lineSpans, 
+            ref list,
+            lineNumber);
          
          list.Add(syntaxSpan);
          lineSpans.Add(syntaxSpan);
@@ -115,7 +121,8 @@ public sealed class TextTokenizer
 
    private void ApplyContext(
       ref SyntaxSpan span, ClassifiedSpan classified, 
-      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list)
+      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list,
+      int lineNumber)
    {
       switch (classified.ClassificationType)
       {
@@ -132,7 +139,7 @@ public sealed class TextTokenizer
          case ClassificationTypeNames.ExtensionMethodName:
          case ClassificationTypeNames.FieldName:
          case ClassificationTypeNames.PropertyName:
-            ApplySymbolContext(ref span, classified, lineSpans, ref list);
+            ApplySymbolContext(ref span, classified, lineSpans, ref list, lineNumber);
             break;
          
          case ClassificationTypeNames.ParameterName:
@@ -147,7 +154,8 @@ public sealed class TextTokenizer
 
    private void ApplySymbolContext(
       ref SyntaxSpan span, ClassifiedSpan classified, 
-      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list)
+      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list,
+      int lineNumber)
    {
       var (node, symbol) = GetSymbolFromContext(classified);
       if (symbol is null) return;
@@ -163,7 +171,7 @@ public sealed class TextTokenizer
 
       _context.Store.Occurrences.AddOccurrence(
          ref span, lineSpans, _context.ProjectId, 
-         _context.FileId, list.Count);
+         _context.FileId, list.Count, lineNumber);
    }
    
    private void ApplyParameterSymbolContext(ref SyntaxSpan span, ClassifiedSpan classified)

@@ -12,7 +12,7 @@
       {
          <div class="line" @onclick="() => OnLineClick(line)">
             <div class="number">
-               12
+               @line.LineNumber
             </div>
             <div class="text">
                <pre><LineOccurrences OccurrenceState="@OccurrenceState" Node="@line" /></pre>

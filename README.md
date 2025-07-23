@@ -22,6 +22,6 @@ CodeAnalytics.Engine parses .sln/.csproj structures, source files, references, a
 - Always more metrics ➕
 - Advanced rules like ex: Warning for specific methods used in loops (DB Calls etc.) 🚨
 
-## Example Screenshots sor far
+## Example Screenshots so far
 ![Source Explorer - Occurrences](Examples/Images/SourceExplorerOccurrences.png)
 ![Source Explorer - Folders](Examples/Images/SourceExplorerFolders.png)

@@ -9,6 +9,8 @@
 @inject ISourceTextService SourceTextService
 @inject NavigationManager NavigationManager
 
+<PageTitle>@System.IO.Path.GetFileName(Path.Replace('\\', '/'))</PageTitle>
+
 <CascadingValue Name="OccurrenceChanged" Value="_onOccurrenceChange">
    <CascadingValue Name="SymbolIndex" Value="Symbol">
       <div class="sources">

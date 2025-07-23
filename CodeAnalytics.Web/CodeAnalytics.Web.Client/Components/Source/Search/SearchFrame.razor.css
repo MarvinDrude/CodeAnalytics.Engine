@@ -9,3 +9,38 @@
     height: 3000px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.mode .search-wrapper {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+}
+
+.mode .header {
+    padding: 15px 20px;
+    font-size: 26px;
+    border-right: 1px solid rgba(100,100,100,0.3);
+}
+
+.mode .modes {
+    height: 40px;
+    display: flex;
+    background-color: var(--main-color-5);
+}
+
+.mode .modes .selector {
+    display: flex;
+    padding: 0 20px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.mode .modes .selector:hover {
+    background-color: rgba(100,100,100,0.3);
+}
+
+.mode .modes .selector.active {
+    background-color: var(--main-color-40);
+    cursor: default;
+}

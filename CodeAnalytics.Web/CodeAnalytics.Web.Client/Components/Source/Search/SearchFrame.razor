@@ -1,8 +1,39 @@
-﻿
+﻿@using CodeAnalytics.Web.Client.Components.Menus.Bars
+@using CodeAnalytics.Web.Client.Models.Search
+@using CodeAnalytics.Web.Client.Components.Common.Controls
+
 <div class="search" @onclick:stopPropagation="@true">
-   
+   <SimpleMenuBar MenuId="@MenuId"></SimpleMenuBar>
+   <div class="mode">
+      <div class="search-wrapper">
+         <div class="header">Mode</div>
+         <div class="search-text">
+            <InputBox PlaceholderText="Search..." />
+         </div>
+      </div>
+      <div class="modes">
+         <a class="selector@(_type is SearchType.Definitions ? " active" : "")"
+            @onclick="() => OnSelectType(SearchType.Definitions)">
+            Definitions
+         </a>
+         <a class="selector@(_type is SearchType.Files ? " active" : "")"
+            @onclick="() => OnSelectType(SearchType.Files)">
+            Files
+         </a>
+      </div>
+   </div>
 </div>
 
 @code {
+   
+   [Parameter]
+   public ulong MenuId { get; set; }
+
+   private SearchType _type = SearchType.Definitions;
+
+   private void OnSelectType(SearchType type)
+   {
+      _type = type;
+   }
    
 }

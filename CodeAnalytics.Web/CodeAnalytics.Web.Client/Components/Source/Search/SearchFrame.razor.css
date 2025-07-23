@@ -1,0 +1,11 @@
+﻿
+.search {
+    display: block;
+    max-width: min(1420px, calc(100svw - 40px));
+    max-height: min(890px, calc(100svh - 40px));
+    background-color: var(--background-color);
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.1);
+    width: 3000px;
+    height: 3000px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}

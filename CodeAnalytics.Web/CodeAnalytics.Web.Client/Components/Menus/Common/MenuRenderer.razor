@@ -8,7 +8,7 @@
 @foreach (var (menuInfo, index) in MenuService.OpenMenus.Select((m, i) => (m, i)))
 {
    menuInfo.Parameters[nameof(IMenuComponent.MenuIndex)] = index;
-   menuInfo.Parameters[nameof(IMenuComponent.MenuIndex)] = index;
+   menuInfo.Parameters[nameof(IMenuComponent.MenuId)] = menuInfo.Id;
    
    <span @key="@menuInfo.Id">
       <DynamicComponent Type="@menuInfo.ComponentType" Parameters="@menuInfo.Parameters"></DynamicComponent>
@@ -17,12 +17,19 @@
 
 @code {
 
+   private Action? _stateChanged;
+   
    protected override void OnInitialized()
    {
-      base.OnInitialized();
+      _stateChanged = () => InvokeAsync(StateHasChanged);
+      MenuService.OnChange += _stateChanged;
    }
    
    public void Dispose()
    {
+      if (_stateChanged is not null)
+      {
+         MenuService.OnChange -= _stateChanged;
+      }
    }
 }

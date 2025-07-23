@@ -14,7 +14,7 @@ public sealed class MenuService
 
    private ulong _idStep;
    
-   public Task<TResult?> Open<TComponent, TResult>(MenuCreateOptions? options)
+   public Task<TResult?> Open<TComponent, TResult>(MenuCreateOptions? options = null)
       where TComponent : ComponentBase, IMenuComponent<TResult>
       where TResult : class
    {

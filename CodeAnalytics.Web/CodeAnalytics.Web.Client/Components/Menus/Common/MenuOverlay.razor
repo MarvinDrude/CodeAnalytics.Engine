@@ -1,0 +1,22 @@
+﻿
+@using CodeAnalytics.Web.Client.Menus
+
+@inject MenuService MenuService
+
+@typeparam TResult where TResult : class
+@inherits MenuBase<TResult>
+
+<div class="background" @onclick="@OnClick">
+   @Body
+</div>
+
+@code {
+   
+   protected RenderFragment? Body { get; set; }
+
+   private void OnClick()
+   {
+      MenuService.SetResult<TResult>(MenuId, null);
+   }
+   
+}

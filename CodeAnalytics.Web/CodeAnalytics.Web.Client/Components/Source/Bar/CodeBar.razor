@@ -1,12 +1,22 @@
 ﻿@using CodeAnalytics.Web.Client.Components.Common.Symbols
+@using CodeAnalytics.Web.Client.Components.Menus.Search
+@using CodeAnalytics.Web.Client.Menus
+@using CodeAnalytics.Web.Client.Models.Search
+
+@inject MenuService MenuService
 
 <div class="code-bar">
-   <a class="link">
+   <a class="link" @onclick="@OnSearchClick">
       <span class="left"><Icon Name="search" /></span>
       <span class="text">Search Menu</span>
    </a>
 </div>
 
 @code {
+
+   private async Task OnSearchClick()
+   {
+      var result = await MenuService.Open<CodeSearchMenu, SearchResult>();
+   }
    
 }

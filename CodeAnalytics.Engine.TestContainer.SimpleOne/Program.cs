@@ -1,25 +1,22 @@
 ﻿
-var test = CreateTest();
-
-Test.Hello();
-
-
-Test.Hello();
-
-Console.WriteLine();
-Console.WriteLine();
-Console.WriteLine();
-
-Test.Hello();
-
-static Test CreateTest()
+public sealed class ConstructorArchetypeChunk : ConstructorArchetypeChunkBase
 {
-   return new Test();
+   private string test;
+   
+   public ConstructorArchetypeChunk(string a) 
+      : base(a, "")
+   {
+      this.test = a;
+   }
+
+   public static void CreateArchetype()
+   {
+   }
 }
 
-public class Test
+public class ConstructorArchetypeChunkBase
 {
-   public static void Hello()
+   public ConstructorArchetypeChunkBase(string a, string b)
    {
       
    }

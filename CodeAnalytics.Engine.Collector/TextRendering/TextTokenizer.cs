@@ -153,11 +153,33 @@ public sealed class TextTokenizer
          case ClassificationTypeNames.Keyword when span.RawText == "var":
             ApplyVarContext(ref span, classified, lineSpans, ref list, lineNumber);
             break;
+         case ClassificationTypeNames.Keyword when span.RawText == "new":
+            ApplyCtorContext(ref span, classified, lineSpans, ref list, lineNumber);
+            break;
+         
+         case ClassificationTypeNames.Keyword when span.RawText == "base":
+         case ClassificationTypeNames.Keyword when span.RawText == "this":
+            ApplyThisBaseSymbolContext(ref span, classified, lineSpans, ref list, lineNumber);
+            break;
             
       }
    }
 
    private void ApplyVarContext(
+      ref SyntaxSpan span, ClassifiedSpan classified, 
+      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list,
+      int lineNumber)
+   {
+      var (node, symbol) = GetSymbolFromContext(classified);
+      if (symbol is null) return;
+      
+      span.Reference = _context.Store.NodeIdStore.GetOrAdd(symbol.OriginalDefinition);
+      _context.Store.Occurrences.AddOccurrence(
+         ref span, lineSpans, _context.ProjectId, 
+         _context.FileId, list.Count, lineNumber);
+   }
+
+   private void ApplyCtorContext(
       ref SyntaxSpan span, ClassifiedSpan classified, 
       List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list,
       int lineNumber)
@@ -178,6 +200,11 @@ public sealed class TextTokenizer
    {
       var (node, symbol) = GetSymbolFromContext(classified);
       if (symbol is null) return;
+
+      if (symbol is IMethodSymbol { IsExtensionMethod: true } method)
+      {
+         symbol = (method.ReducedFrom ?? method).OriginalDefinition;
+      }
       
       span.Reference = _context.Store.NodeIdStore.GetOrAdd(symbol.OriginalDefinition);
       span.IsDeclaration = node is ClassDeclarationSyntax
@@ -188,6 +215,20 @@ public sealed class TextTokenizer
          or FieldDeclarationSyntax
          or PropertyDeclarationSyntax;
 
+      _context.Store.Occurrences.AddOccurrence(
+         ref span, lineSpans, _context.ProjectId, 
+         _context.FileId, list.Count, lineNumber);
+   }
+
+   private void ApplyThisBaseSymbolContext(
+      ref SyntaxSpan span, ClassifiedSpan classified, 
+      List<SyntaxSpan> lineSpans, ref PooledList<SyntaxSpan> list,
+      int lineNumber)
+   {
+      var (node, symbol) = GetSymbolFromContext(classified);
+      if (symbol is null || node is not ConstructorInitializerSyntax) return;
+      
+      span.Reference = _context.Store.NodeIdStore.GetOrAdd(symbol.OriginalDefinition);
       _context.Store.Occurrences.AddOccurrence(
          ref span, lineSpans, _context.ProjectId, 
          _context.FileId, list.Count, lineNumber);
@@ -204,8 +245,8 @@ public sealed class TextTokenizer
       }
 
       var stringId = parameter.GenerateParameterId(method);
-      span.Reference = _context.Store.NodeIdStore.GetOrAdd(stringId);
-      //span.StringReference = stringId;
+      //span.Reference = _context.Store.NodeIdStore.GetOrAdd(stringId);
+      span.StringReference = stringId;
    }
 
    private void ApplyLocalNameContext(ref SyntaxSpan span, ClassifiedSpan classified)
@@ -226,6 +267,7 @@ public sealed class TextTokenizer
       {
          SimpleBaseTypeSyntax baseTypeSyntax => baseTypeSyntax.Type,
          TypeConstraintSyntax typeConstraintSyntax => typeConstraintSyntax.Type,
+         ArgumentSyntax argumentSyntax => argumentSyntax.Expression,
          _ => node
       };
       

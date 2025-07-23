@@ -25,3 +25,26 @@ CodeAnalytics.Engine parses .sln/.csproj structures, source files, references, a
 ## Example Screenshots so far
 ![Source Explorer - Occurrences](Examples/Images/SourceExplorerOccurrences.png)
 ![Source Explorer - Folders](Examples/Images/SourceExplorerFolders.png)
+
+## Contributing
+
+First off - thank you for even considering it ❤️
+
+### Reality check
+I don’t have much bandwidth to review and merge public contributions. That means most unsolicited PRs will likely sit for a while or be closed.
+
+### If you *really* want to help
+- **Ask first:** Open a short issue or discussion describing what you’d like to do. If I give a 👍 there, we’ll both save time.
+- **Keep it small:** Focused, self‑contained changes are far easier for me to review.
+
+### Rights & licensing
+By submitting a pull request, you agree that:
+- Your contribution is licensed under the same license as this project; and
+- I may use, modify, redistribute, and relicense your contribution as part of the project, now and in the future.
+
+If that’s not OK with you, please don’t submit the PR.
+
+### Thanks anyway
+Even if I can’t merge your work, I genuinely appreciate the interest and ideas. Issues, suggestions, and bug reports are still welcome!
+
+— Cheers!

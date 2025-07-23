@@ -1,0 +1,29 @@
+﻿
+.code-bar {
+    --height: 40px;
+    height: var(--height);
+    background-color: var(--main-color-5);
+    border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+    display: flex;
+    padding: 0 10px;
+}
+
+.code-bar .link {
+    height: var(--height);
+    display: flex;
+    vertical-align: center;
+    padding: 0 5px;
+    transition: .1s ease all;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.code-bar .link:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.code-bar .link span {
+    display: flex;
+    vertical-align: center;
+    align-items: center;
+}

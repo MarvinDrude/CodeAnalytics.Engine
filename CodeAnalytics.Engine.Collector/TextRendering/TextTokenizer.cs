@@ -213,7 +213,8 @@ public sealed class TextTokenizer
          or EnumDeclarationSyntax
          or MethodDeclarationSyntax
          or FieldDeclarationSyntax
-         or PropertyDeclarationSyntax;
+         or PropertyDeclarationSyntax
+         or VariableDeclaratorSyntax;
 
       _context.Store.Occurrences.AddOccurrence(
          ref span, lineSpans, _context.ProjectId, 

@@ -4,6 +4,10 @@
     display: grid;
     grid-template-columns: max-content 1fr;
     grid-template-areas: "numbers text";
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
 }
 
 .code-viewer span {

@@ -1,23 +1,10 @@
 ﻿
-public sealed class ConstructorArchetypeChunk : ConstructorArchetypeChunkBase
+public class ConstructorArchetypeChunk
 {
-   private string test;
+   public string test;
    
-   public ConstructorArchetypeChunk(string a) 
-      : base(a, "")
+   public ConstructorArchetypeChunk(string a)
    {
-      this.test = a;
-   }
-
-   public static void CreateArchetype()
-   {
-   }
-}
-
-public class ConstructorArchetypeChunkBase
-{
-   public ConstructorArchetypeChunkBase(string a, string b)
-   {
-      
+      test = a;
    }
 }

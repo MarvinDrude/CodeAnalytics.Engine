@@ -4,6 +4,7 @@
 @using CodeAnalytics.Web.Client.Components.Source
 @using CodeAnalytics.Web.Client.Components.Explorer
 @using CodeAnalytics.Web.Common.Models.Occurrences
+@using CodeAnalytics.Web.Client.Components.Source.Bar
 
 @inject ISourceTextService SourceTextService
 @inject NavigationManager NavigationManager
@@ -15,17 +16,24 @@
             <LeftBar @ref="@_leftBarRef" Occurrence="@Occurrence"></LeftBar>
          </div>
          <div class="right">
-            @if (_isError)
-            {
-               @_errorMessage
-            }
-            else
-            {
-               @if (_initialized)
+            <CodeBar></CodeBar>
+            <div class="right-content">
+               @if (_isError)
                {
-                  <CodeViewer Spans="_spans"></CodeViewer>
+                  @_errorMessage
                }
-            }
+               else
+               {
+                  @if (_isStart)
+                  {
+                     <span class="notice">Navigate to file in tree or go to search menu to find what you need.</span>
+                  }
+                  else if (_initialized)
+                  {
+                     <CodeViewer Spans="_spans"></CodeViewer>
+                  }
+               }
+            </div>
          </div>
       </div>
    </CascadingValue>
@@ -53,6 +61,7 @@
    
    private bool _isError = false;
    private bool _initialized = false;
+   private bool _isStart = false;
    
    private string? _errorMessage;
    private EventCallback<OccurrenceState?> _onOccurrenceChange;
@@ -86,6 +95,14 @@
    private async Task OnFileChange()
    {
       _initialized = false;
+      _isStart = Path is "/" or "";
+
+      if (_isStart)
+      {
+         _initialized = true;
+         return;
+      }
+      
       var spansResult = await SourceTextService.GetSyntaxSpansByPath(Path);
 
       if (spansResult is not { Success: { } spans, IsSuccess: true })
@@ -98,6 +115,7 @@
       _spans = spans;
       _initialized = true;
       _isError = false;
+      _isStart = false;
       
       _leftBarRef?.SetCurrentlyActiveFile(Path);
       await InvokeAsync(StateHasChanged);

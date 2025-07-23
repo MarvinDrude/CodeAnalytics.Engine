@@ -1,0 +1,28 @@
+﻿@using CodeAnalytics.Web.Client.Menus
+@using CodeAnalytics.Web.Client.Menus.Interfaces
+
+@implements IDisposable
+
+@inject MenuService MenuService
+
+@foreach (var (menuInfo, index) in MenuService.OpenMenus.Select((m, i) => (m, i)))
+{
+   menuInfo.Parameters[nameof(IMenuComponent.MenuIndex)] = index;
+   menuInfo.Parameters[nameof(IMenuComponent.MenuIndex)] = index;
+   
+   <span @key="@menuInfo.Id">
+      <DynamicComponent Type="@menuInfo.ComponentType" Parameters="@menuInfo.Parameters"></DynamicComponent>
+   </span>
+}
+
+@code {
+
+   protected override void OnInitialized()
+   {
+      base.OnInitialized();
+   }
+   
+   public void Dispose()
+   {
+   }
+}

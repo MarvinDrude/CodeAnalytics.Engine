@@ -31,6 +31,11 @@ public sealed class ServerOccurrenceService : IOccurrenceService
          }
       }
 
+      foreach (var (key, _) in occurrence.DeclarationMap)
+      {
+         ids.Add(key.FileId);
+      }
+
       Dictionary<int, string> result = [];
       foreach (var id in ids)
       {

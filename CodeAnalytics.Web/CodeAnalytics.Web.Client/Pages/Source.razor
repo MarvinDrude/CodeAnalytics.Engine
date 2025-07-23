@@ -1,7 +1,4 @@
 ﻿@page "/Source/{*path}"
-@using System.Runtime.CompilerServices
-@using System.Web
-@using CodeAnalytics.Engine.Contracts.Occurrences
 @using CodeAnalytics.Engine.Contracts.TextRendering
 @using CodeAnalytics.Web.Common.Services.Source
 @using CodeAnalytics.Web.Client.Components.Source
@@ -9,6 +6,7 @@
 @using CodeAnalytics.Web.Common.Models.Occurrences
 
 @inject ISourceTextService SourceTextService
+@inject NavigationManager NavigationManager
 
 <CascadingValue Name="OccurrenceChanged" Value="_onOccurrenceChange">
    <CascadingValue Name="SymbolIndex" Value="Symbol">
@@ -72,6 +70,16 @@
       Occurrence = occurrence;
       _leftBarRef?.SetTab(Occurrence is not null);
 
+      if (occurrence is
+          {
+             ShouldNavigateToDefinition: true, 
+             Occurrence.Declarations: [var first, ..]
+          })
+      {
+         var path = (occurrence.Strings.GetValueOrDefault(first.FileId) ?? "").Replace('\\', '/');
+         NavigationManager.NavigateTo($"/source/{path.TrimStart('/')}?symbol={first.SpanIndex}");
+      }
+      
       return Task.CompletedTask;
    }
 

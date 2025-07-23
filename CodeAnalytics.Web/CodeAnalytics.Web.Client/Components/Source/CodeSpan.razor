@@ -74,7 +74,8 @@ else
       await OccurrenceChanged.InvokeAsync(new OccurrenceState()
       {
          Occurrence = occurrence,
-         Strings = strings
+         Strings = strings,
+         ShouldNavigateToDefinition = !Span.IsDeclaration
       });
    }
 

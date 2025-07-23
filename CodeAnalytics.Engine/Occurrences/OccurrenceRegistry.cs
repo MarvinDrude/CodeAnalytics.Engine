@@ -42,6 +42,17 @@ public sealed class OccurrenceRegistry
          SpanIndex = index,
          LineNumber = lineNumber,
       });
+
+      if (span.IsDeclaration)
+      {
+         all.AddDeclaration(new DeclarationOccurrence()
+         {
+            NodeId = span.Reference,
+            FileId = fileId,
+            LineNumber = lineNumber,
+            SpanIndex = index
+         });
+      }
    }
 
    public void Clean(MergableComponentPool<SymbolComponent, SymbolMerger> pool)

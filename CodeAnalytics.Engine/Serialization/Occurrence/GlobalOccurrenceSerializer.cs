@@ -18,6 +18,10 @@ public sealed class GlobalOccurrenceSerializer : ISerializer<GlobalOccurrence>
       var dict = ob.ToDictionary();
       DictionarySerializer<StringId, StringIdSerializer, ProjectOccurrence, ProjectOccurrenceSerializer>
          .Serialize(ref writer, ref dict);
+
+      var declarations = ob.Declarations;
+      ListSerializer<DeclarationOccurrence, DeclarationOccurrenceSerializer>
+         .Serialize(ref writer, ref declarations);
    }
 
    public static bool TryDeserialize(ref ByteReader reader, [MaybeNullWhen(false)] out GlobalOccurrence ob)
@@ -35,10 +39,21 @@ public sealed class GlobalOccurrenceSerializer : ISerializer<GlobalOccurrence>
          return false;
       }
 
+      if (!ListSerializer<DeclarationOccurrence, DeclarationOccurrenceSerializer>
+             .TryDeserialize(ref reader, out var declarations))
+      {
+         return false;
+      }
+
       ob = new GlobalOccurrence()
       {
          NodeId = nodeId,
       };
+
+      foreach (var declaration in declarations)
+      {
+         ob.AddDeclaration(declaration);
+      }
 
       foreach (var (key, value) in dict)
       {

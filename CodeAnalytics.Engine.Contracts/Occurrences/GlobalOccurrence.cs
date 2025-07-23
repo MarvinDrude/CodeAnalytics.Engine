@@ -9,6 +9,14 @@ public sealed class GlobalOccurrence
    
    public ConcurrentDictionary<StringId, ProjectOccurrence> ProjectOccurrences { get; init; } = [];
    
+   public ConcurrentDictionary<DeclarationOccurrence, bool> DeclarationMap { get; init; } = [];
+   public List<DeclarationOccurrence> Declarations => DeclarationMap.Keys.ToList();
+   
+   public void AddDeclaration(DeclarationOccurrence occurrence)
+   {
+      DeclarationMap[occurrence] = true;
+   }
+   
    public ProjectOccurrence GetOrCreateByProject(StringId pathId)
    {
       return ProjectOccurrences.GetOrAdd(pathId, (_) => new ProjectOccurrence()

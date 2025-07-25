@@ -16,6 +16,6 @@ public sealed class ServerSearchService : ISearchService
    
    public Task<BasicSearchResponse> GetBasicSearch(BasicSearchParameters parameters)
    {
-      throw new NotImplementedException();
+      
    }
 }

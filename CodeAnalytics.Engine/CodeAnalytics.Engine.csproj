@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="Analyze\Analyzers\Common\" />
     <Folder Include="Analyze\Analyzers\Methods\" />
-    <Folder Include="Serialization\Archetypes\Common\" />
   </ItemGroup>
 
 </Project>

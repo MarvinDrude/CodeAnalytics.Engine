@@ -1,4 +1,5 @@
-﻿using CodeAnalytics.Web.Common.Models.Search;
+﻿using CodeAnalytics.Engine.Analyze.Searchers;
+using CodeAnalytics.Web.Common.Models.Search;
 using CodeAnalytics.Web.Common.Responses.Search;
 using CodeAnalytics.Web.Common.Services.Data;
 using CodeAnalytics.Web.Common.Services.Search;
@@ -14,8 +15,19 @@ public sealed class ServerSearchService : ISearchService
       _dataService = dataService;
    }
    
-   public Task<BasicSearchResponse> GetBasicSearch(BasicSearchParameters parameters)
+   public async Task<BasicSearchResponse> GetBasicSearch(BasicSearchParameters parameters)
    {
+      var store = await _dataService.GetAnalyzeStore();
+      var archSearcher = new BasicArchetypeSearcher(store, parameters.Options);
+      archSearcher.Search();
       
+      store.Inner.StringIdStore
+      
+      return new BasicSearchResponse()
+      {
+         MaxResults = parameters.Options.MaxResults,
+         Results = archSearcher.Results,
+         Strings = 
+      };
    }
 }

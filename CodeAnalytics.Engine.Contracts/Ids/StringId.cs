@@ -20,6 +20,11 @@ public readonly struct StringId
       Store = store;
    }
 
+   public void Resolve(Dictionary<int, string> result)
+   {
+      result[Value] = ToString();
+   }
+
    public Result<string?, Error<string>> GetString()
    {
       if (Store is null)

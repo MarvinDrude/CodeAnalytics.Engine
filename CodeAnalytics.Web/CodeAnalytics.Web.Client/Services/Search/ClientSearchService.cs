@@ -1,5 +1,9 @@
-﻿using CodeAnalytics.Web.Common.Models.Search;
+﻿using System.Net.Http.Json;
+using CodeAnalytics.Engine.Serialization;
+using CodeAnalytics.Web.Common.Constants.Search;
+using CodeAnalytics.Web.Common.Models.Search;
 using CodeAnalytics.Web.Common.Responses.Search;
+using CodeAnalytics.Web.Common.Serialization.Search;
 using CodeAnalytics.Web.Common.Services.Search;
 
 namespace CodeAnalytics.Web.Client.Services.Search;
@@ -13,8 +17,12 @@ public sealed class ClientSearchService : ISearchService
       _client = client;
    }
    
-   public Task<BasicSearchResponse> GetBasicSearch(BasicSearchParameters parameters)
+   public async Task<BasicSearchResponse> GetBasicSearch(BasicSearchParameters parameters)
    {
-      throw new NotImplementedException();
+      const string url = SearchApiConstants.FullPathGetBasicSearch;
+      var response = await _client.PostAsJsonAsync(url, parameters);
+
+      var bytes = await response.Content.ReadAsByteArrayAsync();
+      return Serializer<BasicSearchResponse, BasicSearchResponseSerializer>.FromMemory(bytes);
    }
 }

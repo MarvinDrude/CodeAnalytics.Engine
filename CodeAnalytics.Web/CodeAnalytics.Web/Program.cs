@@ -1,11 +1,13 @@
 using System.Text.Json;
 using CodeAnalytics.Web.Client.Menus;
 using CodeAnalytics.Web.Common.Services.Data;
+using CodeAnalytics.Web.Common.Services.Search;
 using CodeAnalytics.Web.Common.Services.Source;
 using CodeAnalytics.Web.Components;
 using CodeAnalytics.Web.Endpoints;
 using CodeAnalytics.Web.Options;
 using CodeAnalytics.Web.Services.Data;
+using CodeAnalytics.Web.Services.Search;
 using CodeAnalytics.Web.Services.Source;
 using Microsoft.AspNetCore.Http.Json;
 
@@ -27,6 +29,7 @@ builder.Services.AddSingleton<ISourceTextService, ServerSourceTextService>();
 builder.Services.AddSingleton<IExplorerService, ServerExplorerService>();
 builder.Services.AddSingleton<IDataService, ServerDataService>();
 builder.Services.AddSingleton<IOccurrenceService, ServerOccurrenceService>();
+builder.Services.AddSingleton<ISearchService, ServerSearchService>();
 
 builder.Services.AddScoped<MenuService>();
 

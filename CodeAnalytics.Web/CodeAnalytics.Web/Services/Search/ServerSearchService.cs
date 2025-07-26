@@ -1,4 +1,5 @@
 ﻿using CodeAnalytics.Engine.Analyze.Searchers;
+using CodeAnalytics.Engine.StringResolvers.Archetypes;
 using CodeAnalytics.Web.Common.Models.Search;
 using CodeAnalytics.Web.Common.Responses.Search;
 using CodeAnalytics.Web.Common.Services.Data;
@@ -20,14 +21,15 @@ public sealed class ServerSearchService : ISearchService
       var store = await _dataService.GetAnalyzeStore();
       var archSearcher = new BasicArchetypeSearcher(store, parameters.Options);
       archSearcher.Search();
-      
-      store.Inner.StringIdStore
+
+      Dictionary<int, string> strings = [];
+      await DynamicArchetypeStringResolver.Resolve(strings, archSearcher.Results);
       
       return new BasicSearchResponse()
       {
          MaxResults = parameters.Options.MaxResults,
          Results = archSearcher.Results,
-         Strings = 
+         Strings = strings
       };
    }
 }

@@ -5,7 +5,7 @@ namespace CodeAnalytics.Engine.StringResolvers.Components.Types;
 
 public sealed class InterfaceStringResolver : IStringResolver<InterfaceComponent>
 {
-   public ValueTask Resolve(Dictionary<int, string> result, ref InterfaceComponent input)
+   public static ValueTask Resolve(Dictionary<int, string> result, InterfaceComponent input)
    {
       return ValueTask.CompletedTask;
    }

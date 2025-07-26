@@ -3,9 +3,9 @@ using CodeAnalytics.Engine.Contracts.StringResolvers;
 
 namespace CodeAnalytics.Engine.StringResolvers.Components.Members;
 
-public sealed class MethodStringResolver : IStringResolver<MethodComponent>
+public sealed class MemberStringResolver : IStringResolver<MemberComponent>
 {
-   public static ValueTask Resolve(Dictionary<int, string> result, MethodComponent input)
+   public static ValueTask Resolve(Dictionary<int, string> result, MemberComponent input)
    {
       return ValueTask.CompletedTask;
    }

@@ -6,7 +6,7 @@ namespace CodeAnalytics.Engine.StringResolvers.Components.Common;
 
 public sealed class SymbolStringResolver : IStringResolver<SymbolComponent>
 {
-   public ValueTask Resolve(Dictionary<int, string> result, ref SymbolComponent input)
+   public static ValueTask Resolve(Dictionary<int, string> result, SymbolComponent input)
    {
       input.Name.Resolve(result);
       input.MetadataName.Resolve(result);

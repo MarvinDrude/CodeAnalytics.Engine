@@ -1,7 +1,7 @@
 ﻿
 namespace CodeAnalytics.Engine.Contracts.StringResolvers;
 
-public interface IStringResolver<TType>
+public interface IStringResolver<in TType>
 {
-   public ValueTask Resolve(Dictionary<int, string> result, ref TType input);
+   public static abstract ValueTask Resolve(Dictionary<int, string> result, TType input);
 }

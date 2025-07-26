@@ -102,7 +102,9 @@ public sealed partial class ProjectCollector
       loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
       if (_options.IsProjectOnly)
       {
-         _options.Occurrences.Clean(store.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>());
+         _options.Occurrences.Clean(
+            store.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>(),
+            store);
       }
       
       LogNodesRan(nodesIterated, loadingTime);

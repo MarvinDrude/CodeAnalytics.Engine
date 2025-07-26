@@ -9,5 +9,6 @@ public sealed class SymbolMerger : IComponentMerger<SymbolComponent>
    {
       target.FileLocations.AddRange(source.FileLocations);
       target.Projects.AddRange(source.Projects);
+      target.Declarations.AddRange(source.Declarations);
    }
 }

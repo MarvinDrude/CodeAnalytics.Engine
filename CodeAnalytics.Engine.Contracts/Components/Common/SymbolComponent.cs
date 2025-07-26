@@ -18,6 +18,7 @@ public struct SymbolComponent
 
    public PooledSet<StringId> FileLocations = [];
    public PooledSet<StringId> Projects = [];
+   public PooledSet<FileLocationId> Declarations = [];
 
    public SymbolComponent()
    {
@@ -28,6 +29,7 @@ public struct SymbolComponent
    {
       FileLocations.Dispose();
       Projects.Dispose();
+      Declarations.Dispose();
    }
 
    public bool Equals(SymbolComponent other)

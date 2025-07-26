@@ -19,6 +19,7 @@ public sealed class SymbolSerializer : ISerializer<SymbolComponent>
       
       PooledSetSerializer<StringId, StringIdSerializer>.Serialize(ref writer, ref ob.FileLocations);
       PooledSetSerializer<StringId, StringIdSerializer>.Serialize(ref writer, ref ob.Projects);
+      PooledSetSerializer<FileLocationId, FileLocationIdSerializer>.Serialize(ref writer, ref ob.Declarations);
    }
 
    public static bool TryDeserialize(ref ByteReader reader, out SymbolComponent ob)
@@ -38,7 +39,8 @@ public sealed class SymbolSerializer : ISerializer<SymbolComponent>
       }
 
       if (!PooledSetSerializer<StringId, StringIdSerializer>.TryDeserialize(ref reader, out ob.FileLocations)
-          || !PooledSetSerializer<StringId, StringIdSerializer>.TryDeserialize(ref reader, out ob.Projects))
+          || !PooledSetSerializer<StringId, StringIdSerializer>.TryDeserialize(ref reader, out ob.Projects)
+          || !PooledSetSerializer<FileLocationId, FileLocationIdSerializer>.TryDeserialize(ref reader, out ob.Declarations))
       {
          return false;
       }

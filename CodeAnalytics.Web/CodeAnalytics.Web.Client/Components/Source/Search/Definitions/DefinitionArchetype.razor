@@ -7,11 +7,21 @@
       <div class="type" style="background-color: @(BaseColor + ")");">
          @Archetype.GetDisplayName()
       </div>
-      <div class="short-name">
+      <div class="short-name" title="@Strings[Archetype.SymbolComponent.Name]">
          <span>@Strings[Archetype.SymbolComponent.Name]</span>
       </div>
    </div>
-   <div class="path">@Strings[Archetype.SymbolComponent.FullPathName]</div>
+   <div class="path" title="@Strings[Archetype.SymbolComponent.FullPathName]">
+      @Strings[Archetype.SymbolComponent.FullPathName]
+   </div>
+   <div class="locations">
+      @foreach (var location in Archetype.SymbolComponent.Declarations)
+      {
+         <div class="location" title="@(Strings[location.FileId])">
+            @(Strings[location.FileId])<span>:@(location.SpanIndex)</span>
+         </div>
+      }
+   </div>
 </div>
 
 @code {

@@ -14,6 +14,11 @@ public sealed class SymbolStringResolver : IStringResolver<SymbolComponent>
 
       input.FileLocations.Resolve(result);
       input.Projects.Resolve(result);
+
+      foreach (var definition in input.Declarations)
+      {
+         definition.FileId.Resolve(result);
+      }
       
       return ValueTask.CompletedTask;
    }

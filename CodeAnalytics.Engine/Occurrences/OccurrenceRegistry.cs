@@ -55,13 +55,22 @@ public sealed class OccurrenceRegistry
       }
    }
 
-   public void Clean(MergableComponentPool<SymbolComponent, SymbolMerger> pool)
+   public void Clean(MergableComponentPool<SymbolComponent, SymbolMerger> pool, CollectorStore store)
    {
       foreach (var key in _byNodes.Keys.ToList())
       {
-         if (!pool.TryGetSlot(key, out _))
+         if (!pool.TryGetSlot(key, out var slot))
          {
             _byNodes.TryRemove(key, out _);
+            continue;
+         }
+
+         ref var component = ref pool.Entries.GetByReference(slot);
+         var occurrence = Get(key) ?? throw new NullReferenceException();
+
+         foreach (var declr in occurrence.Declarations)
+         {
+            component.Declarations.Add(new FileLocationId(declr.FileId, declr.SpanIndex));
          }
       }
    }

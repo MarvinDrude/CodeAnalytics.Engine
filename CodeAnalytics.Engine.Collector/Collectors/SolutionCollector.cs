@@ -66,7 +66,9 @@ public sealed partial class SolutionCollector : IAsyncDisposable
          }
       }
       
-      _options.Occurrences.Clean(result.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>());
+      _options.Occurrences.Clean(
+         result.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>(),
+         result);
       
       return result;
    }

@@ -1,0 +1,49 @@
+﻿@using CodeAnalytics.Web.Client.Models.Tags
+@using CodeAnalytics.Web.Client.Components.Common.Symbols
+
+<div class="tags">
+   @foreach (var tag in Tags)
+   {
+      <Tag @key="@tag.Value"
+           Text="@tag.Name"
+           IsActive="@tag.IsActive"
+           Value="@tag.Value"
+           Clicked="@OnTagClicked">
+         <IconRender>
+            @if (tag.IsActive)
+            {
+               <Icon Name="check"/>
+            }
+         </IconRender>
+      </Tag>
+   }
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required List<FilterTagModel> Tags { get; set; }
+   
+   [Parameter]
+   public EventCallback<List<FilterTagModel>> SelectionChanged { get; set; }
+
+   private async Task OnTagClicked(Tag tag)
+   {
+      List<FilterTagModel> active = [];
+
+      foreach (var model in Tags)
+      {
+         if (model.Value == tag.Value)
+         {
+            model.IsActive = !model.IsActive;
+         }
+
+         if (model.IsActive)
+         {
+            active.Add(model);
+         }
+      }
+
+      await SelectionChanged.InvokeAsync(active);
+   }
+}

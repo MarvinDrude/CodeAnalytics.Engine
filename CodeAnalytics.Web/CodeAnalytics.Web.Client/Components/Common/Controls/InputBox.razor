@@ -19,6 +19,12 @@
    private ElementReference? _inputRef;
    private string? _value;
 
+   private Task OnInput(ChangeEventArgs ev)
+   {
+      _value = ev.Value?.ToString();
+      return Task.CompletedTask;
+   }
+   
    private async Task OnKeyUp(KeyboardEventArgs ev)
    {
       await KeyUp.InvokeAsync(_value ?? string.Empty);

@@ -1,11 +1,6 @@
-﻿@using CodeAnalytics.Engine.Contracts.Analyze.Searchers
-@using CodeAnalytics.Web.Client.Components.Menus.Bars
+﻿@using CodeAnalytics.Web.Client.Components.Menus.Bars
 @using CodeAnalytics.Web.Client.Models.Search
 @using CodeAnalytics.Web.Client.Components.Common.Controls
-@using CodeAnalytics.Web.Common.Models.Search
-@using CodeAnalytics.Web.Common.Services.Search
-
-@inject ISearchService SearchService
 
 <div class="search" @onclick:stopPropagation="@true">
    <SimpleMenuBar MenuId="@MenuId"></SimpleMenuBar>
@@ -27,6 +22,19 @@
          </a>
       </div>
    </div>
+   <div class="frames">
+      @switch (_type)
+      {
+         case SearchType.Definitions:
+            <DefinitionSearch SearchText="@_searchText"></DefinitionSearch>
+            break;
+         case SearchType.Files:
+            break;
+         default:
+            <div></div>
+            break;
+      }
+   </div>
 </div>
 
 @code {
@@ -35,6 +43,7 @@
    public ulong MenuId { get; set; }
 
    private SearchType _type = SearchType.Definitions;
+   private string? _searchText;
 
    private void OnSelectType(SearchType type)
    {
@@ -43,23 +52,7 @@
 
    private Task OnSearchKeyUp(string text)
    {
-      return _type switch
-      {
-         SearchType.Definitions => OnBasicSearch(text),
-         _ => Task.CompletedTask
-      };
-   }
-
-   private async Task OnBasicSearch(string text)
-   {
-      var response = await SearchService.GetBasicSearch(new BasicSearchParameters()
-      {
-         Options = new BaseSearchOptions()
-         {
-            SearchText = text
-         }
-      });
-
-      _ = "";
+      _searchText = text;
+      return Task.CompletedTask;
    }
 }

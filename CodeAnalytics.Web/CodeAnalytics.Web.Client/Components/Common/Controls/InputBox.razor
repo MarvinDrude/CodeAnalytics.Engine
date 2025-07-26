@@ -3,11 +3,25 @@
        spellcheck="false"
        autocorrect="off"
        autocapitalize="off"
-       placeholder="@PlaceholderText"/>
+       placeholder="@PlaceholderText"
+       @onkeyup="OnKeyUp"
+       @bind="_value"
+       @ref="@_inputRef"/>
 
 @code {
-
+   
    [Parameter] 
    public string PlaceholderText { get; set; } = "Search...";
+   
+   [Parameter]
+   public EventCallback<string> KeyUp { get; set; }
 
+   private ElementReference? _inputRef;
+   private string? _value;
+
+   private async Task OnKeyUp(KeyboardEventArgs ev)
+   {
+      await KeyUp.InvokeAsync(_value ?? string.Empty);
+   }
+   
 }

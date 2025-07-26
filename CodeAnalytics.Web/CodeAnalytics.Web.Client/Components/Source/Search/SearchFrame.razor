@@ -1,6 +1,11 @@
-﻿@using CodeAnalytics.Web.Client.Components.Menus.Bars
+﻿@using CodeAnalytics.Engine.Contracts.Analyze.Searchers
+@using CodeAnalytics.Web.Client.Components.Menus.Bars
 @using CodeAnalytics.Web.Client.Models.Search
 @using CodeAnalytics.Web.Client.Components.Common.Controls
+@using CodeAnalytics.Web.Common.Models.Search
+@using CodeAnalytics.Web.Common.Services.Search
+
+@inject ISearchService SearchService
 
 <div class="search" @onclick:stopPropagation="@true">
    <SimpleMenuBar MenuId="@MenuId"></SimpleMenuBar>
@@ -8,7 +13,7 @@
       <div class="search-wrapper">
          <div class="header">Mode</div>
          <div class="search-text">
-            <InputBox PlaceholderText="Search..." />
+            <InputBox PlaceholderText="Search..." KeyUp="@OnSearchKeyUp" />
          </div>
       </div>
       <div class="modes">
@@ -35,5 +40,26 @@
    {
       _type = type;
    }
-   
+
+   private Task OnSearchKeyUp(string text)
+   {
+      return _type switch
+      {
+         SearchType.Definitions => OnBasicSearch(text),
+         _ => Task.CompletedTask
+      };
+   }
+
+   private async Task OnBasicSearch(string text)
+   {
+      var response = await SearchService.GetBasicSearch(new BasicSearchParameters()
+      {
+         Options = new BaseSearchOptions()
+         {
+            SearchText = text
+         }
+      });
+
+      _ = "";
+   }
 }

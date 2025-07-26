@@ -10,3 +10,9 @@ input {
     border-radius: 4px;
     background-color: rgba(50,50,50,0.1);
 }
+
+input:focus,
+input:not(:placeholder-shown) {
+    background-color: var(--main-color-5);
+    border-color: var(--main-color-30);
+}

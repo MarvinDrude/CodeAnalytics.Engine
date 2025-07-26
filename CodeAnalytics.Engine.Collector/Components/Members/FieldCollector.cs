@@ -11,6 +11,17 @@ public sealed class FieldCollector
    public static bool TryParse(
       IFieldSymbol symbol, CollectContext context, out FieldComponent component)
    {
+      if (symbol is
+          {
+             IsImplicitlyDeclared: true, 
+             DeclaredAccessibility: Accessibility.Private, 
+             AssociatedSymbol: IPropertySymbol
+          })
+      {
+         component = default; // auto property backing field ignored
+         return false;
+      }
+      
       var store = context.Store;
       component = new FieldComponent()
       {

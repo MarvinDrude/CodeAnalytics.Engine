@@ -1,8 +1,17 @@
 ﻿@using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces
+@using CodeAnalytics.Engine.Extensions.Internal
 @using CodeAnalytics.Engine.Utils
 
 <div class="definition" style="background-color: @(BaseColor + "-5)"); border-color: @(BaseColor + "-20)")">
-   @Strings[Archetype.SymbolComponent.FullPathName]
+   <div class="header">
+      <div class="type" style="background-color: @(BaseColor + ")");">
+         @Archetype.GetDisplayName()
+      </div>
+      <div class="short-name">
+         <span>@Strings[Archetype.SymbolComponent.Name]</span>
+      </div>
+   </div>
+   <div class="path">@Strings[Archetype.SymbolComponent.FullPathName]</div>
 </div>
 
 @code {

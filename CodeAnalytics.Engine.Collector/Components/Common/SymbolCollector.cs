@@ -1,5 +1,6 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Components.Interfaces;
+using CodeAnalytics.Engine.Collector.Constants;
 using CodeAnalytics.Engine.Collector.Extensions;
 using CodeAnalytics.Engine.Contracts.Components.Common;
 using Microsoft.CodeAnalysis;
@@ -16,9 +17,9 @@ public sealed class SymbolCollector
       component = new SymbolComponent()
       {
          Id = store.NodeIdStore.GetOrAdd(symbol),
-         Name = store.StringIdStore.GetOrAdd(symbol.Name),
+         Name = store.StringIdStore.GetOrAdd(symbol.ToDisplayString(SymbolDisplayFormats.NameWithGenerics)),
          MetadataName = store.StringIdStore.GetOrAdd(symbol.MetadataName),
-         FullPathName = store.StringIdStore.GetOrAdd(symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+         FullPathName = store.StringIdStore.GetOrAdd(GetFullPathName(symbol))
       };
 
       var project = store.StringIdStore.GetOrAdd(context.Options.RelativePath);
@@ -39,5 +40,16 @@ public sealed class SymbolCollector
       }
       
       return true;
+   }
+
+   private static string GetFullPathName(ISymbol symbol)
+   {
+      return symbol switch
+      {
+         IMethodSymbol or IPropertySymbol or IFieldSymbol => 
+            GetFullPathName(symbol.ContainingType.OriginalDefinition) 
+            + "." + symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+         _ => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+      };
    }
 }

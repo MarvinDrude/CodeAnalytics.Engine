@@ -11,6 +11,7 @@ public struct EnumArchetype
    : IEquatable<EnumArchetype>, IArchetype
 {
    public NodeId NodeId => Symbol.Id;
+   public SymbolComponent SymbolComponent => Symbol;
    
    public SymbolComponent Symbol;
    public EnumComponent Enum;

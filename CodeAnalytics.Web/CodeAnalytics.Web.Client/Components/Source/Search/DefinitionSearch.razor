@@ -1,11 +1,13 @@
 ﻿@using CodeAnalytics.Engine.Contracts.Analyze.Searchers
 @using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces
+@using CodeAnalytics.Engine.Contracts.Archetypes.Types
 @using CodeAnalytics.Web.Common.Models.Search
 @using CodeAnalytics.Web.Common.Services.Search
 @using CodeAnalytics.Web.Client.Components.Common.Controls
 @using CodeAnalytics.Web.Client.Models.Tags
 @using CodeAnalytics.Web.Common.Responses.Search
 @using CodeAnalytics.Web.Common.Threading
+@using CodeAnalytics.Web.Client.Components.Source.Search.Definitions
 
 @implements IDisposable
 
@@ -20,7 +22,7 @@
    <div class="results">
       @foreach (var archetype in Archetypes)
       {
-         
+         <DefinitionArchetype Archetype="@archetype" Strings="@Strings" />
       }
    </div>
 </div>
@@ -37,6 +39,7 @@
          _searchText = value;
          if (_lastSearchText != _searchText)
          {
+            _lastSearchText = _searchText;
             _ = InvokeAsync(OnBasicSearch);
          }
       } 

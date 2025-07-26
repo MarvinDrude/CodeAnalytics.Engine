@@ -1,6 +1,7 @@
 ﻿
 .search {
-    display: block;
+    display: flex;
+    flex-direction: column;
     max-width: min(1420px, calc(100svw - 40px));
     max-height: min(890px, calc(100svh - 40px));
     background-color: var(--background-color);
@@ -8,6 +9,13 @@
     width: 3000px;
     height: 3000px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search .frames {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
 }
 
 .mode .search-wrapper {

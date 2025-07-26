@@ -11,6 +11,7 @@ public struct InterfaceArchetype
    : IEquatable<InterfaceArchetype>, IArchetype
 {
    public NodeId NodeId => Symbol.Id;
+   public SymbolComponent SymbolComponent => Symbol;
    
    public SymbolComponent Symbol;
    public TypeComponent Type;

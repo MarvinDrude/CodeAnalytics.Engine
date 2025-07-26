@@ -1,0 +1,18 @@
+﻿@using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces
+@using CodeAnalytics.Engine.Utils
+
+<div class="definition" style="background-color: @(BaseColor + "-5)"); border-color: @(BaseColor + "-20)")">
+   @Strings[Archetype.SymbolComponent.FullPathName]
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required IArchetype Archetype { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required Dictionary<int, string> Strings { get; set; }
+
+   private string BaseColor => ColorUtils.GetBaseColorVariableName(Archetype);
+
+}

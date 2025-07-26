@@ -11,6 +11,7 @@ public struct PropertyArchetype
    : IEquatable<PropertyArchetype>, IArchetype
 {
    public NodeId NodeId => Symbol.Id;
+   public SymbolComponent SymbolComponent => Symbol;
    
    public SymbolComponent Symbol;
    public MemberComponent Member;

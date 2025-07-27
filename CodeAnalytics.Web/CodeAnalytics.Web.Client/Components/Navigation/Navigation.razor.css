@@ -6,7 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 20px 0 40px;
 }
 
 nav .spacer {
@@ -64,7 +64,7 @@ nav .mode span {
 
 nav .logo {
     height: var(--nav-height);
-    padding: 0 20px 0 0;
+    padding: 0 40px 0 0;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -45,7 +45,7 @@
       } 
    }
 
-   private string? _lastSearchText;
+   private string? _lastSearchText = string.Empty;
    private readonly Debouncer _debouncer = new ();
 
    private List<IArchetype> Archetypes => _response?.Results ?? [];

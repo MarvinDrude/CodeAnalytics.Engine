@@ -1,4 +1,6 @@
-﻿using CodeAnalytics.Web.Common.Models.Search;
+﻿using System.Net.Http.Json;
+using CodeAnalytics.Web.Common.Constants.Search;
+using CodeAnalytics.Web.Common.Models.Search;
 using CodeAnalytics.Web.Common.Services.Search;
 
 namespace CodeAnalytics.Web.Client.Services.Search;
@@ -12,8 +14,12 @@ public sealed class ClientFileSearchService : IFileSearchService
       _client = client;
    }
    
-   public Task<List<ExplorerTreeItemSearchModel>> GetFileSearch(FileSearchParameters parameters)
+   public async Task<List<ExplorerTreeItemSearchModel>> GetFileSearch(FileSearchParameters parameters)
    {
-      throw new NotImplementedException();
+      const string url = SearchApiConstants.FullPathGetFileSearch;
+      var response = await _client.PostAsJsonAsync(url, parameters);
+
+      return await response.Content.ReadFromJsonAsync<List<ExplorerTreeItemSearchModel>>()
+         ?? [];
    }
 }

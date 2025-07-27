@@ -67,7 +67,7 @@ public sealed class ServerExplorerService : IExplorerService
          result.Add(new ExplorerFlatTreeItem(
             item.Type,
             item.Name,
-            stack.ToArray()));
+            stack.Reverse().ToArray()));
          
          stack.Push(item.Name);
          

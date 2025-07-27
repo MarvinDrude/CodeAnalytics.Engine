@@ -61,7 +61,9 @@
          {
             Options = GetOptions(),
          });
+         
          _response = response;
+         await InvokeAsync(StateHasChanged);
       });
    }
 

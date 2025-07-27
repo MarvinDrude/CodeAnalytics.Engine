@@ -214,7 +214,8 @@ public sealed class TextTokenizer
          or MethodDeclarationSyntax
          or FieldDeclarationSyntax
          or PropertyDeclarationSyntax
-         or VariableDeclaratorSyntax;
+         or VariableDeclaratorSyntax
+         or ConstructorDeclarationSyntax;
 
       _context.Store.Occurrences.AddOccurrence(
          ref span, lineSpans, _context.ProjectId, 

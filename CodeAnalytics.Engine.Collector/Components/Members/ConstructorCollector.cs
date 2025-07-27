@@ -16,6 +16,12 @@ public sealed class ConstructorCollector
    public static bool TryParse(
       IMethodSymbol symbol, CollectContext context, out ConstructorComponent component)
    {
+      if (symbol.IsImplicitlyDeclared)
+      {
+         component = default; // ignore default constructors
+         return false;
+      }
+      
       var store = context.Store;
       component = new ConstructorComponent()
       {

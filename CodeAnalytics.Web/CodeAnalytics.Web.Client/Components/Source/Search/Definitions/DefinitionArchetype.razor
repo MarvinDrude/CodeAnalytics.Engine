@@ -1,6 +1,12 @@
 ﻿@using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces
+@using CodeAnalytics.Engine.Contracts.Ids
 @using CodeAnalytics.Engine.Extensions.Internal
 @using CodeAnalytics.Engine.Utils
+@using CodeAnalytics.Web.Client.Menus
+@using CodeAnalytics.Web.Client.Models.Search
+
+@inject NavigationManager NavigationManager
+@inject MenuService MenuService
 
 <div class="definition" style="background-color: @(BaseColor + "-5)"); border-color: @(BaseColor + "-20)")">
    <div class="header">
@@ -17,7 +23,7 @@
    <div class="locations">
       @foreach (var location in Archetype.SymbolComponent.Declarations)
       {
-         <div class="location" title="@(Strings[location.FileId])">
+         <div class="location" title="@(Strings[location.FileId])" @onclick="@(() => OnLocationClick(location))">
             @(Strings[location.FileId])<span>:@(location.SpanIndex)</span>
          </div>
       }
@@ -34,4 +40,10 @@
 
    private string BaseColor => ColorUtils.GetBaseColorVariableName(Archetype);
 
+   private void OnLocationClick(FileLocationId file)
+   {
+      NavigationManager.NavigateTo($"/source/{Strings[file.FileId].Replace('\\', '/').TrimStart('/')}?symbol={file.SpanIndex}");
+      MenuService.SetResult<SearchResult>(null);
+   }
+   
 }

@@ -31,6 +31,23 @@ public sealed class MenuService
       return info.Tcs.Task;
    }
 
+   public bool SetResult<TResult>(TResult? result)
+      where TResult : class
+   {
+      if (!_openMenus.TryPop(out var info))
+      {
+         return false;
+      }
+      
+      if (info is IMenuComponentInfo<TResult> casted)
+      {
+         casted.Tcs.SetResult(result);
+      }
+      
+      OnChange?.Invoke();
+      return true;
+   }
+
    public bool SetResult<TResult>(ulong menuId, TResult? result)
       where TResult : class
    {

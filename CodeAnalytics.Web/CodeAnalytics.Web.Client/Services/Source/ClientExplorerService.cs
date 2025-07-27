@@ -19,4 +19,10 @@ public sealed class ClientExplorerService : IExplorerService
       var result = await _client.GetFromJsonAsync<List<ExplorerTreeItem>>(SourceApiConstants.FullPathGetExplorerTreeItems);
       return result ?? [];
    }
+
+   public Task<ExplorerFlatTreeItem[]> GetFlatTreeItems()
+   {
+      // not supported in client side directly
+      throw new NotImplementedException();
+   }
 }

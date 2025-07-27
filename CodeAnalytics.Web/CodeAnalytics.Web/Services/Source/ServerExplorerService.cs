@@ -13,6 +13,7 @@ public sealed class ServerExplorerService : IExplorerService
 
    private bool _initialized = false;
    private List<ExplorerTreeItem> _treeItems = [];
+   private ExplorerFlatTreeItem[] _flatTreeItems = [];
    
    public ServerExplorerService(IOptionsMonitor<CodeOptions> optionsMonitor)
    {
@@ -23,7 +24,13 @@ public sealed class ServerExplorerService : IExplorerService
    public async Task<List<ExplorerTreeItem>> GetExplorerTreeItems()
    {
       await EnsureInitialized();
-      return ExplorerTreeItem.Clone(_treeItems);
+      return _treeItems;
+   }
+
+   public async Task<ExplorerFlatTreeItem[]> GetFlatTreeItems()
+   {
+      await EnsureInitialized();
+      return _flatTreeItems;
    }
 
    private ValueTask EnsureInitialized()
@@ -37,11 +44,42 @@ public sealed class ServerExplorerService : IExplorerService
    {
       _initialized = false;
       _treeItems = Traverse(Options.DataFolderPath);
+      _flatTreeItems = FlattenItems(_treeItems);
       
       _initialized = true;
       return Task.CompletedTask;
    }
 
+   private ExplorerFlatTreeItem[] FlattenItems(List<ExplorerTreeItem> items)
+   {
+      var result = new List<ExplorerFlatTreeItem>(items.Count);
+      Stack<string> stack = [];
+
+      foreach (var item in items)
+      {
+         TraverseLocal(item);
+      }
+
+      return [.. result];
+
+      void TraverseLocal(ExplorerTreeItem item)
+      {
+         result.Add(new ExplorerFlatTreeItem(
+            item.Type,
+            item.Name,
+            stack.ToArray()));
+         
+         stack.Push(item.Name);
+         
+         foreach (var child in item.Children)
+         {
+            TraverseLocal(child);
+         }
+
+         stack.Pop();
+      }
+   }
+   
    private List<ExplorerTreeItem> Traverse(string directory)
    {
       List<ExplorerTreeItem> result = [];

@@ -19,6 +19,7 @@ builder.Services.AddScoped<ISourceTextService, ClientSourceTextService>();
 builder.Services.AddScoped<IExplorerService, ClientExplorerService>();
 builder.Services.AddScoped<IOccurrenceService, ClientOccurrenceService>();
 builder.Services.AddScoped<ISearchService, ClientSearchService>();
+builder.Services.AddScoped<IFileSearchService, ClientFileSearchService>();
 builder.Services.AddScoped<MenuService>();
 
 builder.Services.AddScoped(_ => new HttpClient

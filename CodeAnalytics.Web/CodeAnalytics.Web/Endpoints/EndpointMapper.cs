@@ -24,5 +24,6 @@ public static class EndpointMapper
       var search = endpoints.MapGroup(SearchApiConstants.BasePath);
       
       GetBasicSearchEndpoint.Map(search);
+      GetFileSearchEndpoint.Map(search);
    }
 }

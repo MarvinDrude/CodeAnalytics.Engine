@@ -30,6 +30,7 @@ builder.Services.AddSingleton<IExplorerService, ServerExplorerService>();
 builder.Services.AddSingleton<IDataService, ServerDataService>();
 builder.Services.AddSingleton<IOccurrenceService, ServerOccurrenceService>();
 builder.Services.AddSingleton<ISearchService, ServerSearchService>();
+builder.Services.AddSingleton<IFileSearchService, ServerFileSearchService>();
 
 builder.Services.AddScoped<MenuService>();
 

@@ -6,4 +6,7 @@ public static class SearchApiConstants
    
    public const string PathGetBasicSearch = "/GetBasicSearch";
    public const string FullPathGetBasicSearch = BasePath + PathGetBasicSearch;
+   
+   public const string PathGetFileSearch = "/GetFileSearch";
+   public const string FullPathGetFileSearch = BasePath + PathGetFileSearch;
 }

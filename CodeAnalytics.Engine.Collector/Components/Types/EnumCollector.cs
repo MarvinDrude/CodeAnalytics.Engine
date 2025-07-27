@@ -1,7 +1,7 @@
-﻿using CodeAnalytics.Engine.Collector.Collectors.Contexts;
+﻿using CodeAnalytics.Engine.Collector.Archetypes.Types;
+using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Components.Interfaces;
 using CodeAnalytics.Engine.Contracts.Components.Types;
-using CodeAnalytics.Engine.Merges.Types;
 using Microsoft.CodeAnalysis;
 
 namespace CodeAnalytics.Engine.Collector.Components.Types;
@@ -34,10 +34,9 @@ public sealed class EnumCollector
          component.ValueIds.Add(store.NodeIdStore.GetOrAdd(definition));
 
          if (context.AddSubComponentsImmediately 
-             && EnumValueCollector.TryParse(definition, context, out var valueComponent))
+             && EnumValueArchetypeCollector.TryParse(definition, context, out var valueArchetype))
          {
-            var pool = context.Store.ComponentStore.GetOrCreatePool<EnumValueComponent, EnumValueMerger>();
-            pool.Add(ref valueComponent);
+            EnumValueArchetypeCollector.AddArchetype(context.Store, ref valueArchetype);
          }
       }
       

@@ -15,6 +15,7 @@ public sealed class BasicArchetypeSearcher : BaseArchetypeSearcher
 
    protected override bool Predicate(ref ClassArchetype archetype) => Predicate(ref archetype.Symbol);
    protected override bool Predicate(ref EnumArchetype archetype) => Predicate(ref archetype.Symbol);
+   protected override bool Predicate(ref EnumValueArchetype archetype) => Predicate(ref archetype.Symbol);
    protected override bool Predicate(ref InterfaceArchetype archetype) => Predicate(ref archetype.Symbol);
    protected override bool Predicate(ref StructArchetype archetype) => Predicate(ref archetype.Symbol);
    

@@ -73,6 +73,14 @@
     --enum-color-10: rgba(215,186,125,0.1);
     --enum-color-5: rgba(215,186,125,0.05);
 
+    --enum-value-color: rgba(215,186,125,1.0);
+    --enum-value-color-50: rgba(215,186,125,0.5);
+    --enum-value-color-40: rgba(215,186,125,0.4);
+    --enum-value-color-30: rgba(215,186,125,0.3);
+    --enum-value-color-20: rgba(215,186,125,0.2);
+    --enum-value-color-10: rgba(215,186,125,0.1);
+    --enum-value-color-5: rgba(215,186,125,0.05);
+
     --property-color: rgba(156,220,254,1.0);
     --property-color-50: rgba(156,220,254,0.5);
     --property-color-40: rgba(156,220,254,0.4);

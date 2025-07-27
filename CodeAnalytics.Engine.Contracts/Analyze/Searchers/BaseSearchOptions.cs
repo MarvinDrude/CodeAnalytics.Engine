@@ -12,6 +12,7 @@ public class BaseSearchOptions
    public bool Structs { get; set; } = true;
    public bool Interfaces  { get; set; } = true;
    public bool Enums { get; set; } = true;
+   public bool EnumValues { get; set; } = true;
    public bool Classes  { get; set; } = true;
    
    public bool Constructors  { get; set; } = true;

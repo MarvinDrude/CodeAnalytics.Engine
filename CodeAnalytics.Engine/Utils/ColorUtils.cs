@@ -13,6 +13,7 @@ public static class ColorUtils
          ClassArchetype => "var(--class-color",
          StructArchetype => "var(--struct-color",
          EnumArchetype => "var(--enum-color",
+         EnumValueArchetype => "var(--enum-value-color",
          InterfaceArchetype => "var(--interface-color",
          
          MethodArchetype => "var(--method-color",

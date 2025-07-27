@@ -11,6 +11,7 @@ public sealed class AnalyzeStore : IDisposable
 {
    public ClassArchetypeChunk ClassChunk { get; }
    public EnumArchetypeChunk EnumChunk { get; }
+   public EnumValueArchetypeChunk EnumValueChunk { get; }
    public StructArchetypeChunk StructChunk { get; }
    public InterfaceArchetypeChunk InterfaceChunk { get; }
    
@@ -29,6 +30,7 @@ public sealed class AnalyzeStore : IDisposable
 
       ClassChunk = new ClassArchetypeChunk(inner.ComponentStore);
       EnumChunk = new EnumArchetypeChunk(inner.ComponentStore);
+      EnumValueChunk = new EnumValueArchetypeChunk(inner.ComponentStore);
       StructChunk = new StructArchetypeChunk(inner.ComponentStore);
       InterfaceChunk = new InterfaceArchetypeChunk(inner.ComponentStore);
       
@@ -44,6 +46,7 @@ public sealed class AnalyzeStore : IDisposable
    {
       InitContainingDeclaration(ref ClassChunk.Entries);
       InitContainingDeclaration(ref EnumChunk.Entries);
+      InitContainingDeclaration(ref EnumValueChunk.Entries);
       InitContainingDeclaration(ref StructChunk.Entries);
       InitContainingDeclaration(ref InterfaceChunk.Entries);
       

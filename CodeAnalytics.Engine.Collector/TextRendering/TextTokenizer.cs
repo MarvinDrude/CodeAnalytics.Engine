@@ -135,6 +135,7 @@ public sealed class TextTokenizer
          case ClassificationTypeNames.RecordStructName:
          case ClassificationTypeNames.InterfaceName:
          case ClassificationTypeNames.EnumName:
+         case ClassificationTypeNames.EnumMemberName:
          case ClassificationTypeNames.MethodName:
          case ClassificationTypeNames.ExtensionMethodName:
          case ClassificationTypeNames.FieldName:
@@ -215,7 +216,8 @@ public sealed class TextTokenizer
          or FieldDeclarationSyntax
          or PropertyDeclarationSyntax
          or VariableDeclaratorSyntax
-         or ConstructorDeclarationSyntax;
+         or ConstructorDeclarationSyntax
+         or EnumMemberDeclarationSyntax;
 
       _context.Store.Occurrences.AddOccurrence(
          ref span, lineSpans, _context.ProjectId, 

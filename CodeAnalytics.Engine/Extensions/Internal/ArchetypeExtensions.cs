@@ -13,6 +13,7 @@ public static class ArchetypeExtensions
          ClassArchetype => "Class",
          StructArchetype => "Struct",
          EnumArchetype => "Enum",
+         EnumValueArchetype => "Enum Value",
          InterfaceArchetype => "Interface",
          
          MethodArchetype => "Method",

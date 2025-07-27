@@ -27,6 +27,8 @@ public abstract class BaseArchetypeSearcher
       if (CheckMaxResults()) return;
       if (_options.Enums) SearchArchetypes(ref _store.EnumChunk.Entries, Predicate);
       if (CheckMaxResults()) return;
+      if (_options.EnumValues) SearchArchetypes(ref _store.EnumValueChunk.Entries, Predicate);
+      if (CheckMaxResults()) return;
       if (_options.Interfaces) SearchArchetypes(ref _store.InterfaceChunk.Entries, Predicate);
       if (CheckMaxResults()) return;
       if (_options.Structs) SearchArchetypes(ref _store.StructChunk.Entries, Predicate);
@@ -71,6 +73,7 @@ public abstract class BaseArchetypeSearcher
 
    protected virtual bool Predicate(ref ClassArchetype archetype) => false;
    protected virtual bool Predicate(ref EnumArchetype archetype) => false;
+   protected virtual bool Predicate(ref EnumValueArchetype archetype) => false;
    protected virtual bool Predicate(ref InterfaceArchetype archetype) => false;
    protected virtual bool Predicate(ref StructArchetype archetype) => false;
    

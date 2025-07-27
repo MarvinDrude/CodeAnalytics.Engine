@@ -55,6 +55,10 @@ public sealed class DynamicArchetypeSerializer : ISerializer<List<IArchetype>>
                writer.WriteLittleEndian(ArchetypeKind.Enum);
                EnumArchetypeSerializer.Serialize(ref writer, ref enu);
                break;
+            case EnumValueArchetype enumValue:
+               writer.WriteLittleEndian(ArchetypeKind.EnumValue);
+               EnumValueArchetypeSerializer.Serialize(ref writer, ref enumValue);
+               break;
          }
       }
    }
@@ -78,6 +82,7 @@ public sealed class DynamicArchetypeSerializer : ISerializer<List<IArchetype>>
             ArchetypeKind.Struct => StructArchetypeSerializer.TryDeserialize(ref reader, out var constr) && AddRet(result, constr),
             ArchetypeKind.Interface => InterfaceArchetypeSerializer.TryDeserialize(ref reader, out var constr) && AddRet(result, constr),
             ArchetypeKind.Enum => EnumArchetypeSerializer.TryDeserialize(ref reader, out var constr) && AddRet(result, constr),
+            ArchetypeKind.EnumValue => EnumValueArchetypeSerializer.TryDeserialize(ref reader, out var constr) && AddRet(result, constr),
             _ => false,
          };
 

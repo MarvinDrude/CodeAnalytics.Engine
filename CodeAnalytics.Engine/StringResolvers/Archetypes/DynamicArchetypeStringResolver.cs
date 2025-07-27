@@ -38,6 +38,9 @@ public sealed class DynamicArchetypeStringResolver : IStringResolver<List<IArche
             case EnumArchetype arch:
                await EnumArchetypeStringResolver.Resolve(result, arch);
                break;
+            case EnumValueArchetype arch:
+               await EnumValueArchetypeStringResolver.Resolve(result, arch);
+               break;
             case StructArchetype arch:
                await StructArchetypeStringResolver.Resolve(result, arch);
                break;

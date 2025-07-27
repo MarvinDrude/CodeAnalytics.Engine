@@ -32,9 +32,17 @@
    
    [Parameter, EditorRequired]
    public required OccurrenceState OccurrenceState { get; set; }
-   
+
+   private ProjectOccurrence? _project;
    [Parameter, EditorRequired]
-   public required ProjectOccurrence Project { get; set; }
+   public required ProjectOccurrence Project { 
+      get => _project ?? new ProjectOccurrence();
+      set
+      {
+         _project = value;
+         _isExpanded = true;
+      } 
+   }
 
    private bool _isExpanded = true;
 

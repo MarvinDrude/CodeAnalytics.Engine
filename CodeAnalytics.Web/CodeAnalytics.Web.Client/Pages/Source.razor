@@ -5,9 +5,12 @@
 @using CodeAnalytics.Web.Client.Components.Explorer
 @using CodeAnalytics.Web.Common.Models.Occurrences
 @using CodeAnalytics.Web.Client.Components.Source.Bar
+@using CodeAnalytics.Web.Client.Models.Search
+@using CodeAnalytics.Web.Common.Enums.Explorer
 
 @inject ISourceTextService SourceTextService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <PageTitle>@System.IO.Path.GetFileName(Path.Replace('\\', '/'))</PageTitle>
 
@@ -18,7 +21,7 @@
             <LeftBar @ref="@_leftBarRef" Occurrence="@Occurrence"></LeftBar>
          </div>
          <div class="right">
-            <CodeBar></CodeBar>
+            <CodeBar FileSearched="@OnFileSearched"></CodeBar>
             <div class="right-content">
                @if (_isError)
                {
@@ -91,6 +94,32 @@
          NavigationManager.NavigateTo($"/source/{path.TrimStart('/')}?symbol={first.SpanIndex}");
       }
       
+      return Task.CompletedTask;
+   }
+
+   private Task OnFileSearched(FileSearchResult result)
+   {
+      var path = string.Join('/', result.Item.Path);
+      var fullPath = path + "/" + result.Item.Item.Name;
+      
+      _leftBarRef?.SetTab(false);
+      
+      switch (result.Item.Item.Type)
+      {
+         case ExplorerTreeItemType.CsFile:
+         {
+            NavigationManager.NavigateTo($"/source/{fullPath}");
+            break;
+         }
+         case ExplorerTreeItemType.Folder:
+         {
+            _leftBarRef?.SetCurrentlyActiveFile(fullPath);
+            break;
+         }
+         default:
+            throw new ArgumentOutOfRangeException();
+      }
+
       return Task.CompletedTask;
    }
 

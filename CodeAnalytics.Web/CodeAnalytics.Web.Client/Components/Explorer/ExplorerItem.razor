@@ -1,10 +1,12 @@
-﻿@using CodeAnalytics.Web.Common.Enums.Explorer
+﻿@using System.ComponentModel
+@using CodeAnalytics.Web.Common.Enums.Explorer
 @using CodeAnalytics.Web.Common.Models.Explorer
 @using CodeAnalytics.Web.Client.Components.Common.Symbols
 
 @inject NavigationManager Navigation
+@inject IJSRuntime JsRuntime
 
-<div class="entry@(Item.IsSelected ? " selected" : "")" @onclick="OnClickHeader">
+<div @ref="@_entryRef" class="entry@(Item.IsSelected ? " selected" : "")" @onclick="OnClickHeader">
    <div class="collapse">
       @if (Item.Type is ExplorerTreeItemType.Folder)
       {
@@ -34,7 +36,7 @@
    <div class="increased">
       @foreach (var child in Item.Children)
       {
-         <ExplorerItem Item="@child"></ExplorerItem>
+         <ExplorerItem Item="@child" ActivePath="@ActivePath"></ExplorerItem>
       }      
    </div>
 }
@@ -43,6 +45,26 @@
    
    [Parameter, EditorRequired]
    public required ExplorerTreeItem Item { get; set; }
+
+   private string? _activePath;
+   [Parameter]
+   public string? ActivePath
+   {
+      get => _activePath;
+      set
+      {
+         if (value != _activePath)
+         {
+            _activePath = value;
+            if (_activePath == Item.Path.Replace("\\", "/"))
+            {
+               _ = InvokeAsync(ScrollToView);
+            }
+         }
+      }
+   }
+
+   private ElementReference? _entryRef;
 
    public void OnClickHeader()
    {
@@ -55,6 +77,11 @@
       Navigation.NavigateTo($"/source/{Item.Path}");
    }
 
+   private async Task ScrollToView()
+   {
+      await JsRuntime.InvokeVoidAsync("scrollToElement", _entryRef);
+   }
+   
    private string GetFileColor(ExplorerTreeItemType type) => type switch
    {
       ExplorerTreeItemType.CsFile => "#5fad65",

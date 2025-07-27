@@ -1,0 +1,59 @@
+﻿.entry {
+    padding: 20px;
+    background-color: rgba(0,0,0,0.2);
+    border: 1px solid rgba(100,100,100,0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.entry:hover {
+    background-color: var(--main-color-5);
+    border-color: var(--main-color-40);
+}
+
+.entry:last-child {
+    margin-bottom: 0;
+}
+
+.entry .header {
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.entry .header .icon {
+    
+}
+
+.entry .header .name {
+    flex: 1;
+    font-size: 20px;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    text-align: left;
+}
+
+.entry .path {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.entry .path .text {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.entry .path .delimiter {
+    color: var(--main-color);
+    font-weight: 900;
+}
+
+.entry .path span:last-child {
+    display: none;
+}

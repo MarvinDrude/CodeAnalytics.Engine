@@ -4,6 +4,7 @@
 @using CodeAnalytics.Web.Common.Threading
 @using CodeAnalytics.Web.Client.Components.Common.Controls
 @using CodeAnalytics.Web.Client.Models.Tags
+@using CodeAnalytics.Web.Client.Components.Source.Search.Files
 
 @implements IDisposable
 
@@ -18,14 +19,7 @@
    <div class="contents">
       @foreach (var item in _results)
       {
-         <div class="entry">
-            <div class="icon">
-               
-            </div>
-            <div class="name">
-               @item.Item.Name
-            </div>
-         </div>
+         <FileResult Item="@item"></FileResult>
       }
    </div>
 </div>

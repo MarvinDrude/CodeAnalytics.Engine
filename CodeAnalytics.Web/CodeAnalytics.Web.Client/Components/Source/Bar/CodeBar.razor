@@ -14,9 +14,17 @@
 
 @code {
 
+   [Parameter]
+   public EventCallback<FileSearchResult> FileSearched { get; set; }
+   
    private async Task OnSearchClick()
    {
       var result = await MenuService.Open<CodeSearchMenu, SearchResult>();
+
+      if (result is FileSearchResult file)
+      {
+         await FileSearched.InvokeAsync(file);
+      }
    }
    
 }

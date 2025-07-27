@@ -3,6 +3,7 @@
 @using CodeAnalytics.Web.Common.Services.Source
 
 @inject IExplorerService ExplorerService
+@inject IJSRuntime JsRuntime
 
 @if (IsVisible)
 {
@@ -11,7 +12,7 @@
       {
          foreach (var root in _roots)
          {
-            <ExplorerItem Item="@root"></ExplorerItem>
+            <ExplorerItem Item="@root" ActivePath="@_lastPath"></ExplorerItem>
          }
       }
    </div>

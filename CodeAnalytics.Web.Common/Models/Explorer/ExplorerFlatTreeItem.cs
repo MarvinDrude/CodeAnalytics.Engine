@@ -6,9 +6,9 @@ namespace CodeAnalytics.Web.Common.Models.Explorer;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct ExplorerFlatTreeItem
 {
-   public readonly ExplorerTreeItemType Type;
-   public readonly string Name;
-   public readonly string[] Path;
+   public ExplorerTreeItemType Type { get; init; }
+   public string Name { get; init; }
+   public string[] Path { get; init; }
 
    public ExplorerFlatTreeItem(
       ExplorerTreeItemType type, 

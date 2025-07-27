@@ -1,0 +1,61 @@
+﻿@using CodeAnalytics.Web.Client.Menus
+@using CodeAnalytics.Web.Client.Models.Search
+@using CodeAnalytics.Web.Common.Enums.Explorer
+@using CodeAnalytics.Web.Common.Models.Search
+@using CodeAnalytics.Web.Client.Components.Common.Symbols
+
+@inject MenuService MenuService
+
+<div class="entry" @onclick="@OnClick">
+   <div class="header">
+      <div class="icon">
+         @switch (Item.Item.Type)
+         {
+            case ExplorerTreeItemType.Folder:
+               <Icon Name="folder" IsFilled Color="#ffdb74"/>
+               break;
+            case ExplorerTreeItemType.CsFile:
+               <Icon Name="code" Color="@GetFileColor(Item.Item.Type)" IsFilled/>
+               break;
+            default:
+               throw new ArgumentOutOfRangeException();
+         }
+      </div>
+      <div class="name">
+         @Item.Item.Name
+      </div>
+   </div>
+   @if (Item.Path.Length > 0)
+   {
+      <div class="path">
+         @foreach (var path in Item.Path)
+         {
+            <span class="text">@path</span>
+            <span class="delimiter">></span>
+         }
+      </div>
+   }
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required ExplorerTreeItemSearchModel Item { get; set; }
+
+   private Task OnClick()
+   {
+      MenuService.SetResult<SearchResult>(new FileSearchResult()
+      {
+         ActionRequired = true,
+         Item = Item
+      });
+      return Task.CompletedTask;
+   }
+
+   private string GetFileColor(ExplorerTreeItemType type) => type switch
+   {
+      ExplorerTreeItemType.CsFile => "#5fad65",
+      _ => "#ffffff"
+   };
+
+}

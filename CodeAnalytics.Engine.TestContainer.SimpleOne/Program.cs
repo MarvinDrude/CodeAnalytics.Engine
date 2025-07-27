@@ -1,10 +1,8 @@
 ﻿
-public class ConstructorArchetypeChunk
+var hello = Test.Two;
+
+public enum Test
 {
-   public string test;
-   
-   public ConstructorArchetypeChunk(string a)
-   {
-      test = a;
-   }
+   One = 1,
+   Two = 2,
 }

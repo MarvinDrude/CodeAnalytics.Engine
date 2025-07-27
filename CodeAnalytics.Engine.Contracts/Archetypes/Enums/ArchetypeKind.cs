@@ -6,9 +6,10 @@ public enum ArchetypeKind : byte
    Interface = 2,
    Struct = 3,
    Enum = 4,
+   EnumValue = 5,
    
-   Method = 5,
-   Property = 6,
-   Field = 7,
-   Constructor = 8,
+   Method = 6,
+   Property = 7,
+   Field = 8,
+   Constructor = 9,
 }

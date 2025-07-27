@@ -26,6 +26,7 @@ public sealed class MergableComponentStoreSerializer : ISerializer<MergableCompo
       Serialize<InterfaceComponent, InterfaceMerger, InterfaceSerializer>(ref writer, ob);
       Serialize<StructComponent, StructMerger, StructSerializer>(ref writer, ob);
       Serialize<EnumComponent, EnumMerger, EnumSerializer>(ref writer, ob);
+      Serialize<EnumValueComponent, EnumValueMerger, EnumValueSerializer>(ref writer, ob);
       Serialize<TypeComponent, TypeMerger, TypeSerializer>(ref writer, ob);
       
       Serialize<MethodComponent, MethodMerger, MethodSerializer>(ref writer, ob);
@@ -46,6 +47,7 @@ public sealed class MergableComponentStoreSerializer : ISerializer<MergableCompo
           || !TryDeserialize<InterfaceComponent, InterfaceMerger, InterfaceSerializer>(ref reader, ob)
           || !TryDeserialize<StructComponent, StructMerger, StructSerializer>(ref reader, ob)
           || !TryDeserialize<EnumComponent, EnumMerger, EnumSerializer>(ref reader, ob)
+          || !TryDeserialize<EnumValueComponent, EnumValueMerger, EnumValueSerializer>(ref reader, ob)
           || !TryDeserialize<TypeComponent, TypeMerger, TypeSerializer>(ref reader, ob)
           // members
           || !TryDeserialize<MethodComponent, MethodMerger, MethodSerializer>(ref reader, ob)

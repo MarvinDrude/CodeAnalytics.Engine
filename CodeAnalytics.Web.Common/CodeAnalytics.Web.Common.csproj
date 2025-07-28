@@ -17,4 +17,10 @@
      <Folder Include="Utils\" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Reference Include="Microsoft.JSInterop">
+       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\10.0.0-preview.5.25277.114\Microsoft.JSInterop.dll</HintPath>
+     </Reference>
+   </ItemGroup>
+
 </Project>

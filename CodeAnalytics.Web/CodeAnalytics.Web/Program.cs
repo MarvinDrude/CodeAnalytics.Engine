@@ -3,6 +3,8 @@ using CodeAnalytics.Web.Client.Menus;
 using CodeAnalytics.Web.Common.Services.Data;
 using CodeAnalytics.Web.Common.Services.Search;
 using CodeAnalytics.Web.Common.Services.Source;
+using CodeAnalytics.Web.Common.Storage.Interfaces;
+using CodeAnalytics.Web.Common.Storage.Providers;
 using CodeAnalytics.Web.Components;
 using CodeAnalytics.Web.Endpoints;
 using CodeAnalytics.Web.Options;
@@ -31,6 +33,8 @@ builder.Services.AddSingleton<IDataService, ServerDataService>();
 builder.Services.AddSingleton<IOccurrenceService, ServerOccurrenceService>();
 builder.Services.AddSingleton<ISearchService, ServerSearchService>();
 builder.Services.AddSingleton<IFileSearchService, ServerFileSearchService>();
+
+builder.Services.AddKeyedScoped<IJsonStorageProvider, LocalStorageProvider>("local-storage");
 
 builder.Services.AddScoped<MenuService>();
 

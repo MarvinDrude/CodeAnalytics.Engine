@@ -6,6 +6,8 @@ using CodeAnalytics.Web.Client.Services.Source;
 using CodeAnalytics.Web.Common.Services.Data;
 using CodeAnalytics.Web.Common.Services.Search;
 using CodeAnalytics.Web.Common.Services.Source;
+using CodeAnalytics.Web.Common.Storage.Interfaces;
+using CodeAnalytics.Web.Common.Storage.Providers;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -21,6 +23,8 @@ builder.Services.AddScoped<IOccurrenceService, ClientOccurrenceService>();
 builder.Services.AddScoped<ISearchService, ClientSearchService>();
 builder.Services.AddScoped<IFileSearchService, ClientFileSearchService>();
 builder.Services.AddScoped<MenuService>();
+
+builder.Services.AddKeyedScoped<IJsonStorageProvider, LocalStorageProvider>("local-storage");
 
 builder.Services.AddScoped(_ => new HttpClient
 {

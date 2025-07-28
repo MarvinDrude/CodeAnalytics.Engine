@@ -17,9 +17,12 @@
    [Parameter]
    public EventCallback<string> KeyUp { get; set; }
 
+   [Parameter]
+   public string? Value { get => _value; set => _value = value; }
+   
    private ElementReference? _inputRef;
    private string? _value;
-
+   
    private async Task OnInput(ChangeEventArgs ev)
    {
       _value = ev.Value?.ToString();

@@ -5,10 +5,13 @@
 @using CodeAnalytics.Web.Client.Components.Common.Controls
 @using CodeAnalytics.Web.Client.Models.Tags
 @using CodeAnalytics.Web.Client.Components.Source.Search.Files
+@using CodeAnalytics.Web.Common.Preferences.Interfaces
+@using CodeAnalytics.Web.Common.Preferences.Search
 
 @implements IDisposable
 
 @inject IFileSearchService FileSearchService
+@inject IPreferenceService Preferences
 
 <div class="files">
    <div class="filter">
@@ -37,19 +40,32 @@
          if (_lastSearchText != _searchText)
          {
             _lastSearchText = _searchText;
-            _ = InvokeAsync(OnFileSearch);
+            if (_initialized)
+            {
+               _ = InvokeAsync(OnFileSearch);
+            }
          }
       } 
    }
    
+   [Parameter] 
+   public EventCallback<string?> SearchUpdated { get; set; }
+   
    private List<ExplorerTreeItemSearchModel> _results = [];
+   private bool _initialized = false;
    
    private string? _lastSearchText = string.Empty;
    private readonly Debouncer _debouncer = new ();
 
-   private HashSet<ExplorerTreeItemType> _selected = [
-      ExplorerTreeItemType.CsFile, ExplorerTreeItemType.Folder
-   ];
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if (firstRender)
+      {
+         await ApplyPreferences();
+         await OnFileSearch();
+         _initialized = true;
+      }
+   }
    
    private async Task OnTypeSelectionChanged(List<FilterTagModel> active)
    {
@@ -58,6 +74,7 @@
    
    private async Task OnFileSearch()
    {
+      _ = Preferences.Update(await GetCurrentPreferences());
       await _debouncer.Debounce(TimeSpan.FromMilliseconds(60), async (ct) =>
       {
          var response = await FileSearchService.GetFileSearch(new FileSearchParameters()
@@ -77,6 +94,33 @@
       _debouncer.Dispose();
    }
 
+   private async Task ApplyPreferences()
+   {
+      var preference = await Preferences.GetOrCreate(GetCurrentPreferences);
+
+      SearchText = preference.Data.SearchText;
+      foreach (var (key, value) in _types)
+      {
+         value.IsActive = preference.Data.Types.Contains(key);
+      }
+      
+      await SearchUpdated.InvokeAsync(SearchText);
+   }
+
+   private Task<FileSearchPreference> GetCurrentPreferences()
+   {
+      return Task.FromResult(new FileSearchPreference()
+      {
+         Version = Preferences.GetLatestVersion<FileSearchPreference>(),
+         Data = new FileSearchPreferenceData()
+         {
+            SearchText = _lastSearchText,
+            Types = _types.Where(x => x.Value.IsActive).Select(x => x.Key).ToHashSet(),
+            ScrollTop = 0
+         }
+      });
+   }
+   
    private HashSet<ExplorerTreeItemType> GetTypes()
    {
       HashSet<ExplorerTreeItemType> types = [];

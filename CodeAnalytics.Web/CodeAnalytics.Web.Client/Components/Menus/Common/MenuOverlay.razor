@@ -6,17 +6,32 @@
 @typeparam TResult where TResult : class
 @inherits MenuBase<TResult>
 
-<div class="background" @onclick="@OnClick">
+<div class="background" 
+     @onclick="@OnClick" 
+     @onmousedown="@OnMouseDown"
+     @onmouseleave="@OnMouseUp">
    @Body
 </div>
 
 @code {
    
    protected RenderFragment? Body { get; set; }
+   private bool _mouseDownHere = false;
 
    private void OnClick()
    {
+      if (!_mouseDownHere) return;
+      _mouseDownHere = false;
       MenuService.SetResult<TResult>(MenuId, null);
    }
-   
+
+   private void OnMouseDown()
+   {
+      _mouseDownHere = true;
+   }
+
+   private void OnMouseUp()
+   {
+      _mouseDownHere = false;
+   }
 }

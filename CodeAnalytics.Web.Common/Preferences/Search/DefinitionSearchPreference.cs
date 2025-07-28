@@ -13,4 +13,6 @@ public sealed class DefinitionSearchPreferenceData
    public string? SearchText { get; set; }
 
    public HashSet<string> Types { get; set; } = [];
+   
+   public int ScrollTop { get; set; } = 0;
 }

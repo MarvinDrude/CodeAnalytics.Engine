@@ -14,4 +14,6 @@ public sealed class FileSearchPreferenceData
    public string? SearchText { get; set; }
 
    public HashSet<ExplorerTreeItemType> Types { get; set; } = [];
+
+   public int ScrollTop { get; set; } = 0;
 }

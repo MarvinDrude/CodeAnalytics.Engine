@@ -8,10 +8,13 @@
 @using CodeAnalytics.Web.Common.Responses.Search
 @using CodeAnalytics.Web.Common.Threading
 @using CodeAnalytics.Web.Client.Components.Source.Search.Definitions
+@using CodeAnalytics.Web.Common.Preferences.Interfaces
+@using CodeAnalytics.Web.Common.Preferences.Search
 
 @implements IDisposable
 
 @inject ISearchService SearchService
+@inject IPreferenceService Preferences
 
 <div class="content">
    <div class="filter">
@@ -40,10 +43,16 @@
          if (_lastSearchText != _searchText)
          {
             _lastSearchText = _searchText;
-            _ = InvokeAsync(OnBasicSearch);
+            if (_initialized)
+            {
+               _ = InvokeAsync(OnBasicSearch);
+            }
          }
       } 
    }
+
+   [Parameter] 
+   public EventCallback<string?> SearchUpdated { get; set; }
 
    private string? _lastSearchText = string.Empty;
    private readonly Debouncer _debouncer = new ();
@@ -52,9 +61,21 @@
    private Dictionary<int, string> Strings => _response?.Strings ?? [];
 
    private BasicSearchResponse? _response;
-   
+   private bool _initialized = false;
+
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if (firstRender)
+      {
+         await ApplyPreferences();
+         await OnBasicSearch();
+         _initialized = true;
+      }
+   }
+
    private async Task OnBasicSearch()
    {
+      _ = Preferences.Update(await GetCurrentPreferences());
       await _debouncer.Debounce(TimeSpan.FromMilliseconds(60), async (ct) =>
       {
          var response = await SearchService.GetBasicSearch(new BasicSearchParameters()
@@ -75,6 +96,33 @@
    public void Dispose()
    {
       _debouncer.Dispose();
+   }
+
+   private async Task ApplyPreferences()
+   {
+      var preference = await Preferences.GetOrCreate(GetCurrentPreferences);
+
+      SearchText = preference.Data.SearchText;
+      foreach (var (key, type) in _tagTypes)
+      {
+         type.IsActive = preference.Data.Types.Contains(key);
+      }
+      
+      await SearchUpdated.InvokeAsync(SearchText);
+   }
+
+   private Task<DefinitionSearchPreference> GetCurrentPreferences()
+   {
+      return Task.FromResult(new DefinitionSearchPreference()
+      {
+         Version = Preferences.GetLatestVersion<DefinitionSearchPreference>(),
+         Data = new DefinitionSearchPreferenceData()
+         {
+            SearchText = _lastSearchText,
+            Types = TagTypes.Where(x => x.IsActive).Select(x => x.Value).ToHashSet(),
+            ScrollTop = 0
+         }
+      });
    }
 
    private BaseSearchOptions GetOptions()

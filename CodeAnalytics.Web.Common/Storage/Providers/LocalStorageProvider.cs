@@ -41,7 +41,12 @@ public sealed class LocalStorageProvider : IJsonStorageProvider
    {
       try
       {
-         var raw = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", ct, key);
+         var raw = await _jsRuntime.InvokeAsync<string?>("localStorage.getItem", ct, key);
+         if (raw is null)
+         {
+            return new StorageError(StorageErrorType.KeyNotFound, null);
+         }
+
          return raw;
       }
       catch (Exception ex)

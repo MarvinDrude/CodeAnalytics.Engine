@@ -2,6 +2,7 @@
 using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Components.Interfaces;
 using CodeAnalytics.Engine.Contracts.Components.Members;
+using CodeAnalytics.Engine.Extensions.Symbols;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -21,6 +22,11 @@ public sealed class PropertyCollector
          HasGetter = symbol.GetMethod is not null,
       };
 
+      if (symbol is { IsOverride: true, OverriddenProperty: { } overridden })
+      {
+         component.OverrideId = context.Store.NodeIdStore.GetOrAdd(overridden.OriginalDefinition);
+      }
+
       if (symbol.SetMethod is { } setMethod)
       {
          component.SetterCyclomaticComplexity = CalculateComplexity(setMethod, context, ref component);
@@ -29,6 +35,13 @@ public sealed class PropertyCollector
       if (symbol.GetMethod is { } getMethod)
       {
          component.GetterCyclomaticComplexity = CalculateComplexity(getMethod, context, ref component);
+      }
+      
+      var interfaces = symbol.ExplicitOrImplicitInterfaceImplementations();
+      foreach (var interFace in interfaces)
+      {
+         component.InterfaceImplementations.Add(
+            store.NodeIdStore.GetOrAdd(interFace.OriginalDefinition));
       }
       
       return true;

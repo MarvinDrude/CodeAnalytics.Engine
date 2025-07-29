@@ -29,7 +29,7 @@ public sealed class TypeCollector
       ParseInterfaces(symbol, context, ref component);
       
       var constructors = symbol.GetMethods(x => x.MethodKind is MethodKind.Constructor or MethodKind.StaticConstructor);
-      var methods = symbol.GetMethods(x => x.MethodKind is MethodKind.Ordinary);
+      var methods = symbol.GetMethods(x => x.MethodKind is MethodKind.Ordinary or MethodKind.ExplicitInterfaceImplementation);
       var properties = symbol.GetProperties(_ => true);
       var fields = symbol.GetFields(_ => true);
       

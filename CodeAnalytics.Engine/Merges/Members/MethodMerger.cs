@@ -14,5 +14,11 @@ public sealed class MethodMerger : IComponentMerger<MethodComponent>
       target.IsOverride = target.IsOverride || source.IsOverride;
       
       target.ParameterIds.AddRange(source.ParameterIds);
+      target.InterfaceImplementations.AddSpanRange(source.InterfaceImplementations.WrittenSpan);
+
+      if (target.OverrideId.IsEmpty)
+      {
+         target.OverrideId = source.OverrideId;
+      }
    }
 }

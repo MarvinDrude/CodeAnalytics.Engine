@@ -16,6 +16,33 @@ public sealed class GlobalOccurrence
    {
       DeclarationMap[occurrence] = true;
    }
+
+   public void MergeDeclarations(GlobalOccurrence occurrence)
+   {
+      foreach (var declaration in occurrence.Declarations)
+      {
+         DeclarationMap[declaration] = true;
+      }
+
+      foreach (var (_, project) in occurrence.ProjectOccurrences)
+      {
+         foreach (var (_, file) in project.FileOccurrences)
+         {
+            foreach (var line in file.LineOccurrences)
+            {
+               if (!line.IsDeclaration)
+               {
+                  continue;
+               }
+               
+               var projectTarget = GetOrCreateByProject(project.PathId);
+               var fileTarget = projectTarget.GetOrCreate(file.PathId);
+
+               fileTarget.LineOccurrences.Add(line);
+            }
+         }
+      }
+   }
    
    public ProjectOccurrence GetOrCreateByProject(StringId pathId)
    {

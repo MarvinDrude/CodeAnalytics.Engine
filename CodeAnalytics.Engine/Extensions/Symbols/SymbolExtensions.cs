@@ -26,4 +26,25 @@ public static class SymbolExtensions
       
       return seed;
    }
+
+   public static List<ISymbol> ExplicitOrImplicitInterfaceImplementations(this ISymbol symbol)
+   {
+      if (symbol.Kind != SymbolKind.Method &&
+          symbol.Kind != SymbolKind.Property &&
+          symbol.Kind != SymbolKind.Event)
+      {
+         return [];
+      }
+      
+      var containingType = symbol.ContainingType;
+
+      return containingType
+         .AllInterfaces
+         .SelectMany(iface => iface.GetMembers())
+         .Where(interfaceMember =>
+            SymbolEqualityComparer.Default.Equals(
+               symbol, 
+               containingType.FindImplementationForInterfaceMember(interfaceMember)))
+         .ToList();
+   }
 }

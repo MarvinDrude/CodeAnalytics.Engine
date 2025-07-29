@@ -13,16 +13,19 @@ public sealed class MethodSerializer : ISerializer<MethodComponent>
    public static void Serialize(ref ByteWriter writer, ref MethodComponent ob)
    {
       NodeIdSerializer.Serialize(ref writer, ref ob.Id);
+      NodeIdSerializer.Serialize(ref writer, ref ob.OverrideId);
       writer.WriteByte(ob.Flags.RawByte);
 
       writer.WriteLittleEndian(ob.CyclomaticComplexity);
       PooledSetSerializer<NodeId, NodeIdSerializer>.Serialize(ref writer, ref ob.ParameterIds);
+      PooledSetSerializer<NodeId, NodeIdSerializer>.Serialize(ref writer, ref ob.InterfaceImplementations);
    }
 
    public static bool TryDeserialize(ref ByteReader reader, out MethodComponent ob)
    {
       ob = new MethodComponent();
-      if (!NodeIdSerializer.TryDeserialize(ref reader, out ob.Id))
+      if (!NodeIdSerializer.TryDeserialize(ref reader, out ob.Id)
+          || !NodeIdSerializer.TryDeserialize(ref reader, out ob.OverrideId))
       {
          return false;
       }
@@ -30,7 +33,8 @@ public sealed class MethodSerializer : ISerializer<MethodComponent>
       ob.Flags = new PackedBools(reader.ReadByte());
       ob.CyclomaticComplexity = reader.ReadLittleEndian<int>();
       
-      if (!PooledSetSerializer<NodeId, NodeIdSerializer>.TryDeserialize(ref reader, out ob.ParameterIds))
+      if (!PooledSetSerializer<NodeId, NodeIdSerializer>.TryDeserialize(ref reader, out ob.ParameterIds)
+          || !PooledSetSerializer<NodeId, NodeIdSerializer>.TryDeserialize(ref reader, out ob.InterfaceImplementations))
       {
          return false;
       }

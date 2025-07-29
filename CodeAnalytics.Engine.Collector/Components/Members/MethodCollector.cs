@@ -27,6 +27,18 @@ public sealed class MethodCollector
 
       component.CyclomaticComplexity = CalculateComplexity(symbol, context, ref component);
 
+      var interfaces = symbol.ExplicitOrImplicitInterfaceImplementations();
+      foreach (var interFace in interfaces)
+      {
+         component.InterfaceImplementations.Add(
+            store.NodeIdStore.GetOrAdd(interFace.OriginalDefinition));
+      }
+      
+      if (symbol is { IsOverride: true, OverriddenMethod: { } overridden })
+      {
+         component.OverrideId = context.Store.NodeIdStore.GetOrAdd(overridden.OriginalDefinition);
+      }
+
       foreach (var parameter in symbol.Parameters)
       {
          var id = NodeId.Empty;

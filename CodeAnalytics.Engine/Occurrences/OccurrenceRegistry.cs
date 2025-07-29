@@ -2,10 +2,12 @@
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Components;
 using CodeAnalytics.Engine.Contracts.Components.Common;
+using CodeAnalytics.Engine.Contracts.Components.Members;
 using CodeAnalytics.Engine.Contracts.Ids;
 using CodeAnalytics.Engine.Contracts.Occurrences;
 using CodeAnalytics.Engine.Contracts.TextRendering;
 using CodeAnalytics.Engine.Merges.Common;
+using CodeAnalytics.Engine.Merges.Members;
 
 namespace CodeAnalytics.Engine.Occurrences;
 
@@ -71,6 +73,63 @@ public sealed class OccurrenceRegistry
          foreach (var declr in occurrence.Declarations)
          {
             component.Declarations.Add(new FileLocationId(declr.FileId, declr.SpanIndex));
+         }
+      }
+      
+      ConnectMethods(store);
+      ConnectProperties(store);
+   }
+
+   private void ConnectMethods(CollectorStore store)
+   {
+      var methods = store.ComponentStore.GetOrCreatePool<MethodComponent, MethodMerger>();
+
+      foreach (ref var method in methods.Entries)
+      {
+         if (store.Occurrences.Get(method.Id) is not { } concrete)
+         {
+            continue;
+         }
+         
+         if (!method.OverrideId.IsEmpty 
+             && store.Occurrences.Get(method.OverrideId) is { } baseMethod)
+         {
+            baseMethod.MergeDeclarations(concrete);
+         }
+
+         foreach (ref var id in method.InterfaceImplementations)
+         {
+            if (store.Occurrences.Get(id) is { } interFace)
+            {
+               interFace.MergeDeclarations(concrete);
+            }
+         }
+      }
+   }
+
+   private void ConnectProperties(CollectorStore store)
+   {
+      var properties = store.ComponentStore.GetOrCreatePool<PropertyComponent, PropertyMerger>();
+
+      foreach (ref var property in properties.Entries)
+      {
+         if (store.Occurrences.Get(property.Id) is not { } concrete)
+         {
+            continue;
+         }
+         
+         if (!property.OverrideId.IsEmpty 
+             && store.Occurrences.Get(property.OverrideId) is { } baseProperty)
+         {
+            baseProperty.MergeDeclarations(concrete);
+         }
+
+         foreach (ref var id in property.InterfaceImplementations)
+         {
+            if (store.Occurrences.Get(id) is { } interFace)
+            {
+               interFace.MergeDeclarations(concrete);
+            }
          }
       }
    }

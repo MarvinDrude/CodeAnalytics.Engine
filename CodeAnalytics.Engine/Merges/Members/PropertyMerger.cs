@@ -9,5 +9,12 @@ public sealed class PropertyMerger : IComponentMerger<PropertyComponent>
    {
       target.HasGetter = target.HasGetter || source.HasGetter;
       target.HasSetter = target.HasSetter || source.HasSetter;
+      
+      target.InterfaceImplementations.AddSpanRange(source.InterfaceImplementations.WrittenSpan);
+
+      if (target.OverrideId.IsEmpty)
+      {
+         target.OverrideId = source.OverrideId;
+      }
    }
 }

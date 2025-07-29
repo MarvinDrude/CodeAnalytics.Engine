@@ -27,6 +27,9 @@ public struct PropertyComponent
 
    public int GetterCyclomaticComplexity;
    public int SetterCyclomaticComplexity;
+   
+   public PooledSet<NodeId> InterfaceImplementations = [];
+   public NodeId OverrideId = NodeId.Empty;
 
    public PropertyComponent()
    {
@@ -38,7 +41,7 @@ public struct PropertyComponent
    
    public void Dispose()
    {
-      
+      InterfaceImplementations.Dispose();
    }
    
    public bool Equals(PropertyComponent other)

@@ -1,5 +1,6 @@
 ﻿using CodeAnalytics.Engine.Common.Buffers;
 using CodeAnalytics.Engine.Components;
+using CodeAnalytics.Engine.Contracts.Ids;
 using CodeAnalytics.Engine.Ids;
 using CodeAnalytics.Engine.Occurrences;
 using CodeAnalytics.Engine.Serialization.Stores;
@@ -12,6 +13,7 @@ public sealed class CollectorStore : IDisposable
    public required StringIdStore StringIdStore { get; init; }
    
    public required OccurrenceRegistry Occurrences { get; init; }
+   public required HashSet<StringId> Projects { get; init; }
    
    public required MergableComponentStore ComponentStore { get; init; }
    public required LineCountStore LineCountStore { get; init; }
@@ -20,6 +22,11 @@ public sealed class CollectorStore : IDisposable
    {
       ComponentStore.Merge(collectorStore.ComponentStore);
       LineCountStore.Merge(collectorStore.LineCountStore);
+
+      foreach (var project in collectorStore.Projects)
+      {
+         Projects.Add(project);
+      }
    }
 
    public void Dispose()

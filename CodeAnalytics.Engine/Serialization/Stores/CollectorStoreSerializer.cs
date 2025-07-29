@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Buffers;
+using CodeAnalytics.Engine.Contracts.Ids;
 using CodeAnalytics.Engine.Contracts.Serialization;
 using CodeAnalytics.Engine.Ids;
 using CodeAnalytics.Engine.Serialization.Ids;
 using CodeAnalytics.Engine.Serialization.Occurrence;
+using CodeAnalytics.Engine.Serialization.System.Collections;
 
 namespace CodeAnalytics.Engine.Serialization.Stores;
 
@@ -26,6 +28,9 @@ public sealed class CollectorStoreSerializer : ISerializer<CollectorStore>
       
       var occurrences = ob.Occurrences;
       OccurrenceRegistrySerializer.Serialize(ref writer, ref occurrences);
+
+      var projects = ob.Projects;
+      HashSetSerializer<StringId, StringIdSerializer>.Serialize(ref writer, ref projects);
    }
 
    public static bool TryDeserialize(ref ByteReader reader, [MaybeNullWhen(false)] out CollectorStore ob)
@@ -47,7 +52,8 @@ public sealed class CollectorStoreSerializer : ISerializer<CollectorStore>
          return false;
       }
 
-      if (!OccurrenceRegistrySerializer.TryDeserialize(ref reader, out var occurrences))
+      if (!OccurrenceRegistrySerializer.TryDeserialize(ref reader, out var occurrences)
+          || !HashSetSerializer<StringId, StringIdSerializer>.TryDeserialize(ref reader, out var projects))
       {
          ob = null;
          return false;
@@ -59,7 +65,8 @@ public sealed class CollectorStoreSerializer : ISerializer<CollectorStore>
          NodeIdStore = idNodeStore,
          ComponentStore = componentStore,
          LineCountStore = lineCountStore,
-         Occurrences = occurrences
+         Occurrences = occurrences,
+         Projects = projects
       };
       
       StringIdStore.Current = null;

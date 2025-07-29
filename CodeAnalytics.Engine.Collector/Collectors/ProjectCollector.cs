@@ -50,7 +50,8 @@ public sealed partial class ProjectCollector
          StringIdStore = _options.StringIdStore,
          Occurrences = _options.Occurrences,
          ComponentStore = new MergableComponentStore(_options.InitialCapacityPerComponentPool),
-         LineCountStore = new LineCountStore()
+         LineCountStore = new LineCountStore(),
+         Projects = []
       };
 
       var loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
@@ -83,6 +84,7 @@ public sealed partial class ProjectCollector
          
          var projectPath = _context.GetRelativePath(_context.Options.Path);
          _context.ProjectId = _context.Store.StringIdStore.GetOrAdd(projectPath);
+         _context.Store.Projects.Add(_context.ProjectId);
 
          var filePath = _context.GetRelativePath(_context.SyntaxTree.FilePath);
          _context.FileId = _context.Store.StringIdStore.GetOrAdd(filePath);

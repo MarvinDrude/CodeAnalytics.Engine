@@ -55,7 +55,8 @@ public sealed partial class SolutionCollector : IAsyncDisposable
          StringIdStore = _options.StringIdStore,
          Occurrences = _options.Occurrences,
          ComponentStore = new MergableComponentStore(_options.InitialCapacityPerComponentPool),
-         LineCountStore = new LineCountStore()
+         LineCountStore = new LineCountStore(),
+         Projects = []
       };
 
       foreach (var task in tasks)

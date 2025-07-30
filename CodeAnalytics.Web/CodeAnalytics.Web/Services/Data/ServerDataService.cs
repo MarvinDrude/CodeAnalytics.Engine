@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CodeAnalytics.Engine.Analyze;
+using CodeAnalytics.Engine.Analyze.Interfaces;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Serialization;
 using CodeAnalytics.Engine.Serialization.Stores;
@@ -28,6 +29,11 @@ public sealed class ServerDataService : IDataService
    {
       await EnsureInitialized();
       return _analyzeStore ?? throw new InvalidOperationException("Analyze store is not initialized");
+   }
+   
+   public ValueTask<AnalyzeStore> GetStore()
+   {
+      return new ValueTask<AnalyzeStore>(GetAnalyzeStore());
    }
    
    private ValueTask EnsureInitialized()

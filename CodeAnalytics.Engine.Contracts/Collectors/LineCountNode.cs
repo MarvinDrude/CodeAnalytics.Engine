@@ -8,7 +8,7 @@ public sealed class LineCountNode
    
    public required Dictionary<StringId, LineCountStats> StatsPerProject { get; init; }
 
-   public LineCountStats GetTotal()
+   public LineCountStats GetTotal(HashSet<StringId> projectIds)
    {
       var total = new LineCountStats()
       {
@@ -17,8 +17,13 @@ public sealed class LineCountNode
          LineCount = 0
       };
 
-      foreach (var (_, stats) in StatsPerProject)
+      foreach (var (projectId, stats) in StatsPerProject)
       {
+         if (!projectIds.Contains(stats.ProjectId))
+         {
+            continue;
+         }
+         
          total.CodeCount += stats.CodeCount;
          total.LineCount += stats.LineCount;
       }

@@ -25,6 +25,15 @@ public sealed class AnalyzePipeline<TInput, TOutput> : IAnalyzePipeline<TInput, 
       });
    }
 
+   public AnalyzePipeline<TInput, TNext> AddStepFunc<TNext>(Func<TOutput, CancellationToken, TNext> step)
+   {
+      return new AnalyzePipeline<TInput, TNext>(async (input, ct) =>
+      {
+         var result = await _executer.Invoke(input, ct);
+         return step(result, ct);
+      });
+   }
+
    public static AnalyzePipeline<TInput, TOutput> Create(IPipelineStep<TInput, TOutput> firstStep)
    {
       return new AnalyzePipeline<TInput, TOutput>(firstStep.Execute);

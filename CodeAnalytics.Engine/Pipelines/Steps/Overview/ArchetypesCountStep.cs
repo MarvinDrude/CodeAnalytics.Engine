@@ -1,7 +1,9 @@
 ﻿using CodeAnalytics.Engine.Analyze;
 using CodeAnalytics.Engine.Archetypes.Common;
+using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
 using CodeAnalytics.Engine.Contracts.Ids;
 using CodeAnalytics.Engine.Contracts.Pipelines.Interfaces;
+using CodeAnalytics.Engine.Contracts.Pipelines.Models;
 using CodeAnalytics.Engine.Pipelines.Common;
 
 namespace CodeAnalytics.Engine.Pipelines.Steps.Overview;
@@ -10,12 +12,17 @@ public sealed class ArchetypesCountStep
    : PipelineStepBase<Dictionary<StringId, ArchetypeChunkViews>, ArchetypesCountResult>
 {
    private readonly AnalyzeStore _store;
+   private readonly PipelineParameters _parameters;
    
    public ArchetypesCountStep(
-      AnalyzeStore store, IPipelineCacheProvider cacheProvider, bool useCache) 
-      : base(cacheProvider, useCache)
+      AnalyzeStore store,
+      PipelineParameters parameters,
+      IPipelineCacheProvider cacheProvider, 
+      bool useCache) 
+      : base(null, cacheProvider, useCache)
    {
       _store = store;
+      _parameters = parameters;
    }
 
    protected override ValueTask<ArchetypesCountResult> Process(
@@ -30,6 +37,11 @@ public sealed class ArchetypesCountStep
       
       foreach (var (projectId, views) in input)
       {
+         if (!_parameters.Projects.Contains(projectId))
+         {
+            continue;
+         }
+         
          if (!result.PerProject.TryGetValue(projectId, out var perProject))
          {
             perProject = result.PerProject[projectId] = new ArchetypesCountEntry();
@@ -47,19 +59,37 @@ public sealed class ArchetypesCountStep
          perProject.PropertyCount = views.Properties.Count;
       }
 
-      global.ClassCount = _store.ClassChunk.Count;
-      global.StructCount = _store.StructChunk.Count;
-      global.InterfaceCount = _store.InterfaceChunk.Count;
-      global.EnumCount = _store.EnumChunk.Count;
-      global.EnumValueCount = _store.EnumValueChunk.Count;
+      global.ClassCount = CountArchetypes(_store.ClassChunk);
+      global.StructCount = CountArchetypes(_store.StructChunk);
+      global.InterfaceCount = CountArchetypes(_store.InterfaceChunk);
+      global.EnumCount = CountArchetypes(_store.EnumChunk);
+      global.EnumValueCount = CountArchetypes(_store.EnumValueChunk);
       
-      global.ConstructorCount = _store.ConstructorChunk.Count;
-      global.MethodCount = _store.MethodChunk.Count;
-      global.FieldCount = _store.FieldChunk.Count;
-      global.PropertyCount = _store.PropertyChunk.Count;
+      global.ConstructorCount = CountArchetypes(_store.ConstructorChunk);
+      global.MethodCount = CountArchetypes(_store.MethodChunk);
+      global.FieldCount = CountArchetypes(_store.FieldChunk);
+      global.PropertyCount = CountArchetypes(_store.PropertyChunk);
       
       return new ValueTask<ArchetypesCountResult>(result);
    }
+
+   private int CountArchetypes<TArchetype>(ArchetypeChunkBase<TArchetype> chunk)
+      where TArchetype : IArchetype, IEquatable<TArchetype>
+   {
+      var result = 0;
+      
+      foreach (ref var archetype in chunk.Entries)
+      {
+         if (!archetype.SymbolComponent.Projects.ContainsAny(_parameters.Projects))
+         {
+            continue;
+         }
+
+         result++;
+      }
+
+      return result;
+   } 
 }
 
 public sealed class ArchetypesCountResult

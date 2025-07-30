@@ -5,6 +5,7 @@ using CodeAnalytics.Engine.Contracts.Components.Members;
 using CodeAnalytics.Engine.Contracts.Components.Types;
 using CodeAnalytics.Engine.Contracts.Ids;
 using CodeAnalytics.Engine.Contracts.Pipelines.Interfaces;
+using CodeAnalytics.Engine.Contracts.Pipelines.Models;
 using CodeAnalytics.Engine.Merges.Members;
 using CodeAnalytics.Engine.Merges.Types;
 using CodeAnalytics.Engine.Pipelines.Common;
@@ -15,12 +16,17 @@ public sealed class ArchetypesLineCountStep
    : PipelineStepBase<Dictionary<StringId, ArchetypeChunkViews>, ArchetypesLineCountResult>
 {
    private readonly AnalyzeStore _store;
+   private readonly PipelineParameters _parameters;
 
    public ArchetypesLineCountStep(
-      AnalyzeStore store, IPipelineCacheProvider cacheProvider, bool useCache) 
-      : base(cacheProvider, useCache)
+      AnalyzeStore store, 
+      PipelineParameters parameters,
+      IPipelineCacheProvider cacheProvider, 
+      bool useCache) 
+      : base(null, cacheProvider, useCache)
    {
       _store = store;
+      _parameters = parameters;
    }
 
    protected override ValueTask<ArchetypesLineCountResult> Process(
@@ -35,6 +41,11 @@ public sealed class ArchetypesLineCountStep
 
       foreach (var (projectId, views) in input)
       {
+         if (!_parameters.Projects.Contains(projectId))
+         {
+            continue;
+         }
+         
          if (!result.PerProject.TryGetValue(projectId, out var perProject))
          {
             perProject = result.PerProject[projectId] = new ArchetypesLineCountEntry();
@@ -67,7 +78,7 @@ public sealed class ArchetypesLineCountStep
       
       foreach (var (nodeId, entry) in _store.Inner.LineCountStore.LineCountsPerNode)
       {
-         var total = entry.GetTotal();
+         var total = entry.GetTotal(_parameters.Projects);
 
          var target = nodeId switch
          {

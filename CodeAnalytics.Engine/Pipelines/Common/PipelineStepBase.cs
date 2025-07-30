@@ -10,10 +10,11 @@ public abstract class PipelineStepBase<TInput, TOutput> : IPipelineStep<TInput, 
    private readonly bool _useCache;
 
    protected PipelineStepBase(
+      string? name,
       IPipelineCacheProvider cacheProvider, 
       bool useCache)
    {
-      Name = Guid.CreateVersion7().ToString();
+      Name = name ?? Guid.CreateVersion7().ToString();
       
       _cacheProvider = cacheProvider;
       _useCache = useCache;

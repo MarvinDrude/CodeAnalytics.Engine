@@ -12,7 +12,7 @@ public sealed class ArchetypesPerProjectStep
    : PipelineStepBase<AnalyzeStore, Dictionary<StringId, ArchetypeChunkViews>>
 {
    public ArchetypesPerProjectStep(IPipelineCacheProvider cacheProvider, bool useCache) 
-      : base(cacheProvider, useCache)
+      : base(nameof(ArchetypesPerProjectStep), cacheProvider, useCache)
    {
    }
 

@@ -63,6 +63,19 @@ public struct PooledSet<T> : IDisposable
          Add(item);
       }
    }
+
+   public bool ContainsAny(ICollection<T> collection)
+   {
+      foreach (ref var item in WrittenSpan)
+      {
+         if (collection.Contains(item))
+         {
+            return true;
+         }
+      }
+
+      return false;
+   }
    
    public ref T GetByReference(int index)
    {

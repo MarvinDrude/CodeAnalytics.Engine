@@ -1,4 +1,7 @@
 using System.Text.Json;
+using CodeAnalytics.Engine.Analyze.Interfaces;
+using CodeAnalytics.Engine.Json.Extensions;
+using CodeAnalytics.Engine.Pipelines.Providers.Overview;
 using CodeAnalytics.Web.Client.Menus;
 using CodeAnalytics.Web.Common.Preferences.Interfaces;
 using CodeAnalytics.Web.Common.Preferences.Services;
@@ -22,16 +25,19 @@ builder.Services.AddRazorComponents()
    .AddInteractiveServerComponents()
    .AddInteractiveWebAssemblyComponents();
 
-builder.Services.Configure<JsonOptions>(x =>
-{
-   x.SerializerOptions.IncludeFields = true;
-});
-
 builder.Services.Configure<CodeOptions>(builder.Configuration.GetSection("Code"));
 
 builder.Services.AddSingleton<ISourceTextService, ServerSourceTextService>();
 builder.Services.AddSingleton<IExplorerService, ServerExplorerService>();
-builder.Services.AddSingleton<IDataService, ServerDataService>();
+
+builder.Services
+   .AddSingleton<ServerDataService>()
+   .AddSingleton<IDataService, ServerDataService>(p => p.GetRequiredService<ServerDataService>())
+   .AddSingleton<IAnalyzeStoreProvider, ServerDataService>(p => p.GetRequiredService<ServerDataService>());
+
+builder.Services
+   .AddSingleton<ArchetypesLineCountProvider>();
+
 builder.Services.AddSingleton<IOccurrenceService, ServerOccurrenceService>();
 builder.Services.AddSingleton<ISearchService, ServerSearchService>();
 builder.Services.AddSingleton<IFileSearchService, ServerFileSearchService>();
@@ -42,8 +48,12 @@ builder.Services.AddSingleton<IPreferenceVersion, PreferenceVersion>();
 builder.Services.AddScoped<IPreferenceService, PreferenceService>();
 
 builder.Services.AddScoped<MenuService>();
-
 builder.Services.AddResponseCompression();
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+   options.SerializerOptions.AddConverters();
+});
 
 var app = builder.Build();
 

@@ -31,9 +31,14 @@ builder.Services.AddKeyedScoped<IJsonStorageProvider, MemoryStorageProvider>("fa
 builder.Services.AddSingleton<IPreferenceVersion, PreferenceVersion>();
 builder.Services.AddScoped<IPreferenceService, PreferenceService>();
 
-builder.Services.AddScoped(_ => new HttpClient
+builder.Services.AddScoped(_ =>
 {
-   BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+   var client = new HttpClient
+   {
+      BaseAddress = new Uri(builder.HostEnvironment.BaseAddress),
+   };
+
+   return client;
 });
 
 await builder.Build().RunAsync();

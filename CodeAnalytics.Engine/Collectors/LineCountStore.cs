@@ -22,11 +22,25 @@ public sealed class LineCountStore
       {
          node = LineCountsPerNode[nodeId] = new LineCountNode()
          {
-            StatsPerFile = []
+            StatsPerFile = [],
+            StatsPerProject = []
          };
       }
       
       node.StatsPerFile[file] =  lineCountStats;
+
+      if (!node.StatsPerProject.TryGetValue(lineCountStats.ProjectId, out var project))
+      {
+         project = node.StatsPerProject[lineCountStats.ProjectId] = new LineCountStats()
+         {
+            ProjectId = lineCountStats.ProjectId,
+            CodeCount = 0,
+            LineCount = 0
+         };
+      }
+      
+      project.CodeCount += lineCountStats.CodeCount;
+      project.LineCount += lineCountStats.LineCount;
    }
 
    public void Merge(LineCountStore source)

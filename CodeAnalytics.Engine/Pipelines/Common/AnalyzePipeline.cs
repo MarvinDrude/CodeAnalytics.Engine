@@ -24,4 +24,9 @@ public sealed class AnalyzePipeline<TInput, TOutput> : IAnalyzePipeline<TInput, 
          return await step.Execute(result, ct);
       });
    }
+
+   public static AnalyzePipeline<TInput, TOutput> Create(IPipelineStep<TInput, TOutput> firstStep)
+   {
+      return new AnalyzePipeline<TInput, TOutput>(firstStep.Execute);
+   }
 }

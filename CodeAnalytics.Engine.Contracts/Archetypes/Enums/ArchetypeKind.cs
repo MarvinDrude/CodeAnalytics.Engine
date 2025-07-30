@@ -2,6 +2,8 @@
 
 public enum ArchetypeKind : byte
 {
+   Unknown = 0,
+   
    Class = 1,
    Interface = 2,
    Struct = 3,

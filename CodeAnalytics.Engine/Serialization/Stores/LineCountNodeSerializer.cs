@@ -15,6 +15,10 @@ public sealed class LineCountNodeSerializer : ISerializer<LineCountNode>
       var dict = ob.StatsPerFile;
       DictionarySerializer<StringId, StringIdSerializer, LineCountStats, LineCountStatsSerializer>
          .Serialize(ref writer, ref dict);
+      
+      var perProject = ob.StatsPerProject;
+      DictionarySerializer<StringId, StringIdSerializer, LineCountStats, LineCountStatsSerializer>
+         .Serialize(ref writer, ref perProject);
    }
 
    public static bool TryDeserialize(ref ByteReader reader, [MaybeNullWhen(false)] out LineCountNode ob)
@@ -25,10 +29,18 @@ public sealed class LineCountNodeSerializer : ISerializer<LineCountNode>
          ob = null;
          return false;
       }
+      
+      if (!DictionarySerializer<StringId, StringIdSerializer, LineCountStats, LineCountStatsSerializer>
+             .TryDeserialize(ref reader, out var perProject))
+      {
+         ob = null;
+         return false;
+      }
 
       ob = new LineCountNode()
       {
          StatsPerFile = dict,
+         StatsPerProject = perProject
       };
       
       return true;

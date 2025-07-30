@@ -3,7 +3,7 @@ using CodeAnalytics.Engine.Contracts.Archetypes.Interfaces;
 
 namespace CodeAnalytics.Engine.Archetypes.Common;
 
-public abstract class ArchetypeChunkBase<TArchetype>
+public abstract class ArchetypeChunkBase<TArchetype> : IDisposable
    where TArchetype : IArchetype, IEquatable<TArchetype>
 {
    public int Count => _entries.Count;
@@ -17,6 +17,8 @@ public abstract class ArchetypeChunkBase<TArchetype>
       {
          return;
       }
+      
+      GC.SuppressFinalize(this);
 
       foreach (ref var entry in _entries)
       {

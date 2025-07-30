@@ -1,21 +1,17 @@
-﻿using CodeAnalytics.Engine.Analyze;
-using CodeAnalytics.Engine.Analyze.Interfaces;
-using CodeAnalytics.Engine.Archetypes.Common;
+﻿using CodeAnalytics.Engine.Analyze.Interfaces;
 using CodeAnalytics.Engine.Contracts.Ids;
 using CodeAnalytics.Engine.Contracts.Pipelines.Interfaces;
 using CodeAnalytics.Engine.Contracts.Pipelines.Models;
 using CodeAnalytics.Engine.Pipelines.Common;
-using CodeAnalytics.Engine.Pipelines.Steps.Common;
-using CodeAnalytics.Engine.Pipelines.Steps.Overview;
 
 namespace CodeAnalytics.Engine.Pipelines.Providers.Overview;
 
-public sealed class ArchetypesCountProvider : PipelineProviderBase, IPipelineProvider
+public sealed class ProjectListProvider : PipelineProviderBase, IPipelineProvider
 {
    private readonly IAnalyzeStoreProvider _storeProvider;
    private readonly IPipelineCacheProvider _cacheProvider;
    
-   public ArchetypesCountProvider(
+   public ProjectListProvider(
       IAnalyzeStoreProvider storeProvider,
       IPipelineCacheProvider cacheProvider)
    {
@@ -23,13 +19,17 @@ public sealed class ArchetypesCountProvider : PipelineProviderBase, IPipelinePro
       _cacheProvider = cacheProvider;
    }
    
-   public async ValueTask<ArchetypesCountResult> Run(PipelineParameters parameters)
+   public async ValueTask<ProjectListResult> Run(PipelineParameters parameters)
    {
       var store = await _storeProvider.GetStore();
-      return await AnalyzePipeline<AnalyzeStore, Dictionary<StringId, ArchetypeChunkViews>>
-         .Create(new ArchetypesPerProjectStep(_cacheProvider, true))
-         .AddStep(new ArchetypesCountStep(store, parameters, _cacheProvider, false))
-         .Execute(store);
+      return new ProjectListResult()
+      {
+         Projects = store.Inner.Projects.Select(x => new ProjectListEntry()
+         {
+            Id = x,
+            ProjectName = x.ToString()
+         }).ToHashSet()
+      };
    }
    
    public async ValueTask<string> RunRawString(PipelineParameters parameters)
@@ -38,5 +38,16 @@ public sealed class ArchetypesCountProvider : PipelineProviderBase, IPipelinePro
       return Serialize(result);
    }
    
-   public static string Identifier => nameof(ArchetypesCountProvider);
+   public static string Identifier => nameof(ProjectListProvider);
+}
+
+public sealed class ProjectListResult
+{
+   public HashSet<ProjectListEntry> Projects { get; set; } = [];
+}
+
+public sealed record ProjectListEntry
+{
+   public required string ProjectName { get; set; }
+   public required StringId Id { get; set; }
 }

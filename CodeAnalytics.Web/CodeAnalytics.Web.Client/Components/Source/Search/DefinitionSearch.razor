@@ -34,22 +34,7 @@
 
    private string? _searchText;
    [Parameter]
-   public string? SearchText
-   {
-      get => _searchText;
-      set
-      {
-         _searchText = value;
-         if (_lastSearchText != _searchText)
-         {
-            _lastSearchText = _searchText;
-            if (_initialized)
-            {
-               _ = InvokeAsync(OnBasicSearch);
-            }
-         }
-      } 
-   }
+   public string? SearchText { get; set; }
 
    [Parameter] 
    public EventCallback<string?> SearchUpdated { get; set; }
@@ -71,6 +56,22 @@
          await OnBasicSearch();
          _initialized = true;
       }
+   }
+
+   protected override async Task OnParametersSetAsync()
+   {
+      _searchText = SearchText;
+      
+      if (_lastSearchText != _searchText)
+      {
+         _lastSearchText = _searchText;
+         if (_initialized)
+         {
+            await OnBasicSearch();
+         }
+      }
+      
+      await base.OnParametersSetAsync();
    }
 
    private async Task OnBasicSearch()

@@ -1,6 +1,8 @@
 using System.Text.Json;
 using CodeAnalytics.Engine.Analyze.Interfaces;
+using CodeAnalytics.Engine.Contracts.Pipelines.Interfaces;
 using CodeAnalytics.Engine.Json.Extensions;
+using CodeAnalytics.Engine.Pipelines.Cache;
 using CodeAnalytics.Engine.Pipelines.Providers.Overview;
 using CodeAnalytics.Web.Client.Menus;
 using CodeAnalytics.Web.Common.Preferences.Interfaces;
@@ -8,6 +10,7 @@ using CodeAnalytics.Web.Common.Preferences.Services;
 using CodeAnalytics.Web.Common.Services.Data;
 using CodeAnalytics.Web.Common.Services.Search;
 using CodeAnalytics.Web.Common.Services.Source;
+using CodeAnalytics.Web.Common.Services.Stats;
 using CodeAnalytics.Web.Common.Storage.Interfaces;
 using CodeAnalytics.Web.Common.Storage.Providers;
 using CodeAnalytics.Web.Components;
@@ -16,6 +19,7 @@ using CodeAnalytics.Web.Options;
 using CodeAnalytics.Web.Services.Data;
 using CodeAnalytics.Web.Services.Search;
 using CodeAnalytics.Web.Services.Source;
+using CodeAnalytics.Web.Services.Stats;
 using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +33,7 @@ builder.Services.Configure<CodeOptions>(builder.Configuration.GetSection("Code")
 
 builder.Services.AddSingleton<ISourceTextService, ServerSourceTextService>();
 builder.Services.AddSingleton<IExplorerService, ServerExplorerService>();
+builder.Services.AddSingleton<IStatsService, ServerStatsService>();
 
 builder.Services
    .AddSingleton<ServerDataService>()
@@ -36,7 +41,10 @@ builder.Services
    .AddSingleton<IAnalyzeStoreProvider, ServerDataService>(p => p.GetRequiredService<ServerDataService>());
 
 builder.Services
-   .AddSingleton<ArchetypesLineCountProvider>();
+   .AddSingleton<IPipelineCacheProvider, MemoryPipelineCacheProvider>()
+   .AddKeyedSingleton<IPipelineProvider, ArchetypesLineCountProvider>(ArchetypesLineCountProvider.Identifier)
+   .AddKeyedSingleton<IPipelineProvider, ArchetypesCountProvider>(ArchetypesCountProvider.Identifier)
+   .AddKeyedSingleton<IPipelineProvider, ProjectListProvider>(ProjectListProvider.Identifier);
 
 builder.Services.AddSingleton<IOccurrenceService, ServerOccurrenceService>();
 builder.Services.AddSingleton<ISearchService, ServerSearchService>();

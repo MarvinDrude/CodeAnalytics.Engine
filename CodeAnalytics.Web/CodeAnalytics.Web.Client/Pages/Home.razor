@@ -1,3 +1,31 @@
 ﻿@page "/"
 
+@using CodeAnalytics.Engine.Contracts.Pipelines.Models
+@using CodeAnalytics.Engine.Pipelines.Providers.Overview
+@using CodeAnalytics.Engine.Pipelines.Steps.Overview
+@using CodeAnalytics.Web.Common.Services.Stats
+
+@inject IStatsService StatsService
+
 <PageTitle>Home</PageTitle>
+
+<div>
+   
+</div>
+
+@code {
+
+   private ProjectListResult _projects = new ();
+   private PipelineParameters _parameters = new ();
+   
+   protected override async Task OnInitializedAsync()
+   {
+      _projects = await StatsService.GetStats<ProjectListResult, ProjectListProvider>(_parameters);
+      _parameters.Projects = _projects.Projects.Select(x => x.Id).ToHashSet();
+      
+      var test = await StatsService.GetStats<ArchetypesCountResult, ArchetypesCountProvider>(_parameters);
+      
+      
+   }
+   
+}

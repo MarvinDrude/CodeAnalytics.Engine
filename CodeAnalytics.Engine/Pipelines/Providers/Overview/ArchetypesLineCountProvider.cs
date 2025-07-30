@@ -10,7 +10,7 @@ using CodeAnalytics.Engine.Pipelines.Steps.Overview;
 
 namespace CodeAnalytics.Engine.Pipelines.Providers.Overview;
 
-public sealed class ArchetypesLineCountProvider
+public sealed class ArchetypesLineCountProvider : PipelineProviderBase, IPipelineProvider
 {
    private readonly IAnalyzeStoreProvider _storeProvider;
    private readonly IPipelineCacheProvider _cacheProvider;
@@ -31,4 +31,12 @@ public sealed class ArchetypesLineCountProvider
          .AddStep(new ArchetypesLineCountStep(store, parameters, _cacheProvider, false))
          .Execute(store);
    }
+
+   public async ValueTask<string> RunRawString(PipelineParameters parameters)
+   {
+      var result = await Run(parameters);
+      return Serialize(result);
+   }
+   
+   public static string Identifier => nameof(ArchetypesLineCountProvider);
 }

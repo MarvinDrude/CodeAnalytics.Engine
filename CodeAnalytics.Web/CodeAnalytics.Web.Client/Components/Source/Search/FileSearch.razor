@@ -31,22 +31,7 @@
    
    private string? _searchText;
    [Parameter]
-   public string? SearchText
-   {
-      get => _searchText;
-      set
-      {
-         _searchText = value;
-         if (_lastSearchText != _searchText)
-         {
-            _lastSearchText = _searchText;
-            if (_initialized)
-            {
-               _ = InvokeAsync(OnFileSearch);
-            }
-         }
-      } 
-   }
+   public string? SearchText { get; set; }
    
    [Parameter] 
    public EventCallback<string?> SearchUpdated { get; set; }
@@ -56,6 +41,20 @@
    
    private string? _lastSearchText = string.Empty;
    private readonly Debouncer _debouncer = new ();
+
+   protected override async Task OnParametersSetAsync()
+   {
+      _searchText = SearchText;
+      if (_lastSearchText != _searchText)
+      {
+         _lastSearchText = _searchText;
+         if (_initialized)
+         {
+            await OnFileSearch();
+         }
+      }
+      await base.OnParametersSetAsync();
+   }
 
    protected override async Task OnAfterRenderAsync(bool firstRender)
    {

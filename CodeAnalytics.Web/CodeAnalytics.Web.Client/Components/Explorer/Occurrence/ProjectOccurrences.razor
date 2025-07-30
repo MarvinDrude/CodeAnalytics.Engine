@@ -35,19 +35,23 @@
 
    private ProjectOccurrence? _project;
    [Parameter, EditorRequired]
-   public required ProjectOccurrence Project { 
-      get => _project ?? new ProjectOccurrence();
-      set
-      {
-         _project = value;
-         _isExpanded = true;
-      } 
-   }
-
+   public required ProjectOccurrence Project { get; set; }
+   
    private bool _isExpanded = true;
 
    private string ProjectName => Path.GetFileName(Path.GetFileNameWithoutExtension(ProjectPath.Replace('\\', '/')));
    private string ProjectPath => OccurrenceState.Strings.GetValueOrDefault(Project.PathId.Value) ?? "Unknown.Project.Name";
+   
+   protected override Task OnParametersSetAsync()
+   {
+      if (_project is null || _project != Project)
+      {
+         _project = Project;
+         _isExpanded = true;
+      }
+
+      return base.OnParametersSetAsync();
+   }
    
    private void OnHeaderClick()
    {

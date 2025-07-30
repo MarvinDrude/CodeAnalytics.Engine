@@ -12,7 +12,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 
-<PageTitle>@System.IO.Path.GetFileName(Path.Replace('\\', '/'))</PageTitle>
+<PageTitle>@System.IO.Path.GetFileName(Path?.Replace('\\', '/') ?? "Source Explorer")</PageTitle>
 
 <CascadingValue Name="OccurrenceChanged" Value="_onOccurrenceChange">
    <CascadingValue Name="SymbolIndex" Value="Symbol">
@@ -51,14 +51,7 @@
    
    private string? _path;
    [Parameter]
-   public required string Path { 
-      get => _path ?? string.Empty;
-      set
-      {
-         _path = value;
-         _ = InvokeAsync(OnFileChange);
-      } 
-   }
+   public required string? Path { get; set; }
    
    public OccurrenceState? Occurrence { get; set; }
 
@@ -77,6 +70,16 @@
    {
       _onOccurrenceChange = EventCallback.Factory.Create<OccurrenceState?>(this, OnOccurrenceChanged);
       await OnFileChange();
+   }
+
+   protected override async Task OnParametersSetAsync()
+   {
+      if (_path != Path)
+      {
+         _path = Path;
+         await OnFileChange();
+      }
+      await base.OnParametersSetAsync();
    }
 
    private Task OnOccurrenceChanged(OccurrenceState? occurrence)
@@ -126,9 +129,9 @@
    private async Task OnFileChange()
    {
       _initialized = false;
-      _isStart = Path is "/" or "";
+      _isStart = Path is "/" or "" or null;
 
-      if (_isStart)
+      if (_isStart || Path is null)
       {
          _initialized = true;
          return;

@@ -48,23 +48,38 @@
 
    private string? _activePath;
    [Parameter]
-   public string? ActivePath
-   {
-      get => _activePath;
-      set
-      {
-         if (value != _activePath)
-         {
-            _activePath = value;
-            if (_activePath == Item.Path.Replace("\\", "/"))
-            {
-               _ = InvokeAsync(ScrollToView);
-            }
-         }
-      }
-   }
+   public string? ActivePath { get; set; }
 
    private ElementReference? _entryRef;
+   private bool _needsScrolling = false;
+   private bool _initialized = false;
+
+   protected override async Task OnParametersSetAsync()
+   {
+      if (ActivePath != _activePath)
+      {
+         _activePath = ActivePath;
+         if (_activePath == Item.Path.Replace("\\", "/"))
+         {
+            _needsScrolling = true;
+            if (_initialized) await ScrollToView();
+         }
+      }
+      
+      await base.OnParametersSetAsync();
+   }
+
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if (_needsScrolling && firstRender)
+      {
+         await ScrollToView();
+         _needsScrolling = false;
+      }
+
+      await base.OnAfterRenderAsync(firstRender);
+      _initialized = true;
+   }
 
    public void OnClickHeader()
    {

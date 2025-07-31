@@ -19,6 +19,9 @@
    </ItemGroup>
 
    <ItemGroup>
+     <Folder Include="Components\Canvas\Common\" />
+     <Folder Include="Components\Canvas\Graphs\" />
+     <Folder Include="Contracts\Canvas\Graphs\" />
      <Folder Include="Contracts\Services\" />
    </ItemGroup>
 

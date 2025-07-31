@@ -24,7 +24,7 @@ public sealed class ServerExplorerService : IExplorerService
    public async Task<List<ExplorerTreeItem>> GetExplorerTreeItems()
    {
       await EnsureInitialized();
-      return _treeItems;
+      return ExplorerTreeItem.Clone(_treeItems);
    }
 
    public async Task<ExplorerFlatTreeItem[]> GetFlatTreeItems()

@@ -1,0 +1,24 @@
+﻿@using CodeAnalytics.Web.Client.Components.Canvas.Common
+@using CodeAnalytics.Web.Common.Models.Canvas
+
+<CanvasRenderer Render="@OnRender"></CanvasRenderer>
+
+@code {
+
+   private void OnRender(CanvasContext ctx)
+   {
+      ctx.BeginPath();
+      
+      ctx.MoveTo(20, 20);
+      ctx.LineTo(40, 20);
+      ctx.LineTo(40, 40);
+      ctx.LineTo(20, 40);
+      
+      ctx.ClosePath();
+      
+      ctx.FillStyle("#fff");
+      ctx.Fill();
+      
+   }
+   
+}

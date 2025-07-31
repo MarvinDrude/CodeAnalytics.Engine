@@ -4,12 +4,15 @@
 @using CodeAnalytics.Engine.Pipelines.Providers.Overview
 @using CodeAnalytics.Engine.Pipelines.Steps.Overview
 @using CodeAnalytics.Web.Common.Services.Stats
+@using CodeAnalytics.Web.Client.Components.Canvas.Common
+@using CodeAnalytics.Web.Client.Components.Canvas.Graphs
 
 @inject IStatsService StatsService
 
 <PageTitle>Home</PageTitle>
 
 <div class="">
+   <DonutGraphRenderer></DonutGraphRenderer>
 </div>
 
 @code {

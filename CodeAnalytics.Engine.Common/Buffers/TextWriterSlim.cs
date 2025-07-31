@@ -120,4 +120,9 @@ public ref struct TextWriterSlim
    {
       _buffer.Dispose();
    }
+
+   public override string ToString()
+   {
+      return WrittenSpan.ToString();
+   }
 }

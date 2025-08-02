@@ -21,7 +21,7 @@
    public int Height { get; set; } = 200;
 
    [Parameter] 
-   public TimeSpan BatchInterval { get; set; } = TimeSpan.FromMilliseconds(20); 
+   public TimeSpan BatchInterval { get; set; } = TimeSpan.FromMilliseconds(10); 
    
    [Parameter, EditorRequired]
    public required Action<CanvasContext> Render { get; set; }
@@ -68,7 +68,7 @@
       _actualHeight = (int)ev.Height;
       _actualWidth = (int)ev.Width;
 
-      await _debouncerResize.Debounce(TimeSpan.FromMilliseconds(20), async (ct) =>
+      await _debouncerResize.Debounce(TimeSpan.FromMilliseconds(10), async (ct) =>
       {
          await InvokeAsync(StateHasChanged);
          Rerender();
@@ -113,11 +113,22 @@
       finally
       {
          writer.Dispose();
-         _semaphore.Release();
       }
 
-      if (buffer.Length == 0) return;
-      await JsRuntime.InvokeVoidAsync("window.handleCanvasRenderBatch", _canvasRef, buffer);
+      if (buffer.Length == 0)
+      {
+         _semaphore.Release();
+         return;
+      }
+
+      try
+      {
+         await JsRuntime.InvokeVoidAsync("window.handleCanvasRenderBatch", _canvasRef, buffer);
+      }
+      finally
+      {
+         _semaphore.Release();
+      }
    }
 
    private string GetCssString()

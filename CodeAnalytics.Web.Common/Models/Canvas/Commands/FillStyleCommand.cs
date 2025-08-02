@@ -28,7 +28,7 @@ public struct FillStyleCommand : ICanvasCommand
       builder.WriteLine("(ctx, dataView, offset) => {");
 
       builder.WriteLine("[offset, style] = dataView.getStringEx(offset);");
-      builder.WriteLine("ctx.fillStyle = style;");
+      builder.WriteLine("ctx.fillStyle = getColorVariable(style);");
       
       builder.WriteLine("return offset;");
       builder.WriteLine("}");

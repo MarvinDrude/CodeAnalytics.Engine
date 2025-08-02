@@ -1,0 +1,10 @@
+﻿
+.widget {
+    grid-column: span 4;
+    grid-row: span 1;
+}
+
+.contents {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}

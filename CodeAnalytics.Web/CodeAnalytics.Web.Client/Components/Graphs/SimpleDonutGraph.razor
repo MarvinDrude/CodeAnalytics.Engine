@@ -1,0 +1,15 @@
+﻿@using CodeAnalytics.Web.Common.Models.Canvas.Graphs
+@using CodeAnalytics.Web.Client.Components.Canvas.Graphs
+
+<div class="donut">
+   <DonutGraphRenderer Nodes="@Nodes"></DonutGraphRenderer>
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required List<ValueGraphNode> Nodes { get; set; }
+   
+   
+   
+}

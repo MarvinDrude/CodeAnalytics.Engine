@@ -1,4 +1,6 @@
 ﻿
+window.colorCache = { };
+
 window.scrollToElement = (el) => {
     el?.scrollIntoView({ behavior: "instant", block: "center", inline: "center" });
 }
@@ -42,6 +44,23 @@ window.enhanceDataView = () => {
         
         return [offset, decoder.decode(bytes)];
     };
+}
+
+window.getColorVariable = (variable) => {
+    
+    if (!variable.startsWith("--")) {
+        return variable;
+    }
+    
+    if (window.colorCache.hasOwnProperty(variable)) {
+        return window.colorCache[variable];
+    }
+    
+    const rootStyles = getComputedStyle(document.documentElement);
+    const color = rootStyles.getPropertyValue(variable);
+
+    window.colorCache[variable] = color;
+    return color;
 }
 
 window.initializeCanvasRenderer = (data) => {

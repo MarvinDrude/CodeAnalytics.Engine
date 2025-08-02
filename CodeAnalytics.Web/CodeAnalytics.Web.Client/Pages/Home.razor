@@ -4,36 +4,36 @@
 @using CodeAnalytics.Engine.Pipelines.Providers.Overview
 @using CodeAnalytics.Engine.Pipelines.Steps.Overview
 @using CodeAnalytics.Web.Common.Services.Stats
-@using CodeAnalytics.Web.Client.Components.Canvas.Common
-@using CodeAnalytics.Web.Client.Components.Canvas.Graphs
-@using CodeAnalytics.Web.Common.Models.Canvas.Graphs
+@using CodeAnalytics.Web.Client.Components.Stats.Graphs
 
 @inject IStatsService StatsService
 
 <PageTitle>Home</PageTitle>
 
-<div class="">
-   <DonutGraphRenderer Nodes="@_data"></DonutGraphRenderer>
-</div>
+@if (_initialized)
+{
+   <div class="main">
+      <ArchetypeCountWidget PipeParameters="@_parameters" />
+   </div>
+}
+else
+{
+   
+}
 
 @code {
-
-   private List<ValueGraphNode> _data = [
-      new () { Name = "Test", Color = "#fff", Value = 20d },
-      new () { Name = "Test", Color = "blue", Value = 20d },
-   ];
    
    private ProjectListResult _projects = new ();
-   private PipelineParameters _parameters = new ();
+   private readonly PipelineParameters _parameters = new ();
+
+   private bool _initialized = false;
    
    protected override async Task OnInitializedAsync()
    {
       _projects = await StatsService.GetStats<ProjectListResult, ProjectListProvider>(_parameters);
       _parameters.Projects = _projects.Projects.Select(x => x.Id).ToHashSet();
-      
-      var test = await StatsService.GetStats<ArchetypesCountResult, ArchetypesCountProvider>(_parameters);
-      
-      
+
+      _initialized = true;
    }
 
 }

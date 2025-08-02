@@ -1,0 +1,52 @@
+﻿@using CodeAnalytics.Engine.Pipelines.Providers.Overview
+@using CodeAnalytics.Engine.Pipelines.Steps.Overview
+@using CodeAnalytics.Web.Client.Components.Graphs
+@using CodeAnalytics.Web.Common.Models.Canvas.Graphs
+@using CodeAnalytics.Web.Common.Services.Stats
+
+@inherits BaseStatsWidget
+
+@inject IStatsService StatsService
+
+<div class="widget">
+   <div class="contents">
+      <div class="types">
+         <WidgetTitle Header="Types" />
+         <SimpleDonutGraph Nodes="@_typeData"></SimpleDonutGraph>
+      </div>
+      <div class="members">
+         <WidgetTitle Header="Members" />
+         <SimpleDonutGraph Nodes="@_memberData"></SimpleDonutGraph>
+      </div>
+   </div>
+</div>
+
+@code {
+   
+   private List<ValueGraphNode> _typeData = [];
+   private List<ValueGraphNode> _memberData = [];
+
+   protected override async Task OnInitializedAsync()
+   {
+      await Reload();
+   }
+
+   private async Task Reload()
+   {
+      var data = await StatsService.GetStats<ArchetypesCountResult, ArchetypesCountProvider>(PipeParameters);
+      _typeData = [
+         new ValueGraphNode() { Name = "Classes", Color = "--class-color", Value = data.Global.ClassCount },
+         new ValueGraphNode() { Name = "Interfaces", Color = "--interface-color", Value = data.Global.InterfaceCount },
+         new ValueGraphNode() { Name = "Structs", Color = "--struct-color", Value = data.Global.StructCount },
+         new ValueGraphNode() { Name = "Enums", Color = "--enum-color", Value = data.Global.EnumCount },
+      ];
+
+      _memberData = [
+         new ValueGraphNode() { Name = "Methods", Color = "--method-color", Value = data.Global.MethodCount },
+         new ValueGraphNode() { Name = "Properties", Color = "--property-color", Value = data.Global.PropertyCount },
+         new ValueGraphNode() { Name = "Fields", Color = "--field-color", Value = data.Global.FieldCount },
+         new ValueGraphNode() { Name = "Constructors", Color = "--constructor-color", Value = data.Global.ConstructorCount },
+      ];
+   }
+   
+}

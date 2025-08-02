@@ -4,10 +4,15 @@
 @using CodeAnalytics.Web.Common.Models.Canvas.Common
 @using CodeAnalytics.Web.Common.Models.Canvas.Graphs
 
-<CanvasRenderer Render="@OnRender"></CanvasRenderer>
+<CanvasRenderer Render="@OnRender" Width="@Width" Height="@Height"></CanvasRenderer>
 
 @code {
 
+   [Parameter] 
+   public int Width { get; set; } = -1;
+   [Parameter] 
+   public int Height { get; set; } = 200;
+   
    [Parameter] 
    public BoundingRect Padding { get; set; } = new (20, 20, 20, 20);
 

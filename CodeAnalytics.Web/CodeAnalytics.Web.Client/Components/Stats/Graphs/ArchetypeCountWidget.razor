@@ -1,6 +1,7 @@
 ﻿@using CodeAnalytics.Engine.Pipelines.Providers.Overview
 @using CodeAnalytics.Engine.Pipelines.Steps.Overview
 @using CodeAnalytics.Web.Client.Components.Graphs
+@using CodeAnalytics.Web.Common.Models.Canvas.Common
 @using CodeAnalytics.Web.Common.Models.Canvas.Graphs
 @using CodeAnalytics.Web.Common.Services.Stats
 
@@ -12,26 +13,23 @@
    <div class="contents">
       <div class="types">
          <WidgetTitle Header="Types" />
-         <SimpleDonutGraph Nodes="@_typeData"></SimpleDonutGraph>
+         <SimpleDonutGraph Nodes="@_typeData" Padding="@_padding"></SimpleDonutGraph>
       </div>
       <div class="members">
          <WidgetTitle Header="Members" />
-         <SimpleDonutGraph Nodes="@_memberData"></SimpleDonutGraph>
+         <SimpleDonutGraph Nodes="@_memberData" Padding="@_padding"></SimpleDonutGraph>
       </div>
    </div>
 </div>
 
 @code {
+
+   private readonly BoundingRect _padding = new(10, 5, 10, 5);
    
    private List<ValueGraphNode> _typeData = [];
    private List<ValueGraphNode> _memberData = [];
 
-   protected override async Task OnInitializedAsync()
-   {
-      await Reload();
-   }
-
-   private async Task Reload()
+   protected override async Task Reload()
    {
       var data = await StatsService.GetStats<ArchetypesCountResult, ArchetypesCountProvider>(PipeParameters);
       _typeData = [
@@ -43,9 +41,10 @@
 
       _memberData = [
          new ValueGraphNode() { Name = "Methods", Color = "--method-color", Value = data.Global.MethodCount },
+         new ValueGraphNode() { Name = "Enum Values", Color = "--enum-value-color", Value = data.Global.EnumValueCount },
          new ValueGraphNode() { Name = "Properties", Color = "--property-color", Value = data.Global.PropertyCount },
-         new ValueGraphNode() { Name = "Fields", Color = "--field-color", Value = data.Global.FieldCount },
          new ValueGraphNode() { Name = "Constructors", Color = "--constructor-color", Value = data.Global.ConstructorCount },
+         new ValueGraphNode() { Name = "Fields", Color = "--field-color", Value = data.Global.FieldCount },
       ];
    }
    

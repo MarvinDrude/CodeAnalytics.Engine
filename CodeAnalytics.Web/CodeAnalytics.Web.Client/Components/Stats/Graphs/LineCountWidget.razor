@@ -1,0 +1,58 @@
+﻿
+@using CodeAnalytics.Engine.Pipelines.Providers.Overview
+@using CodeAnalytics.Engine.Pipelines.Steps.Overview
+@using CodeAnalytics.Web.Common.Models.Canvas.Common
+@using CodeAnalytics.Web.Common.Models.Canvas.Graphs
+@using CodeAnalytics.Web.Client.Components.Graphs
+@using CodeAnalytics.Web.Common.Services.Stats
+
+@inherits BaseStatsWidget
+
+@inject IStatsService StatsService
+
+<div class="widget">
+   <div class="contents">
+      <WidgetTitle Header="Lines of code (With and without empty lines)"></WidgetTitle>
+      <SimpleHorizontalBarGraph Nodes="@_lineCounts" Padding="@_paddingLineCount" Height="60" />
+      <SimpleHorizontalBarGraph Nodes="@_codeCounts" Padding="@_paddingCodeCount" Height="60"/>
+   </div>
+</div>
+
+@code {
+
+   private readonly BoundingRect _paddingLineCount = new(20, 15, 20, 15);
+   private readonly BoundingRect _paddingCodeCount = new(20, 15, 20, 15);
+   
+   private List<ValueGraphNode> _lineCounts = [];
+   private List<ValueGraphNode> _codeCounts = [];
+
+   protected override async Task Reload()
+   {
+      var data = await StatsService.GetStats<ArchetypesLineCountResult, ArchetypesLineCountProvider>(PipeParameters);
+
+      _lineCounts = [
+         new ValueGraphNode() { Name = "Class", Color = "--class-color", Value = data.Global.Classes.LineCount },
+         new ValueGraphNode() { Name = "Interface", Color = "--interface-color", Value = data.Global.Interfaces.LineCount },
+         new ValueGraphNode() { Name = "Struct", Color = "--struct-color", Value = data.Global.Structs.LineCount },
+         new ValueGraphNode() { Name = "Enum", Color = "--enum-color", Value = data.Global.Enums.LineCount },
+         new ValueGraphNode() { Name = "Method", Color = "--method-color", Value = data.Global.Methods.LineCount },
+         new ValueGraphNode() { Name = "Enum Value", Color = "--enum-value-color", Value = data.Global.EnumValues.LineCount },
+         new ValueGraphNode() { Name = "Property", Color = "--property-color", Value = data.Global.Properties.LineCount },
+         new ValueGraphNode() { Name = "Constructor", Color = "--constructor-color", Value = data.Global.Constructors.LineCount },
+         new ValueGraphNode() { Name = "Field", Color = "--field-color", Value = data.Global.Fields.LineCount },
+      ];
+      
+      _codeCounts = [
+         new ValueGraphNode() { Name = "Class", Color = "--class-color", Value = data.Global.Classes.CodeCount },
+         new ValueGraphNode() { Name = "Interface", Color = "--interface-color", Value = data.Global.Interfaces.CodeCount },
+         new ValueGraphNode() { Name = "Struct", Color = "--struct-color", Value = data.Global.Structs.CodeCount },
+         new ValueGraphNode() { Name = "Enum", Color = "--enum-color", Value = data.Global.Enums.CodeCount },
+         new ValueGraphNode() { Name = "Method", Color = "--method-color", Value = data.Global.Methods.CodeCount },
+         new ValueGraphNode() { Name = "Enum Value", Color = "--enum-value-color", Value = data.Global.EnumValues.CodeCount },
+         new ValueGraphNode() { Name = "Property", Color = "--property-color", Value = data.Global.Properties.CodeCount },
+         new ValueGraphNode() { Name = "Constructor", Color = "--constructor-color", Value = data.Global.Constructors.CodeCount },
+         new ValueGraphNode() { Name = "Field", Color = "--field-color", Value = data.Global.Fields.CodeCount },
+      ];
+   }
+
+}

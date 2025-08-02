@@ -135,15 +135,15 @@ public sealed class ArchetypesLineCountResult
 public sealed class ArchetypesLineCountEntry
 {
    public ArchetypesLineCounts Classes { get; set; } = new ();
-   public ArchetypesLineCounts Structs { get; } = new ();
-   public ArchetypesLineCounts Interfaces { get; } = new ();
-   public ArchetypesLineCounts Enums { get; } = new ();
-   public ArchetypesLineCounts EnumValues { get; } = new ();
+   public ArchetypesLineCounts Structs { get; set; } = new ();
+   public ArchetypesLineCounts Interfaces { get; set; } = new ();
+   public ArchetypesLineCounts Enums { get; set; } = new ();
+   public ArchetypesLineCounts EnumValues { get; set; } = new ();
    
-   public ArchetypesLineCounts Constructors { get; } = new ();
-   public ArchetypesLineCounts Properties { get; } = new ();
-   public ArchetypesLineCounts Methods { get; } = new ();
-   public ArchetypesLineCounts Fields { get; } = new ();
+   public ArchetypesLineCounts Constructors { get; set; } = new ();
+   public ArchetypesLineCounts Properties { get; set; } = new ();
+   public ArchetypesLineCounts Methods { get; set; } = new ();
+   public ArchetypesLineCounts Fields { get; set; } = new ();
 }
 
 public sealed class ArchetypesLineCounts

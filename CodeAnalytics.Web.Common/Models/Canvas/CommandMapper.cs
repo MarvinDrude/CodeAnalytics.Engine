@@ -30,6 +30,7 @@ public static class CommandMapper
       new FillStyleCommand(),
       new FillCommand(),
       new ArcCommand(),
-      new GlobalCompositeOperationCommand()
+      new GlobalCompositeOperationCommand(),
+      new RectCommand()
    ];
 }

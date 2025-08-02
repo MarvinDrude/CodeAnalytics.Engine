@@ -5,6 +5,8 @@ namespace CodeAnalytics.Web.Common.Models.Canvas.Common;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct Rect : IEquatable<Rect>
 {
+   public static readonly Rect Empty = new(0, 0, 0, 0);
+   
    public readonly float X;
    public readonly float Y;
    public readonly float Width;

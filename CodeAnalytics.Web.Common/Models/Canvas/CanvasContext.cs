@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Threading.Channels;
 using CodeAnalytics.Web.Common.Models.Canvas.Commands;
+using CodeAnalytics.Web.Common.Models.Canvas.Common;
 using CodeAnalytics.Web.Common.Models.Canvas.Interfaces;
 
 namespace CodeAnalytics.Web.Common.Models.Canvas;
@@ -33,6 +34,9 @@ public sealed class CanvasContext
       => Add(new ArcCommand() { Center = center, Radius = radius, StartAngle = startAngle, EndAngle = endAngle, CounterClockwise = counterClockwise });
    public void Arc(float cx, float cy, float radius, float startAngle, float endAngle, bool counterClockwise)
       => Add(new ArcCommand() { Center = new Vector2(cx, cy), Radius = radius, StartAngle = startAngle, EndAngle = endAngle, CounterClockwise = counterClockwise });
+   
+   public void Rect(Rect rect) => Add(new RectCommand() { Rect = rect });
+   public void Rect(float x, float y, float width, float height) => Rect(new Rect(x, y, width, height));
    
    public void GlobalCompositeOperation(string setName) => Add(new GlobalCompositeOperationCommand() { SetName = setName });
    

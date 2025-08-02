@@ -10,7 +10,12 @@
 @inject IJSRuntime JsRuntime
 
 <div @ref="_parentRef" class="parent" style="@(GetCssString())">
-   <canvas @ref="@_canvasRef" style="@(GetCssString())" width="@_actualWidth" height="@_actualHeight"></canvas>
+   <canvas @ref="@_canvasRef"
+           style="@(GetCssString())"
+           class="@(_extraClasses)"
+           width="@_actualWidth"
+           height="@_actualHeight">
+   </canvas>
 </div>
 
 @code {
@@ -33,6 +38,7 @@
    private ElementReference? _parentRef;
    
    private bool _disposed;
+   private string _extraClasses = "hidden";
 
    private CanvasContext? _context;
 
@@ -57,22 +63,26 @@
          
          _ = RunBatching();
          Rerender();
+         
+         _extraClasses = string.Empty;
       }
    }
 
    [JSInvokable]
-   public async Task OnResize(ResizeEvent ev)
+   public Task OnResize(ResizeEvent ev)
    {
-      if (_disposed) return;
+      if (_disposed) return Task.CompletedTask;
       
       _actualHeight = (int)ev.Height;
       _actualWidth = (int)ev.Width;
 
-      await _debouncerResize.Debounce(TimeSpan.FromMilliseconds(10), async (ct) =>
+      _debouncerResize.Debounce(TimeSpan.FromMilliseconds(80), async (ct) =>
       {
          await InvokeAsync(StateHasChanged);
          Rerender();
       });
+
+      return Task.CompletedTask;
    }
 
    private void OnBaseRender(CanvasContext ctx)

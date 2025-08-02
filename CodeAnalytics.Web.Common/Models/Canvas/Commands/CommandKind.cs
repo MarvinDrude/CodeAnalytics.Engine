@@ -9,5 +9,6 @@ public enum CommandKind : ushort
    FillStyle = 5,
    Fill = 6,
    Arc = 7,
-   GlobalCompositeOperation = 8
+   GlobalCompositeOperation = 8,
+   Rect = 9
 }

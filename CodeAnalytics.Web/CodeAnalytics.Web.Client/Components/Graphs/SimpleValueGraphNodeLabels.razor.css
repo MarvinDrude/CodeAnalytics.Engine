@@ -1,0 +1,39 @@
+﻿
+.labels {
+    display: flex;    
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.labels .label {
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0.2);
+    padding: 5px 10px;
+    display: flex;
+    border: 1px solid rgba(100, 100, 100, 0.3);
+}
+
+.labels .label .color .content {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.labels .label .color {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    width: 26px;
+}
+
+.labels .label .name {
+    
+}
+
+.labels .label .name .value {
+    font-weight: 550;
+}
+
+.labels .label .name .text {
+
+}

@@ -1,51 +1,63 @@
-﻿namespace CodeAnalytics.Web.Common.Threading;
+﻿
+namespace CodeAnalytics.Web.Common.Threading;
 
 public sealed class Debouncer : IDisposable
 {
-   private readonly SemaphoreSlim _semaphore = new(1, 1);
+   private readonly Lock _lock = new ();
    private CancellationTokenSource? _cancellationTokenSource;
+   private Func<CancellationToken, Task>? _latestAction;
 
    private bool _disposed;
+   private int _running;
 
-   public async Task Debounce(TimeSpan delay, Func<CancellationToken, Task> action)
+   public void Debounce(TimeSpan delay, Func<CancellationToken, Task> action)
    {
-      await _semaphore.WaitAsync();
-      Task task;
-
-      try
+      lock (_lock)
       {
-         if (_cancellationTokenSource is not null)
-         {
-            await _cancellationTokenSource.CancelAsync();
-            _cancellationTokenSource.Dispose();
-         }
-
+         _cancellationTokenSource?.Cancel();
+         _cancellationTokenSource?.Dispose();
+         
          _cancellationTokenSource = new CancellationTokenSource();
          var token = _cancellationTokenSource.Token;
 
-         task = RunDebounce(delay, action, token);
-      }
-      finally
-      {
-         _semaphore.Release();
-      }
-
-      await task;
-   }
-
-   private async Task RunDebounce(TimeSpan delay, Func<CancellationToken, Task> action, CancellationToken token)
-   {
-      try
-      {
-         await Task.Delay(delay, token);
-         if (!token.IsCancellationRequested)
+         _latestAction = action;
+         
+         if (Interlocked.Exchange(ref _running, 1) == 0)
          {
-            await action(token);
+            _ = RunDebounce(delay, token);
          }
       }
-      catch (TaskCanceledException)
+   }
+
+   private async Task RunDebounce(TimeSpan delay, CancellationToken token)
+   {
+      while (true)
       {
-         // expected
+         try
+         {
+            await Task.Delay(delay, token);
+         }
+         catch (OperationCanceledException)
+         {
+            lock (_lock)
+            {
+               if (_disposed) return;
+               token = _cancellationTokenSource?.Token ?? CancellationToken.None;
+            }
+
+            continue;
+         }
+
+         if (_latestAction is not null)
+         {
+            await _latestAction.Invoke(token);
+         }
+
+         if (Interlocked.CompareExchange(ref _running, 0, 1) == 1)
+         {
+            // finished
+            return;
+         }
       }
    }
    
@@ -57,6 +69,5 @@ public sealed class Debouncer : IDisposable
       _disposed = true;
       
       _cancellationTokenSource?.Dispose();
-      _semaphore.Dispose();
    }
 }

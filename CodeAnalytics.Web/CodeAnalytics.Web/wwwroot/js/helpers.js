@@ -90,7 +90,7 @@ window.initializeCanvasRenderer = (data) => {
     }
     
     window.handleCanvasRenderBatch = (canvas, batch) => {
-      
+        
         canvas._context2d = canvas._context2d || canvas.getContext("2d");
         
         const dataView = new DataView(batch.buffer, batch.byteOffset, batch.byteLength);

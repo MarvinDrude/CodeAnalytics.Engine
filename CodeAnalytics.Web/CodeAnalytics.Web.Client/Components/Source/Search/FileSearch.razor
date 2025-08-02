@@ -74,7 +74,7 @@
    private async Task OnFileSearch()
    {
       _ = Preferences.Update(await GetCurrentPreferences());
-      await _debouncer.Debounce(TimeSpan.FromMilliseconds(60), async (ct) =>
+      _debouncer.Debounce(TimeSpan.FromMilliseconds(60), async (ct) =>
       {
          var response = await FileSearchService.GetFileSearch(new FileSearchParameters()
          {

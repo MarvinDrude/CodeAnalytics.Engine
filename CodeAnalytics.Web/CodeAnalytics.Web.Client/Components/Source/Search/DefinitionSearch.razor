@@ -77,7 +77,7 @@
    private async Task OnBasicSearch()
    {
       _ = Preferences.Update(await GetCurrentPreferences());
-      await _debouncer.Debounce(TimeSpan.FromMilliseconds(60), async (ct) =>
+      _debouncer.Debounce(TimeSpan.FromMilliseconds(60), async (ct) =>
       {
          var response = await SearchService.GetBasicSearch(new BasicSearchParameters()
          {

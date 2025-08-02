@@ -4,5 +4,25 @@
    
    [Parameter, EditorRequired]
    public required PipelineParameters PipeParameters { get; set; }
+   private PipelineParameters? _lastParameters;
    
+   protected override async Task OnInitializedAsync()
+   {
+      await Reload();
+   }
+   
+   protected override async Task OnParametersSetAsync()
+   {
+      if (PipeParameters != _lastParameters)
+      {
+         await Reload();
+         _lastParameters = PipeParameters;
+      }
+   }
+
+   protected virtual Task Reload()
+   {
+      return Task.CompletedTask;
+   }
+
 }

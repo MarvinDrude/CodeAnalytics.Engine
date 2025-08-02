@@ -29,5 +29,7 @@ public static class CommandMapper
       new MoveToCommand(),
       new FillStyleCommand(),
       new FillCommand(),
+      new ArcCommand(),
+      new GlobalCompositeOperationCommand()
    ];
 }

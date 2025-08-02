@@ -63,6 +63,8 @@
    [JSInvokable]
    public async Task OnResize(ResizeEvent ev)
    {
+      if (_disposed) return;
+      
       _actualHeight = (int)ev.Height;
       _actualWidth = (int)ev.Width;
 

@@ -7,5 +7,7 @@ public enum CommandKind : ushort
    LineTo = 3,
    ClosePath = 4,
    FillStyle = 5,
-   Fill = 6
+   Fill = 6,
+   Arc = 7,
+   GlobalCompositeOperation = 8
 }

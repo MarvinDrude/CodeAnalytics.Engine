@@ -6,17 +6,23 @@
 @using CodeAnalytics.Web.Common.Services.Stats
 @using CodeAnalytics.Web.Client.Components.Canvas.Common
 @using CodeAnalytics.Web.Client.Components.Canvas.Graphs
+@using CodeAnalytics.Web.Common.Models.Canvas.Graphs
 
 @inject IStatsService StatsService
 
 <PageTitle>Home</PageTitle>
 
 <div class="">
-   <DonutGraphRenderer></DonutGraphRenderer>
+   <DonutGraphRenderer Nodes="@_data"></DonutGraphRenderer>
 </div>
 
 @code {
 
+   private List<ValueGraphNode> _data = [
+      new () { Name = "Test", Color = "#fff", Value = 20d },
+      new () { Name = "Test", Color = "blue", Value = 20d },
+   ];
+   
    private ProjectListResult _projects = new ();
    private PipelineParameters _parameters = new ();
    

@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@inject IConfiguration configuration
+
+@{
+   var forceServer = (configuration["RenderMode"] ?? string.Empty) == "Server";
+   IComponentRenderMode renderMode = forceServer ? InteractiveServer : InteractiveAuto;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
    <head>
@@ -8,11 +15,11 @@
       <link rel="stylesheet" href="@Assets["app.css"]" />
       <link rel="stylesheet" href="@Assets["CodeAnalytics.Web.styles.css"]" />
       <ImportMap/>
-      <HeadOutlet @rendermode="InteractiveAuto"/>
+      <HeadOutlet @rendermode="@(renderMode)"/>
    </head>
 
    <body>
-      <Routes @rendermode="InteractiveAuto"/>
+      <Routes @rendermode="@(renderMode)"/>
       
       <ReconnectModal/>
       

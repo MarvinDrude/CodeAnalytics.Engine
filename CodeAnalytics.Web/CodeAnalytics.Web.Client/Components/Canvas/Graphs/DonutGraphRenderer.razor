@@ -1,24 +1,58 @@
-﻿@using CodeAnalytics.Web.Client.Components.Canvas.Common
+﻿@using System.Numerics
+@using System.Runtime.Intrinsics.X86
+@using CodeAnalytics.Web.Client.Components.Canvas.Common
 @using CodeAnalytics.Web.Common.Models.Canvas
+@using CodeAnalytics.Web.Common.Models.Canvas.Common
+@using CodeAnalytics.Web.Common.Models.Canvas.Graphs
 
 <CanvasRenderer Render="@OnRender"></CanvasRenderer>
 
 @code {
 
+   [Parameter] 
+   public BoundingRect Padding { get; set; } = new (20, 20, 20, 20);
+
+   [Parameter]
+   public float HolePercentage { get; set; } = 0.6f;
+   
+   [Parameter, EditorRequired]
+   public required List<ValueGraphNode> Nodes { get; set; }
+
    private void OnRender(CanvasContext ctx)
    {
+      var total = Nodes.Sum(x => x.Value);
+      var center = new Vector2(ctx.Width / 2f, ctx.Height / 2f);
+
+      var range = new Vector2(
+         center.X - (Padding.Left + Padding.Right),
+         center.Y - (Padding.Top + Padding.Bottom));
+      var radius = Math.Min(range.X, range.Y);
+      var innerRadius = radius * HolePercentage;
+
+      var startAngle = -Math.PI / 2;
+
+      foreach (var data in Nodes)
+      {
+         var slice = (data.Value / total) * Math.PI * 2;
+         
+         ctx.BeginPath();
+         
+         ctx.MoveTo(center);
+         ctx.Arc(center, radius, (float)startAngle, (float)(startAngle + slice), false);
+         ctx.LineTo(center);
+         
+         ctx.ClosePath();
+         ctx.FillStyle(data.Color);
+         ctx.Fill();
+
+         startAngle += slice;
+      }
+      
+      ctx.GlobalCompositeOperation("destination-out");
       ctx.BeginPath();
-      
-      ctx.MoveTo(20, 20);
-      ctx.LineTo(40, 20);
-      ctx.LineTo(40, 40);
-      ctx.LineTo(20, 40);
-      
-      ctx.ClosePath();
-      
-      ctx.FillStyle("#fff");
+      ctx.Arc(center, innerRadius, 0, (float)Math.PI * 2, false);
       ctx.Fill();
-      
+      ctx.GlobalCompositeOperation("source-over");
    }
    
 }

@@ -28,6 +28,13 @@ public sealed class CanvasContext
    
    public void FillStyle(string style) => Add(new FillStyleCommand() { Style = style });
    public void Fill() => Add(new FillCommand());
+
+   public void Arc(Vector2 center, float radius, float startAngle, float endAngle, bool counterClockwise)
+      => Add(new ArcCommand() { Center = center, Radius = radius, StartAngle = startAngle, EndAngle = endAngle, CounterClockwise = counterClockwise });
+   public void Arc(float cx, float cy, float radius, float startAngle, float endAngle, bool counterClockwise)
+      => Add(new ArcCommand() { Center = new Vector2(cx, cy), Radius = radius, StartAngle = startAngle, EndAngle = endAngle, CounterClockwise = counterClockwise });
+   
+   public void GlobalCompositeOperation(string setName) => Add(new GlobalCompositeOperationCommand() { SetName = setName });
    
    private void Add<TCommand>(TCommand command) 
       where TCommand : ICanvasCommand

@@ -74,14 +74,14 @@ window.initializeCanvasRenderer = (data) => {
       
         canvas._context2d = canvas._context2d || canvas.getContext("2d");
         
-        const dataView = new DataView(batch.buffer);
+        const dataView = new DataView(batch.buffer, batch.byteOffset, batch.byteLength);
         let offset = 0;
         
         while (offset < batch.length) {
 
             const typeId = dataView.getUint16(offset, true); offset += 2;
             const renderer = window.canvasRenderers[typeId];
-
+            
             offset = renderer(canvas._context2d, dataView, offset);
             
         }

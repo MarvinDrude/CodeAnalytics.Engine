@@ -5,6 +5,7 @@
 @using CodeAnalytics.Engine.Pipelines.Steps.Overview
 @using CodeAnalytics.Web.Common.Services.Stats
 @using CodeAnalytics.Web.Client.Components.Stats.Graphs
+@using CodeAnalytics.Web.Client.Components.Stats
 
 @inject IStatsService StatsService
 
@@ -12,6 +13,7 @@
 
 @if (_initialized)
 {
+   <StatsFilter />
    <div class="main">
       <ArchetypeCountWidget PipeParameters="@_parameters" />
       <LineCountWidget PipeParameters="@_parameters" />

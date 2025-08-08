@@ -8,6 +8,11 @@ public static class BufferAllocator<T>
    
    public static BufferOwner<T> CreatePooled(int minBufferLength, bool exactLength)
    {
+      if (minBufferLength < 0)
+      {
+         throw new ArgumentOutOfRangeException(nameof(minBufferLength));
+      }
+      
       var owner = new BufferOwner<T>(_pool, minBufferLength, exactLength);
       return owner;
    }

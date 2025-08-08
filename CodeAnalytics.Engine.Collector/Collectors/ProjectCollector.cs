@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using CodeAnalytics.Engine.Collector.Collectors.Contexts;
+using CodeAnalytics.Engine.Collector.Collectors.Models;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Collector.Syntax.Interfaces;
 using CodeAnalytics.Engine.Collector.Syntax.Providers;
@@ -15,6 +16,9 @@ using CodeAnalytics.Engine.Contracts.TextRendering;
 using CodeAnalytics.Engine.Merges.Common;
 using CodeAnalytics.Engine.Serialization.Collections;
 using CodeAnalytics.Engine.Serialization.TextRendering;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -33,84 +37,101 @@ public sealed partial class ProjectCollector
       _options = options;
    }
 
-   public async Task<Result<CollectorStore, Error<string>>> Collect(CancellationToken ct = default)
+   public async Task<Result<CollectorStore, Error<string>>> Collect(
+      ProjectParseInfo? parseInfo = null, CancellationToken ct = default)
    {
       var start = Stopwatch.GetTimestamp();
-      var info = await Bootstrapper.GetProjectByPath(_options.Path, ct);
+      var info = parseInfo ?? await Bootstrapper.GetProjectByPath(_options.Path, ct);
       
       if (info?.Compilation is null || info.Workspace is null)
       {
          return new Error<string>("Compilation or Workspace is null.");
       }
 
-      using var workspace = info.Workspace;
-      var store = new CollectorStore()
+      try
       {
-         NodeIdStore = _options.NodeIdStore,
-         StringIdStore = _options.StringIdStore,
-         Occurrences = _options.Occurrences,
-         ComponentStore = new MergableComponentStore(_options.InitialCapacityPerComponentPool),
-         LineCountStore = new LineCountStore(),
-         Projects = []
-      };
-
-      var loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
-      start = Stopwatch.GetTimestamp();
-      
-      LogStartProjectCollect(_options.Path);
-      LogStartupTime(loadingTime);
-      long nodesIterated = 0;
-
-      foreach (var tree in info.Compilation.SyntaxTrees)
-      {
-         var semanticModel = info.Compilation.GetSemanticModel(tree, ignoreAccessibility: true);
-         var root = await tree.GetRootAsync(ct);
-         
-         var document = workspace.CurrentSolution.GetDocument(tree);
-         if (document is null) continue;
-         
-         _context = new CollectContext()
+         var workspace = info.Workspace;
+         var store = new CollectorStore()
          {
-            Compilation = info.Compilation,
-            Options = _options,
-            Store = store,
-            SourceText = await tree.GetTextAsync(ct),
-            SemanticModel = semanticModel,
-            SyntaxNode = root,
-            SyntaxTree = tree,
-            Document = document,
-            CancellationToken = ct,
+            NodeIdStore = _options.NodeIdStore,
+            StringIdStore = _options.StringIdStore,
+            Occurrences = _options.Occurrences,
+            ComponentStore = new MergableComponentStore(_options.InitialCapacityPerComponentPool),
+            LineCountStore = new LineCountStore(),
+            Projects = []
          };
-         
-         var projectPath = _context.GetRelativePath(_context.Options.Path);
-         _context.ProjectId = _context.Store.StringIdStore.GetOrAdd(projectPath);
-         _context.Store.Projects.Add(_context.ProjectId);
 
-         var filePath = _context.GetRelativePath(_context.SyntaxTree.FilePath);
-         _context.FileId = _context.Store.StringIdStore.GetOrAdd(filePath);
-         
-         await HandleText(_context);
+         var loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
+         start = Stopwatch.GetTimestamp();
 
-         foreach (var node in root.DescendantNodesAndSelf())
+         LogStartProjectCollect(_options.Path);
+         LogStartupTime(loadingTime);
+         long nodesIterated = 0;
+
+         foreach (var tree in info.Compilation.SyntaxTrees)
          {
-            _context.SyntaxNode = node;
-            _context.ResetSymbol();
-            nodesIterated++;
+            var semanticModel = info.Compilation.GetSemanticModel(tree, ignoreAccessibility: true);
+            var root = await tree.GetRootAsync(ct);
+
+            var document = workspace.CurrentSolution.GetDocument(tree);
+            if (document is null) continue;
+
+            _context = new CollectContext()
+            {
+               Compilation = info.Compilation,
+               Options = _options,
+               Store = store,
+               SourceText = await tree.GetTextAsync(ct),
+               SemanticModel = semanticModel,
+               SyntaxNode = root,
+               SyntaxTree = tree,
+               Document = document,
+               CancellationToken = ct,
+            };
+
+            var projectPath = _context.GetRelativePath(_context.Options.Path);
+            _context.ProjectId = _context.Store.StringIdStore.GetOrAdd(projectPath);
+            _context.Store.Projects.Add(_context.ProjectId);
+
+            var filePath = _context.GetRelativePath(_context.SyntaxTree.FilePath);
+            _context.FileId = _context.Store.StringIdStore.GetOrAdd(filePath);
+
+            await HandleText(_context);
             
-            HandleNode(_context);
+            foreach (var node in root.DescendantNodesAndSelf(
+                        descendIntoChildren: static (n) =>
+                           n is CompilationUnitSyntax
+                              or NamespaceDeclarationSyntax
+                              or FileScopedNamespaceDeclarationSyntax
+                              or TypeDeclarationSyntax,
+                        descendIntoTrivia: false))
+            {
+               _context.SyntaxNode = node;
+               _context.ResetSymbol();
+               nodesIterated++;
+
+               HandleNode(_context);
+            }
+         }
+
+         loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
+         if (_options.IsProjectOnly)
+         {
+            _options.Occurrences.Clean(
+               store.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>(),
+               store);
+         }
+
+         LogNodesRan(nodesIterated, loadingTime);
+         return store;
+      }
+      finally
+      {
+         if (parseInfo is null)
+         {
+            info.Workspace.Dispose();
          }
       }
-
-      loadingTime = new TimeSpan(Stopwatch.GetTimestamp() - start);
-      if (_options.IsProjectOnly)
-      {
-         _options.Occurrences.Clean(
-            store.ComponentStore.GetOrCreatePool<SymbolComponent, SymbolMerger>(),
-            store);
-      }
-      
-      LogNodesRan(nodesIterated, loadingTime);
-      return store;
    }
 
    private async Task HandleText(CollectContext context)
@@ -141,7 +162,7 @@ public sealed partial class ProjectCollector
 
       await File.WriteAllBytesAsync(createPath, data);
    }
-
+   
    private void HandleNode(CollectContext context)
    {
       foreach (var provider in _syntaxProviders)
@@ -154,7 +175,7 @@ public sealed partial class ProjectCollector
          provider.Transformer.Transform(context);
       }
    }
-   
+      
    private readonly List<ISyntaxProvider> _syntaxProviders = [
       new EnumSyntaxProvider(),
       new ClassSyntaxProvider(),

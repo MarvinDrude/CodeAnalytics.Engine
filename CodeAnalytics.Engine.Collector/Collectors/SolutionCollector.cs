@@ -1,4 +1,5 @@
-﻿using CodeAnalytics.Engine.Collector.Collectors.Options;
+﻿using CodeAnalytics.Engine.Collector.Collectors.Interfaces;
+using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Extensions;
 using CodeAnalytics.Engine.Common.Threading.Pools;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CodeAnalytics.Engine.Collector.Collectors;
 
-public sealed partial class SolutionCollector : IAsyncDisposable
+public sealed partial class SolutionCollector : ISolutionCollector
 {
    private readonly ILogger<SolutionCollector> _logger;
    
@@ -85,7 +86,7 @@ public sealed partial class SolutionCollector : IAsyncDisposable
       options.Path = projectPath;
       
       var collector = new ProjectCollector(options);
-      var result = await collector.Collect(ct);
+      var result = await collector.Collect(null, ct);
       
       Interlocked.Increment(ref _currentProjectCount);
       LogUpdateProjectCount(_currentProjectCount, _maxProjectCount);

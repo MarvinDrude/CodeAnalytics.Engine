@@ -1,5 +1,6 @@
 ﻿
 using CodeAnalytics.Engine.Collector.Collectors;
+using CodeAnalytics.Engine.Collector.Collectors.Interfaces;
 using CodeAnalytics.Engine.Collector.Console.Options;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Results;
@@ -51,7 +52,9 @@ if (collectOptions.Path.ToLower().EndsWith(".csproj"))
 else
 {
    var options = CollectOptions.CreateSolutionOptions(collectOptions, provider);
-   await using var collector = new SolutionCollector(options);
+   await using ISolutionCollector collector = collectOptions.MaxDegreeOfParallelism is 1 
+      ? new SequentialSolutionCollector(options)
+      : new SolutionCollector(options);
 
    result = await collector.Collect();
 }

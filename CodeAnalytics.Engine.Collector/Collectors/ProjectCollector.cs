@@ -96,7 +96,10 @@ public sealed partial class ProjectCollector
             var filePath = _context.GetRelativePath(_context.SyntaxTree.FilePath);
             _context.FileId = _context.Store.StringIdStore.GetOrAdd(filePath);
 
-            await HandleText(_context);
+            if (_options.WriteSourceFiles)
+            {
+               await HandleText(_context);
+            }
             
             foreach (var node in root.DescendantNodesAndSelf(
                         descendIntoChildren: static (n) =>

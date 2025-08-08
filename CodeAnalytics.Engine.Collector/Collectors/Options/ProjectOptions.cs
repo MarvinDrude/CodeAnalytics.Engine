@@ -16,7 +16,8 @@ public class ProjectOptions : BaseOptions
          InitialCapacityPerComponentPool = options.InitialCapacityPerComponentPool,
          ServiceProvider = options.ServiceProvider,
          Occurrences = options.Occurrences,
-         IsProjectOnly = false
+         IsProjectOnly = false,
+         WriteSourceFiles = options.WriteSourceFiles
       };
    }
 }

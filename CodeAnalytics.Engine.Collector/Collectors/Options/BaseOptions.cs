@@ -17,6 +17,7 @@ public class BaseOptions
    public required string OutputBasePath { get; set; }
    
    public int InitialCapacityPerComponentPool { get; set; } = 1_000;
+   public bool WriteSourceFiles { get; set; } = true;
    
    public required NodeIdStore NodeIdStore { get; set; }
    public required StringIdStore StringIdStore { get; set; }

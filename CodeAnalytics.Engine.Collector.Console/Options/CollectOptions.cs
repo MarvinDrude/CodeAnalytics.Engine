@@ -12,7 +12,8 @@ public sealed class CollectOptions
    
    public int InitialCapacityPerComponentPool { get; set; } = 1_000;
    public int MaxDegreeOfParallelism { get; set; } = 1;
-
+   public bool WriteSourceFiles { get; set; } = true;
+   
    public static ProjectOptions CreateProjectOptions(
       CollectOptions options,
       IServiceProvider serviceProvider)
@@ -26,7 +27,8 @@ public sealed class CollectOptions
          BasePath = options.BasePath,
          OutputBasePath = options.OutputBasePath,
          InitialCapacityPerComponentPool = options.InitialCapacityPerComponentPool,
-         Path = options.Path
+         Path = options.Path,
+         WriteSourceFiles = options.WriteSourceFiles,
       };
    }
 
@@ -44,7 +46,8 @@ public sealed class CollectOptions
          OutputBasePath = options.OutputBasePath,
          InitialCapacityPerComponentPool = options.InitialCapacityPerComponentPool,
          MaxDegreeOfParallelism = options.MaxDegreeOfParallelism,
-         Path = options.Path
+         Path = options.Path,
+         WriteSourceFiles = options.WriteSourceFiles,
       };
    }
 }

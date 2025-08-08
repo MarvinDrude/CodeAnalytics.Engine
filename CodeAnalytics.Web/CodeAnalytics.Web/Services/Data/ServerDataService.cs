@@ -2,6 +2,7 @@
 using CodeAnalytics.Engine.Analyze;
 using CodeAnalytics.Engine.Analyze.Interfaces;
 using CodeAnalytics.Engine.Collectors;
+using CodeAnalytics.Engine.Compression;
 using CodeAnalytics.Engine.Serialization;
 using CodeAnalytics.Engine.Serialization.Stores;
 using CodeAnalytics.Web.Common.Services.Data;
@@ -54,7 +55,8 @@ public sealed class ServerDataService : IDataService
       var bytes = await File.ReadAllBytesAsync(filePath);
 
       _analyzeStore = new AnalyzeStore(
-         Serializer<CollectorStore, CollectorStoreSerializer>.FromMemory(bytes));
+         Serializer<CollectorStore, CollectorStoreSerializer>.FromMemory(
+            new DeflateCompressor().Decompress(bytes).Span));
       
       IsInitialized = true;
    }

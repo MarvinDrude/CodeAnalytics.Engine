@@ -5,6 +5,7 @@ using CodeAnalytics.Engine.Collector.Console.Options;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Results;
 using CodeAnalytics.Engine.Common.Results.Errors;
+using CodeAnalytics.Engine.Compression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -65,7 +66,7 @@ if (result is { IsSuccess: true, Success: { } store })
    
    await File.WriteAllBytesAsync(
       Path.Combine(collectOptions.OutputBasePath, "data.caec"), 
-      store.ToMemory());
+      new DeflateCompressor().Compress(store.ToMemory()));
 }
 else
 {

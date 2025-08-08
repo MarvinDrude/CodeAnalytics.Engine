@@ -209,7 +209,9 @@ public ref struct BufferWriter<T> : IDisposable
       else
       {
          var growBy = _owner.Length > 0 ? Math.Max(requestedLength, _owner.Length) : 256;
-         newLength = _owner.Length + growBy;
+         long newLengthLong = _owner.Length + growBy;
+         
+         newLength = (int)Math.Min(int.MaxValue - 1, newLengthLong);
       }
 
       var lastOwner = _owner;

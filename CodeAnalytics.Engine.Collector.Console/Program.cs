@@ -63,10 +63,15 @@ else
 if (result is { IsSuccess: true, Success: { } store })
 {
    ProgramLogger.LogFinishedCollecting(logger);
+
+   var memory = store.ToMemory();
+   
+   result = default;
+   store = null;
    
    await File.WriteAllBytesAsync(
       Path.Combine(collectOptions.OutputBasePath, "data.caec"), 
-      new DeflateCompressor().Compress(store.ToMemory()));
+      new DeflateCompressor().Compress(memory));
 }
 else
 {

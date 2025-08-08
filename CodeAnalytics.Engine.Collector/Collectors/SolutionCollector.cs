@@ -1,4 +1,5 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Interfaces;
+using CodeAnalytics.Engine.Collector.Collectors.Models;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Collectors;
 using CodeAnalytics.Engine.Common.Extensions;
@@ -6,6 +7,8 @@ using CodeAnalytics.Engine.Common.Threading.Pools;
 using CodeAnalytics.Engine.Components;
 using CodeAnalytics.Engine.Contracts.Components.Common;
 using CodeAnalytics.Engine.Merges.Common;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -36,15 +39,18 @@ public sealed partial class SolutionCollector : ISolutionCollector
 
    public async Task<CollectorStore> Collect(CancellationToken ct = default)
    {
-      var projectPaths = await Bootstrapper.GetProjectPathsBySolution(_options.Path, ct);
-      LogUpdateProjectCount(_currentProjectCount, projectPaths.Length);
+      var (workSpace, solution) = await Bootstrapper.OpenSolution(_options.Path, ct);
+      using var workspace = workSpace;
+      var projects = solution.Projects.ToList();
+      
+      LogUpdateProjectCount(_currentProjectCount, projects.Count);
 
-      _maxProjectCount = projectPaths.Length;
+      _maxProjectCount = projects.Count;
       List<Task<CollectorStore?>> tasks = [];
       
-      foreach (var projectPath in projectPaths)
+      foreach (var project in projects)
       {
-         tasks.Add(_workPool.Enqueue(CollectProjectTask(projectPath), ct));   
+         tasks.Add(_workPool.Enqueue(CollectProjectTask(project, workspace), ct));   
       }
 
       await Task.WhenAll(tasks)
@@ -75,25 +81,31 @@ public sealed partial class SolutionCollector : ISolutionCollector
       return result;
    }
 
-   private Func<CancellationToken, Task<CollectorStore?>> CollectProjectTask(string projectPath)
+   private Func<CancellationToken, Task<CollectorStore?>> CollectProjectTask(
+      Project project, MSBuildWorkspace workspace)
    {
-      return (cancel) => CollectProject(projectPath, cancel);
+      return (cancel) => CollectProject(project, workspace, cancel);
    }
    
-   private async Task<CollectorStore?> CollectProject(string projectPath, CancellationToken ct)
+   private async Task<CollectorStore?> CollectProject(
+      Project project, MSBuildWorkspace workspace, CancellationToken ct)
    {
       var options = ProjectOptions.Create(_options);
-      options.Path = projectPath;
+      options.Path = project.FilePath ?? throw new InvalidOperationException();
       
       var collector = new ProjectCollector(options);
-      var result = await collector.Collect(null, ct);
+      var result = await collector.Collect(new ProjectParseInfo()
+      {
+         Compilation = await project.GetCompilationAsync(ct),
+         Workspace = workspace
+      }, ct);
       
       Interlocked.Increment(ref _currentProjectCount);
       LogUpdateProjectCount(_currentProjectCount, _maxProjectCount);
 
       if (result is not { IsSuccess: true, Success: { } success })
       {
-         LogProjectError(projectPath, result.Error.Detail);
+         LogProjectError(project.FilePath, result.Error.Detail);
          return null;
       }
 

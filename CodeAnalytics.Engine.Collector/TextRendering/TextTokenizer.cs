@@ -26,18 +26,33 @@ public sealed class TextTokenizer
 
    public async Task<PooledList<SyntaxSpan>> Tokenize(CancellationToken ct = default)
    {
+      var text = _context.SourceText;
       var lineCount = _context.SourceText.Lines.Count;
       var list = new PooledList<SyntaxSpan>(64);
+      
+      var all = await Classifier.GetClassifiedSpansAsync(
+         _context.Document,
+         new TextSpan(0, text.Length),
+         ct);
+      var merged = all
+         .GroupBy(x => x.TextSpan)
+         .Select(g => g.OrderByDescending(c => c.ClassificationType == ClassificationTypeNames.Keyword).First())
+         .OrderBy(c => c.TextSpan.Start)
+         .ToList();
 
+      var i = 0;
       for (var e = 0; e < lineCount; e++)
       {
          var line = _context.SourceText.Lines[e];
          var lineSpan = line.Span;
-         var classified = (await Classifier.GetClassifiedSpansAsync(_context.Document, lineSpan, ct))
-            .GroupBy(x => x.TextSpan)
-            .Select(g => g.OrderByDescending(c => c.ClassificationType == ClassificationTypeNames.Keyword).First())
-            .OrderBy(c => c.TextSpan.Start)
-            .ToList();
+         var classified = new List<ClassifiedSpan>(8);
+         
+         while (i < merged.Count && merged[i].TextSpan.End <= lineSpan.Start) i++;
+         var j = i;
+         while (j < merged.Count && merged[j].TextSpan.Start < lineSpan.End)
+         {
+            classified.Add(merged[j++]);
+         }
          
          TokenizeLine(ref list, lineSpan, classified, e + 1);
          list.Add(new SyntaxSpan(string.Empty, string.Empty, isLineBreak: true));

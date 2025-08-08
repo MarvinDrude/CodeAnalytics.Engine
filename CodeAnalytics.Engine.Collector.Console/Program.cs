@@ -41,7 +41,7 @@ var logger = provider.GetRequiredService<ILogger<Program>>();
 var collectOptions = configuration.GetSection("Collect").Get<CollectOptions>() 
    ?? throw new Exception("Invalid configuration");
 
-Result<CollectorStore, Error<string>> result = default;
+Result<CollectorStore, Error<string>> result;
 
 if (collectOptions.Path.ToLower().EndsWith(".csproj"))
 {

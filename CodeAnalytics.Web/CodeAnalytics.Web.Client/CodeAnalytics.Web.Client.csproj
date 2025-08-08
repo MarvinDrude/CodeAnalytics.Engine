@@ -19,6 +19,7 @@
    </ItemGroup>
 
    <ItemGroup>
+     <Folder Include="Components\Stats\Filter\" />
      <Folder Include="Contracts\Canvas\Graphs\" />
      <Folder Include="Contracts\Services\" />
    </ItemGroup>

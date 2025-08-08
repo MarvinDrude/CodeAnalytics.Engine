@@ -1,11 +1,14 @@
 ﻿
+using System.IO.Compression;
 using CodeAnalytics.Engine.Collector.Collectors;
 using CodeAnalytics.Engine.Collector.Collectors.Interfaces;
 using CodeAnalytics.Engine.Collector.Console.Options;
 using CodeAnalytics.Engine.Collectors;
+using CodeAnalytics.Engine.Common.Buffers;
 using CodeAnalytics.Engine.Common.Results;
 using CodeAnalytics.Engine.Common.Results.Errors;
 using CodeAnalytics.Engine.Compression;
+using CodeAnalytics.Engine.Serialization.Stores;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -64,14 +67,26 @@ if (result is { IsSuccess: true, Success: { } store })
 {
    ProgramLogger.LogFinishedCollecting(logger);
 
-   var memory = store.ToMemory();
-   
-   result = default;
-   store = null;
-   
-   await File.WriteAllBytesAsync(
+   await using var fileStream = new FileStream(
       Path.Combine(collectOptions.OutputBasePath, "data.caec"), 
-      new DeflateCompressor().Compress(memory));
+      FileMode.Create);
+   await using var stream = new DeflateStream(
+      fileStream, CompressionLevel.Optimal, true);
+   
+   var writer = new ByteWriter(stream, 2024 * 3024);
+   try
+   {
+      CollectorStoreSerializer.Serialize(ref writer, ref store);
+   }
+   finally
+   {
+      writer.Dispose();
+   }
+   
+   // var memory = store.ToMemory();
+   // await File.WriteAllBytesAsync(
+   //    Path.Combine(collectOptions.OutputBasePath, "data.caec"), 
+   //    new DeflateCompressor().Compress(memory));
 }
 else
 {

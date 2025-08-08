@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -10,7 +12,7 @@ public ref struct ByteWriter : IDisposable
    public ReadOnlySpan<byte> WrittenSpan
    {
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      get => _writer.WrittenSpan;
+      get => !_isStream ? _writer.WrittenSpan : throw new InvalidOperationException();
    }
 
    public int Position
@@ -22,19 +24,31 @@ public ref struct ByteWriter : IDisposable
    }
    
    private BufferWriter<byte> _writer;
+   private StreamWriterSlim _streamWriter;
+
+   private readonly bool _isStream;
    
    public ByteWriter(
       Span<byte> buffer,
       int initialMinGrowCapacity = 512)
    {
-      _writer = new BufferWriter<byte>(buffer, initialMinGrowCapacity);   
+      _writer = new BufferWriter<byte>(buffer, initialMinGrowCapacity);
+      _isStream = false;
    }
 
+   public ByteWriter(Stream stream, int chunkSize = 2024 * 2024)
+   {
+      _streamWriter = new StreamWriterSlim(stream, chunkSize);
+      _isStream = true;
+   }
+   
    public int WriteBigEndian<T>(T value)
       where T : unmanaged
    {
       var size = Unsafe.SizeOf<T>();
-      var span = _writer.AcquireSpan(size);
+      var span = !_isStream 
+         ? _writer.AcquireSpan(size)
+         : _streamWriter.AcquireSpan(size);
 
       MemoryMarshal.Write(span, in value);
       
@@ -50,7 +64,9 @@ public ref struct ByteWriter : IDisposable
       where T : unmanaged
    {
       var size = Unsafe.SizeOf<T>();
-      var span = _writer.AcquireSpan(size);
+      var span = !_isStream 
+         ? _writer.AcquireSpan(size)
+         : _streamWriter.AcquireSpan(size);
       
       MemoryMarshal.Write(span, in value);
       
@@ -70,7 +86,15 @@ public ref struct ByteWriter : IDisposable
    public int WriteStringRaw(scoped ReadOnlySpan<char> text)
    {
       var rawBytes = MemoryMarshal.AsBytes(text);
-      _writer.Write(rawBytes);
+
+      if (!_isStream)
+      {
+         _writer.Write(rawBytes);
+      }
+      else
+      {
+         _streamWriter.Write(rawBytes);
+      }
       
       return rawBytes.Length;
    }
@@ -84,7 +108,9 @@ public ref struct ByteWriter : IDisposable
    public int WriteString(scoped ReadOnlySpan<char> text, Encoding encoding)
    {
       var size = encoding.GetByteCount(text);
-      var span = _writer.AcquireSpan(size);
+      var span = !_isStream 
+         ? _writer.AcquireSpan(size)
+         : _streamWriter.AcquireSpan(size);
 
       var written = encoding.GetBytes(text, span);
       ArgumentOutOfRangeException.ThrowIfNotEqual(size, written);
@@ -95,29 +121,72 @@ public ref struct ByteWriter : IDisposable
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
    public void WriteByte(byte value)
    {
-      _writer.Add(value);
+      if (!_isStream)
+      {
+         _writer.Add(value);
+      }
+      else
+      {
+         _streamWriter.Add(value);
+      }
    }
 
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
    public void WriteBytes(ReadOnlySpan<byte> buffer)
    {
-      _writer.Write(buffer);
+      if (!_isStream)
+      {
+         _writer.Write(buffer);
+      }
+      else
+      {
+         _streamWriter.Write(buffer);
+      }
    }
    
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
    public void WriteBytes(Span<byte> buffer)
    {
-      _writer.Write(buffer);
+      if (!_isStream)
+      {
+         _writer.Write(buffer);
+      }
+      else
+      {
+         _streamWriter.Write(buffer);
+      }
    }
 
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
    public void Fill(byte value)
    {
-      _writer.Fill(value);
+      if (!_isStream)
+      {
+         _writer.Fill(value);
+      }
+      else
+      {
+         _streamWriter.Fill(value);
+      }
    }
 
+   public void Flush()
+   {
+      if (_isStream)
+      {
+         _streamWriter.Flush();
+      }
+   }
+   
    public void Dispose()
    {
-      _writer.Dispose();
+      if (_isStream)
+      {
+         _streamWriter.Dispose();
+      }
+      else
+      {
+         _writer.Dispose();
+      }
    }
 }

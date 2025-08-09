@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Compression;
 using CodeAnalytics.Engine.Analyze;
 using CodeAnalytics.Engine.Analyze.Interfaces;
 using CodeAnalytics.Engine.Collectors;
+using CodeAnalytics.Engine.Common.Buffers;
 using CodeAnalytics.Engine.Compression;
 using CodeAnalytics.Engine.Serialization;
 using CodeAnalytics.Engine.Serialization.Stores;
@@ -54,9 +56,20 @@ public sealed class ServerDataService : IDataService
       var filePath = Path.Combine(Options.DataFolderPath, "data.caec");
       var bytes = await File.ReadAllBytesAsync(filePath);
 
-      _analyzeStore = new AnalyzeStore(
-         Serializer<CollectorStore, CollectorStoreSerializer>.FromMemory(
-            new DeflateCompressor().Decompress(bytes).Span));
+      await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+      await using var decompressed = new DeflateStream(fileStream, CompressionMode.Decompress);
+
+      var reader = new ByteReader(decompressed, 2024 * 3024);
+      if (!CollectorStoreSerializer.TryDeserialize(ref reader, out var store))
+      {
+         throw new InvalidOperationException("Cannot deserialize data");
+      }
+      
+      _analyzeStore = new AnalyzeStore(store);
+      
+      // _analyzeStore = new AnalyzeStore(
+      //    Serializer<CollectorStore, CollectorStoreSerializer>.FromMemory(
+      //       new DeflateCompressor().Decompress(bytes).Span));
       
       IsInitialized = true;
    }

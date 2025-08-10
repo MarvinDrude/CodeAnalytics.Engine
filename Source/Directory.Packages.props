@@ -1,10 +1,11 @@
 <Project>
-  <PropertyGroup>
-    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0-preview.6.25358.103" />
-  </ItemGroup>
+   <PropertyGroup>
+      <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+      <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+   </PropertyGroup>
+   <ItemGroup>
+      <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0-preview.6.25358.103" />
+      <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0-preview.6.25358.103" />
+      <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0-preview.6.25358.103" />
+   </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
 ﻿using CodeAnalytics.Engine.Storage.Models.Common;
 using CodeAnalytics.Engine.Storage.Models.Components.Common;
 using CodeAnalytics.Engine.Storage.Models.Components.Members;
-using CodeAnalytics.Engine.Storage.Models.Components.Types;
 using CodeAnalytics.Engine.Storage.Models.Structure;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +14,10 @@ public sealed class DbMainContext : DbContext
    
    public required DbSet<SymbolComponent> SymbolComponents { get; set; }
    public required DbSet<SymbolDeclaration> SymbolDeclarations { get; set; }
+   public required DbSet<ParameterComponent> ParameterComponents { get; set; }
    
    public required DbSet<FieldComponent> FieldComponents { get; set; }
+   public required DbSet<ConstructorComponent> ConstructorComponents { get; set; }
    
    protected override void OnModelCreating(ModelBuilder builder)
    {
@@ -32,5 +33,10 @@ public sealed class DbMainContext : DbContext
          .IsRequired();
       
       
+   }
+
+   protected override void OnConfiguring(DbContextOptionsBuilder builder)
+   {
+      builder.UseSqlite(@"Data Source=C:\Users\marvi\RiderProjects2\Source\identifier.sqlite");
    }
 }

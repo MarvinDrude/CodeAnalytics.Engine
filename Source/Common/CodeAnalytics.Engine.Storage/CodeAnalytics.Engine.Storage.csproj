@@ -11,4 +11,8 @@
      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Migrations\" />
+   </ItemGroup>
+
 </Project>

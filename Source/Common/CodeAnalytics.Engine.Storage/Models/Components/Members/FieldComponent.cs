@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnalytics.Engine.Storage.Models.Components.Members;
 
-[Index(nameof(Id))]
+[Index(nameof(Id), IsUnique = true)]
 public sealed class FieldComponent : MemberComponent
 {
    public long Id { get; set; }

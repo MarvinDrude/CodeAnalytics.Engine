@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CodeAnalytics.Engine.Storage.Models.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnalytics.Engine.Storage.Models.Structure;
 
-[Index(nameof(Id))]
+[Index(nameof(Id), IsUnique = true)]
 public sealed class FileReference
 {
    public long Id { get; set; }
@@ -15,4 +16,6 @@ public sealed class FileReference
    
    public required long ProjectReferenceId { get; set; }
    public required ProjectReference ProjectReference { get; set; }
+   
+   public List<SymbolDeclaration> SymbolDeclarations { get; set; } = [];
 }

@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnalytics.Engine.Storage.Models.Components.Common;
 
-[Index(nameof(Id))]
+[Index(nameof(Id), IsUnique = true)]
+[Index(nameof(NodeHash), IsUnique = true)]
 public sealed class SymbolComponent
 {
    public required long Id { get; set; }
@@ -23,4 +24,7 @@ public sealed class SymbolComponent
    
    public List<FieldComponent> FieldMemberTypes { get; set; } = [];
    public List<FieldComponent> FieldContainingTypes { get; set; } = [];
+   
+   public List<FieldComponent> FieldComponents { get; set; } = [];
+   public List<ConstructorComponent> ConstructorComponents { get; set; } = [];
 }

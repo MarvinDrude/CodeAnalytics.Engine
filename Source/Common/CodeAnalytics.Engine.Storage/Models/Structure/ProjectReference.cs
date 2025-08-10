@@ -16,6 +16,7 @@ public sealed class ProjectReference
 
    public List<SymbolDeclaration> SymbolDeclarations { get; set; } = [];
    public List<FileReference> FileReferences { get; set; } = [];
+   public List<ProjectReference> ProjectReferences { get; set; } = [];
    
    public long SolutionReferenceId { get; set; }
    public required SolutionReference SolutionReference { get; set; }

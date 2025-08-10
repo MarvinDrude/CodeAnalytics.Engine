@@ -1,6 +1,19 @@
-﻿namespace CodeAnalytics.Engine.Storage.Models.Components.Types;
+﻿
+using CodeAnalytics.Engine.Storage.Models.Components.Common;
+using CodeAnalytics.Engine.Storage.Models.Components.Members;
 
-public class TypeComponent
+namespace CodeAnalytics.Engine.Storage.Models.Components.Types;
+
+public abstract class TypeComponent
 {
+   public List<InterfaceComponent> Interfaces { get; set; } = [];
+   public List<InterfaceComponent> DirectInterfaces { get; set; } = [];
    
+   public List<ConstructorComponent> ConstructorComponents { get; set; } = [];
+   public List<MethodComponent> MethodComponents { get; set; } = [];
+   public List<PropertyComponent> PropertyComponents { get; set; } = [];
+   public List<FieldComponent> FieldComponents { get; set; } = [];
+   
+   public required long SymbolComponentId { get; set; }
+   public required SymbolComponent SymbolComponent { get; set; }
 }

@@ -25,6 +25,12 @@ public sealed class SymbolComponent
    public List<FieldComponent> FieldMemberTypes { get; set; } = [];
    public List<FieldComponent> FieldContainingTypes { get; set; } = [];
    
+   public List<ParameterComponent> ParameterComponents { get; set; } = [];
+   
    public List<FieldComponent> FieldComponents { get; set; } = [];
    public List<ConstructorComponent> ConstructorComponents { get; set; } = [];
+   public List<MethodComponent> MethodComponents { get; set; } = [];
+   public List<PropertyComponent> PropertyComponents { get; set; } = [];
+   
+   
 }

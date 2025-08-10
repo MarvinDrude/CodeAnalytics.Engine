@@ -4,12 +4,6 @@
    </PropertyGroup>
 
    <ItemGroup>
-     <Folder Include="Models\Common\" />
-     <Folder Include="Models\Components\" />
-     <Folder Include="Models\Structure\" />
-   </ItemGroup>
-
-   <ItemGroup>
      <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
        <PrivateAssets>all</PrivateAssets>
        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

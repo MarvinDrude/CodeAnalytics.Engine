@@ -18,6 +18,10 @@ public sealed class MethodComponent : MemberComponent
    
    public long OverriddenMethodId { get; set; }
    public MethodComponent? OverriddenMethod { get; set; }
+   public MethodComponent? OverridingMethod { get; set; }
+   
+   public long InterfaceImplementationId { get; set; }
+   public MethodComponent? InterfaceImplementation { get; set; }
    
    public required long TypeId { get; set; }
    public required SymbolComponent Type { get; set; }

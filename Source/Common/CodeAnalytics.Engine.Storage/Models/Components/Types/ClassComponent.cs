@@ -14,4 +14,5 @@ public sealed class ClassComponent : TypeComponent
    
    public long BaseClassId { get; set; }
    public ClassComponent? BaseClass { get; set; }
+   public ClassComponent? DerivedClass { get; set; }
 }

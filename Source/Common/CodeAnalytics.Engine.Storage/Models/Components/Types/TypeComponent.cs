@@ -1,10 +1,11 @@
 ﻿
 using CodeAnalytics.Engine.Storage.Models.Components.Common;
+using CodeAnalytics.Engine.Storage.Models.Components.Interfaces;
 using CodeAnalytics.Engine.Storage.Models.Components.Members;
 
 namespace CodeAnalytics.Engine.Storage.Models.Components.Types;
 
-public abstract class TypeComponent
+public abstract class TypeComponent : IComponent
 {
    public List<InterfaceComponent> Interfaces { get; set; } = [];
    public List<InterfaceComponent> DirectInterfaces { get; set; } = [];

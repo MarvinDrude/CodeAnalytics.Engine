@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CodeAnalytics.Engine.Storage.Enums.Components;
 using CodeAnalytics.Engine.Storage.Models.Common;
 using CodeAnalytics.Engine.Storage.Models.Components.Members;
+using CodeAnalytics.Engine.Storage.Models.Components.Types;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnalytics.Engine.Storage.Models.Components.Common;
@@ -10,6 +12,8 @@ namespace CodeAnalytics.Engine.Storage.Models.Components.Common;
 public sealed class SymbolComponent
 {
    public required long Id { get; set; }
+   public required ComponentKind Kind { get; set; }
+   
    [MaxLength(500)]
    public required string NodeHash { get; set; }
    
@@ -21,16 +25,4 @@ public sealed class SymbolComponent
    public required string FullPathName { get; set; }
    
    public List<SymbolDeclaration> SymbolDeclarations { get; set; } = [];
-   
-   public List<FieldComponent> FieldMemberTypes { get; set; } = [];
-   public List<FieldComponent> FieldContainingTypes { get; set; } = [];
-   
-   public List<ParameterComponent> ParameterComponents { get; set; } = [];
-   
-   public List<FieldComponent> FieldComponents { get; set; } = [];
-   public List<ConstructorComponent> ConstructorComponents { get; set; } = [];
-   public List<MethodComponent> MethodComponents { get; set; } = [];
-   public List<PropertyComponent> PropertyComponents { get; set; } = [];
-   
-   
 }

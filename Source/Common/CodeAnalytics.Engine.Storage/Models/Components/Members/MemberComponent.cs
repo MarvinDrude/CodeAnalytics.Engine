@@ -1,9 +1,10 @@
 ﻿using CodeAnalytics.Engine.Storage.Enums.Modifiers;
 using CodeAnalytics.Engine.Storage.Models.Components.Common;
+using CodeAnalytics.Engine.Storage.Models.Components.Interfaces;
 
 namespace CodeAnalytics.Engine.Storage.Models.Components.Members;
 
-public abstract class MemberComponent
+public abstract class MemberComponent : IComponent, IMemberComponent
 {
    public required AccessModifier Access { get; set; }
    public bool IsStatic { get; set; }

@@ -15,6 +15,10 @@ public sealed class PropertyComponent : MemberComponent
    
    public List<PropertyComponent> InterfaceImplementations { get; set; } = [];
    
+   public long InterfaceImplementationId { get; set; }
+   public PropertyComponent? InterfaceImplementation { get; set; }
+   
    public long OverriddenPropertyId { get; set; }
    public PropertyComponent? OverriddenProperty { get; set; }
+   public PropertyComponent? OverridingProperty { get; set; }
 }

@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\CodeAnalytics.Engine.Storage\CodeAnalytics.Engine.Storage.csproj" />
+  </ItemGroup>
+</Project>

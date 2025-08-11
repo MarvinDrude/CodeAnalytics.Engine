@@ -10,25 +10,31 @@ namespace CodeAnalytics.Engine.Storage.Contexts;
 
 public sealed class DbMainContext : DbContext
 {
-   public required DbSet<SolutionReference> SolutionReferences { get; set; }
-   public required DbSet<ProjectReference> ProjectReferences { get; set; }
-   public required DbSet<FileReference> FileReferences { get; set; }
+   public DbSet<SolutionReference> SolutionReferences { get; set; } = null!;
+   public DbSet<ProjectReference> ProjectReferences { get; set; } = null!;
+   public DbSet<FileReference> FileReferences { get; set; } = null!;
    
-   public required DbSet<SymbolComponent> SymbolComponents { get; set; }
-   public required DbSet<SymbolDeclaration> SymbolDeclarations { get; set; }
-   public required DbSet<ParameterComponent> ParameterComponents { get; set; }
+   public DbSet<SymbolComponent> SymbolComponents { get; set; } = null!;
+   public DbSet<SymbolDeclaration> SymbolDeclarations { get; set; } = null!;
+   public DbSet<ParameterComponent> ParameterComponents { get; set; } = null!;
    
-   public required DbSet<FieldComponent> FieldComponents { get; set; }
-   public required DbSet<ConstructorComponent> ConstructorComponents { get; set; }
-   public required DbSet<MethodComponent> MethodComponents { get; set; }
-   public required DbSet<PropertyComponent> PropertyComponents { get; set; }
-   public required DbSet<EnumValueComponent> EnumValueComponents { get; set; }
+   public DbSet<FieldComponent> FieldComponents { get; set; } = null!;
+   public DbSet<ConstructorComponent> ConstructorComponents { get; set; } = null!;
+   public DbSet<MethodComponent> MethodComponents { get; set; } = null!;
+   public DbSet<PropertyComponent> PropertyComponents { get; set; } = null!;
+   public DbSet<EnumValueComponent> EnumValueComponents { get; set; } = null!;
    
-   public required DbSet<ClassComponent> ClassComponents { get; set; }
-   public required DbSet<EnumComponent> EnumComponents { get; set; }
-   public required DbSet<InterfaceComponent> InterfaceComponents { get; set; }
-   public required DbSet<StructComponent> StructComponents { get; set; }
+   public DbSet<ClassComponent> ClassComponents { get; set; } = null!;
+   public DbSet<EnumComponent> EnumComponents { get; set; } = null!;
+   public DbSet<InterfaceComponent> InterfaceComponents { get; set; } = null!;
+   public DbSet<StructComponent> StructComponents { get; set; } = null!;
 
+   private readonly string? _connectionString;
+   
+   public DbMainContext(string? connectionString = null)
+   {
+      _connectionString = connectionString;
+   }
    
    protected override void OnModelCreating(ModelBuilder builder)
    {
@@ -107,7 +113,8 @@ public sealed class DbMainContext : DbContext
 
    protected override void OnConfiguring(DbContextOptionsBuilder builder)
    {
-      builder.UseSqlite(@"Data Source=C:\Users\marvi\RiderProjects2\Source\identifier.sqlite");
+      builder.UseSqlite(_connectionString 
+         ?? @"Data Source=C:\Users\marvi\RiderProjects2\Source\identifier.sqlite");
    }
 
    private void CreateTypeReferences<T>(ModelBuilder builder)

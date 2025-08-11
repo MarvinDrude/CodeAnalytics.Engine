@@ -11,7 +11,7 @@ namespace CodeAnalytics.Engine.Storage.Models.Components.Common;
 [Index(nameof(NodeHash), IsUnique = true)]
 public sealed class SymbolComponent
 {
-   public required long Id { get; set; }
+   public long Id { get; set; }
    public required ComponentKind Kind { get; set; }
    
    [MaxLength(500)]

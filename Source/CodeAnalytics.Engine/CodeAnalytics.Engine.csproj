@@ -1,6 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-  </PropertyGroup>
+   <PropertyGroup>
+   </PropertyGroup>
+
+   <ItemGroup>
+      <ProjectReference Include="..\Common\CodeAnalytics.Engine.Contracts\CodeAnalytics.Engine.Contracts.csproj" />
+   </ItemGroup>
+
+   <ItemGroup>
+      <PackageReference Include="Me.Memory" />
+   </ItemGroup>
 
 </Project>

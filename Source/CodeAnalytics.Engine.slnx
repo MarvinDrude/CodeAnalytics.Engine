@@ -1,5 +1,7 @@
 ﻿<Solution>
   <Folder Name="/Common/">
+    <Project Path="Common\CodeAnalytics.Engine.Collector\CodeAnalytics.Engine.Collector.csproj" Type="Classic C#" />
+    <Project Path="Common\CodeAnalytics.Engine.Contracts\CodeAnalytics.Engine.Contracts.csproj" Type="Classic C#" />
     <Project Path="Common\CodeAnalytics.Engine.Storage\CodeAnalytics.Engine.Storage.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/Consoles/" />

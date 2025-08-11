@@ -1,7 +1,9 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Storage.Contexts;
+using CodeAnalytics.Engine.Storage.Models.Structure;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using ProjectReference = CodeAnalytics.Engine.Storage.Models.Structure.ProjectReference;
 
 namespace CodeAnalytics.Engine.Collector.Collectors.Contexts;
 
@@ -13,6 +15,7 @@ public sealed class CollectContext
    public required SemanticModel SemanticModel { get; set; }
    
    public required Document Document { get; set; }
+   public required CancellationToken CancellationToken { get; set; }
    
    public required SyntaxTree SyntaxTree { get; set; }
    public required SyntaxNode SyntaxNode { get; set; }
@@ -21,9 +24,9 @@ public sealed class CollectContext
    
    public required DbMainContext DbMainContext { get; set; }
    
-   public long ProjectId { get; set; }
-   
-   public long FileReferenceId { get; set; }
+   public required SolutionReference SolutionReference { get; set; }
+   public required ProjectReference ProjectReference { get; set; }
+   public required FileReference FileReference { get; set; }
    
    public void ResetSymbol()
    {

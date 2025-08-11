@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using CodeAnalytics.Engine.Collector.Archetypes.Types;
 using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Syntax.Interfaces;
 using Microsoft.CodeAnalysis;

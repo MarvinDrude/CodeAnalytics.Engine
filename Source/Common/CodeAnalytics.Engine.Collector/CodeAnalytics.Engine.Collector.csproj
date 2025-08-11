@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
    <ItemGroup>
+      <PackageReference Include="Me.Memory" />
       <PackageReference Include="Microsoft.Build.Locator" />
       
       <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" />

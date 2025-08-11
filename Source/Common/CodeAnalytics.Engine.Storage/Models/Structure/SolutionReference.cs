@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CodeAnalytics.Engine.Storage.Models.Structure;
 
 [Index(nameof(Id), IsUnique = true)]
+[Index(nameof(RelativePath), IsUnique = true)]
 public sealed class SolutionReference
 {
    public long Id { get; set; }

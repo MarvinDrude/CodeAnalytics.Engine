@@ -16,6 +16,6 @@ public sealed class DbSolution
    [MaxLength(3000)]
    public required string RelativeFilePath { get; set; }
    
-   [InverseProperty(nameof(DbProject.Solution))]
+   [InverseProperty(nameof(DbProject.Solutions))]
    public List<DbProject> Projects { get; set; } = [];
 }

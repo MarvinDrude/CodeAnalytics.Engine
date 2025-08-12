@@ -18,11 +18,13 @@ public sealed class DbProject
    
    [MaxLength(1000)]
    public required string AssemblyName { get; set; }
-   
-   [ForeignKey(nameof(SolutionId))]
-   public DbSolution? Solution { get; set; }
-   public required long SolutionId { get; set; }
 
-   [InverseProperty(nameof(DbFile.Project))]
+   [InverseProperty(nameof(DbSolution.Projects))] 
+   public List<DbSolution> Solutions { get; set; } = [];
+
+   [InverseProperty(nameof(DbFile.Projects))]
    public List<DbFile> Files { get; set; } = [];
+   
+   [InverseProperty(nameof(DbProjectReference.SourceProject))]
+   public List<DbProjectReference> ProjectReferences { get; set; } = [];
 }

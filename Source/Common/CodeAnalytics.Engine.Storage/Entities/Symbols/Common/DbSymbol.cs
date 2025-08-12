@@ -43,6 +43,9 @@ public sealed class DbSymbol
    public DbSymbol? ContainingTypeSymbol { get; set; }
    public long ContainingSymbolId { get; set; }
 
+   [InverseProperty(nameof(DbSymbolReference.Symbol))]
+   public List<DbSymbolReference> References { get; set; } = [];
+   
    [InverseProperty(nameof(DbMemberInterfaceImplementation.Symbol))]
    public List<DbMemberInterfaceImplementation> MemberInterfaceImplementations { get; set; } = [];
    

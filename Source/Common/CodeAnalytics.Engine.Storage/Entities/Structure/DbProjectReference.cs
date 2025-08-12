@@ -15,6 +15,4 @@ public sealed class DbProjectReference
    [ForeignKey(nameof(ReferencedProjectId))]
    public DbProject? ReferencedProject { get; set; }
    public long ReferencedProjectId { get; set; }
-   
-   
 }

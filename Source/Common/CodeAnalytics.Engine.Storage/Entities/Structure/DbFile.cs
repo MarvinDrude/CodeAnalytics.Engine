@@ -15,8 +15,7 @@ public sealed class DbFile
    public required string Name { get; set; }
    [MaxLength(3000)]
    public required string RelativeFilePath { get; set; }
-   
-   [ForeignKey(nameof(ProjectId))]
-   public DbProject? Project { get; set; }
-   public required long ProjectId { get; set; }
+
+   [InverseProperty(nameof(DbProject.Files))] 
+   public List<DbProject> Projects { get; set; } = [];
 }

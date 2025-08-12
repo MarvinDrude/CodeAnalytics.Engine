@@ -1,4 +1,5 @@
-﻿using CodeAnalytics.Engine.Storage.Entities.Symbols.Common;
+﻿using CodeAnalytics.Engine.Storage.Entities.Structure;
+using CodeAnalytics.Engine.Storage.Entities.Symbols.Common;
 using CodeAnalytics.Engine.Storage.Entities.Symbols.Members;
 using CodeAnalytics.Engine.Storage.Entities.Symbols.Types;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,12 @@ public sealed class DbMainContext : DbContext
    
    public DbSet<DbMemberInterfaceImplementation> MemberInterfaceImplementations { get; set; } = null!;
    public DbSet<DbTypeInterface> TypeInterfaces { get; set; } = null!;
+   
+   public DbSet<DbSolution> Solutions { get; set; } = null!;
+   public DbSet<DbProject> Projects { get; set; } = null!;
+   public DbSet<DbFile> Files { get; set; } = null!;
+   
+   public DbSet<DbProjectReference> ProjectReferences { get; set; } = null!;
    
    private readonly string? _connectionString;
    

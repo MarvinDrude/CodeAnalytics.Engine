@@ -1,4 +1,5 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CodeAnalytics.Engine.Storage.Entities.Symbols.Members;
 using CodeAnalytics.Engine.Storage.Entities.Symbols.Types;
@@ -10,18 +11,21 @@ namespace CodeAnalytics.Engine.Storage.Entities.Symbols.Common;
 
 [Index(nameof(Id), IsUnique = true)]
 [Index(nameof(UniqueId), IsUnique = true)]
-[Index(nameof(GenerationId), IsUnique = false)]
 public sealed class DbSymbol
 {
    public long Id { get; set; }
    
+   [MaxLength(300)]
    public required string UniqueId { get; set; }
-   public int GenerationId { get; set; }
    
+   [MaxLength(1000)]
    public required string Name { get; set; }
+   [MaxLength(1000)]
    public required string MetadataName { get; set; }
+   [MaxLength(3000)]
    public required string FullPathName { get; set; }
    
+   [MaxLength(60)]
    public required string Language { get; set; }
    
    public bool IsVirtual { get; set; }

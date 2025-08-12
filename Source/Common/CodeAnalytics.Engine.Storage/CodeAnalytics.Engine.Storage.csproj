@@ -13,7 +13,7 @@
    </ItemGroup>
 
    <ItemGroup>
-     <Folder Include="Entities\Structure\" />
+     <Folder Include="Enums\Structure\" />
    </ItemGroup>
 
 </Project>

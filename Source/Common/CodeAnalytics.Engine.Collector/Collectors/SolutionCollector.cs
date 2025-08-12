@@ -95,7 +95,7 @@ public sealed partial class SolutionCollector : ISolutionCollector
    {
       var relativePath = Path.GetRelativePath(_options.BasePath, solution.FilePath ?? _options.Path);
       
-      return await context.GetOrInsert(context.SolutionReferences, new SolutionReference()
+      return await context.GetOrInsert(context.SolutionReferences, () => new SolutionReference()
          {
             Name = Path.GetFileName(relativePath),
             RelativePath = relativePath,

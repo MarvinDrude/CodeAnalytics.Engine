@@ -23,5 +23,5 @@ public class BaseOptions
    public string RelativePath => field ??= System.IO.Path.GetRelativePath(BasePath, Path);
    
    [field: AllowNull, MaybeNull]
-   public string DatabaseFilePath => field ??= System.IO.Path.Combine(OutputBasePath, "CodeAnalytics.db");
+   public string DatabaseFilePath => field ??= "Data Source=" + System.IO.Path.Combine(OutputBasePath, "CodeAnalytics.db");
 }

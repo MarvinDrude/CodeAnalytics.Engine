@@ -117,12 +117,11 @@ public sealed partial class ProjectCollector : IProjectCollector
    {
       var projectPath = Path.GetRelativePath(_options.BasePath, _options.Path);
 
-      return await context.GetOrInsert(context.ProjectReferences, new ProjectReference()
+      return await context.GetOrInsert(context.ProjectReferences, () => new ProjectReference()
          {
             RelativePath = projectPath,
             Name = project.Name,
             SolutionReferenceId = solutionReference.Id,
-            SolutionReference = solutionReference,
             ProjectReferences = [],
             FileReferences = [],
             SymbolDeclarations = [],
@@ -137,11 +136,10 @@ public sealed partial class ProjectCollector : IProjectCollector
       string filePath,
       CancellationToken ct)
    {
-      return await context.GetOrInsert(context.FileReferences, new FileReference()
+      return await context.GetOrInsert(context.FileReferences, () => new FileReference()
          {
             Name = Path.GetFileName(filePath),
             RelativePath = filePath,
-            ProjectReference = projectReference,
             ProjectReferenceId = projectReference.Id,
             SymbolDeclarations = []
          },

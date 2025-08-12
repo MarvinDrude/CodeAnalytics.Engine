@@ -12,4 +12,8 @@
      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Entities\Structure\" />
+   </ItemGroup>
+
 </Project>

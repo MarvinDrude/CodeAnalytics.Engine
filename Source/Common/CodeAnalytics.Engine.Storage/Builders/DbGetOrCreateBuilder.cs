@@ -12,8 +12,8 @@ public sealed class DbGetOrCreateOrUpdateBuilder<TEntity>
    private Func<IQueryable<TEntity>, IQueryable<TEntity>>? _include;
    private Expression<Func<TEntity, bool>>? _predicate;
    
-   private Func<TEntity, TEntity>? _onUpdate;
    private Func<TEntity>? _onCreate;
+   private Func<DbContext, TEntity, Task<TEntity>>? _onUpdate;
 
    internal DbGetOrCreateOrUpdateBuilder(DbContext context, DbSet<TEntity> dbSet)
    {
@@ -36,7 +36,7 @@ public sealed class DbGetOrCreateOrUpdateBuilder<TEntity>
       return this;
    }
 
-   public DbGetOrCreateOrUpdateBuilder<TEntity> OnUpdate(Func<TEntity, TEntity> update)
+   public DbGetOrCreateOrUpdateBuilder<TEntity> OnUpdate(Func<DbContext, TEntity, Task<TEntity>> update)
    {
       _onUpdate = update;
       return this;
@@ -56,13 +56,7 @@ public sealed class DbGetOrCreateOrUpdateBuilder<TEntity>
       if (await TryQuery(ct) is { } existing)
       {
          if (_onUpdate is null) return existing;
-         
-         var updated = _onUpdate(existing);
-         _context.Entry(updated).State = EntityState.Modified;
-            
-         await _context.SaveChangesAsync(ct);
-         _context.Entry(updated).State = EntityState.Detached;
-         return updated;
+         return await RunUpdate(existing, ct);
       }
 
       var entity = _onCreate();
@@ -79,14 +73,7 @@ public sealed class DbGetOrCreateOrUpdateBuilder<TEntity>
          if (raced is null) throw;
 
          if (_onUpdate is null) return raced;
-         
-         var updated = _onUpdate(raced);
-         _context.Entry(updated).State = EntityState.Modified;
-            
-         await _context.SaveChangesAsync(ct);
-         _context.Entry(updated).State = EntityState.Detached;
-            
-         return updated;
+         return await RunUpdate(raced, ct);
       }
       finally
       {
@@ -94,6 +81,14 @@ public sealed class DbGetOrCreateOrUpdateBuilder<TEntity>
       }
    }
 
+   private async Task<TEntity> RunUpdate(TEntity entity, CancellationToken ct = default)
+   {
+      if (_onUpdate is null) throw new InvalidOperationException("No update passed.");
+      var updated = await _onUpdate(_context, entity);
+      
+      return updated;
+   }
+   
    private async Task<TEntity?> TryQuery(CancellationToken ct = default)
    {
       if (_predicate is null) return null;

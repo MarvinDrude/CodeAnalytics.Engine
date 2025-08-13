@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Me.Memory.Results.Errors;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnalytics.Engine.Collector.Collectors;
 
@@ -113,6 +114,8 @@ public sealed partial class ProjectCollector : IProjectCollector
       Project project, 
       CancellationToken ct = default)
    {
+      using var attachContext = context.AttachContext(dbSolution);
+      
       var projectPath = Path.GetRelativePath(_options.BasePath, _options.Path);
       var dbProject = new DbProject()
       {
@@ -121,7 +124,7 @@ public sealed partial class ProjectCollector : IProjectCollector
          Name = Path.GetFileName(projectPath),
          Files = [],
          ProjectReferences = [],
-         Solutions = []
+         Solutions = [dbSolution]
       };
       
       return await context.GetOrCreate(context.Projects)
@@ -136,21 +139,18 @@ public sealed partial class ProjectCollector : IProjectCollector
       string filePath,
       CancellationToken ct)
    {
+      using var attachContext = context.AttachContext(dbProject);
+
       var dbFile = new DbFile()
       {
          Name = Path.GetFileName(filePath),
          RelativeFilePath = filePath,
          Projects = [dbProject]
       };
-      
+
       return await context.GetOrCreate(context.Files)
          .Where(x => x.RelativeFilePath == filePath)
          .OnCreate(() => dbFile)
-         .OnUpdate(x =>
-         {
-            x.Projects.Add(dbProject);
-            return x;
-         })
          .Execute(ct);
    }
    

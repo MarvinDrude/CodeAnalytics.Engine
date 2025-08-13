@@ -129,7 +129,19 @@ public sealed partial class ProjectCollector : IProjectCollector
       
       return await context.GetOrCreate(context.Projects)
          .Where(x => x.RelativeFilePath == projectPath)
+         .Including(x => x.Include(e => e.Solutions))
          .OnCreate(() => dbProject)
+         .OnUpdate(async (ctx, existing) =>
+         {
+            if (existing.Solutions.Any(x => x.Id == dbSolution.Id)) 
+               return existing;
+            
+            using var attachInnerContext = ctx.AttachContext(existing);
+            existing.Solutions.Add(dbSolution);
+
+            await ctx.SaveChangesAsync(ct);
+            return existing;
+         })
          .Execute(ct);
    }
 
@@ -150,7 +162,19 @@ public sealed partial class ProjectCollector : IProjectCollector
 
       return await context.GetOrCreate(context.Files)
          .Where(x => x.RelativeFilePath == filePath)
+         .Including(x => x.Include(e => e.Projects))
          .OnCreate(() => dbFile)
+         .OnUpdate(async (ctx, existing) =>
+         {
+            if (existing.Projects.Any(x => x.Id == dbProject.Id)) 
+               return existing;
+            
+            using var attachInnerContext = ctx.AttachContext(existing);
+            existing.Projects.Add(dbProject);
+
+            await ctx.SaveChangesAsync(ct);
+            return existing;
+         })
          .Execute(ct);
    }
    

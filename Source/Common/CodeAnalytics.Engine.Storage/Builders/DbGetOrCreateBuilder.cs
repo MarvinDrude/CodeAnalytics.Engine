@@ -27,7 +27,7 @@ public sealed class DbGetOrCreateOrUpdateBuilder<TEntity>
       return this;
    }
 
-   public DbGetOrCreateOrUpdateBuilder<TEntity> Include(
+   public DbGetOrCreateOrUpdateBuilder<TEntity> Including(
       Func<IQueryable<TEntity>, IQueryable<TEntity>> includer)
    {
       _include = _include is null

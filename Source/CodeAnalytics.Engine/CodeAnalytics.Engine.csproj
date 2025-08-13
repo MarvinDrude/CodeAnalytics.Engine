@@ -11,4 +11,8 @@
      <PackageReference Include="Me.Memory" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Extensions\" />
+   </ItemGroup>
+
 </Project>

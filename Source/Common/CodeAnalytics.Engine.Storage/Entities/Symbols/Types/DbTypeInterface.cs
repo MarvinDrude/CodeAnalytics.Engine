@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnalytics.Engine.Storage.Entities.Symbols.Types;
 
-[PrimaryKey(nameof(TypeSymbol), nameof(InterfaceSymbolId))]
-[Index(nameof(TypeSymbol))]
+[PrimaryKey(nameof(TypeSymbolId), nameof(InterfaceSymbolId))]
+[Index(nameof(TypeSymbolId))]
 [Index(nameof(InterfaceSymbolId))]
 public sealed class DbTypeInterface
 {

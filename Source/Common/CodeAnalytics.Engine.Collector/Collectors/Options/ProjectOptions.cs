@@ -13,7 +13,8 @@ public class ProjectOptions : BaseOptions
          OutputBasePath = options.OutputBasePath,
          ServiceProvider = options.ServiceProvider,
          IsProjectOnly = false,
-         WriteSourceFiles = options.WriteSourceFiles
+         WriteSourceFiles = options.WriteSourceFiles,
+         DbConnectionString = options.DbConnectionString,
       };
    }
 }

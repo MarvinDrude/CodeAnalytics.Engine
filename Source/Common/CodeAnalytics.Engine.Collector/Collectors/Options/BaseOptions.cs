@@ -14,6 +14,7 @@ public class BaseOptions
    public required string Path { get; set; }
    public required string BasePath { get; set; }
    public required string OutputBasePath { get; set; }
+   public required string DbConnectionString { get; set; }
    
    public bool WriteSourceFiles { get; set; } = true;
    
@@ -21,7 +22,4 @@ public class BaseOptions
 
    [field: AllowNull, MaybeNull]
    public string RelativePath => field ??= System.IO.Path.GetRelativePath(BasePath, Path);
-   
-   [field: AllowNull, MaybeNull]
-   public string DatabaseFilePath => field ??= "Data Source=" + System.IO.Path.Combine(OutputBasePath, "CodeAnalytics.db");
 }

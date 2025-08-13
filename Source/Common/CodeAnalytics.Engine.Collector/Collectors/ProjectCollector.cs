@@ -2,18 +2,16 @@
 using CodeAnalytics.Engine.Collector.Collectors.Contexts;
 using CodeAnalytics.Engine.Collector.Collectors.Interfaces;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
-using CodeAnalytics.Engine.Collector.Syntax.Interfaces;
 using CodeAnalytics.Engine.Collector.Syntax.Providers;
-using CodeAnalytics.Engine.Extensions.Database;
 using CodeAnalytics.Engine.Storage.Contexts;
-using CodeAnalytics.Engine.Storage.Models.Structure;
+using CodeAnalytics.Engine.Storage.Entities.Structure;
+using CodeAnalytics.Engine.Storage.Extensions;
 using Me.Memory.Results;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Me.Memory.Results.Errors;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using ProjectReference = CodeAnalytics.Engine.Storage.Models.Structure.ProjectReference;
 
 namespace CodeAnalytics.Engine.Collector.Collectors;
 
@@ -31,7 +29,7 @@ public sealed partial class ProjectCollector : IProjectCollector
    }
 
    public async Task<Result<int, Error<string>>> Collect(
-      SolutionReference solutionReference,
+      DbSolution dbSolution,
       Workspace workSpace, 
       Project project, 
       CancellationToken ct = default)
@@ -39,7 +37,7 @@ public sealed partial class ProjectCollector : IProjectCollector
       var start = Stopwatch.GetTimestamp();
       var compilation = await project.GetCompilationAsync(ct);
       
-      await using var dbContext = new DbMainContext(_options.DatabaseFilePath);
+      await using var dbContext = new DbMainContext(_options.DbConnectionString);
 
       if (compilation is null)
       {
@@ -53,7 +51,7 @@ public sealed partial class ProjectCollector : IProjectCollector
       LogStartupTime(loadingTime);
       
       var nodesIterated = 0;
-      var projectReference = await GetProjectReference(dbContext, solutionReference, project, ct);
+      var projectReference = await GetDbProject(dbContext, dbSolution, project, ct);
       
       foreach (var tree in compilation.SyntaxTrees)
       {
@@ -64,7 +62,7 @@ public sealed partial class ProjectCollector : IProjectCollector
          if (document is null) continue;
          
          var filePath = Path.GetRelativePath(_options.BasePath, tree.FilePath);
-         var fileReference = await GetFileReference(dbContext, projectReference, filePath, ct);
+         var fileReference = await GetDbFile(dbContext, projectReference, filePath, ct);
 
          _context = new CollectContext()
          {
@@ -77,9 +75,9 @@ public sealed partial class ProjectCollector : IProjectCollector
             Document = document,
             CancellationToken = ct,
             DbMainContext = dbContext,
-            SolutionReference = solutionReference,
-            ProjectReference = projectReference,
-            FileReference = fileReference,
+            DbSolution = dbSolution,
+            DbProject = projectReference,
+            DbFile = fileReference,
          };
          
          // if (_options.WriteSourceFiles)
@@ -109,54 +107,69 @@ public sealed partial class ProjectCollector : IProjectCollector
       return nodesIterated;
    }
    
-   private async Task<ProjectReference> GetProjectReference(
+   private async Task<DbProject> GetDbProject(
       DbMainContext context, 
-      SolutionReference solutionReference,
+      DbSolution dbSolution,
       Project project, 
       CancellationToken ct = default)
    {
       var projectPath = Path.GetRelativePath(_options.BasePath, _options.Path);
-
-      return await context.GetOrInsert(context.ProjectReferences, () => new ProjectReference()
-         {
-            RelativePath = projectPath,
-            Name = project.Name,
-            SolutionReferenceId = solutionReference.Id,
-            ProjectReferences = [],
-            FileReferences = [],
-            SymbolDeclarations = [],
-         },
-         pr => pr.RelativePath == projectPath, 
-         ct);
+      var dbProject = new DbProject()
+      {
+         RelativeFilePath = projectPath,
+         AssemblyName = project.AssemblyName,
+         Name = Path.GetFileName(projectPath),
+         Files = [],
+         ProjectReferences = [],
+         Solutions = []
+      };
+      
+      return await context.GetOrCreate(context.Projects)
+         .Where(x => x.RelativeFilePath == projectPath)
+         .OnCreate(() => dbProject)
+         .Execute(ct);
    }
 
-   private async Task<FileReference> GetFileReference(
+   private async Task<DbFile> GetDbFile(
       DbMainContext context,
-      ProjectReference projectReference,
+      DbProject dbProject,
       string filePath,
       CancellationToken ct)
    {
-      return await context.GetOrInsert(context.FileReferences, () => new FileReference()
+      var dbFile = new DbFile()
+      {
+         Name = Path.GetFileName(filePath),
+         RelativeFilePath = filePath,
+         Projects = [dbProject]
+      };
+      
+      return await context.GetOrCreate(context.Files)
+         .Where(x => x.RelativeFilePath == filePath)
+         .OnCreate(() => dbFile)
+         .OnUpdate(x =>
          {
-            Name = Path.GetFileName(filePath),
-            RelativePath = filePath,
-            ProjectReferenceId = projectReference.Id,
-            SymbolDeclarations = []
-         },
-         fr => fr.RelativePath == filePath,
-         ct);
+            x.Projects.Add(dbProject);
+            return x;
+         })
+         .Execute(ct);
    }
    
    private void HandleNode(CollectContext context)
    {
-      foreach (var provider in _syntaxProviders)
+      switch (context.SyntaxNode)
       {
-         if (!provider.Predicator.Predicate(context))
-         {
-            continue;
-         }
-         
-         provider.Transformer.Transform(context);
+         case var _ when _classSyntaxProvider.Predicator.Predicate(context):
+            _classSyntaxProvider.Transformer.Transform(context);
+            break;
+         case var _ when _interfaceSyntaxProvider.Predicator.Predicate(context):
+            _interfaceSyntaxProvider.Transformer.Transform(context);
+            break;
+         case var _ when _enumSyntaxProvider.Predicator.Predicate(context):
+            _enumSyntaxProvider.Transformer.Transform(context);
+            break;
+         case var _ when _structSyntaxProvider.Predicator.Predicate(context):
+            _structSyntaxProvider.Transformer.Transform(context);
+            break;
       }
    }
    
@@ -164,11 +177,9 @@ public sealed partial class ProjectCollector : IProjectCollector
    {
       return ValueTask.CompletedTask;
    }
-   
-   private readonly List<ISyntaxProvider> _syntaxProviders = [
-      new EnumSyntaxProvider(),
-      new ClassSyntaxProvider(),
-      new InterfaceSyntaxProvider(),
-      new StructSyntaxProvider(),
-   ];
+
+   private readonly EnumSyntaxProvider _enumSyntaxProvider = new ();
+   private readonly ClassSyntaxProvider _classSyntaxProvider = new ();
+   private readonly InterfaceSyntaxProvider _interfaceSyntaxProvider = new ();
+   private readonly StructSyntaxProvider _structSyntaxProvider = new ();
 }

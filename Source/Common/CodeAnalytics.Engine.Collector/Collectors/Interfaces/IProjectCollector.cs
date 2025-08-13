@@ -1,4 +1,4 @@
-﻿using CodeAnalytics.Engine.Storage.Models.Structure;
+﻿using CodeAnalytics.Engine.Storage.Entities.Structure;
 using Me.Memory.Results;
 using Me.Memory.Results.Errors;
 using Microsoft.CodeAnalysis;
@@ -8,7 +8,7 @@ namespace CodeAnalytics.Engine.Collector.Collectors.Interfaces;
 public interface IProjectCollector : IAsyncDisposable
 {
    public Task<Result<int, Error<string>>> Collect(
-      SolutionReference solutionReference,
+      DbSolution dbSolution,
       Workspace workSpace, 
       Project project, 
       CancellationToken ct = default);

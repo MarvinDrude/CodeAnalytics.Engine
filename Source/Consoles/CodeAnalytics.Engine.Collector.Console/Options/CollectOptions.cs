@@ -7,6 +7,7 @@ public class CollectOptions
    public required string Path { get; set; }
    public required string BasePath { get; set; }
    public required string OutputBasePath { get; set; }
+   public required string DbConnectionString { get; set; }
    
    public int MaxDegreeOfParallelism { get; set; } = 1;
    public bool WriteSourceFiles { get; set; } = true;
@@ -23,6 +24,7 @@ public class CollectOptions
          MaxDegreeOfParallelism = options.MaxDegreeOfParallelism,
          Path = options.Path,
          WriteSourceFiles = options.WriteSourceFiles,
+         DbConnectionString = options.DbConnectionString,
       };
    }
 }

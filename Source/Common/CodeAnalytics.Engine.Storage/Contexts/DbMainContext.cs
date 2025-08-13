@@ -9,6 +9,7 @@ namespace CodeAnalytics.Engine.Storage.Contexts;
 public sealed class DbMainContext : DbContext
 {
    public DbSet<DbSymbol> Symbols { get; set; } = null!;
+   public DbSet<DbSymbolReference> SymbolReferences { get; set; } = null!;
    
    public DbSet<DbFieldSymbol> FieldSymbols { get; set; } = null!;
    public DbSet<DbMethodSymbol> MethodSymbols { get; set; } = null!;

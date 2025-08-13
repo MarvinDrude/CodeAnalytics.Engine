@@ -4,9 +4,9 @@
       <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
    </PropertyGroup>
    <ItemGroup>
-      <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0-preview.6.25358.103" />
+      <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4" />
       <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-      <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0-preview.6.25358.103" />
+      <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
       
       <PackageVersion Include="Microsoft.Build.Locator" Version="1.9.1" />
       <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="5.0.0-2.25368.102" />

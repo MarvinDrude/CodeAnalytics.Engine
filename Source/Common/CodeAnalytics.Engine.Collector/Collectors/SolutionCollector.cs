@@ -1,8 +1,8 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Interfaces;
 using CodeAnalytics.Engine.Collector.Collectors.Options;
-using CodeAnalytics.Engine.Extensions.Database;
 using CodeAnalytics.Engine.Storage.Contexts;
-using CodeAnalytics.Engine.Storage.Models.Structure;
+using CodeAnalytics.Engine.Storage.Entities.Structure;
+using CodeAnalytics.Engine.Storage.Extensions;
 using Me.Memory.Extensions;
 using Me.Memory.Threading;
 using Microsoft.CodeAnalysis;
@@ -40,10 +40,10 @@ public sealed partial class SolutionCollector : ISolutionCollector
       using var pack = await Bootstrapper.OpenSolution(_options.Path, ct);
       var projects = pack.Solution.Projects.ToList();
 
-      await using var dbContext = new DbMainContext(_options.DatabaseFilePath);
+      await using var dbContext = new DbMainContext(_options.DbConnectionString);
       LogUpdateProjectCount(_currentProjectCount, projects.Count);
       
-      var solutionReference = await GetSolutionReference(dbContext, pack.Solution, ct);
+      var solutionReference = await GetDbSolution(dbContext, pack.Solution, ct);
       
       _maxProjectCount = projects.Count;
       List<Task<bool>> tasks = [];
@@ -59,22 +59,21 @@ public sealed partial class SolutionCollector : ISolutionCollector
    }
    
    private Func<CancellationToken, Task<bool>> GetCollectProjectFunc(
-      SolutionReference solutionReference, 
-      Project project, MSBuildWorkspace workspace)
+      DbSolution dbSolution, Project project, MSBuildWorkspace workspace)
    {
-      return (cancel) => CollectProject(solutionReference, project, workspace, cancel);
+      return (cancel) => CollectProject(dbSolution, project, workspace, cancel);
    }
    
    private async Task<bool> CollectProject(
-      SolutionReference solutionReference, 
-      Project project, MSBuildWorkspace workspace, CancellationToken ct)
+      DbSolution dbSolution, Project project,
+      MSBuildWorkspace workspace, CancellationToken ct)
    {
       var options = ProjectOptions.Create(_options);
       options.Path = project.FilePath ?? throw new InvalidOperationException();
       
       await using var collector = new ProjectCollector(options);
       var result = await collector.Collect(
-         solutionReference, workspace, project, ct);
+         dbSolution, workspace, project, ct);
       
       Interlocked.Increment(ref _currentProjectCount);
       LogUpdateProjectCount(_currentProjectCount, _maxProjectCount);
@@ -88,21 +87,23 @@ public sealed partial class SolutionCollector : ISolutionCollector
       return true;
    }
 
-   private async Task<SolutionReference> GetSolutionReference(
+   private async Task<DbSolution> GetDbSolution(
       DbMainContext context,
       Solution solution,
       CancellationToken ct = default)
    {
       var relativePath = Path.GetRelativePath(_options.BasePath, solution.FilePath ?? _options.Path);
+      var created = new DbSolution()
+      {
+         Name = Path.GetFileName(relativePath),
+         RelativeFilePath = relativePath,
+         Projects = []
+      };
       
-      return await context.GetOrInsert(context.SolutionReferences, () => new SolutionReference()
-         {
-            Name = Path.GetFileName(relativePath),
-            RelativePath = relativePath,
-            ProjectReferences = []
-         },
-         x => x.RelativePath == relativePath,
-         ct);
+      return await context.GetOrCreate(context.Solutions)
+         .Where(x => x.RelativeFilePath == relativePath)
+         .OnCreate(() => created)
+         .Execute(ct);
    }
    
    public async ValueTask DisposeAsync()

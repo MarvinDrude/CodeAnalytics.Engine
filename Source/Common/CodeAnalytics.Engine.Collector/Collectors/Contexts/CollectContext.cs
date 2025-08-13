@@ -1,9 +1,8 @@
 ﻿using CodeAnalytics.Engine.Collector.Collectors.Options;
 using CodeAnalytics.Engine.Storage.Contexts;
-using CodeAnalytics.Engine.Storage.Models.Structure;
+using CodeAnalytics.Engine.Storage.Entities.Structure;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using ProjectReference = CodeAnalytics.Engine.Storage.Models.Structure.ProjectReference;
 
 namespace CodeAnalytics.Engine.Collector.Collectors.Contexts;
 
@@ -24,9 +23,9 @@ public sealed class CollectContext
    
    public required DbMainContext DbMainContext { get; set; }
    
-   public required SolutionReference SolutionReference { get; set; }
-   public required ProjectReference ProjectReference { get; set; }
-   public required FileReference FileReference { get; set; }
+   public required DbSolution DbSolution { get; set; }
+   public required DbProject DbProject { get; set; }
+   public required DbFile DbFile { get; set; }
    
    public void ResetSymbol()
    {

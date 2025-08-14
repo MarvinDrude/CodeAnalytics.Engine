@@ -19,4 +19,9 @@
       <ProjectReference Include="..\CodeAnalytics.Engine.Storage\CodeAnalytics.Engine.Storage.csproj" />
    </ItemGroup>
    
+   <ItemGroup>
+     <Folder Include="Symbols\Members\" />
+     <Folder Include="Symbols\Types\" />
+   </ItemGroup>
+   
 </Project>

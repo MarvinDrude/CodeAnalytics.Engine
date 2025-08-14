@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Me.Memory.Buffers;
+using Microsoft.CodeAnalysis;
 
 namespace CodeAnalytics.Engine.Collector.Extensions.Symbols;
 
@@ -9,22 +10,36 @@ public static class SymbolExtensions
    {
       public string? GenerateUniqueId()
       {
-         if (!SymbolKey.CanCreate(symbol))
-         {
-            
-         }
+         return null;
       }
 
-      public bool IsBodyLevelSymbol()
+      public bool IsBodyLevel => symbol switch
       {
-         return symbol switch
+         ILabelSymbol 
+            or IRangeVariableSymbol
+            or ILocalSymbol 
+            or IMethodSymbol { MethodKind: MethodKind.LocalFunction } => true,
+         _ => false
+      };
+
+      public Location[] GetBodyLevelSourceLocations(CancellationToken ct = default)
+      {
+         using var writer = new BufferWriter<Location>(6);
+
+         foreach (var location in symbol.Locations)
          {
-            ILabelSymbol 
-               or IRangeVariableSymbol
-               or ILocalSymbol 
-               or IMethodSymbol { MethodKind: MethodKind.LocalFunction } => true,
-            _ => false
-         };
+            if (location.IsInSource)
+            {
+               writer.Add(location);
+            }
+         }
+
+         foreach (var syntaxReference in symbol.DeclaringSyntaxReferences)
+         {
+            writer.Add(syntaxReference.GetSyntax(ct).GetLocation());
+         }
+         
+         return writer.WrittenSpan.ToArray();
       }
    }
 }

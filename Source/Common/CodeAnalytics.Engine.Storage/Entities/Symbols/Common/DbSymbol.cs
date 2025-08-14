@@ -11,12 +11,15 @@ namespace CodeAnalytics.Engine.Storage.Entities.Symbols.Common;
 
 [Index(nameof(Id), IsUnique = true)]
 [Index(nameof(UniqueId), IsUnique = true)]
+[Index(nameof(UniqueIdHash), IsUnique = true)]
 public sealed class DbSymbol
 {
    public long Id { get; set; }
    
-   [MaxLength(300)]
+   [MaxLength(3000)]
    public required string UniqueId { get; set; }
+   [MaxLength(300)]
+   public required string UniqueIdHash { get; set; }
    
    [MaxLength(1000)]
    public required string Name { get; set; }

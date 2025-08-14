@@ -8,12 +8,12 @@
    </ItemGroup>
 
    <ItemGroup>
-     <PackageReference Include="Me.Memory" />
+     <Folder Include="Extensions\" />
+     <Folder Include="Models\" />
    </ItemGroup>
 
    <ItemGroup>
-     <Folder Include="Extensions\" />
-     <Folder Include="Models\" />
+     <PackageReference Include="Me.Memory" />
    </ItemGroup>
 
 </Project>

@@ -11,19 +11,22 @@ public sealed class SymbolCollector : ISymbolCollector<DbSymbol, ISymbol>
 {
    public static async Task<DbSymbol?> Collect(ISymbol symbol, CollectContext context)
    {
-      var dbSymbol = new DbSymbol()
-      {
-         Name = symbol.ToDisplayString(SymbolDisplayFormats.NameWithGenerics),
-         MetadataName = symbol.MetadataName,
-         FullPathName = GetFullPathName(symbol),
-         Language = symbol.Language,
-         AccessModifier = symbol.DeclaredAccessibility.ToAccessModifier(),
-         Type = symbol.Kind.ToType(),
-         
-         CreatedAt = DateTimeOffset.UtcNow,
-      };
-      symbol.Get
-      SymbolKey.CanCreate()
+      return null;
+      // var dbSymbol = new DbSymbol()
+      // {
+      //    Name = symbol.ToDisplayString(SymbolDisplayFormats.NameWithGenerics),
+      //    MetadataName = symbol.MetadataName,
+      //    FullPathName = GetFullPathName(symbol),
+      //    Language = symbol.Language,
+      //    AccessModifier = symbol.DeclaredAccessibility.ToAccessModifier(),
+      //    Type = symbol.Kind.ToType(),
+      //    
+      //    CreatedAt = DateTimeOffset.UtcNow,
+      // };
+      //
+      //
+      //
+      // return dbSymbol;
    }
 
    private static string GetFullPathName(ISymbol symbol)

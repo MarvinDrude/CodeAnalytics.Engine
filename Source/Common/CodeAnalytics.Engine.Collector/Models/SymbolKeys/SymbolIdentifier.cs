@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using CodeAnalytics.Engine.Collector.Extensions.Symbols;
 using Me.Memory.Buffers;
 using Microsoft.CodeAnalysis;
@@ -30,20 +31,6 @@ public readonly record struct SymbolIdentifier
       return new SymbolIdentifier(CreateString(symbol));
    }
 
-   public static bool CanCreate<TSymbol>(TSymbol symbol)
-      where TSymbol : ISymbol
-   {
-      if (!symbol.IsBodyLevel) return true;
-      
-      if (symbol.GetBodyLevelSourceLocations() is not { Length: > 0 } locations)
-      {
-         return false;
-      }
-         
-      var compilation = ((ISourceAssemblySymbol)symbol.ContainingAssembly).Compilation;
-      return compilation.SyntaxTrees.Contains(locations[0].SourceTree);
-   }
-
    private static string CreateString<TSymbol>(TSymbol symbol)
       where TSymbol : ISymbol
    {
@@ -56,14 +43,7 @@ public readonly record struct SymbolIdentifier
          writer += symbol.Language;
          writer += '|';
 
-         writer += symbol.ContainingAssembly.Identity.Name;
-         writer += "|";
-
-         if (symbol.GetDocumentationCommentId() is not { } seed)
-         {
-            seed = GetFallbackSeed(symbol);
-         }
-         writer += seed;
+         writer += GetDocId(symbol);
          
          return writer.WrittenSpan.ToString();
       }
@@ -73,16 +53,27 @@ public readonly record struct SymbolIdentifier
       }
    }
 
-   private static string GetFallbackSeed<TSymbol>(TSymbol symbol)
+   private static string GetDocId<TSymbol>(TSymbol symbol)
       where TSymbol : ISymbol
    {
-      var seed = symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+      if (!symbol.IsDefinition) 
+         symbol = (TSymbol)symbol.OriginalDefinition;
       
-      if (symbol is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
-      {
-         seed = $"LF:{seed}";
-      }
+      return symbol.Kind is SymbolKind.Parameter or SymbolKind.Local
+         ? GetLocalDocId(symbol)
+         : GetPublicDocId(symbol);
+   }
 
-      return seed;
+   private static string GetLocalDocId<TSymbol>(TSymbol symbol)
+      where TSymbol : ISymbol
+   {
+      return $"{GetDocId(symbol.ContainingSymbol)}#{symbol.MetadataName}";
+   }
+
+   private static string GetPublicDocId<TSymbol>(TSymbol symbol)
+      where TSymbol : ISymbol
+   {
+      return symbol.GetDocumentationCommentId() 
+             ?? throw new InvalidOperationException("DocId not found.");
    }
 }

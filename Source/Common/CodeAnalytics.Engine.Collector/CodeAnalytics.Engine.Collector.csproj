@@ -21,7 +21,6 @@
    
    <ItemGroup>
      <Folder Include="Symbols\Members\" />
-     <Folder Include="Symbols\Types\" />
    </ItemGroup>
    
 </Project>

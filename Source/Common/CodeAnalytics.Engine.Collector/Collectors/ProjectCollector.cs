@@ -183,7 +183,6 @@ public sealed partial class ProjectCollector : IProjectCollector
       switch (context.SyntaxNode)
       {
          case var _ when _classSyntaxProvider.Predicator.Predicate(context):
-            var test = context.Symbol!.GetDocumentationCommentId();
             _classSyntaxProvider.Transformer.Transform(context);
             break;
          case var _ when _interfaceSyntaxProvider.Predicator.Predicate(context):

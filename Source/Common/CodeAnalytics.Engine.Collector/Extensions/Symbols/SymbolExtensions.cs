@@ -1,4 +1,7 @@
-﻿using Me.Memory.Buffers;
+﻿using System.Security.Cryptography;
+using CodeAnalytics.Engine.Collector.Models.SymbolKeys;
+using CodeAnalytics.Engine.Extensions.Hash;
+using Me.Memory.Buffers;
 using Microsoft.CodeAnalysis;
 
 namespace CodeAnalytics.Engine.Collector.Extensions.Symbols;
@@ -8,9 +11,14 @@ public static class SymbolExtensions
    extension<TSymbol>(TSymbol symbol)
       where TSymbol : ISymbol
    {
-      public string? GenerateUniqueId()
+      public string GenerateUniqueId()
       {
-         return null;
+         return SymbolIdentifier.Create(symbol).StringValue;
+      }
+
+      public string GeneratedUniqueIdHash()
+      {
+         return SHA1.CreateHexString(symbol.GenerateUniqueId());
       }
 
       public bool IsBodyLevel => symbol switch

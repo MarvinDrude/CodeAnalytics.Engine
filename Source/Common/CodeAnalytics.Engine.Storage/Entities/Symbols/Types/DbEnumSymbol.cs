@@ -11,5 +11,5 @@ public sealed class DbEnumSymbol : DbSymbolBase
    
    [ForeignKey(nameof(UnderlyingTypeId))]
    public DbSymbol? UnderlyingType { get; set; }
-   public long UnderlyingTypeId { get; set; }
+   public required long UnderlyingTypeId { get; set; }
 }

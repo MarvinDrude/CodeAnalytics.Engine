@@ -1,0 +1,9 @@
+﻿<Solution>
+  <Folder Name="/Common/">
+    <Project Path="Common\CodeAnalytics.Engine.Storage\CodeAnalytics.Engine.Storage.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Consoles/" />
+  <Folder Name="/Tests/" />
+  <Folder Name="/Web/" />
+  <Project Path="CodeAnalytics.Engine\CodeAnalytics.Engine.csproj" Type="Classic C#" />
+</Solution>

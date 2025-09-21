@@ -13,9 +13,7 @@
    </ItemGroup>
 
    <ItemGroup>
-     <Folder Include="Configurations\Symbols\Members\" />
      <Folder Include="Interfaces\" />
-     <Folder Include="Models\Symbols\Members\" />
    </ItemGroup>
 
 </Project>

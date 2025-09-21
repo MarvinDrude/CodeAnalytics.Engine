@@ -1,8 +1,10 @@
 ﻿using CodeAnalytics.Engine.Storage.Configurations.Structure;
 using CodeAnalytics.Engine.Storage.Configurations.Symbols.Common;
+using CodeAnalytics.Engine.Storage.Configurations.Symbols.Members;
 using CodeAnalytics.Engine.Storage.Configurations.Symbols.Types;
 using CodeAnalytics.Engine.Storage.Models.Structure;
 using CodeAnalytics.Engine.Storage.Models.Symbols.Common;
+using CodeAnalytics.Engine.Storage.Models.Symbols.Members;
 using CodeAnalytics.Engine.Storage.Models.Symbols.Types;
 using CodeAnalytics.Engine.Storage.Options;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,11 @@ public sealed class DbMainContext : DbContext
    public DbSet<DbFile> Files => Set<DbFile>();
 
    public DbSet<DbSymbol> Symbols => Set<DbSymbol>();
+   
+   public DbSet<DbFieldSymbol> FieldSymbols => Set<DbFieldSymbol>();
+   public DbSet<DbMethodSymbol> MethodSymbols => Set<DbMethodSymbol>();
+   public DbSet<DbParameterSymbol> ParameterSymbols => Set<DbParameterSymbol>();
+   public DbSet<DbPropertySymbol> PropertySymbols => Set<DbPropertySymbol>();
    
    public DbSet<DbEnumSymbol> EnumSymbols => Set<DbEnumSymbol>();
    
@@ -35,6 +42,11 @@ public sealed class DbMainContext : DbContext
       builder.ApplyConfiguration(new DbFileConfiguration());
 
       builder.ApplyConfiguration(new DbSymbolConfiguration());
+      
+      builder.ApplyConfiguration(new DbFieldSymbolConfiguration());
+      builder.ApplyConfiguration(new DbMethodSymbolConfiguration());
+      builder.ApplyConfiguration(new DbParameterSymbolConfiguration());
+      builder.ApplyConfiguration(new DbPropertySymbolConfiguration());
 
       builder.ApplyConfiguration(new DbEnumSymbolConfiguration());
    }

@@ -1,4 +1,6 @@
-﻿namespace CodeAnalytics.Engine.Storage.Models.Symbols.Common;
+﻿using CodeAnalytics.Engine.Storage.Models.Symbols.Types;
+
+namespace CodeAnalytics.Engine.Storage.Models.Symbols.Common;
 
 public abstract class DbTypeSymbolBase<TDbIdentifier>
    : DbSymbolBase<TDbIdentifier>
@@ -6,5 +8,5 @@ public abstract class DbTypeSymbolBase<TDbIdentifier>
 {
    public bool IsAnonymous { get; set; }
    
-   
+   public List<DbInterfaceSymbol> ImplementedInterfaces { get; set; } = [];
 }

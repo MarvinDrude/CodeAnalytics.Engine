@@ -26,6 +26,8 @@ public sealed class DbMainContext : DbContext
    public DbSet<DbPropertySymbol> PropertySymbols => Set<DbPropertySymbol>();
    
    public DbSet<DbEnumSymbol> EnumSymbols => Set<DbEnumSymbol>();
+   public DbSet<DbClassSymbol> ClassSymbols => Set<DbClassSymbol>();
+   public DbSet<DbInterfaceSymbol> InterfaceSymbols => Set<DbInterfaceSymbol>();
    
    private readonly IOptionsSnapshot<DatabaseOptions> _dbOptionsSnapshot;
    private DatabaseOptions DbOptions => _dbOptionsSnapshot.Value;
@@ -49,6 +51,8 @@ public sealed class DbMainContext : DbContext
       builder.ApplyConfiguration(new DbPropertySymbolConfiguration());
 
       builder.ApplyConfiguration(new DbEnumSymbolConfiguration());
+      builder.ApplyConfiguration(new DbClassSymbolConfiguration());
+      builder.ApplyConfiguration(new DbInterfaceSymbolConfiguration());
    }
 
    protected override void OnConfiguring(DbContextOptionsBuilder builder)

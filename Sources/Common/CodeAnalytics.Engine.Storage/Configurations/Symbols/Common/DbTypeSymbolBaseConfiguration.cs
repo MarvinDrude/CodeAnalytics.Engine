@@ -1,4 +1,5 @@
 ﻿using CodeAnalytics.Engine.Storage.Models.Symbols.Common;
+using CodeAnalytics.Engine.Storage.Models.Symbols.Types;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -16,6 +17,7 @@ public abstract class DbTypeSymbolBaseConfiguration<TDbModel, TDbIdentifier>
    
    protected override void ConfigureInternal(EntityTypeBuilder<TDbModel> builder)
    {
-      
+      builder.HasMany(x => x.ImplementedInterfaces)
+         .WithMany();
    }
 }

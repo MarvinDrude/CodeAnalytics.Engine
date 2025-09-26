@@ -19,5 +19,8 @@ public abstract class DbTypeSymbolBaseConfiguration<TDbModel, TDbIdentifier>
    {
       builder.HasMany(x => x.ImplementedInterfaces)
          .WithMany();
+      
+      builder.HasMany(x => x.ImplementedDirectInterfaces)
+         .WithMany();
    }
 }

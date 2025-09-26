@@ -9,4 +9,5 @@ public abstract class DbTypeSymbolBase<TDbIdentifier>
    public bool IsAnonymous { get; set; }
    
    public List<DbInterfaceSymbol> ImplementedInterfaces { get; set; } = [];
+   public List<DbInterfaceSymbol> ImplementedDirectInterfaces { get; set; } = [];
 }

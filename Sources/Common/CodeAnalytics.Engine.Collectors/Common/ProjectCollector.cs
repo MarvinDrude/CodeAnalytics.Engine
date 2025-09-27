@@ -83,6 +83,8 @@ public sealed partial class ProjectCollector : IAsyncDisposable
             DbFile = dbFile,
          };
          
+         // write text --
+         
          foreach (var node in root.DescendantNodesAndSelf(
             descendIntoChildren: static (n) =>
                n is CompilationUnitSyntax

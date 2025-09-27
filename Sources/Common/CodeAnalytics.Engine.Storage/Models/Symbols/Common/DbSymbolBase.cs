@@ -6,5 +6,5 @@ public abstract class DbSymbolBase<TDbIdentifier>
    public TDbIdentifier Id { get; set; }
    
    public DbSymbol? Symbol { get; set; }
-   public required TDbIdentifier SymbolId { get; set; }
+   public required DbSymbolId SymbolId { get; set; }
 }

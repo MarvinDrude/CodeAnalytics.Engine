@@ -15,5 +15,12 @@ creating migrations
 
 dotnet ef migrations add InitialCreate
 
+dotnet tool update --global dotnet-ef --version 10.0.0-rc.1.*
 
 cd C:\Users\marvi\RiderProjects2\Sources\Common\CodeAnalytics.Engine.Storage
+
+$env:CA_DATABASE__CONNECTIONSTRING = "Server=localhost;Port=5432;Database=code_analytics;User ID=admin;Password=test;Include Error Detail=true"
+
+dotnet ef migrations add InitialCreate
+
+dotnet ef database update InitialCreate

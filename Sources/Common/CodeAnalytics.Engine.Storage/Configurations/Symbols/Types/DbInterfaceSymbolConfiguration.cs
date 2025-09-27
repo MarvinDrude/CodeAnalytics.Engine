@@ -17,7 +17,11 @@ public sealed class DbInterfaceSymbolConfiguration
    {
       base.ConfigureInternal(builder);
 
+      builder.HasMany(x => x.ImplementedInterfaces)
+         .WithMany(x => x.ImplementedByInterface);
       
+      builder.HasMany(x => x.ImplementedDirectInterfaces)
+         .WithMany(x => x.ImplementedDirectByInterface);
    }
    
    public static readonly ValueConverter<DbInterfaceSymbolId, long> IdConverter = 

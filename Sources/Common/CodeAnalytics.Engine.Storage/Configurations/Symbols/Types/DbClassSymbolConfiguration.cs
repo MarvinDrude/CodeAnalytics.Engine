@@ -20,6 +20,12 @@ public sealed class DbClassSymbolConfiguration
       builder.HasOne(x => x.BaseClassSymbol)
          .WithOne()
          .HasForeignKey<DbClassSymbol>(x => x.BaseClassSymbolId);
+      
+      builder.HasMany(x => x.ImplementedInterfaces)
+         .WithMany(x => x.ImplementedByClass);
+      
+      builder.HasMany(x => x.ImplementedDirectInterfaces)
+         .WithMany(x => x.ImplementedDirectByClass);
    }
    
    public static readonly ValueConverter<DbClassSymbolId, long> IdConverter = 

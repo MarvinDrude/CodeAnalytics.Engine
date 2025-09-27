@@ -26,7 +26,7 @@ public abstract class DbSymbolBaseConfiguration<TDbModel, TDbIdentifier>
       builder.Property(x => x.Id)
          .HasConversion(_idConverter)
          .ValueGeneratedOnAdd();
-
+      
       builder.HasOne(x => x.Symbol)
          .WithOne()
          .HasForeignKey<TDbModel>(x => x.SymbolId);

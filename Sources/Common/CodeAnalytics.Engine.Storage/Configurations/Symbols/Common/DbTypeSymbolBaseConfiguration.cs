@@ -17,10 +17,5 @@ public abstract class DbTypeSymbolBaseConfiguration<TDbModel, TDbIdentifier>
    
    protected override void ConfigureInternal(EntityTypeBuilder<TDbModel> builder)
    {
-      builder.HasMany(x => x.ImplementedInterfaces)
-         .WithMany();
-      
-      builder.HasMany(x => x.ImplementedDirectInterfaces)
-         .WithMany();
    }
 }

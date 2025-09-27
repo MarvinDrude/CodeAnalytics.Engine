@@ -7,9 +7,7 @@
    </PropertyGroup>
 
    <ItemGroup>
-     <Folder Include="Extensions\" />
      <Folder Include="Formats\" />
-     <Folder Include="Options\" />
      <Folder Include="Symbols\" />
    </ItemGroup>
 
@@ -26,9 +24,11 @@
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
       <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
       
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
    </ItemGroup>
 
 </Project>

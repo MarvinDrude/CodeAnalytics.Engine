@@ -26,8 +26,8 @@ public sealed class DbSymbol
    public required SymbolType Type { get; set; }
    
    public DateTimeOffset CreatedAt { get; set; }
-   
-   public List<DbSymbolReference> References { get; set; }
+
+   public List<DbSymbolReference> References { get; set; } = [];
 }
 
 public readonly record struct DbSymbolId(long Value)

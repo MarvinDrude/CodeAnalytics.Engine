@@ -37,6 +37,10 @@ public sealed partial class DbMainContext : DbContext
 
    protected override void OnConfiguring(DbContextOptionsBuilder builder)
    {
+      builder
+         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+         .EnableDetailedErrors();
+      
       builder.UseNpgsql(DbOptions.ConnectionString 
          ?? throw new InvalidOperationException("No connection string."));
    }

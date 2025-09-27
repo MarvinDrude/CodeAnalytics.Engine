@@ -29,7 +29,6 @@
 
    <ItemGroup>
      <Folder Include="Symbols\Members\" />
-     <Folder Include="Symbols\Syntax\" />
    </ItemGroup>
 
 </Project>

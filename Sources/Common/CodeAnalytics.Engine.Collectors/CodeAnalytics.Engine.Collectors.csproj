@@ -7,11 +7,11 @@
    </PropertyGroup>
 
    <ItemGroup>
-     <Folder Include="Formats\" />
      <Folder Include="Symbols\Types\" />
    </ItemGroup>
 
    <ItemGroup>
+     <ProjectReference Include="..\..\CodeAnalytics.Engine\CodeAnalytics.Engine.csproj" />
      <ProjectReference Include="..\CodeAnalytics.Engine.Storage\CodeAnalytics.Engine.Storage.csproj" />
    </ItemGroup>
 

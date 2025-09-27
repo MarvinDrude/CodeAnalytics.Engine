@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
+using CodeAnalytics.Engine.Extensions.Hash;
 using Me.Memory.Buffers;
 using Microsoft.CodeAnalysis;
 
@@ -17,6 +19,11 @@ public readonly record struct SymbolIdentifier
    {
       StringValue = identifier;
       _protocolVersion = protocolVersion;
+   }
+
+   public string CreateHash()
+   {
+      return SHA1.CreateHexString(StringValue);
    }
 
    public static SymbolIdentifier Create<TSymbol>(TSymbol symbol)

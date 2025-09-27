@@ -2,9 +2,12 @@
 using CodeAnalytics.Engine.Storage.Common;
 using CodeAnalytics.Engine.Storage.Extensions;
 using CodeAnalytics.Engine.Storage.Models.Structure;
+using Me.Memory.Extensions;
 using Me.Memory.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -14,6 +17,7 @@ public sealed partial class SolutionCollector : IAsyncDisposable
 {
    private readonly ILogger<SolutionCollector> _logger;
    private readonly IDbContextFactory<DbMainContext> _dbContextFactory;
+   private readonly IServiceProvider _serviceProvider;
 
    private readonly IOptionsMonitor<CollectorOptions> _optionsMonitor;
    private CollectorOptions CollectorOptions => _optionsMonitor.CurrentValue;
@@ -26,11 +30,13 @@ public sealed partial class SolutionCollector : IAsyncDisposable
    public SolutionCollector(
       ILogger<SolutionCollector> logger,
       IOptionsMonitor<CollectorOptions> optionsMonitor,
-      IDbContextFactory<DbMainContext> dbContextFactory)
+      IDbContextFactory<DbMainContext> dbContextFactory,
+      IServiceProvider serviceProvider)
    {
       _logger = logger;
       _optionsMonitor = optionsMonitor;
       _dbContextFactory = dbContextFactory;
+      _serviceProvider = serviceProvider;
 
       _workPool = new WorkPool(new WorkPoolOptions()
       {
@@ -48,11 +54,46 @@ public sealed partial class SolutionCollector : IAsyncDisposable
       LogUpdateProjectCount(_currentProjectCount, projects.Count);
 
       var dbSolution = await GetOrCreateDbSolution(dbContext, pack.Solution, ct);
+      _maxProjectCount = projects.Count;
       
+      List<Task<bool>> tasks = [];
+      foreach (var project in projects)
+      {
+         var collectFunc = CreateCollectFunc(dbSolution, project, pack.WorkSpace);
+         tasks.Add(_workPool.Enqueue(collectFunc, ct));   
+      }
       
+      await Task.WhenAll(tasks)
+         .WithAggregateException();
    }
 
-   
+   private Func<CancellationToken, Task<bool>> CreateCollectFunc(
+      DbSolution dbSolution, Project project, MSBuildWorkspace workSpace)
+   {
+      return (ct) => CollectProject(dbSolution, project, workSpace, ct);
+   }
+
+   private async Task<bool> CollectProject(
+      DbSolution dbSolution, Project project, MSBuildWorkspace workSpace,
+      CancellationToken ct)
+   {
+      await using var dbContext = await _dbContextFactory.CreateDbContextAsync(ct);
+      
+      await using var collector = _serviceProvider.GetRequiredService<ProjectCollector>();
+      var result = await collector.Collect(dbContext, dbSolution, workSpace, project, ct);
+      
+      Interlocked.Increment(ref _currentProjectCount);
+      LogUpdateProjectCount(_currentProjectCount, _maxProjectCount);
+
+      if (result is { IsSuccess: true }) 
+         return true;
+      
+      LogProjectError(
+         project.FilePath ?? throw new InvalidOperationException(), 
+         result.Error.Detail);
+      
+      return false;
+   }
    
    private async Task<DbSolution> GetOrCreateDbSolution(
       DbMainContext dbContext,

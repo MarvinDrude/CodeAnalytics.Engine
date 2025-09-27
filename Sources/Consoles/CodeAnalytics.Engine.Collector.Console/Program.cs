@@ -40,10 +40,19 @@ services.AddLogging(lb =>
 var provider = services.BuildServiceProvider();
 WorkspaceBootstrapper.InitLocators();
 
+var cts = new CancellationTokenSource();
 var logger = provider.GetRequiredService<ILogger<Program>>();
+
+Console.CancelKeyPress += (sender, e) =>
+{
+   e.Cancel = true;
+   cts.Cancel();
+};
 
 try
 {
+   await using var collector = provider.GetRequiredService<SolutionCollector>();
+   await collector.Collect(cts.Token);
    
    ProgramLogger.LogFinishedCollecting(logger);
 }

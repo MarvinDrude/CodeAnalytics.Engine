@@ -8,7 +8,7 @@
 
    <ItemGroup>
      <Folder Include="Formats\" />
-     <Folder Include="Symbols\" />
+     <Folder Include="Symbols\Types\" />
    </ItemGroup>
 
    <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using CodeAnalytics.Engine.Collectors.Options;
+using CodeAnalytics.Engine.Storage.Common;
 using CodeAnalytics.Engine.Storage.Models.Structure;
 using Me.Memory.Results;
 using Me.Memory.Results.Errors;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace CodeAnalytics.Engine.Collectors.Common;
 
-public sealed partial class ProjectCollector
+public sealed partial class ProjectCollector : IAsyncDisposable
 {
    private readonly ILogger<ProjectCollector> _logger;
 
@@ -24,11 +25,17 @@ public sealed partial class ProjectCollector
    }
 
    public async Task<Result<int, Error<string>>> Collect(
+      DbMainContext dbContext,
       DbSolution dbSolution,
       Workspace workSpace,
       Project project,
       CancellationToken ct)
    {
       return new Error<string>("a");
+   }
+   
+   public ValueTask DisposeAsync()
+   {
+      return ValueTask.CompletedTask;
    }
 }

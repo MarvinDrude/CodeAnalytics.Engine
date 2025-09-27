@@ -5,9 +5,14 @@ public sealed class CollectorOptions
    public const string Prefix = "Collectors";
    
    public string Path { get; set; } = string.Empty;
+   
    public string BasePath { get; set; } = string.Empty;
+   
    public string OutputBasePath { get; set; } = string.Empty;
    
    public bool WriteSourceFiles { get; set; } = true;
+   
    public int MaxDegreeOfParallelism { get; init; } = 1;
+
+   public bool IsDeleteBefore { get; set; } = false;
 }

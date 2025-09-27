@@ -26,5 +26,12 @@ public sealed partial class DbMainContext
       builder.ApplyConfiguration(new DbClassSymbolConfiguration());
       builder.ApplyConfiguration(new DbStructSymbolConfiguration());
       builder.ApplyConfiguration(new DbInterfaceSymbolConfiguration());
+
+      foreach (var foreignKey in builder.Model
+                  .GetEntityTypes()
+                  .SelectMany(e => e.GetForeignKeys()))
+      {
+         foreignKey.DeleteBehavior = DeleteBehavior.Cascade;
+      }
    }
 }

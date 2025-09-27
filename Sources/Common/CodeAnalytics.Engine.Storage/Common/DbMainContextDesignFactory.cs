@@ -3,6 +3,7 @@ using CodeAnalytics.Engine.Storage.Options;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace CodeAnalytics.Engine.Storage.Common;
@@ -20,9 +21,13 @@ public sealed class DbMainContextDesignFactory : IDesignTimeDbContextFactory<DbM
       
       var services = new ServiceCollection();
       services.AddAndGetDatabaseOptions(configuration);
+      services.AddLogging();
       
       var serviceProvider = services.BuildServiceProvider();
 
-      return new DbMainContext(serviceProvider.GetRequiredService<IOptionsSnapshot<DatabaseOptions>>());
+      return new DbMainContext(
+         serviceProvider.GetRequiredService<IOptionsSnapshot<DatabaseOptions>>(),
+         serviceProvider.GetRequiredService<ILogger<DbMainContext>>(),
+         serviceProvider.GetRequiredService<ILoggerFactory>());
    }
 }

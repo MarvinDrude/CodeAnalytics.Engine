@@ -1,6 +1,7 @@
 ﻿
 using CodeAnalytics.Engine.Collectors.Common;
 using CodeAnalytics.Engine.Collectors.Extensions;
+using CodeAnalytics.Engine.Storage.Common;
 using CodeAnalytics.Engine.Storage.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,8 +20,8 @@ var configuration = configBuilder.Build();
 var services = new ServiceCollection();
 
 services.AddOptions();
-services.AddAndGetCollectorOptions(configuration);
-services.AddAndGetDatabaseOptions(configuration);
+var collectorOptions = services.AddAndGetCollectorOptions(configuration);
+var dbOptions = services.AddAndGetDatabaseOptions(configuration);
 
 services.AddCodeAnalyticsDatabase();
 services.AddCollectorServices();
@@ -29,7 +30,7 @@ services.AddSingleton<IConfiguration>(configuration);
 services.AddLogging(lb =>
 {
    Log.Logger = new LoggerConfiguration()
-      .MinimumLevel.Debug()
+      .MinimumLevel.Information()
       .WriteTo.Console(theme: AnsiConsoleTheme.Code)
       .CreateLogger();
    
@@ -51,6 +52,12 @@ Console.CancelKeyPress += (sender, e) =>
 
 try
 {
+   if (collectorOptions.IsDeleteBefore)
+   {
+      await using var context = provider.GetRequiredService<DbMainContext>();
+      await context.CleanData(cts.Token);
+   }
+   
    await using var collector = provider.GetRequiredService<SolutionCollector>();
    await collector.Collect(cts.Token);
    

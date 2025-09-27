@@ -7,10 +7,6 @@
    </PropertyGroup>
 
    <ItemGroup>
-     <Folder Include="Symbols\Types\" />
-   </ItemGroup>
-
-   <ItemGroup>
      <ProjectReference Include="..\..\CodeAnalytics.Engine\CodeAnalytics.Engine.csproj" />
      <ProjectReference Include="..\CodeAnalytics.Engine.Storage\CodeAnalytics.Engine.Storage.csproj" />
    </ItemGroup>
@@ -29,6 +25,11 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <Folder Include="Symbols\Members\" />
+     <Folder Include="Symbols\Syntax\" />
    </ItemGroup>
 
 </Project>

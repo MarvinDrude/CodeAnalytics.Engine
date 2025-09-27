@@ -1,4 +1,6 @@
-﻿namespace CodeAnalytics.Engine.Storage.Models.Structure;
+﻿using CodeAnalytics.Engine.Storage.Models.Symbols.Common;
+
+namespace CodeAnalytics.Engine.Storage.Models.Structure;
 
 public sealed class DbFile
 {
@@ -9,6 +11,8 @@ public sealed class DbFile
    public required string RelativeFilePath { get; set; }
 
    public List<DbProject> Projects { get; set; } = [];
+   
+   public List<DbSymbolReference> SymbolReferences { get; set; } = [];
 }
 
 public readonly record struct DbFileId(long Value)

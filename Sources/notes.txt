@@ -14,3 +14,6 @@ dotnet ef database update 20180904195021_InitialCreate --connection Server=local
 creating migrations
 
 dotnet ef migrations add InitialCreate
+
+
+cd C:\Users\marvi\RiderProjects2\Sources\Common\CodeAnalytics.Engine.Storage

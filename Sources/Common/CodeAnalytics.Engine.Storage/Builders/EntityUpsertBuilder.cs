@@ -49,7 +49,7 @@ internal sealed class EntityUpsertBuilder<TContext, TEntity> : IEntityUpsertBuil
       return this;
    }
 
-   public async Task<TEntity> ExecuteAsync(TContext context, CancellationToken ct = default)
+   public async Task<TEntity> Execute(CancellationToken ct = default)
    {
       if (_predicate is null) throw new InvalidOperationException("No predicate passed.");
       if (_factory is null) throw new InvalidOperationException("No create passed.");

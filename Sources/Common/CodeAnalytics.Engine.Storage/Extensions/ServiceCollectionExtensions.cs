@@ -1,4 +1,5 @@
-﻿using CodeAnalytics.Engine.Storage.Options;
+﻿using CodeAnalytics.Engine.Storage.Common;
+using CodeAnalytics.Engine.Storage.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,12 @@ public static class ServiceCollectionExtensions
             .Bind(configuration.GetSection(DatabaseOptions.Prefix));
 
          return instance;
+      }
+
+      public IServiceCollection AddCodeAnalyticsDatabase()
+      {
+         return collection.AddDbContext<DbMainContext>()
+            .AddDbContextFactory<DbMainContext>();
       }
    }
 }

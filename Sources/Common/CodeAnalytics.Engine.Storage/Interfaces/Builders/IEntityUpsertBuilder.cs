@@ -12,5 +12,5 @@ public interface IEntityUpsertBuilder<TContext, TEntity>
    IEntityUpsertBuilder<TContext, TEntity> OnCreate(Func<TEntity> factory);
    IEntityUpsertBuilder<TContext, TEntity> OnUpdate(Func<TContext, TEntity, CancellationToken, Task<TEntity>> updater);
 
-   Task<TEntity> ExecuteAsync(TContext context, CancellationToken ct = default);
+   Task<TEntity> Execute( CancellationToken ct = default);
 }

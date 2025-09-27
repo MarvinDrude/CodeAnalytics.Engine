@@ -9,4 +9,5 @@ public sealed class CollectorOptions
    public string OutputBasePath { get; set; } = string.Empty;
    
    public bool WriteSourceFiles { get; set; } = true;
+   public int MaxDegreeOfParallelism { get; init; } = 1;
 }

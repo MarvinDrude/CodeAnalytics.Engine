@@ -16,14 +16,17 @@ var configBuilder = new ConfigurationBuilder()
    .AddCommandLine(args);
 var configuration = configBuilder.Build();
 
-var serviceCollection = new ServiceCollection();
+var services = new ServiceCollection();
 
-serviceCollection.AddOptions();
-serviceCollection.AddAndGetCollectorOptions(configuration);
-serviceCollection.AddAndGetDatabaseOptions(configuration);
+services.AddOptions();
+services.AddAndGetCollectorOptions(configuration);
+services.AddAndGetDatabaseOptions(configuration);
 
-serviceCollection.AddSingleton<IConfiguration>(configuration);
-serviceCollection.AddLogging(lb =>
+services.AddCodeAnalyticsDatabase();
+services.AddCollectorServices();
+
+services.AddSingleton<IConfiguration>(configuration);
+services.AddLogging(lb =>
 {
    Log.Logger = new LoggerConfiguration()
       .MinimumLevel.Debug()
@@ -34,7 +37,7 @@ serviceCollection.AddLogging(lb =>
    lb.AddSerilog(Log.Logger);
 });
 
-var provider = serviceCollection.BuildServiceProvider();
+var provider = services.BuildServiceProvider();
 WorkspaceBootstrapper.InitLocators();
 
 var logger = provider.GetRequiredService<ILogger<Program>>();

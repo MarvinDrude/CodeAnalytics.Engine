@@ -19,7 +19,7 @@ public sealed class ClassSymbolCollector : ISymbolCollector<DbClassSymbol, IName
       var symbolDatabaseId = await context.DbContext.GetSymbolId(symbolIdHash);
       if (symbolDatabaseId == DbSymbolId.Empty) return null;
       
-      var baseSymbolId = DbSymbolId.Empty;
+      DbSymbolId? baseSymbolId = null;
       
       if (symbol.BaseType is { SpecialType: not SpecialType.System_Object }
           && await SymbolCollector<INamedTypeSymbol>.Collect(symbol.BaseType.OriginalDefinition, context) is { } dbBaseSymbol)

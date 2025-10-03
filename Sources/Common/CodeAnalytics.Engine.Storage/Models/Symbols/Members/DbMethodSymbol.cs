@@ -16,7 +16,7 @@ public sealed class DbMethodSymbol : DbMemberSymbolBase<DbMethodSymbolId>
    public DbSymbolId ReturnTypeSymbolId { get; set; }
    
    public DbSymbol? OverriddenSymbol { get; set; }
-   public DbSymbolId OverriddenSymbolId { get; set; }
+   public DbSymbolId? OverriddenSymbolId { get; set; }
 }
 
 public readonly record struct DbMethodSymbolId(long Value)

@@ -18,8 +18,9 @@ public sealed class DbClassSymbolConfiguration
       base.ConfigureInternal(builder);
 
       builder.HasOne(x => x.BaseClassSymbol)
-         .WithOne()
-         .HasForeignKey<DbClassSymbol>(x => x.BaseClassSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.BaseClassSymbolId)
+         .IsRequired(false);
       
       builder.HasMany(x => x.ImplementedInterfaces)
          .WithMany(x => x.ImplementedByClass);

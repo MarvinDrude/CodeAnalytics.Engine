@@ -112,15 +112,19 @@ public sealed partial class ProjectCollector : IAsyncDisposable
       switch (context.SyntaxNode)
       {
          case ClassDeclarationSyntax classDeclarationSyntax:
+            if (context.Symbol is not null) LogFound(context.Symbol.Kind);
             await ClassDeclarationTransformer.TryTransform(classDeclarationSyntax, context);
             break;
          case StructDeclarationSyntax structDeclarationSyntax:
+            if (context.Symbol is not null) LogFound(context.Symbol.Kind);
             await StructDeclarationTransformer.TryTransform(structDeclarationSyntax, context);
             break;
          case InterfaceDeclarationSyntax interfaceDeclarationSyntax:
+            if (context.Symbol is not null) LogFound(context.Symbol.Kind);
             await InterfaceDeclarationTransformer.TryTransform(interfaceDeclarationSyntax, context);
             break;
          case EnumDeclarationSyntax enumDeclarationSyntax:
+            if (context.Symbol is not null) LogFound(context.Symbol.Kind);
             await EnumDeclarationTransformer.TryTransform(enumDeclarationSyntax, context);
             break;
       }

@@ -17,7 +17,7 @@ public abstract class DbMemberSymbolBaseConfiguration<TDbModel, TDbIdentifier>
    protected override void ConfigureInternal(EntityTypeBuilder<TDbModel> builder)
    {
       builder.HasOne(x => x.ContainingSymbol)
-         .WithOne()
-         .HasForeignKey<TDbModel>(x => x.ContainingSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.ContainingSymbolId);
    }
 }

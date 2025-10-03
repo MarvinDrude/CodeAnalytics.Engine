@@ -16,8 +16,8 @@ public sealed class DbEnumSymbolConfiguration
    protected override void ConfigureInternal(EntityTypeBuilder<DbEnumSymbol> builder)
    {
       builder.HasOne(x => x.UnderlyingTypeSymbol)
-         .WithOne()
-         .HasForeignKey<DbEnumSymbol>(x => x.UnderlyingTypeSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.UnderlyingTypeSymbolId);
    }
 
    public static readonly ValueConverter<DbEnumSymbolId, long> IdConverter = 

@@ -18,12 +18,13 @@ public sealed class DbMethodSymbolConfiguration
       base.ConfigureInternal(builder);
 
       builder.HasOne(x => x.ReturnTypeSymbol)
-         .WithOne()
-         .HasForeignKey<DbMethodSymbol>(x => x.ReturnTypeSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.ReturnTypeSymbolId);
       
       builder.HasOne(x => x.OverriddenSymbol)
-         .WithOne()
-         .HasForeignKey<DbMethodSymbol>(x => x.OverriddenSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.OverriddenSymbolId)
+         .IsRequired(false);
    }
 
    public static readonly ValueConverter<DbMethodSymbolId, long> IdConverter = 

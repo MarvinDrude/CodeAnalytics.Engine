@@ -18,8 +18,8 @@ public sealed class DbParameterSymbolConfiguration
       base.ConfigureInternal(builder);
 
       builder.HasOne(x => x.TypeSymbol)
-         .WithOne()
-         .HasForeignKey<DbParameterSymbol>(x => x.TypeSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.TypeSymbolId);
    }
 
    public static readonly ValueConverter<DbParameterSymbolId, long> IdConverter = 

@@ -14,13 +14,13 @@ public sealed class DbPropertySymbol : DbMemberSymbolBase<DbPropertySymbolId>
    public required DbSymbolId TypeSymbolId { get; set; }
    
    public DbSymbol? GetterSymbol { get; set; }
-   public DbSymbolId GetterSymbolId { get; set; }
+   public DbSymbolId? GetterSymbolId { get; set; }
    
    public DbSymbol? SetterSymbol { get; set; }
-   public DbSymbolId SetterSymbolId { get; set; }
+   public DbSymbolId? SetterSymbolId { get; set; }
    
    public DbSymbol? OverriddenSymbol { get; set; }
-   public DbSymbolId OverriddenSymbolId { get; set; }
+   public DbSymbolId? OverriddenSymbolId { get; set; }
 }
 
 public readonly record struct DbPropertySymbolId(long Value)

@@ -18,20 +18,23 @@ public sealed class DbPropertySymbolConfiguration
       base.ConfigureInternal(builder);
 
       builder.HasOne(x => x.TypeSymbol)
-         .WithOne()
-         .HasForeignKey<DbPropertySymbol>(x => x.TypeSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.TypeSymbolId);
       
       builder.HasOne(x => x.GetterSymbol)
          .WithOne()
-         .HasForeignKey<DbPropertySymbol>(x => x.GetterSymbolId);
+         .HasForeignKey<DbPropertySymbol>(x => x.GetterSymbolId)
+         .IsRequired(false);
       
       builder.HasOne(x => x.SetterSymbol)
          .WithOne()
-         .HasForeignKey<DbPropertySymbol>(x => x.SetterSymbolId);
+         .HasForeignKey<DbPropertySymbol>(x => x.SetterSymbolId)
+         .IsRequired(false);
       
       builder.HasOne(x => x.OverriddenSymbol)
-         .WithOne()
-         .HasForeignKey<DbPropertySymbol>(x => x.OverriddenSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.OverriddenSymbolId)
+         .IsRequired(false);
    }
 
    public static readonly ValueConverter<DbPropertySymbolId, long> IdConverter = 

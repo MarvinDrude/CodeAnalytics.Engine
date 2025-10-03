@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 
 namespace CodeAnalytics.Engine.Collectors.Common;
 
@@ -24,4 +25,11 @@ public sealed partial class ProjectCollector
       Message = "Project startup time: {LoadingTime}."
    )]
    private partial void LogStartupTime(TimeSpan loadingTime);
+   
+   [LoggerMessage(
+      EventId = 3,
+      Level = LogLevel.Information,
+      Message = "Found new relevant syntax of kind '{Kind}'."
+   )]
+   private partial void LogFound(SymbolKind kind);
 }

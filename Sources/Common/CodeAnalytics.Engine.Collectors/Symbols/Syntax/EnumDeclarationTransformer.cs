@@ -1,5 +1,7 @@
 ﻿using CodeAnalytics.Engine.Collectors.Models.Contexts;
+using CodeAnalytics.Engine.Collectors.Symbols.Common;
 using CodeAnalytics.Engine.Collectors.Symbols.Interfaces;
+using CodeAnalytics.Engine.Collectors.Symbols.Types;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -13,7 +15,17 @@ public sealed class EnumDeclarationTransformer : ISyntaxTransformer<EnumDeclarat
       {
          return false;
       }
+      
+      if (await SymbolCollector<INamedTypeSymbol>.Collect(symbol, context) is not { } dbSymbol)
+      {
+         return false;
+      }
 
+      if (await EnumSymbolCollector.Collect(symbol, context) is not { } dbEnumSymbol)
+      {
+         return false;
+      }
+      
       return true;
    }
 }

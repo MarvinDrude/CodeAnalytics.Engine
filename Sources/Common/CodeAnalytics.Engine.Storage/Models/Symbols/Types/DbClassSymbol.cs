@@ -6,7 +6,7 @@ public sealed class DbClassSymbol : DbTypeSymbolBase<DbClassSymbolId>
 {
    public bool IsRecord { get; set; }
    
-   public DbSymbolId BaseClassSymbolId { get; set; }
+   public DbSymbolId? BaseClassSymbolId { get; set; }
    public DbSymbol? BaseClassSymbol { get; set; }
 }
 

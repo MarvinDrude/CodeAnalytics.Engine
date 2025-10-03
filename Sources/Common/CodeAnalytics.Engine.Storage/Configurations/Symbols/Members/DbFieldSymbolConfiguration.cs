@@ -18,8 +18,8 @@ public sealed class DbFieldSymbolConfiguration
       base.ConfigureInternal(builder);
 
       builder.HasOne(x => x.TypeSymbol)
-         .WithOne()
-         .HasForeignKey<DbFieldSymbol>(x => x.TypeSymbolId);
+         .WithMany()
+         .HasForeignKey(x => x.TypeSymbolId);
    }
 
    public static readonly ValueConverter<DbFieldSymbolId, long> IdConverter = 

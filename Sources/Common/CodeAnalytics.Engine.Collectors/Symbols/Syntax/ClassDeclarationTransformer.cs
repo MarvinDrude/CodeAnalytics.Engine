@@ -1,5 +1,7 @@
 ﻿using CodeAnalytics.Engine.Collectors.Models.Contexts;
+using CodeAnalytics.Engine.Collectors.Symbols.Common;
 using CodeAnalytics.Engine.Collectors.Symbols.Interfaces;
+using CodeAnalytics.Engine.Collectors.Symbols.Types;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -14,6 +16,16 @@ public sealed class ClassDeclarationTransformer : ISyntaxTransformer<ClassDeclar
          return false;
       }
 
+      if (await SymbolCollector<INamedTypeSymbol>.Collect(symbol, context) is not { } dbSymbol)
+      {
+         return false;
+      }
+
+      if (await ClassSymbolCollector.Collect(symbol, context) is not { } dbClassSymbol)
+      {
+         return false;
+      }
+      
       
       
       return true;

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using CodeAnalytics.Engine.Collectors.Caches;
 using CodeAnalytics.Engine.Collectors.Models.Contexts;
 using CodeAnalytics.Engine.Collectors.Options;
 using CodeAnalytics.Engine.Collectors.Symbols.Syntax;
@@ -18,6 +19,7 @@ namespace CodeAnalytics.Engine.Collectors.Common;
 public sealed partial class ProjectCollector : IAsyncDisposable
 {
    private readonly ILogger<ProjectCollector> _logger;
+   private readonly SymbolIdCache _symbolIdCache;
 
    private readonly IOptionsMonitor<CollectorOptions> _optionsMonitor;
    private CollectorOptions CollectorOptions => _optionsMonitor.CurrentValue;
@@ -25,10 +27,12 @@ public sealed partial class ProjectCollector : IAsyncDisposable
    private CollectContext? _context;
 
    public ProjectCollector(
-      ILogger<ProjectCollector> logger, 
+      ILogger<ProjectCollector> logger,
+      SymbolIdCache symbolIdCache,
       IOptionsMonitor<CollectorOptions> optionsMonitor)
    {
       _logger = logger;
+      _symbolIdCache = symbolIdCache;
       _optionsMonitor = optionsMonitor;
    }
 
@@ -70,6 +74,7 @@ public sealed partial class ProjectCollector : IAsyncDisposable
          _context = new CollectContext()
          {
             Compilation = compilation,
+            SymbolIdCache = _symbolIdCache,
             Options = CollectorOptions,
             SourceText = await tree.GetTextAsync(ct),
             SemanticModel = semanticModel,

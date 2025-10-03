@@ -16,7 +16,7 @@ public sealed class EnumSymbolCollector : ISymbolCollector<DbEnumSymbol, INamedT
       var symbolId = SymbolIdentifier.Create(symbol);
       var symbolIdHash = symbolId.CreateHash();
 
-      var symbolDatabaseId = await context.DbContext.GetSymbolId(symbolIdHash);
+      var symbolDatabaseId = await context.GetDbSymbolId(symbolIdHash);
       if (symbolDatabaseId == DbSymbolId.Empty) return null;
 
       if (symbol.EnumUnderlyingType is not { } underlyingSymbol || 

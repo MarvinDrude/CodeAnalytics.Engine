@@ -16,7 +16,7 @@ public sealed class InterfaceSymbolCollector : ISymbolCollector<DbInterfaceSymbo
       var symbolId = SymbolIdentifier.Create(symbol);
       var symbolIdHash = symbolId.CreateHash();
 
-      var symbolDatabaseId = await context.DbContext.GetSymbolId(symbolIdHash);
+      var symbolDatabaseId = await context.GetDbSymbolId(symbolIdHash);
       if (symbolDatabaseId == DbSymbolId.Empty) return null;
       
       return await context.DbContext.UpdateOrCreate(context.DbContext.InterfaceSymbols)

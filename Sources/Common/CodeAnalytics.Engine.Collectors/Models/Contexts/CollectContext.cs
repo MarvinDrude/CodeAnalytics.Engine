@@ -1,6 +1,10 @@
-﻿using CodeAnalytics.Engine.Collectors.Options;
+﻿using System.Collections.Concurrent;
+using CodeAnalytics.Engine.Collectors.Caches;
+using CodeAnalytics.Engine.Collectors.Extensions.Database;
+using CodeAnalytics.Engine.Collectors.Options;
 using CodeAnalytics.Engine.Storage.Common;
 using CodeAnalytics.Engine.Storage.Models.Structure;
+using CodeAnalytics.Engine.Storage.Models.Symbols.Common;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,6 +32,8 @@ public sealed class CollectContext
    public required DbProject DbProject { get; set; }
    public required DbFile DbFile { get; set; }
    
+   public required SymbolIdCache SymbolIdCache { get; set; }
+   
    public void ResetSymbol()
    {
       _fetched = false;
@@ -49,7 +55,7 @@ public sealed class CollectContext
    
    private ISymbol? _symbol;
    private bool _fetched;
-
+   
    public ISymbol? GetSymbol(CancellationToken ct = default)
    {
       if (SyntaxNode is ICompilationUnitSyntax)
@@ -73,5 +79,17 @@ public sealed class CollectContext
          CrefSyntax crefSyntax => SemanticModel.GetSymbolInfo(crefSyntax, ct).Symbol,
          _ => null
       };
+   }
+
+   public ValueTask<DbSymbolId> GetDbSymbolId(string hashId)
+   {
+      return SymbolIdCache.TryGetId(hashId, out var dbSymbolId) 
+         ? ValueTask.FromResult(dbSymbolId) 
+         : AwaitDbSymbolId(hashId);
+   }
+
+   private async ValueTask<DbSymbolId> AwaitDbSymbolId(string hashId)
+   {
+      return await DbContext.GetSymbolId(hashId);
    }
 }

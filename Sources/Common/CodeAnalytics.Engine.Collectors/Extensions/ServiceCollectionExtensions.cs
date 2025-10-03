@@ -1,4 +1,5 @@
-﻿using CodeAnalytics.Engine.Collectors.Common;
+﻿using CodeAnalytics.Engine.Collectors.Caches;
+using CodeAnalytics.Engine.Collectors.Common;
 using CodeAnalytics.Engine.Collectors.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,8 @@ public static class ServiceCollectionExtensions
       {
          return collection
             .AddTransient<SolutionCollector>()
-            .AddTransient<ProjectCollector>();
+            .AddTransient<ProjectCollector>()
+            .AddSingleton<SymbolIdCache>();
       }
    }
 }

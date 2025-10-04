@@ -90,6 +90,13 @@ public sealed class CollectContext
 
    private async ValueTask<DbSymbolId> AwaitDbSymbolId(string hashId)
    {
-      return await DbContext.GetSymbolId(hashId);
+      var symbolId = await DbContext.GetSymbolId(hashId);
+      
+      if (symbolId != DbSymbolId.Empty)
+      {
+         SymbolIdCache.Set(hashId, symbolId);
+      }
+      
+      return symbolId;
    }
 }

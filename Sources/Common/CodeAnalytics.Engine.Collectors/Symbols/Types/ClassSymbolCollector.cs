@@ -27,10 +27,12 @@ public sealed class ClassSymbolCollector : ISymbolCollector<DbClassSymbol, IName
          baseSymbolId = dbBaseSymbol.Id;
       }
       
-      return await context.DbContext.UpdateOrCreate(context.DbContext.ClassSymbols)
+      var result = await context.DbContext.UpdateOrCreate(context.DbContext.ClassSymbols)
          .Match(x => x.SymbolId == symbolDatabaseId)
          .OnCreate(DbSymbolCreator)
          .Execute();
+
+      return result;
       
       DbClassSymbol DbSymbolCreator() =>
          new ()

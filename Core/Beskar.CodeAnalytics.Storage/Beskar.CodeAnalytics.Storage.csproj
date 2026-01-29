@@ -3,6 +3,6 @@
       <RootNamespace>Beskar.CodeAnalytics.Storage</RootNamespace>
    </PropertyGroup>
    <ItemGroup>
-     <Folder Include="Entities\" />
+     <PackageReference Include="Me.Memory" />
    </ItemGroup>
 </Project>

@@ -4,4 +4,8 @@
       <RootNamespace>Beskar.CodeAnalytics.Collector</RootNamespace>
    </PropertyGroup>
 
+   <ItemGroup>
+     <PackageReference Include="Me.Memory" />
+   </ItemGroup>
+
 </Project>

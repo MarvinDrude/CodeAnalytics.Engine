@@ -16,4 +16,9 @@ public static class DeterministicHasher
       Encoding.UTF8.GetBytes(fullPath, owner.Span);
       return XxHash64.HashToUInt64(owner.Span, seed);
    }
+   
+   public static ulong GetDeterministicId(scoped in ReadOnlySpan<byte> bytes, long seed = 1337L)
+   {
+      return XxHash64.HashToUInt64(bytes, seed);
+   }
 }

@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
    <PropertyGroup>
       <RootNamespace>Beskar.CodeAnalytics.Storage</RootNamespace>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
    </PropertyGroup>
    <ItemGroup>
      <PackageReference Include="Me.Memory" />

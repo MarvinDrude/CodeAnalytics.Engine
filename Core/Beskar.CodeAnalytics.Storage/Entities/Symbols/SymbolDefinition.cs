@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using Beskar.CodeAnalytics.Storage.Constants;
-using Beskar.CodeAnalytics.Storage.Entities.Edges;
 using Beskar.CodeAnalytics.Storage.Entities.Misc;
 using Beskar.CodeAnalytics.Storage.Enums.Symbols;
 using Me.Memory.Buffers.Dynamic;
@@ -10,10 +9,11 @@ namespace Beskar.CodeAnalytics.Storage.Entities.Symbols;
 [StructLayout(LayoutKind.Sequential, Pack = StorageConstants.StructPacking)]
 public struct SymbolDefinition
 {
-   public int Id;
-   public int ParentId;
+   public ulong Id;
+   public ulong ContainingId;
 
    public SymbolKind Kind;
+   public AccessModifier Accessibility;
    public PackedBools Flags;
 
    public StringDefinition Name;
@@ -21,7 +21,6 @@ public struct SymbolDefinition
    public StringDefinition FullPathName;
    
    public StorageSlice<SymbolLocationDefinition> Declarations;
-   public StorageSlice<SymbolEdgeDefinition> Edges;
    
    public bool IsAbstract
    {

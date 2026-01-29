@@ -4,9 +4,9 @@ using Beskar.CodeAnalytics.Storage.Constants;
 namespace Beskar.CodeAnalytics.Storage.Entities.Misc;
 
 [StructLayout(LayoutKind.Sequential, Pack = StorageConstants.StructPacking)]
-public struct StringDefinition(long offset)
+public struct StringDefinition(ulong offset)
 {
-   public static readonly StringDefinition Empty = new (-1);
+   public static readonly StringDefinition Empty = new (0);
    
-   public readonly long Offset = offset;
+   public readonly ulong Offset = offset;
 }

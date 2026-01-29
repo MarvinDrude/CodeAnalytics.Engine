@@ -4,5 +4,10 @@
    </PropertyGroup>
    <ItemGroup>
      <PackageReference Include="Me.Memory" />
+     <PackageReference Include="System.IO.Hashing" />
+   </ItemGroup>
+   <ItemGroup>
+     <Folder Include="Entities\Edges\" />
+     <Folder Include="Writers\" />
    </ItemGroup>
 </Project>

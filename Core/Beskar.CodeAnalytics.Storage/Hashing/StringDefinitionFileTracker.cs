@@ -11,6 +11,7 @@ namespace Beskar.CodeAnalytics.Storage.Hashing;
 
 public sealed class StringDefinitionFileTracker : IDisposable
 {
+   private readonly Lock _lock = new();
    private readonly Dictionary<ulong, List<long>> _registry = [];
 
    private readonly string _filePath;
@@ -31,25 +32,28 @@ public sealed class StringDefinitionFileTracker : IDisposable
 
    public StringDefinition GetStringDefinition(scoped in ReadOnlySpan<char> str)
    {
-      var hash = DeterministicHasher.GetDeterministicId(str, 7331L);
-      
-      var requiredSize = Encoding.UTF8.GetByteCount(str);
-      using var owner = requiredSize <= 1024
-         ? new SpanOwner<byte>(stackalloc byte[requiredSize])
-         : new SpanOwner<byte>(requiredSize);
-
-      Encoding.UTF8.GetBytes(str, owner.Span);
-
-      if (_registry.TryGetValue(hash, out var offsets))
+      lock (_lock)
       {
-         foreach (var offset in offsets)
-         {
-            if (!IsMatch(owner.Span, offset)) continue;
-            return new StringDefinition((ulong)offset);
-         }
-      }
+         var hash = DeterministicHasher.GetDeterministicId(str, 7331L);
+      
+         var requiredSize = Encoding.UTF8.GetByteCount(str);
+         using var owner = requiredSize <= 1024
+            ? new SpanOwner<byte>(stackalloc byte[requiredSize])
+            : new SpanOwner<byte>(requiredSize);
 
-      return new StringDefinition((ulong)Append(owner.Span, hash));
+         Encoding.UTF8.GetBytes(str, owner.Span);
+
+         if (_registry.TryGetValue(hash, out var offsets))
+         {
+            foreach (var offset in offsets)
+            {
+               if (!IsMatch(owner.Span, offset)) continue;
+               return new StringDefinition((ulong)offset);
+            }
+         }
+
+         return new StringDefinition((ulong)Append(owner.Span, hash));
+      }
    }
 
    [MemberNotNull(nameof(_file), nameof(_accessor))]

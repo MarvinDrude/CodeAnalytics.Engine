@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/Console/" />
+  <Folder Name="/Console/">
+    <Project Path="Console/Beskar.CodeAnalytics.Experiments/Beskar.CodeAnalytics.Experiments.csproj" />
+  </Folder>
   <Folder Name="/Core/">
     <Project Path="Core/Beskar.CodeAnalytics.Collector/Beskar.CodeAnalytics.Collector.csproj" />
     <Project Path="Core/Beskar.CodeAnalytics.Storage/Beskar.CodeAnalytics.Storage.csproj" />

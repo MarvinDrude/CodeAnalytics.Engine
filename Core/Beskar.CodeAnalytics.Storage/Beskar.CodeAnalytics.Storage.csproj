@@ -9,6 +9,5 @@
    </ItemGroup>
    <ItemGroup>
      <Folder Include="Entities\Edges\" />
-     <Folder Include="Writers\" />
    </ItemGroup>
 </Project>

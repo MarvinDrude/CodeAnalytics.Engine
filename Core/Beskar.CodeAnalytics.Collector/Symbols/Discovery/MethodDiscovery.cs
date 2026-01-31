@@ -57,7 +57,6 @@ public static class MethodDiscovery
       };
 
       await batch.MethodSymbolWriter.Write(id, methodDefinition);
-      
       return true;
    }
 }

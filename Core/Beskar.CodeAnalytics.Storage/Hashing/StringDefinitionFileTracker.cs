@@ -29,6 +29,8 @@ public sealed class StringDefinitionFileTracker : IDisposable
       string filePath, long initialCapacity = 1024 * 1024 * 10)
    {
       _filePath = filePath;
+      File.Delete(_filePath);
+      
       _capacity = initialCapacity;
       
       ReMapFile();

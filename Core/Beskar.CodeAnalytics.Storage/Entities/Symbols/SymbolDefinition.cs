@@ -14,7 +14,7 @@ public struct SymbolDefinition
 
    public SymbolType Type;
    public AccessModifier Accessibility;
-   public PackedBools Flags;
+   public PackedBools FlagsLow;
 
    public StringDefinition Name;
    public StringDefinition MetadataName;
@@ -24,49 +24,49 @@ public struct SymbolDefinition
    
    public bool IsAbstract
    {
-      get => Flags.Get(0);
-      set => Flags.Set(0, value);
+      get => FlagsLow.Get(0);
+      set => FlagsLow.Set(0, value);
    }
 
    public bool HasContaining
    {
-      get => Flags.Get(1);
-      set => Flags.Set(1, value);
+      get => FlagsLow.Get(1);
+      set => FlagsLow.Set(1, value);
    }
 
    public bool IsExtern
    {
-      get => Flags.Get(2);
-      set => Flags.Set(2, value);
+      get => FlagsLow.Get(2);
+      set => FlagsLow.Set(2, value);
    }
 
    public bool IsImplicitlyDeclared
    {
-      get => Flags.Get(3);
-      set => Flags.Set(3, value);
+      get => FlagsLow.Get(3);
+      set => FlagsLow.Set(3, value);
    }
 
    public bool IsOverride
    {
-      get => Flags.Get(4);
-      set => Flags.Set(4, value);
+      get => FlagsLow.Get(4);
+      set => FlagsLow.Set(4, value);
    }
 
    public bool IsSealed
    {
-      get => Flags.Get(5);
-      set => Flags.Set(5, value);
+      get => FlagsLow.Get(5);
+      set => FlagsLow.Set(5, value);
    }
 
    public bool IsStatic
    {
-      get => Flags.Get(6);
-      set => Flags.Set(6, value);
+      get => FlagsLow.Get(6);
+      set => FlagsLow.Set(6, value);
    }
 
    public bool IsVirtual
    {
-      get => Flags.Get(7);
-      set => Flags.Set(7, value);
+      get => FlagsLow.Get(7);
+      set => FlagsLow.Set(7, value);
    }
 }

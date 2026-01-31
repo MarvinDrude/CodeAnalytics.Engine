@@ -72,6 +72,7 @@ try
          var project = new ProjectCollector(successProject, projectLogger);
          await project.Discover(batch, cancellationToken);
          
+         firstEncounter = false;
          continue;
       }
       

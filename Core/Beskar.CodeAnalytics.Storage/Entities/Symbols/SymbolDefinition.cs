@@ -12,7 +12,7 @@ public struct SymbolDefinition
    public ulong Id;
    public ulong ContainingId;
 
-   public SymbolKind Kind;
+   public SymbolType Type;
    public AccessModifier Accessibility;
    public PackedBools Flags;
 
@@ -28,7 +28,7 @@ public struct SymbolDefinition
       set => Flags.Set(0, value);
    }
 
-   public bool IsDefinition
+   public bool HasContaining
    {
       get => Flags.Get(1);
       set => Flags.Set(1, value);

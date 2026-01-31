@@ -1,6 +1,6 @@
 ﻿namespace Beskar.CodeAnalytics.Storage.Enums.Symbols;
 
-public enum SymbolKind : byte
+public enum SymbolType : byte
 {
    Alias = 0,
    ArrayType = 1,

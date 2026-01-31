@@ -3,19 +3,34 @@ using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Storage.Entities.Misc;
 using Beskar.CodeAnalytics.Storage.Entities.Symbols;
-using Beskar.CodeAnalytics.Storage.Hashing;
+using Me.Memory.Utils;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 
 namespace Beskar.CodeAnalytics.Collector.Projects;
 
-public sealed class ProjectCollector(CsProjectHandle handle)
+public sealed partial class ProjectCollector(
+   CsProjectHandle handle,
+   ILogger<ProjectCollector> logger)
 {
+   private readonly ILogger<ProjectCollector> _logger = logger;
    private readonly CsProjectHandle _handle = handle;
 
    public async Task Discover(DiscoveryBatch batch, CancellationToken ct = default)
    {
-      var compilation = await _handle.GetCompilation(ct);
-
+      LogStart(_handle.Project.Name);
+      var totalTimerResult = new AsyncTimerResult();
+      var totalTimer = new AsyncTimer(totalTimerResult);
+      
+      var timeResult = new AsyncTimerResult();
+      Compilation compilation;
+      
+      using (new AsyncTimer(timeResult))
+      {
+         compilation = await _handle.GetCompilation(ct);
+      }
+      LogCompilationTime(_handle.Project.Name, timeResult.Elapsed);
+      
       foreach (var tree in compilation.SyntaxTrees)
       {
          var semanticModel = compilation.GetSemanticModel(tree, ignoreAccessibility: true);
@@ -42,6 +57,9 @@ public sealed class ProjectCollector(CsProjectHandle handle)
             await HandleNode(context);
          }
       }
+      
+      totalTimer.Dispose();
+      LogStop(_handle.Project.Name, totalTimerResult.Elapsed);
    }
 
    private async Task HandleNode(DiscoverContext context)

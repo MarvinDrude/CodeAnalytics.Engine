@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.IO.Hashing;
 using Me.Memory.Buffers;
 

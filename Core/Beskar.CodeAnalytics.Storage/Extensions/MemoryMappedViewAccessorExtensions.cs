@@ -1,4 +1,5 @@
-﻿using System.IO.MemoryMappedFiles;
+﻿using System;
+using System.IO.MemoryMappedFiles;
 
 namespace Beskar.CodeAnalytics.Storage.Extensions;
 

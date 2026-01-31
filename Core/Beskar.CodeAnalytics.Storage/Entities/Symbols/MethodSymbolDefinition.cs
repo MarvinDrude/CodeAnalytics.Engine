@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Beskar.CodeAnalytics.Storage.Constants;
 using Beskar.CodeAnalytics.Storage.Entities.Misc;
+using Beskar.CodeAnalytics.Storage.Enums.Symbols;
 using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Storage.Entities.Symbols;
@@ -9,11 +10,11 @@ namespace Beskar.CodeAnalytics.Storage.Entities.Symbols;
 public struct MethodSymbolDefinition
 {
    public ulong SymbolId;
-   public ulong ContainingId;
    public ulong ReturnTypeId;
    public ulong OverriddenMethodId;
 
    public PackedBools FlagsLow;
+   public MethodType MethodType;
    
    public StorageSlice<ParameterSymbolDefinition> Parameters;
    public StorageSlice<TypeParameterSymbolDefinition> TypeParameters;
@@ -22,12 +23,6 @@ public struct MethodSymbolDefinition
    {
       get => FlagsLow.Get(0);
       set => FlagsLow.Set(0, value);
-   }
-   
-   public bool HasContaining
-   {
-      get => FlagsLow.Get(1);
-      set => FlagsLow.Set(1, value);
    }
    
    public bool ReturnsByRefReadonly

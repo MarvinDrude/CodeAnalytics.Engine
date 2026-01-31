@@ -19,6 +19,7 @@ public struct SymbolDefinition
    public StringDefinition Name;
    public StringDefinition MetadataName;
    public StringDefinition FullPathName;
+   public StringDefinition FullPathUniqueId;
    
    public StorageSlice<SymbolLocationDefinition> Declarations;
    

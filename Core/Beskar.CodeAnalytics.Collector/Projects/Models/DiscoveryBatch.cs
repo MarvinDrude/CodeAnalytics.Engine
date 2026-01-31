@@ -11,6 +11,11 @@ public sealed class DiscoveryBatch : IDisposable
    public required IdentifierGenerator Identifiers { get; init; }
    
    public required SymbolDiscoveryWriter<SymbolDefinition> SymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<TypeSymbolDefinition> TypeSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<NamedTypeSymbolDefinition> NamedTypeSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<ParameterSymbolDefinition> ParameterSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<TypeParameterSymbolDefinition> TypeParameterSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<MethodSymbolDefinition> MethodSymbolWriter { get; init; }
 
    public void Dispose()
    {
@@ -26,6 +31,11 @@ public sealed class DiscoveryBatch : IDisposable
          StringDefinitions = new StringDefinitionFileTracker(Path.Combine(options.OutputPath, _fileNameStrings)),
          
          SymbolWriter = new SymbolDiscoveryWriter<SymbolDefinition>(options.OutputPath),
+         TypeSymbolWriter = new SymbolDiscoveryWriter<TypeSymbolDefinition>(options.OutputPath),
+         NamedTypeSymbolWriter = new SymbolDiscoveryWriter<NamedTypeSymbolDefinition>(options.OutputPath),
+         ParameterSymbolWriter = new SymbolDiscoveryWriter<ParameterSymbolDefinition>(options.OutputPath),
+         TypeParameterSymbolWriter = new SymbolDiscoveryWriter<TypeParameterSymbolDefinition>(options.OutputPath),
+         MethodSymbolWriter = new SymbolDiscoveryWriter<MethodSymbolDefinition>(options.OutputPath),
       };
    }
 

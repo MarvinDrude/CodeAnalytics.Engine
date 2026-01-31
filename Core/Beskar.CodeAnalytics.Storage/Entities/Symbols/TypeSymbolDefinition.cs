@@ -12,6 +12,7 @@ public struct TypeSymbolDefinition
    public ulong SymbolId;
    public ulong BaseTypeId;
 
+   public TypeStorageKind Kind;
    public SpecialTypeKind SpecialType;
    public PackedBools FlagsLow;
    

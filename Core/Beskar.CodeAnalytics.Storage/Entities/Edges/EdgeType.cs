@@ -3,5 +3,7 @@
 public enum EdgeType : byte
 {
    Interface = 1,
-   AllInterface = 2
+   AllInterface = 2,
+   Parameter = 3,
+   TypeParameter = 4
 }

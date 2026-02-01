@@ -1,6 +1,7 @@
 ﻿using Beskar.CodeAnalytics.Collector.Extensions;
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
+using Beskar.CodeAnalytics.Storage.Entities.Edges;
 using Beskar.CodeAnalytics.Storage.Entities.Misc;
 using Beskar.CodeAnalytics.Storage.Entities.Symbols;
 using Microsoft.CodeAnalysis;
@@ -36,6 +37,20 @@ public static class MethodDiscovery
          var stringDefinition = batch.StringDefinitions.GetStringDefinition(returnTypePath);
          returnTypeId = batch.Identifiers.GetDeterministicId(returnTypePath, stringDefinition);
       }
+
+      foreach (var parameter in methodSymbol.Parameters)
+      {
+         if (!batch.TryGetDeterministicId(parameter, out var parameterId))
+            continue;
+
+         var edge = new EdgeDefinition()
+         {
+            Key = new EdgeKey(id, parameterId, EdgeType.Parameter)
+         };
+         batch.EdgeDiscoveryWriter.Write(ref edge);
+      }
+      
+      
       
       var methodDefinition = new MethodSymbolDefinition()
       {

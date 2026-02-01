@@ -4,7 +4,7 @@ using Beskar.CodeAnalytics.Storage.Constants;
 namespace Beskar.CodeAnalytics.Storage.Entities.Edges;
 
 [StructLayout(LayoutKind.Sequential, Pack = StorageConstants.StructPacking)]
-public struct EdgeDefinition
-{
-   public EdgeKey Key;
-}
+public readonly record struct EdgeKey(
+   ulong SourceSymbolId,
+   ulong TargetSymbolId,
+   EdgeType EdgeType);

@@ -130,6 +130,8 @@ public sealed partial class ProjectCollector(
          IMethodSymbol => await MethodDiscovery.Discover(context, id),
          IParameterSymbol => await ParameterDiscovery.Discover(context, id),
          ITypeSymbol => await TypeDiscovery.Discover(context, id),
+         IPropertySymbol => await PropertyDiscovery.Discover(context, id),
+         IFieldSymbol => await FieldDiscovery.Discover(context, id),
          _ => false
       };
    }

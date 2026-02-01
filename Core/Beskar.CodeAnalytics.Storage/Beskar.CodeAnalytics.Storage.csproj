@@ -8,7 +8,4 @@
      <PackageReference Include="Me.Memory" />
      <PackageReference Include="System.IO.Hashing" />
    </ItemGroup>
-   <ItemGroup>
-     <Folder Include="Entities\Edges\" />
-   </ItemGroup>
 </Project>

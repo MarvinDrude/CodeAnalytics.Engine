@@ -7,6 +7,8 @@
 using Beskar.CodeAnalytics.Collector.Options;
 using Beskar.CodeAnalytics.Collector.Projects;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
+using Beskar.CodeAnalytics.Collector.Sorting;
+using Me.Memory.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -57,38 +59,50 @@ Console.CancelKeyPress += (_, args) =>
 try
 {
    var firstEncounter = true;
-   using var batch = DiscoveryBatch.CreateEmpty(collectOptions);
+   var batch = DiscoveryBatch.CreateEmpty(collectOptions);
    
    foreach (var filePath in collectOptions.TargetPaths)
    {
       if (filePath.EndsWith(".csproj", StringComparison.InvariantCultureIgnoreCase))
       {
-         var projectHandle = await WorkSpaceLoader.InitializeFromProject(filePath, firstEncounter, cancellationToken);
+         var projectHandle =
+            await WorkSpaceLoader.InitializeFromProject(filePath, firstEncounter, cancellationToken);
          if (projectHandle.Success is not { } successProject)
          {
             throw new InvalidOperationException(projectHandle.Error);
          }
-         
+
          var project = new ProjectCollector(successProject, projectLogger);
          await project.Discover(batch, cancellationToken);
-         
+
          firstEncounter = false;
          continue;
       }
-      
+
       var solutionHandle = await WorkSpaceLoader.InitializeFromSolution(
          filePath, firstEncounter, cancellationToken);
       if (solutionHandle.Success is not { } success)
       {
          throw new InvalidOperationException(solutionHandle.Error);
       }
-      
+
       await using var solution = new SolutionCollector(
          success, collectOptions, solutionLogger, loggerFactory);
       await solution.Discover(batch, cancellationToken);
 
       firstEncounter = false;
    }
+
+   var result = batch.CreateResult();
+   batch.Dispose();
+
+   await using var pool = new WorkPool(new WorkPoolOptions()
+   {
+      MaxDegreeOfParallelism = collectOptions.MaxDegreeOfParallelism,
+   });
+
+   var discoverySorter = new DiscoverySorter(pool, collectOptions, result);
+   await discoverySorter.Run(cancellationToken);
 }
 catch (Exception ex)
 {

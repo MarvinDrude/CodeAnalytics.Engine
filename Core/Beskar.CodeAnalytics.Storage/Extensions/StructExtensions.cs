@@ -14,7 +14,11 @@ public static class StructExtensions
          var span = MemoryMarshal.CreateReadOnlySpan(ref str, 1);
          return MemoryMarshal.AsBytes(span);
       }
+   }
 
+   extension<T>(T str)
+      where T : unmanaged
+   {
       public static T FromBytes(scoped in ReadOnlySpan<byte> bytes)
       {
          return bytes.Length < Unsafe.SizeOf<T>() 

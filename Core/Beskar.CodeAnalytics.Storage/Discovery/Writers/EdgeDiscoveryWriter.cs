@@ -5,6 +5,8 @@ namespace Beskar.CodeAnalytics.Storage.Discovery.Writers;
 
 public sealed class EdgeDiscoveryWriter : IDisposable
 {
+   public string FilePath { get; }
+   
    private const string _fileName = "edges.discovery.mmb";
    private readonly Lock _lock = new();
 
@@ -17,6 +19,7 @@ public sealed class EdgeDiscoveryWriter : IDisposable
       File.Delete(filePath);
       
       _fileStream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
+      FilePath = filePath;
    }
    
    public bool Write(ref EdgeDefinition edge)

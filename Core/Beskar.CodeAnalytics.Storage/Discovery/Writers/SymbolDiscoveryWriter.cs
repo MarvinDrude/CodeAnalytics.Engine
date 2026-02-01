@@ -9,6 +9,8 @@ namespace Beskar.CodeAnalytics.Storage.Discovery.Writers;
 public sealed class SymbolDiscoveryWriter<TSymbol> : IDisposable
    where TSymbol : unmanaged
 {
+   public string FilePath { get; }
+   
    private readonly SemaphoreSlim _semaphore = new(1, 1);
    
    private static readonly string _fileName = $"{typeof(TSymbol).Name.ToLowerInvariant()}.discovery.mmb";
@@ -20,6 +22,7 @@ public sealed class SymbolDiscoveryWriter<TSymbol> : IDisposable
       File.Delete(filePath);
       
       _fileWriter = new DiscoveryFileWriter(filePath);
+      FilePath = filePath;
    }
    
    public async Task Write(ulong id, TSymbol symbol)

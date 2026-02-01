@@ -84,6 +84,22 @@ public sealed class DiscoveryBatch : IDisposable
       EdgeDiscoveryWriter.Dispose();
    }
 
+   public DiscoveryResult CreateResult()
+   {
+      return new DiscoveryResult()
+      {
+         SymbolFilePath = SymbolWriter.FilePath,
+         TypeSymbolFilePath = TypeSymbolWriter.FilePath,
+         NamedTypeSymbolFilePath = NamedTypeSymbolWriter.FilePath,
+         ParameterSymbolFilePath = ParameterSymbolWriter.FilePath,
+         TypeParameterSymbolFilePath = TypeParameterSymbolWriter.FilePath,
+         MethodSymbolFilePath = MethodSymbolWriter.FilePath,
+         FieldSymbolFilePath = FieldSymbolWriter.FilePath,
+         PropertySymbolFilePath = PropertySymbolWriter.FilePath,
+         EdgeFilePath = EdgeDiscoveryWriter.FilePath,
+      };
+   }
+   
    public static DiscoveryBatch CreateEmpty(CollectorOptions options)
    {
       return new DiscoveryBatch()

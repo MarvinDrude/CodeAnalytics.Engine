@@ -17,6 +17,7 @@ public struct TypeSymbolDefinition
    public PackedBools FlagsLow;
    
    public StorageSlice<TypeSymbolDefinition> AllInterfaces;
+   public StorageSlice<TypeSymbolDefinition> DirectInterfaces;
    
    public bool HasBaseType
    {

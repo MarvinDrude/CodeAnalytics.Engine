@@ -18,7 +18,7 @@ public sealed class EdgeDiscoveryWriter : IDisposable
       
       _fileStream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
    }
-
+   
    public bool Write(ref EdgeDefinition edge)
    {
       lock (_lock)

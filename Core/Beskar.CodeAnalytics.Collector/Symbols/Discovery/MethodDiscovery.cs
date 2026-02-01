@@ -38,19 +38,8 @@ public static class MethodDiscovery
          returnTypeId = batch.Identifiers.GetDeterministicId(returnTypePath, stringDefinition);
       }
 
-      foreach (var parameter in methodSymbol.Parameters)
-      {
-         if (!batch.TryGetDeterministicId(parameter, out var parameterId))
-            continue;
-
-         var edge = new EdgeDefinition()
-         {
-            Key = new EdgeKey(id, parameterId, EdgeType.Parameter)
-         };
-         batch.EdgeDiscoveryWriter.Write(ref edge);
-      }
-      
-      
+      batch.WriteDiscoveryEdges(id, methodSymbol.Parameters, EdgeType.Parameter);
+      batch.WriteDiscoveryEdges(id, methodSymbol.TypeParameters, EdgeType.TypeParameter);
       
       var methodDefinition = new MethodSymbolDefinition()
       {

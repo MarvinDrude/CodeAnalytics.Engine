@@ -1,6 +1,9 @@
-﻿using Beskar.CodeAnalytics.Collector.Identifiers;
+﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Options;
 using Beskar.CodeAnalytics.Storage.Discovery.Writers;
+using Beskar.CodeAnalytics.Storage.Entities.Edges;
 using Beskar.CodeAnalytics.Storage.Entities.Symbols;
 using Beskar.CodeAnalytics.Storage.Hashing;
 using Microsoft.CodeAnalysis;
@@ -35,6 +38,35 @@ public sealed class DiscoveryBatch : IDisposable
       id = Identifiers.GetDeterministicId(uniqueId, stringDefinition);
       
       return true;
+   }
+
+   public void WriteDiscoveryEdges<TSymbol>(ulong symbolId, ImmutableArray<TSymbol> targetSymbols, EdgeType type)
+      where TSymbol : ISymbol
+   {
+      foreach (var symbol in targetSymbols)
+      {
+         WriteDiscoveryEdge(symbolId, symbol, type);
+      }
+   }
+   
+   [MethodImpl(MethodImplOptions.AggressiveInlining)]
+   public void WriteDiscoveryEdge<TSymbol>(ulong symbolId, TSymbol? targetSymbol, EdgeType type)
+      where TSymbol : ISymbol
+   {
+      if (TryGetDeterministicId(targetSymbol, out var targetId))
+      {
+         WriteDiscoveryEdge(symbolId, targetId, type);
+      }
+   }
+   
+   public void WriteDiscoveryEdge(ulong sourceId, ulong targetId, EdgeType type)
+   {
+      var edge = new EdgeDefinition()
+      {
+         Key = new EdgeKey(sourceId, targetId, type),
+      };
+      
+      EdgeDiscoveryWriter.Write(ref edge);
    }
    
    public void Dispose()

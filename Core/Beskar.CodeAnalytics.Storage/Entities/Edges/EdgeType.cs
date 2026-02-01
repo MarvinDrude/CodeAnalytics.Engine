@@ -2,8 +2,12 @@
 
 public enum EdgeType : byte
 {
-   Interface = 1,
+   DirectInterface = 1,
    AllInterface = 2,
    Parameter = 3,
-   TypeParameter = 4
+   TypeParameter = 4,
+   InstanceConstructor = 5,
+   StaticConstructor = 6,
+   Method = 7,
+   ConstraintType = 8
 }

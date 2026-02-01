@@ -1,6 +1,8 @@
-﻿using Beskar.CodeAnalytics.Collector.Extensions;
+﻿using System.Collections.Immutable;
+using Beskar.CodeAnalytics.Collector.Extensions;
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
+using Beskar.CodeAnalytics.Storage.Entities.Edges;
 using Beskar.CodeAnalytics.Storage.Entities.Misc;
 using Beskar.CodeAnalytics.Storage.Entities.Symbols;
 using Microsoft.CodeAnalysis;
@@ -29,6 +31,9 @@ public static class TypeDiscovery
          hasBaseType = true;
       }
       
+      batch.WriteDiscoveryEdges(id, typeSymbol.Interfaces, EdgeType.DirectInterface);
+      batch.WriteDiscoveryEdges(id, typeSymbol.AllInterfaces, EdgeType.AllInterface);
+      
       var typeDefinition = new TypeSymbolDefinition()
       {
          SymbolId = id,
@@ -36,7 +41,9 @@ public static class TypeDiscovery
          
          Kind = typeSymbol.TypeKind.ToStorage(),
          SpecialType = typeSymbol.SpecialType.ToStorage(),
+         
          AllInterfaces = new StorageSlice<TypeSymbolDefinition>(-1, -1),
+         DirectInterfaces = new StorageSlice<TypeSymbolDefinition>(-1, -1),
          
          HasBaseType = hasBaseType,
          IsReadOnly = typeSymbol.IsReadOnly,
@@ -77,7 +84,18 @@ public static class TypeDiscovery
          
          isEnum = true;
       }
+      
+      batch.WriteDiscoveryEdges(id, typeSymbol.TypeParameters, EdgeType.TypeParameter);
+      batch.WriteDiscoveryEdges(id, typeSymbol.InstanceConstructors, EdgeType.InstanceConstructor);
+      batch.WriteDiscoveryEdges(id, typeSymbol.StaticConstructors, EdgeType.StaticConstructor);
 
+      var methods = typeSymbol.GetMembers()
+         .OfType<IMethodSymbol>()
+         .Where(m => m.MethodKind is not (MethodKind.Constructor or MethodKind.StaticConstructor))
+         .ToImmutableArray();
+
+      batch.WriteDiscoveryEdges(id, methods, EdgeType.Method);
+      
       var definition = new NamedTypeSymbolDefinition()
       {
          SymbolId = id,
@@ -104,7 +122,8 @@ public static class TypeDiscovery
       }
 
       var batch = context.DiscoveryBatch;
-      // any storage slice 1:n or m:n need edge
+      
+      batch.WriteDiscoveryEdges(id, typeSymbol.ConstraintTypes, EdgeType.ConstraintType);
 
       var definition = new TypeParameterSymbolDefinition()
       {

@@ -1,13 +1,16 @@
 ﻿using System.Runtime.InteropServices;
 using Beskar.CodeAnalytics.Storage.Constants;
 using Beskar.CodeAnalytics.Storage.Entities.Misc;
+using Beskar.CodeAnalytics.Storage.Interfaces;
 using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Storage.Entities.Symbols;
 
 [StructLayout(LayoutKind.Sequential, Pack = StorageConstants.StructPacking)]
-public struct NamedTypeSymbolDefinition
+public struct NamedTypeSymbolDefinition : ISecondarySymbolDefinition
 {
+   public ulong OriginId => SymbolId;
+   
    public ulong SymbolId;
    public ulong EnumUnderlyingTypeId;
 

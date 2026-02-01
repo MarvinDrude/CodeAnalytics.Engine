@@ -2,13 +2,16 @@
 using Beskar.CodeAnalytics.Storage.Constants;
 using Beskar.CodeAnalytics.Storage.Entities.Misc;
 using Beskar.CodeAnalytics.Storage.Enums.Symbols;
+using Beskar.CodeAnalytics.Storage.Interfaces;
 using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Storage.Entities.Symbols;
 
 [StructLayout(LayoutKind.Sequential, Pack = StorageConstants.StructPacking)]
-public struct PropertySymbolDefinition
+public struct PropertySymbolDefinition : ISecondarySymbolDefinition
 {
+   public ulong OriginId => SymbolId;
+   
    public ulong SymbolId;
    public ulong TypeId;
    public ulong GetMethodId;

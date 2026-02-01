@@ -15,4 +15,6 @@ public sealed class EdgeDiscoveryComparer : IComparer<EdgeDefinition>
       var last = x.Key.SourceSymbolId.CompareTo(y.Key.SourceSymbolId);
       return last;
    }
+   
+   public static readonly EdgeDiscoveryComparer Instance = new ();
 }

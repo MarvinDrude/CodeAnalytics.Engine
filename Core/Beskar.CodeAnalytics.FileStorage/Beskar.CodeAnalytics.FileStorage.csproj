@@ -6,6 +6,7 @@
 
    <ItemGroup>
      <Folder Include="Memory\" />
+     <Folder Include="Model\Enums\" />
    </ItemGroup>
 
 </Project>

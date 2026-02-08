@@ -8,6 +8,7 @@ public sealed class TableMetadata
    public int PageSize { get; set; }
    public ulong PageCount { get; set; }
    public ulong ItemCount { get; set; }
-   
-   
+
+   public Dictionary<string, ColumnMetadata> Columns { get; set; } = [];
+   public Dictionary<string, IndexMetadata> Indexes { get; set; } = [];
 }

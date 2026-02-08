@@ -5,6 +5,7 @@
   </Folder>
   <Folder Name="/Core/">
     <Project Path="Core/Beskar.CodeAnalytics.Collector/Beskar.CodeAnalytics.Collector.csproj" />
+    <Project Path="Core/Beskar.CodeAnalytics.FileStorage.Symbols/Beskar.CodeAnalytics.FileStorage.Symbols.csproj" />
     <Project Path="Core/Beskar.CodeAnalytics.FileStorage/Beskar.CodeAnalytics.FileStorage.csproj" />
     <Project Path="Core/Beskar.CodeAnalytics.Storage/Beskar.CodeAnalytics.Storage.csproj" />
   </Folder>

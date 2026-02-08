@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+      <RootNamespace>Beskar.CodeAnalytics.FileStorage</RootNamespace>
+   </PropertyGroup>
+
+   <ItemGroup>
+     <Folder Include="Memory\" />
+   </ItemGroup>
+
+</Project>

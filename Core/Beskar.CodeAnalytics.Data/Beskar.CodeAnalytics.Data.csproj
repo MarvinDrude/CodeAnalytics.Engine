@@ -8,8 +8,4 @@
      <PackageReference Include="Me.Memory" />
    </ItemGroup>
 
-   <ItemGroup>
-     <Folder Include="Entities\Symbols\" />
-   </ItemGroup>
-
 </Project>

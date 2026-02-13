@@ -1,13 +1,13 @@
 ﻿using Beskar.CodeAnalytics.Collector.Extensions;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
-using Beskar.CodeAnalytics.Storage.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Microsoft.CodeAnalysis;
 
 namespace Beskar.CodeAnalytics.Collector.Symbols.Discovery;
 
 public static class PropertyDiscovery
 {
-   public static async Task<bool> Discover(DiscoverContext context, ulong id)
+   public static async Task<bool> Discover(DiscoverContext context, uint id)
    {
       if (context.Symbol is not IPropertySymbol propertySymbol)
       {
@@ -20,7 +20,7 @@ public static class PropertyDiscovery
       batch.TryGetDeterministicId(propertySymbol.GetMethod, out var getMethodId);
       batch.TryGetDeterministicId(propertySymbol.SetMethod, out var setMethodId);
 
-      var definition = new PropertySymbolDefinition()
+      var definition = new PropertySymbolSpec()
       {
          SymbolId = id,
          TypeId = typeId,

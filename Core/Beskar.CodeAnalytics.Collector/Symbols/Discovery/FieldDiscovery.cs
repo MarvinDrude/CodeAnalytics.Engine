@@ -1,14 +1,14 @@
 ﻿using Beskar.CodeAnalytics.Collector.Extensions;
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
-using Beskar.CodeAnalytics.Storage.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Microsoft.CodeAnalysis;
 
 namespace Beskar.CodeAnalytics.Collector.Symbols.Discovery;
 
 public static class FieldDiscovery
 {
-   public static async Task<bool> Discover(DiscoverContext context, ulong id)
+   public static async Task<bool> Discover(DiscoverContext context, uint id)
    {
       if (context.Symbol is not IFieldSymbol fieldSymbol)
       {
@@ -17,14 +17,14 @@ public static class FieldDiscovery
 
       var batch = context.DiscoveryBatch;
       
-      ulong typeId = 0;
+      uint typeId = 0;
       if (UniqueIdentifier.Create(fieldSymbol.Type) is { } typePath)
       {
-         var stringDefinition = batch.StringDefinitions.GetStringDefinition(typePath);
-         typeId = batch.Identifiers.GetDeterministicId(typePath, stringDefinition);
+         var stringDefinition = batch.StringDefinitions.GetStringFileView(typePath);
+         typeId = batch.Identifiers.GenerateIdentifier(typePath, stringDefinition);
       }
 
-      var definition = new FieldSymbolDefinition()
+      var definition = new FieldSymbolSpec()
       {
          SymbolId = id,
          TypeId = typeId,

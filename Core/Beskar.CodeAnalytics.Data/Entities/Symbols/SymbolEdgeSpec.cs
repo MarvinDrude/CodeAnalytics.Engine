@@ -11,3 +11,6 @@ public struct SymbolEdgeSpec
 
    public SymbolEdgeType Type;
 }
+
+public readonly record struct SymbolEdgeKey(
+   uint SourceSymbolId, uint TargetSymbolId, SymbolEdgeType Type);

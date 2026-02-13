@@ -2,16 +2,16 @@
 using Beskar.CodeAnalytics.Collector.Extensions;
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
-using Beskar.CodeAnalytics.Storage.Entities.Edges;
-using Beskar.CodeAnalytics.Storage.Entities.Misc;
-using Beskar.CodeAnalytics.Storage.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Microsoft.CodeAnalysis;
 
 namespace Beskar.CodeAnalytics.Collector.Symbols.Discovery;
 
 public static class TypeDiscovery
 {
-   public static async Task<bool> Discover(DiscoverContext context, ulong id)
+   public static async Task<bool> Discover(DiscoverContext context, uint id)
    {
       if (context.Symbol is not ITypeSymbol typeSymbol)
       {
@@ -20,21 +20,21 @@ public static class TypeDiscovery
 
       var batch = context.DiscoveryBatch;
 
-      ulong baseTypeId = 0;
+      uint baseTypeId = 0;
       var hasBaseType = false;
       if (typeSymbol.BaseType is not null
           && UniqueIdentifier.Create(typeSymbol.BaseType) is { } basePath)
       {
-         var stringDefinition = batch.StringDefinitions.GetStringDefinition(basePath);
-         baseTypeId = batch.Identifiers.GetDeterministicId(basePath, stringDefinition);
+         var stringDefinition = batch.StringDefinitions.GetStringFileView(basePath);
+         baseTypeId = batch.Identifiers.GenerateIdentifier(basePath, stringDefinition);
          
          hasBaseType = true;
       }
       
-      batch.WriteDiscoveryEdges(id, typeSymbol.Interfaces, EdgeType.DirectInterface);
-      batch.WriteDiscoveryEdges(id, typeSymbol.AllInterfaces, EdgeType.AllInterface);
+      batch.WriteDiscoveryEdges(id, typeSymbol.Interfaces, SymbolEdgeType.DirectInterface);
+      batch.WriteDiscoveryEdges(id, typeSymbol.AllInterfaces, SymbolEdgeType.AllInterface);
       
-      var typeDefinition = new TypeSymbolDefinition()
+      var typeDefinition = new TypeSymbolSpec()
       {
          SymbolId = id,
          BaseTypeId = baseTypeId,
@@ -42,8 +42,8 @@ public static class TypeDiscovery
          Kind = typeSymbol.TypeKind.ToStorage(),
          SpecialType = typeSymbol.SpecialType.ToStorage(),
          
-         AllInterfaces = new StorageSlice<TypeSymbolDefinition>(-1, -1),
-         DirectInterfaces = new StorageSlice<TypeSymbolDefinition>(-1, -1),
+         AllInterfaces = new StorageView<TypeSymbolSpec>(-1, -1),
+         DirectInterfaces = new StorageView<TypeSymbolSpec>(-1, -1),
          
          HasBaseType = hasBaseType,
          IsReadOnly = typeSymbol.IsReadOnly,
@@ -64,7 +64,7 @@ public static class TypeDiscovery
       };
    }
 
-   public static async Task<bool> DiscoverNamedType(DiscoverContext context, ulong id)
+   public static async Task<bool> DiscoverNamedType(DiscoverContext context, uint id)
    {
       if (context.Symbol is not INamedTypeSymbol typeSymbol)
       {
@@ -73,30 +73,30 @@ public static class TypeDiscovery
 
       var batch = context.DiscoveryBatch;
 
-      ulong enumUnderlyingTypeId = 0;
+      uint enumUnderlyingTypeId = 0;
       var isEnum = false;
       
       if (typeSymbol.EnumUnderlyingType is not null
           && UniqueIdentifier.Create(typeSymbol.EnumUnderlyingType) is { } underlyingPath)
       {
-         var stringDefinition = batch.StringDefinitions.GetStringDefinition(underlyingPath);
-         enumUnderlyingTypeId = batch.Identifiers.GetDeterministicId(underlyingPath, stringDefinition);
+         var stringDefinition = batch.StringDefinitions.GetStringFileView(underlyingPath);
+         enumUnderlyingTypeId = batch.Identifiers.GenerateIdentifier(underlyingPath, stringDefinition);
          
          isEnum = true;
       }
       
-      batch.WriteDiscoveryEdges(id, typeSymbol.TypeParameters, EdgeType.TypeParameter);
-      batch.WriteDiscoveryEdges(id, typeSymbol.InstanceConstructors, EdgeType.InstanceConstructor);
-      batch.WriteDiscoveryEdges(id, typeSymbol.StaticConstructors, EdgeType.StaticConstructor);
+      batch.WriteDiscoveryEdges(id, typeSymbol.TypeParameters, SymbolEdgeType.TypeParameter);
+      batch.WriteDiscoveryEdges(id, typeSymbol.InstanceConstructors, SymbolEdgeType.InstanceConstructor);
+      batch.WriteDiscoveryEdges(id, typeSymbol.StaticConstructors, SymbolEdgeType.StaticConstructor);
 
       var methods = typeSymbol.GetMembers()
          .OfType<IMethodSymbol>()
          .Where(m => m.MethodKind is not (MethodKind.Constructor or MethodKind.StaticConstructor))
          .ToImmutableArray();
 
-      batch.WriteDiscoveryEdges(id, methods, EdgeType.Method);
+      batch.WriteDiscoveryEdges(id, methods, SymbolEdgeType.Method);
       
-      var definition = new NamedTypeSymbolDefinition()
+      var definition = new NamedTypeSymbolSpec()
       {
          SymbolId = id,
          IsFileLocal =  typeSymbol.IsFileLocal,
@@ -104,17 +104,17 @@ public static class TypeDiscovery
          IsEnum = isEnum,
          EnumUnderlyingTypeId = enumUnderlyingTypeId,
          
-         TypeParameters = new StorageSlice<TypeParameterSymbolDefinition>(-1, -1),
-         InstanceConstructors = new StorageSlice<MethodSymbolDefinition>(-1, -1),
-         StaticConstructors = new StorageSlice<MethodSymbolDefinition>(-1, -1),
-         Methods = new StorageSlice<MethodSymbolDefinition>(-1, -1),
+         TypeParameters = new StorageView<TypeParameterSymbolSpec>(-1, -1),
+         InstanceConstructors = new StorageView<MethodSymbolSpec>(-1, -1),
+         StaticConstructors = new StorageView<MethodSymbolSpec>(-1, -1),
+         Methods = new StorageView<MethodSymbolSpec>(-1, -1),
       };
       
       await batch.NamedTypeSymbolWriter.Write(id, definition);
       return true;
    }
 
-   public static async Task<bool> DiscoverTypeParameter(DiscoverContext context, ulong id)
+   public static async Task<bool> DiscoverTypeParameter(DiscoverContext context, uint id)
    {
       if (context.Symbol is not ITypeParameterSymbol typeSymbol)
       {
@@ -123,14 +123,14 @@ public static class TypeDiscovery
 
       var batch = context.DiscoveryBatch;
       
-      batch.WriteDiscoveryEdges(id, typeSymbol.ConstraintTypes, EdgeType.ConstraintType);
+      batch.WriteDiscoveryEdges(id, typeSymbol.ConstraintTypes, SymbolEdgeType.ConstraintType);
 
-      var definition = new TypeParameterSymbolDefinition()
+      var definition = new TypeParameterSymbolSpec()
       {
          SymbolId = id,
          Ordinal = typeSymbol.Ordinal,
          
-         ConstraintTypes = new StorageSlice<TypeSymbolDefinition>(-1, -1),
+         ConstraintTypes = new StorageView<TypeSymbolSpec>(-1, -1),
          AllowsRefLikeType = typeSymbol.AllowsRefLikeType,
          HasConstructorConstraint = typeSymbol.HasConstructorConstraint,
          HasNotNullConstraint = typeSymbol.HasNotNullConstraint,

@@ -4,27 +4,28 @@ using Beskar.CodeAnalytics.Data.Extensions;
 
 namespace Beskar.CodeAnalytics.Data.Discovery.Writers;
 
-public sealed class SymbolDiscoveryFileWriter<TSymbol> : IAsyncDisposable
+public sealed class SymbolDiscoveryFileWriter<TKey, TSymbol> : IAsyncDisposable
    where TSymbol : unmanaged
+   where TKey : IEquatable<TKey>
 {
    private static readonly string _fileName = $"{typeof(TSymbol).Name.ToLowerInvariant()}.discovery.mmb";
    
-   private readonly Channel<(uint Id, TSymbol Symbol)> _channel;
+   private readonly Channel<(TKey Id, TSymbol Symbol)> _channel;
    private readonly Task _runningTask;
-   private readonly DiscoveryFileWriter _fileWriter;
+   private readonly DiscoveryFileWriter<TKey> _fileWriter;
 
    public SymbolDiscoveryFileWriter(string directoryPath)
    {
-      _channel = Channel.CreateUnbounded<(uint id, TSymbol symbol)>(new UnboundedChannelOptions()
+      _channel = Channel.CreateUnbounded<(TKey id, TSymbol symbol)>(new UnboundedChannelOptions()
       {
          SingleReader = true
       });
       
-      _fileWriter = new DiscoveryFileWriter(Path.Combine(directoryPath, _fileName));
+      _fileWriter = new DiscoveryFileWriter<TKey>(Path.Combine(directoryPath, _fileName));
       _runningTask = RunWriting();
    }
 
-   public ValueTask Write(uint id, TSymbol symbol)
+   public ValueTask Write(TKey id, TSymbol symbol)
    {
       return _channel.Writer.WriteAsync((id, symbol));
    }

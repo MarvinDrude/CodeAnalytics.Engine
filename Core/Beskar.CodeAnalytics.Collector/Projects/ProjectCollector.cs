@@ -2,6 +2,8 @@
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Collector.Symbols.Discovery;
+using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Me.Memory.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
@@ -72,28 +74,28 @@ public sealed partial class ProjectCollector(
 
       var batch = context.DiscoveryBatch;
 
-      var stringDefinition = batch.StringDefinitions.GetStringDefinition(uniqueIdentifier);
-      var deterministicId = batch.Identifiers.GetDeterministicId(uniqueIdentifier, stringDefinition);
+      var stringDefinition = batch.StringDefinitions.GetStringFileView(uniqueIdentifier);
+      var deterministicId = batch.Identifiers.GenerateIdentifier(uniqueIdentifier, stringDefinition);
 
-      ulong containingId = 0;
+      uint containingId = 0;
       var hasContaining = false;
 
       if (UniqueIdentifier.Create(symbol.ContainingSymbol) is { } containingIdentifier)
       {
-         var cStringDefinition = batch.StringDefinitions.GetStringDefinition(containingIdentifier);
-         var cDeterministicId = batch.Identifiers.GetDeterministicId(containingIdentifier, cStringDefinition);
+         var cStringDefinition = batch.StringDefinitions.GetStringFileView(containingIdentifier);
+         var cDeterministicId = batch.Identifiers.GenerateIdentifier(containingIdentifier, cStringDefinition);
 
          hasContaining = true;
          containingId = cDeterministicId;
       }
 
-      var nameDef = batch.StringDefinitions.GetStringDefinition(context.Symbol.Name);
-      var metadataDef = batch.StringDefinitions.GetStringDefinition(context.Symbol.MetadataName);
+      var nameDef = batch.StringDefinitions.GetStringFileView(context.Symbol.Name);
+      var metadataDef = batch.StringDefinitions.GetStringFileView(context.Symbol.MetadataName);
       var fullPathDef =
-         batch.StringDefinitions.GetStringDefinition(
+         batch.StringDefinitions.GetStringFileView(
             context.Symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
 
-      var symbolDefinition = new SymbolDefinition()
+      var symbolDefinition = new SymbolSpec()
       {
          Id = deterministicId,
          ContainingId = containingId,
@@ -102,7 +104,6 @@ public sealed partial class ProjectCollector(
          Name = nameDef,
          MetadataName = metadataDef,
          FullPathName = fullPathDef,
-         FullPathUniqueId = stringDefinition,
 
          IsAbstract = symbol.IsAbstract,
          IsSealed = symbol.IsSealed,
@@ -114,14 +115,16 @@ public sealed partial class ProjectCollector(
 
          Accessibility = symbol.DeclaredAccessibility.ToStorage(),
          Type = symbol.Kind.ToStorage(),
-         Declarations = new StorageSlice<SymbolLocationDefinition>(-1, -1)
+         
+         Declarations = new StorageView<SymbolLocationSpec>(-1, -1),
+         Locations = new StorageView<SymbolLocationSpec>(-1, -1),
       };
 
       await batch.SymbolWriter.Write(deterministicId, symbolDefinition);
       await HandleSpecificSymbol(context, deterministicId);
    }
 
-   private async Task<bool> HandleSpecificSymbol(DiscoverContext context, ulong id)
+   private async Task<bool> HandleSpecificSymbol(DiscoverContext context, uint id)
    {
       return context.Symbol switch
       {

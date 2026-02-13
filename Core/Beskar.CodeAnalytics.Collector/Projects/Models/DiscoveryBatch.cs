@@ -78,8 +78,6 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    
    public async ValueTask DisposeAsync()
    {
-      StringDefinitions.Dispose();
-      
       await SymbolWriter.DisposeAsync();
       await TypeSymbolWriter.DisposeAsync();
       await NamedTypeSymbolWriter.DisposeAsync();
@@ -89,6 +87,22 @@ public sealed class DiscoveryBatch : IAsyncDisposable
       await FieldSymbolWriter.DisposeAsync();
       await PropertySymbolWriter.DisposeAsync();
       await EdgeWriter.DisposeAsync();
+   }
+
+   public Dictionary<FileId, string> GetFileNames()
+   {
+      return new Dictionary<FileId, string>()
+      {
+         [FileIds.Symbol] = SymbolWriter.FileName,
+         [FileIds.TypeSymbol] = TypeSymbolWriter.FileName,
+         [FileIds.NamedTypeSymbol] = NamedTypeSymbolWriter.FileName,
+         [FileIds.ParameterSymbol] = ParameterSymbolWriter.FileName,
+         [FileIds.TypeParameterSymbol] = TypeParameterSymbolWriter.FileName,
+         [FileIds.MethodSymbol] = MethodSymbolWriter.FileName,
+         [FileIds.FieldSymbol] = FieldSymbolWriter.FileName,
+         [FileIds.PropertySymbol] = PropertySymbolWriter.FileName,
+         [FileIds.EdgeSymbol] = EdgeWriter.FileName,
+      };
    }
    
    public static DiscoveryBatch CreateEmpty(CollectorOptions options)

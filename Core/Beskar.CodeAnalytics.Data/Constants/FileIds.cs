@@ -2,15 +2,17 @@
 
 public static class FileIds
 {
-   public const string StringPool = "##string-pool##";
+   public static readonly FileId StringPool = new("##string-pool##");
    
-   public const string Symbol = "##symbol##";
-   public const string TypeSymbol = "##type-symbol##";
-   public const string NamedTypeSymbol = "##named-type-symbol##";
-   public const string ParameterSymbol = "##parameter-symbol##";
-   public const string TypeParameterSymbol = "##type-parameter-symbol##";
-   public const string MethodSymbol = "##method-symbol##";
-   public const string FieldSymbol = "##field-symbol##";
-   public const string PropertySymbol = "##property-symbol##";
-   public const string EdgeSymbol = "##edge-symbol##";
+   public static readonly FileId Symbol = new("##symbol##");
+   public static readonly FileId TypeSymbol = new("##type-symbol##");
+   public static readonly FileId NamedTypeSymbol = new("##named-type-symbol##");
+   public static readonly FileId ParameterSymbol = new("##parameter-symbol##");
+   public static readonly FileId TypeParameterSymbol = new("##type-parameter-symbol##");
+   public static readonly FileId MethodSymbol = new("##method-symbol##");
+   public static readonly FileId FieldSymbol = new("##field-symbol##");
+   public static readonly FileId PropertySymbol = new("##property-symbol##");
+   public static readonly FileId EdgeSymbol = new("##edge-symbol##");
 }
+
+public readonly record struct FileId(string Value);

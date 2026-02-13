@@ -31,12 +31,6 @@ public sealed class CollectorOptions
    public int MaxDegreeOfParallelism { get; init; }
    
    /// <summary>
-   /// How many items are buffered in memory for the
-   /// initial discovery sort
-   /// </summary>
-   public int SortMaxItemBuffer { get; init; }
-   
-   /// <summary>
    /// Whether to keep or delete intermediate files
    /// </summary>
    public bool DeleteIntermediateFiles { get; init; }

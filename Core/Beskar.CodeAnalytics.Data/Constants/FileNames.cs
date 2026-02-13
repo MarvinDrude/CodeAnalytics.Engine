@@ -2,5 +2,7 @@
 
 public static class FileNames
 {
-   public const string StringPool = "strpool.mmb";
+   public const string Suffix = "mmb";
+   
+   public const string StringPool = $"strpool.{Suffix}";
 }

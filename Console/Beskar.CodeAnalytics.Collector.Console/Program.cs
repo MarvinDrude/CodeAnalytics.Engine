@@ -7,7 +7,8 @@
 using Beskar.CodeAnalytics.Collector.Options;
 using Beskar.CodeAnalytics.Collector.Projects;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
-using Beskar.CodeAnalytics.Collector.Sorting;
+using Beskar.CodeAnalytics.Data.Bake.Common;
+using Beskar.CodeAnalytics.Data.Bake.Steps;
 using Me.Memory.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +61,10 @@ try
 {
    var firstEncounter = true;
    var batch = DiscoveryBatch.CreateEmpty(collectOptions);
+   var workPool = new WorkPool(new WorkPoolOptions()
+   {
+      MaxDegreeOfParallelism = collectOptions.MaxDegreeOfParallelism
+   });
    
    foreach (var filePath in collectOptions.TargetPaths)
    {
@@ -93,16 +98,15 @@ try
       firstEncounter = false;
    }
 
-   var result = batch.CreateResult();
-   batch.Dispose();
+   var fileNames = batch.GetFileNames();
+   await batch.DisposeAsync();
 
-   await using var pool = new WorkPool(new WorkPoolOptions()
-   {
-      MaxDegreeOfParallelism = collectOptions.MaxDegreeOfParallelism,
-   });
+   var engine = new BakeEngine(collectOptions.OutputPath)
+      .AddStep(new SymbolSortBakeStep());
 
-   var discoverySorter = new DiscoverySorter(pool, collectOptions, result);
-   await discoverySorter.Run(cancellationToken);
+   await engine.Execute(batch.StringDefinitions, workPool, 
+      fileNames, collectOptions.DeleteIntermediateFiles, 
+      cancellationToken);
 }
 catch (Exception ex)
 {

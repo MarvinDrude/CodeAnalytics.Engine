@@ -1,6 +1,9 @@
 ﻿using Beskar.CodeAnalytics.Data.Bake.Interfaces;
 using Beskar.CodeAnalytics.Data.Bake.Models;
+using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Hashing;
+using Me.Memory.Threading;
+using Me.Memory.Utils;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Common;
 
@@ -15,17 +18,31 @@ public sealed class BakeEngine
       _outputDirectory = outputDirectory;
    }
 
-   public async ValueTask Execute(CancellationToken ct = default)
+   public async ValueTask Execute(
+      StringFileWriter stringFileWriter,
+      WorkPool workPool,
+      Dictionary<FileId, string> fileNames,
+      bool deleteIntermediateFiles,
+      CancellationToken ct = default)
    {
-      using var context = new BakeContext()
+      await using var context = new BakeContext()
       {
          OutputDirectoryPath = _outputDirectory,
-         StringFileWriter = new (Path.Combine(_outputDirectory, "strpool.mmb")),
+         StringFileWriter = stringFileWriter,
+         DeleteIntermediateFiles = deleteIntermediateFiles,
+         WorkPool = workPool,
+         FileNames = fileNames
       };
 
       foreach (var step in _steps)
       {
-         await step.Execute(context, ct);
+         var timerResult = new AsyncTimerResult();
+         using (var timer = new AsyncTimer(timerResult))
+         {
+            await step.Execute(context, ct);
+         }
+         
+         
       }
    }
    

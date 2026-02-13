@@ -1,4 +1,5 @@
 ﻿using System.Threading.Channels;
+using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Extensions;
 
@@ -8,7 +9,8 @@ public sealed class SymbolDiscoveryFileWriter<TKey, TSymbol> : IAsyncDisposable
    where TSymbol : unmanaged
    where TKey : IEquatable<TKey>
 {
-   private static readonly string _fileName = $"{typeof(TSymbol).Name.ToLowerInvariant()}.discovery.mmb";
+   private static readonly string _fileName = $"{typeof(TSymbol).Name.ToLowerInvariant()}.discovery.{FileNames.Suffix}";
+   public string FileName => _fileName;
    
    private readonly Channel<(TKey Id, TSymbol Symbol)> _channel;
    private readonly Task _runningTask;

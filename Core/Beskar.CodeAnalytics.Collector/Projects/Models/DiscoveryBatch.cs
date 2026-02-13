@@ -2,27 +2,26 @@
 using System.Runtime.CompilerServices;
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Options;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Hashing;
 using Beskar.CodeAnalytics.Storage.Discovery.Writers;
-using Beskar.CodeAnalytics.Storage.Entities.Edges;
-using Beskar.CodeAnalytics.Storage.Entities.Symbols;
-using Beskar.CodeAnalytics.Storage.Hashing;
 using Microsoft.CodeAnalysis;
 
 namespace Beskar.CodeAnalytics.Collector.Projects.Models;
 
 public sealed class DiscoveryBatch : IDisposable
 {
-   public required StringDefinitionFileTracker StringDefinitions { get; init; }
+   public required StringFileWriter StringDefinitions { get; init; }
    public required IdentifierGenerator Identifiers { get; init; }
    
-   public required SymbolDiscoveryWriter<SymbolDefinition> SymbolWriter { get; init; }
-   public required SymbolDiscoveryWriter<TypeSymbolDefinition> TypeSymbolWriter { get; init; }
-   public required SymbolDiscoveryWriter<NamedTypeSymbolDefinition> NamedTypeSymbolWriter { get; init; }
-   public required SymbolDiscoveryWriter<ParameterSymbolDefinition> ParameterSymbolWriter { get; init; }
-   public required SymbolDiscoveryWriter<TypeParameterSymbolDefinition> TypeParameterSymbolWriter { get; init; }
-   public required SymbolDiscoveryWriter<MethodSymbolDefinition> MethodSymbolWriter { get; init; }
-   public required SymbolDiscoveryWriter<FieldSymbolDefinition> FieldSymbolWriter { get; init; }
-   public required SymbolDiscoveryWriter<PropertySymbolDefinition> PropertySymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<SymbolSpec> SymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<TypeSymbolSpec> TypeSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<NamedTypeSymbolSpec> NamedTypeSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<ParameterSymbolSpec> ParameterSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<TypeParameterSymbolSpec> TypeParameterSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<MethodSymbolSpec> MethodSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<FieldSymbolSpec> FieldSymbolWriter { get; init; }
+   public required SymbolDiscoveryWriter<PropertySymbolSpec> PropertySymbolWriter { get; init; }
    public required EdgeDiscoveryWriter EdgeDiscoveryWriter { get; init; }
    
    public bool TryGetDeterministicId<TSymbol>(TSymbol? symbol, out ulong id)

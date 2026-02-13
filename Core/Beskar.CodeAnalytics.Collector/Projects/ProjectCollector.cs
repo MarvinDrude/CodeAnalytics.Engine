@@ -2,8 +2,6 @@
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Collector.Symbols.Discovery;
-using Beskar.CodeAnalytics.Storage.Entities.Misc;
-using Beskar.CodeAnalytics.Storage.Entities.Symbols;
 using Me.Memory.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;

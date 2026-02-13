@@ -19,8 +19,6 @@ public sealed class DiscoverContext
    public required SyntaxNode SyntaxNode { get; set; }
    
    public CancellationToken CancellationToken { get; set; }
-   
-   public required DiscoveryBatch DiscoveryBatch { get; set; }
 
    public void ResetSymbol()
    {

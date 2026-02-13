@@ -16,7 +16,6 @@
 
    <ItemGroup>
      <ProjectReference Include="..\Beskar.CodeAnalytics.Data\Beskar.CodeAnalytics.Data.csproj" />
-     <ProjectReference Include="..\Beskar.CodeAnalytics.Storage\Beskar.CodeAnalytics.Storage.csproj" />
    </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
-using Beskar.CodeAnalytics.Storage.Extensions;
+using Beskar.CodeAnalytics.Data.Extensions;
 
-namespace Beskar.CodeAnalytics.Storage.Discovery.Sorting;
+namespace Beskar.CodeAnalytics.Data.Bake.Sorting;
 
 public sealed unsafe class FileSorter<T> : IDisposable
    where T : unmanaged

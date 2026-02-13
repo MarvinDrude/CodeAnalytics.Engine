@@ -19,7 +19,7 @@ public static class DeterministicHasher
    }
    
    public static ulong GetDeterministicId(scoped in ReadOnlySpan<byte> bytes, long seed = 1337L)
-   {
+   {XxHash32.
       return XxHash64.HashToUInt64(bytes, seed);
    }
 }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Beskar.CodeAnalytics.Storage.Extensions;
+namespace Beskar.CodeAnalytics.Data.Extensions;
 
 public static class StructExtensions
 {

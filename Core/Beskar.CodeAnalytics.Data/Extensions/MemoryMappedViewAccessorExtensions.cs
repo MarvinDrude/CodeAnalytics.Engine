@@ -1,7 +1,6 @@
-﻿using System;
-using System.IO.MemoryMappedFiles;
+﻿using System.IO.MemoryMappedFiles;
 
-namespace Beskar.CodeAnalytics.Storage.Extensions;
+namespace Beskar.CodeAnalytics.Data.Extensions;
 
 public static class MemoryMappedViewAccessorExtensions
 {

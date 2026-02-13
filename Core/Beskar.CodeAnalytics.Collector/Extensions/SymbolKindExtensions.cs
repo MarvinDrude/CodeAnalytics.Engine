@@ -1,4 +1,4 @@
-﻿using Beskar.CodeAnalytics.Storage.Enums.Symbols;
+﻿using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Microsoft.CodeAnalysis;
 
 namespace Beskar.CodeAnalytics.Collector.Extensions;

@@ -1,6 +1,6 @@
-﻿namespace Beskar.CodeAnalytics.Storage.Entities.Edges;
+﻿namespace Beskar.CodeAnalytics.Data.Enums.Symbols;
 
-public enum EdgeType : byte
+public enum SymbolEdgeType : byte
 {
    DirectInterface = 1,
    AllInterface = 2,

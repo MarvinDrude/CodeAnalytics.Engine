@@ -2,10 +2,16 @@
 
    <PropertyGroup>
       <RootNamespace>Beskar.CodeAnalytics.Data</RootNamespace>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
    </PropertyGroup>
 
    <ItemGroup>
      <PackageReference Include="Me.Memory" />
+     <PackageReference Include="System.IO.Hashing" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <Folder Include="Entities\Structure\" />
    </ItemGroup>
 
 </Project>

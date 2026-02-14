@@ -1,11 +1,12 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct MethodSymbolSpec
+public struct MethodSymbolSpec : ISpec
 {
    public uint SymbolId;
    public uint ReturnTypeId;
@@ -16,6 +17,8 @@ public struct MethodSymbolSpec
    
    public StorageView<ParameterSymbolSpec> Parameters;
    public StorageView<TypeParameterSymbolSpec> TypeParameters;
+   
+   public uint Identifier => SymbolId;
    
    public bool HasVoidReturn
    {

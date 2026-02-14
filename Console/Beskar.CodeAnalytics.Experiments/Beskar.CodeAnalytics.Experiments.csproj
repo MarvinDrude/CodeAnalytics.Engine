@@ -5,4 +5,8 @@
       <OutputType>Exe</OutputType>
    </PropertyGroup>
 
+   <ItemGroup>
+     <ProjectReference Include="..\..\Core\Beskar.CodeAnalytics.Data\Beskar.CodeAnalytics.Data.csproj" />
+   </ItemGroup>
+
 </Project>

@@ -1,10 +1,11 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct TypeParameterSymbolSpec
+public struct TypeParameterSymbolSpec : ISpec
 {
    public uint SymbolId;
 
@@ -12,6 +13,8 @@ public struct TypeParameterSymbolSpec
    public Flags8 Flags;
 
    public StorageView<TypeSymbolSpec> ConstraintTypes;
+   
+   public uint Identifier => SymbolId;
    
    public bool AllowsRefLikeType
    {

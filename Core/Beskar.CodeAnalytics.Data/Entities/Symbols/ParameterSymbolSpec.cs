@@ -1,11 +1,12 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct ParameterSymbolSpec
+public struct ParameterSymbolSpec : ISpec
 {
    public uint SymbolId;
    public uint TypeId;
@@ -15,6 +16,8 @@ public struct ParameterSymbolSpec
    public RefType RefType;
 
    public Flags8 Flags;
+   
+   public uint Identifier => SymbolId;
    
    public bool HasExplicitDefaultValue
    {

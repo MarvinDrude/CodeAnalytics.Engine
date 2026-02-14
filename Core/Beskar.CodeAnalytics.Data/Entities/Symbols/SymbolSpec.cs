@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Me.Memory.Buffers.Dynamic;
@@ -6,7 +7,7 @@ using Me.Memory.Buffers.Dynamic;
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct SymbolSpec
+public struct SymbolSpec : ISpec
 {
    public uint Id;
    public uint ContainingId;
@@ -21,6 +22,8 @@ public struct SymbolSpec
 
    public StorageView<SymbolLocationSpec> Declarations;
    public StorageView<SymbolLocationSpec> Locations;
+   
+   public uint Identifier => Id;
 
    public bool IsAbstract
    {

@@ -5,6 +5,7 @@ using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Me.Memory.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Steps;
 
@@ -15,6 +16,13 @@ namespace Beskar.CodeAnalytics.Data.Bake.Steps;
 public sealed class SymbolSortBakeStep : IBakeStep
 {
    public string Name => "Symbol Sorting";
+
+   private readonly ILogger<SymbolSortBakeStep> _logger;
+   
+   public SymbolSortBakeStep(ILoggerFactory factory)
+   {
+      _logger = factory.CreateLogger<SymbolSortBakeStep>();
+   }
    
    public async ValueTask Execute(BakeContext context, CancellationToken cancellationToken = default)
    {

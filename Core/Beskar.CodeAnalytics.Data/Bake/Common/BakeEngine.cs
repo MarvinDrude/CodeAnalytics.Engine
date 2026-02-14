@@ -4,6 +4,7 @@ using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Hashing;
 using Me.Memory.Threading;
 using Me.Memory.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Common;
 
@@ -11,11 +12,15 @@ public sealed class BakeEngine
 {
    private readonly List<IBakeStep> _steps = [];
    private readonly string _outputDirectory;
+
+   private readonly ILogger<BakeEngine> _logger;
    
    public BakeEngine(
-      string outputDirectory)
+      string outputDirectory,
+      ILoggerFactory loggerFactory)
    {
       _outputDirectory = outputDirectory;
+      _logger = loggerFactory.CreateLogger<BakeEngine>();
    }
 
    public async ValueTask Execute(
@@ -41,8 +46,6 @@ public sealed class BakeEngine
          {
             await step.Execute(context, ct);
          }
-         
-         
       }
    }
    

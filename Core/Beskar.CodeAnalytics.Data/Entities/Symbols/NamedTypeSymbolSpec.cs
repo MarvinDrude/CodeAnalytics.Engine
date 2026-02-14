@@ -1,10 +1,11 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct NamedTypeSymbolSpec
+public struct NamedTypeSymbolSpec : ISpec
 {
    public uint SymbolId;
    public uint EnumUnderlyingTypeId;
@@ -16,6 +17,8 @@ public struct NamedTypeSymbolSpec
    public StorageView<MethodSymbolSpec> Methods;
    public StorageView<MethodSymbolSpec> InstanceConstructors;
    public StorageView<MethodSymbolSpec> StaticConstructors;
+   
+   public uint Identifier => SymbolId;
    
    public bool IsFileLocal
    {

@@ -72,8 +72,8 @@ public sealed class StringFileWriter : IDisposable
    
    private bool IsMatch(ReadOnlySpan<byte> bytes, long offset)
    {
-      var span = _accessor.AcquireSpan<byte>(offset + sizeof(int), bytes.Length);
-      return span.SequenceEqual(bytes);
+      using var span = _accessor.AcquireSpan<byte>(offset + sizeof(int), bytes.Length);
+      return span.Span.SequenceEqual(bytes);
    }
    
    private long Append(scoped in ReadOnlySpan<byte> bytes, ulong hash)
@@ -90,10 +90,10 @@ public sealed class StringFileWriter : IDisposable
       bytes.Length.WriteLittleEndian(lengthBytes);
 
       var addLength = lengthBytes.Length + bytes.Length;
-      var destination = _accessor.AcquireSpan<byte>(offset, addLength);
+      using var destination = _accessor.AcquireSpan<byte>(offset, addLength);
       
-      lengthBytes.CopyTo(destination);
-      bytes.CopyTo(destination[lengthBytes.Length..]);
+      lengthBytes.CopyTo(destination.Span);
+      bytes.CopyTo(destination.Span[lengthBytes.Length..]);
       
       _length += addLength;
       if (!_registry.TryGetValue(hash, out var list))

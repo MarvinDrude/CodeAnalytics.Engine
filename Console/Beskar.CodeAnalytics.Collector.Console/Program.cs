@@ -102,7 +102,8 @@ try
    await batch.DisposeAsync();
 
    var engine = new BakeEngine(collectOptions.OutputPath)
-      .AddStep(new SymbolSortBakeStep());
+      .AddStep(new SymbolSortBakeStep())
+      .AddStep(new EdgeConnectionBakeStep());
 
    await engine.Execute(batch.StringDefinitions, workPool, 
       fileNames, collectOptions.DeleteIntermediateFiles, 

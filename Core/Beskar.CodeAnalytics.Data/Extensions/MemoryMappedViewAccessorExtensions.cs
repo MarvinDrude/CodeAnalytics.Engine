@@ -1,4 +1,5 @@
 ﻿using System.IO.MemoryMappedFiles;
+using Microsoft.Win32.SafeHandles;
 
 namespace Beskar.CodeAnalytics.Data.Extensions;
 
@@ -6,28 +7,10 @@ public static class MemoryMappedViewAccessorExtensions
 {
    extension(MemoryMappedViewAccessor accessor)
    {
-      public unsafe Span<T> AcquireSpan<T>(long offset, int length)
+      public MemoryMappedSpan<T> AcquireSpan<T>(long offset, int length)
          where T : unmanaged
       {
-         byte* pointer = null;
-         accessor.SafeMemoryMappedViewHandle.AcquirePointer(ref pointer);
-
-         try
-         {
-            var byteLength = (long)length * sizeof(T);
-            
-            if (offset < 0 || byteLength < 0 || (offset + byteLength) > accessor.Capacity)
-            {
-               throw new ArgumentOutOfRangeException(nameof(length), "The requested range exceeds the accessor capacity.");
-            }
-
-            var startAddress = pointer + accessor.PointerOffset + offset;
-            return new Span<T>(startAddress, length);
-         }
-         finally
-         {
-            accessor.SafeMemoryMappedViewHandle.ReleasePointer();
-         }
+         return new MemoryMappedSpan<T>(accessor.SafeMemoryMappedViewHandle, accessor.PointerOffset + offset, length);
       }
 
       public unsafe void WriteSpan<T>(long offset, scoped in ReadOnlySpan<T> source)
@@ -39,9 +22,7 @@ public static class MemoryMappedViewAccessorExtensions
          try
          {
             var destPtr = pointer + accessor.PointerOffset + offset;
-      
-            var maxElements = (int)((accessor.Capacity - offset) / sizeof(T));
-            var destSpan = new Span<T>(destPtr, maxElements);
+            var destSpan = new Span<T>(destPtr, source.Length);
 
             source.CopyTo(destSpan);
          }
@@ -51,4 +32,25 @@ public static class MemoryMappedViewAccessorExtensions
          }
       }
    }  
+}
+
+public readonly unsafe ref struct MemoryMappedSpan<T> 
+   where T : unmanaged
+{
+   private readonly SafeMemoryMappedViewHandle _handle;
+   public readonly Span<T> Span;
+
+   public MemoryMappedSpan(SafeMemoryMappedViewHandle handle, long offset, int length)
+   {
+      _handle = handle;
+      byte* ptr = null;
+      _handle.AcquirePointer(ref ptr);
+      
+      Span = new Span<T>(ptr + offset, length);
+   }
+
+   public void Dispose()
+   {
+      _handle.ReleasePointer();
+   }
 }

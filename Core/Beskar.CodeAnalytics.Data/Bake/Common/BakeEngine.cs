@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Common;
 
-public sealed class BakeEngine
+public sealed partial class BakeEngine
 {
    private readonly List<IBakeStep> _steps = [];
    private readonly string _outputDirectory;
@@ -41,11 +41,15 @@ public sealed class BakeEngine
 
       foreach (var step in _steps)
       {
+         LogStartStep(step.Name);
+         
          var timerResult = new AsyncTimerResult();
-         using (var timer = new AsyncTimer(timerResult))
+         using (new AsyncTimer(timerResult))
          {
             await step.Execute(context, ct);
          }
+         
+         LogStopStep(step.Name, timerResult.Elapsed);
       }
    }
    

@@ -1,4 +1,5 @@
-﻿using System.IO.MemoryMappedFiles;
+﻿using System.Buffers.Binary;
+using System.IO.MemoryMappedFiles;
 using Microsoft.Win32.SafeHandles;
 
 namespace Beskar.CodeAnalytics.Data.Files;
@@ -32,6 +33,42 @@ public readonly unsafe ref struct MmfBuffer : IDisposable
       return byteOffset + ((long)count * sizeof(T)) > _capacity 
          ? throw new ArgumentOutOfRangeException(nameof(byteOffset)) 
          : new Span<T>(_basePointer + byteOffset, count);
+   }
+
+   public long ReadInt64BigEndian(long byteOffset)
+   {
+      ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(long));
+      return BinaryPrimitives.ReadInt64BigEndian(span);
+   }
+
+   public int ReadInt32BigEndian(long byteOffset)
+   {
+      ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(int));
+      return BinaryPrimitives.ReadInt32BigEndian(span);
+   }
+
+   public short ReadInt16BigEndian(long byteOffset)
+   {
+      ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(short));
+      return BinaryPrimitives.ReadInt16BigEndian(span);
+   }
+   
+   public long ReadInt64LittleEndian(long byteOffset)
+   {
+      ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(long));
+      return BinaryPrimitives.ReadInt64LittleEndian(span);
+   }
+
+   public int ReadInt32LittleEndian(long byteOffset)
+   {
+      ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(int));
+      return BinaryPrimitives.ReadInt32LittleEndian(span);
+   }
+
+   public short ReadInt16LittleEndian(long byteOffset)
+   {
+      ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(short));
+      return BinaryPrimitives.ReadInt16LittleEndian(span);
    }
 
    public void Dispose()

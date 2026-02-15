@@ -2,11 +2,11 @@
 
 public static class StringExtensions
 {
-   extension(string str)
+   extension(scoped in ReadOnlySpan<char> str)
    {
-      public string GetBaseFileName()
+      public ReadOnlySpan<char> GetBaseFileName()
       {
-         var index = str.LastIndexOf('.');
+         var index = str.IndexOf('.');
          return index == -1 ? str : str[..index];
       }
    }

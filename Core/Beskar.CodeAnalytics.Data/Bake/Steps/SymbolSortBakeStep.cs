@@ -68,7 +68,7 @@ public sealed class SymbolSortBakeStep : IBakeStep
       var targetFullPath = Path.Combine(context.OutputDirectoryPath, targetName);
       
       var sorter = new FileSorter<TSymbol>(comparer);
-      sorter.Sort(sourceFullPath, targetFullPath, 512);
+      sorter.Sort(sourceFullPath, targetFullPath);
 
       return Task.FromResult((id, targetName));
    }

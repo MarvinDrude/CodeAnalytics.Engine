@@ -16,9 +16,17 @@ public sealed unsafe class FileSorter<T> : IDisposable
       _comparison = comparison;
    }
 
-   public void Sort(string sourceFilePath, string targetFilePath, int itemBuffserSize)
+   public void Sort(string sourceFilePath, string targetFilePath)
    {
-      SplitAndSort(sourceFilePath, itemBuffserSize);
+      const int maxFiles = 128;
+      
+      var fileInfo = new FileInfo(sourceFilePath);
+      var totalBytes = fileInfo.Length;
+      
+      var bytesPerChunk = (totalBytes + maxFiles - 1) / maxFiles;
+      var itemsPerBuffer = (int)Math.Max(1, bytesPerChunk / _structSize);
+      
+      SplitAndSort(sourceFilePath, itemsPerBuffer);
       MergeFiles(_tempFiles, targetFilePath);
    }
 

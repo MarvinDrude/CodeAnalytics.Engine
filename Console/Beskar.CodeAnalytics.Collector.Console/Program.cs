@@ -101,9 +101,9 @@ try
    var fileNames = batch.GetFileNames();
    await batch.DisposeAsync();
 
-   var engine = new BakeEngine(collectOptions.OutputPath)
-      .AddStep(new SymbolSortBakeStep())
-      .AddStep(new EdgeConnectionBakeStep());
+   var engine = new BakeEngine(collectOptions.OutputPath, loggerFactory)
+      .AddStep(new SymbolSortBakeStep(loggerFactory))
+      .AddStep(new EdgeConnectionBakeStep(loggerFactory));
 
    await engine.Execute(batch.StringDefinitions, workPool, 
       fileNames, collectOptions.DeleteIntermediateFiles, 

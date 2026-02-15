@@ -15,6 +15,12 @@ public enum IndexType : byte
    ///    - [Key] => (Offset, ItemCount)
    /// - Data Segment
    ///    - Contigous array of IDs
+   /// Bake Steps (Low memory usage):
+   /// - Stream source file, write temporary unordered file (Key, ID)
+   /// - External Multi-File sort (all keys are physically next to each other now)
+   /// - Read sorted file, for each unique key, write ids to contigous block in data temp file
+   /// - Simultaneously write Dictionary entries (Key, DataOffset, Count) to dict temp file
+   /// - Stitch final file together
    /// </summary>
    StaticGroupedInverted = 1,
    /// <summary>
@@ -24,6 +30,12 @@ public enum IndexType : byte
    /// - Leaf Level: Contiguous Data Blocks
    /// - Level 1 (Children): 1000 Pages
    /// - Level 0 (Root): 1 Page (e.g. 4KB, ~1000 keys)
+   /// Bake Steps (Low memory usage):
+   /// - Create sorted file by (Key, ID)
+   /// - Leaf packing: stream sorted entries and write them into Pages (eg 4kb blocks) (only keep first key of every page in memory)
+   /// - Internal Level Generation: Take the list of "First keys" from the leaf level (Thee become the entries for the next level up (Level 1))
+   /// - Repeat until one single root page
+   /// - Write pointer based system where header points to the root offset
    /// </summary>
    StaticWideBTree = 2,
    /// <summary>
@@ -32,6 +44,14 @@ public enum IndexType : byte
    ///    - Fixed-size slots containing (HashKey, DataOffset)
    /// - Overflow/Collision Segment (if not using Perfect Hashing)
    /// - Data Segment: The actual values or ID lists
+   /// Base Steps (Low memory usage):
+   /// - Count & Allocate: First count the unique keys to calc good bucket count (0.7 load factor)
+   /// - Bucket file reserve: create temp file with filled zero slots of size BucketCount * sizeof(slot)
+   /// - Stream source data, calculate hash of key h = Hash(Key) % BucketCount
+   /// - Seek to position in temp bucket file
+   /// - If slot is full, use Linear probing until empty slot is found
+   /// - Write (HashKey, DataOffset/ID) into slot
+   /// - Final file: Header -> buckets -> data
    /// </summary>
    Hash = 3,
    /// <summary>
@@ -43,6 +63,12 @@ public enum IndexType : byte
    ///    - [Gram] => Pointer to Postings List
    /// - Postings Segment:
    ///    - Contigous array of IDs
+   /// Bake Steps (Low memory usage):
+   /// - Write Temporary unordered file of entries (NGram, Id)
+   /// - External Multi-File sort (all NGrams entrie are physically next to each other now)
+   /// - Stream the file (one key in memory at a time) and write grouped entry in postings segments in data temp file
+   /// - Stream the dictionary data to dictionary temp file (while processing the grouping logic)
+   /// - Combine the 2 temp files into final file
    /// </summary>
    NGram = 4
 }

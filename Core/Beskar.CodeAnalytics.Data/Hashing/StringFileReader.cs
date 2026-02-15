@@ -4,7 +4,7 @@ using Beskar.CodeAnalytics.Data.Files;
 
 namespace Beskar.CodeAnalytics.Data.Hashing;
 
-public sealed class StringFileReader
+public sealed class StringFileReader : IDisposable
 {
    private readonly MmfHandle _handle;
 
@@ -27,5 +27,10 @@ public sealed class StringFileReader
 
       var span = buffer.GetSpan<byte>((long)offset, length);
       return Encoding.UTF8.GetString(span);
+   }
+
+   public void Dispose()
+   {
+      _handle.Dispose();
    }
 }

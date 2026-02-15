@@ -6,6 +6,9 @@ namespace Beskar.CodeAnalytics.Data.Bake.Sorting;
 public sealed unsafe class FileSorter<T> : IDisposable
    where T : unmanaged
 {
+   private const long MaxBufferSize = 512 * 1024 * 1024;
+   private const int MaxFanIn = 64;
+   
    private static readonly int _structSize = sizeof(T);
    private readonly IComparer<T> _comparison;
    
@@ -18,16 +21,33 @@ public sealed unsafe class FileSorter<T> : IDisposable
 
    public void Sort(string sourceFilePath, string targetFilePath)
    {
-      const int maxFiles = 128;
-      
-      var fileInfo = new FileInfo(sourceFilePath);
-      var totalBytes = fileInfo.Length;
-      
-      var bytesPerChunk = (totalBytes + maxFiles - 1) / maxFiles;
-      var itemsPerBuffer = (int)Math.Max(1, bytesPerChunk / _structSize);
-      
+      var itemsPerBuffer = (int)Math.Max(1, MaxBufferSize / _structSize);
       SplitAndSort(sourceFilePath, itemsPerBuffer);
-      MergeFiles(_tempFiles, targetFilePath);
+      
+      // multi stage merge if necessary
+      var currentFiles = new List<string>(_tempFiles);
+      while (currentFiles.Count > 1)
+      {
+         if (currentFiles.Count <= MaxFanIn)
+         {
+            MergeFiles(currentFiles, targetFilePath);
+            break;
+         }
+
+         var nextLevelFiles = new List<string>();
+         for (var i = 0; i < currentFiles.Count; i += MaxFanIn)
+         {
+            var batch = currentFiles.Skip(i).Take(MaxFanIn).ToList();
+            var intermediatePath = Path.GetTempFileName();
+            
+            MergeFiles(batch, intermediatePath);
+            nextLevelFiles.Add(intermediatePath);
+            
+            foreach (var f in batch) File.Delete(f);
+         }
+         
+         currentFiles = nextLevelFiles;
+      }
    }
 
    private void SplitAndSort(string sourceFilePath, int itemBuffserSize)

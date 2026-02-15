@@ -2,22 +2,19 @@
 
 namespace Beskar.CodeAnalytics.Data.Indexes;
 
-public sealed class IndexFieldBaker<TEntity, TKey>
+public sealed class IndexBaker<TEntity, TKey>
    where TEntity : unmanaged
 {
    private readonly Func<TEntity, TKey> _selector;
    private readonly IndexType _indexType;
    private readonly string _name;
    
-   public IndexFieldBaker(Func<TEntity, TKey> selector, IndexType indexType, string name)
+   public IndexBaker(Func<TEntity, TKey> selector, IndexType indexType, string name)
    {
       _selector = selector;
       _indexType = indexType;
       _name = name;
    }
-
-   private void BakeNGram()
-   {
-      
-   }
+   
+   
 }

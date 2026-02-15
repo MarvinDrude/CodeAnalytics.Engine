@@ -55,6 +55,8 @@ public sealed class SymbolSortBakeStep : IBakeStep
          var (fileId, fileName) = await task;
          context.FileNames[fileId] = fileName;
       }
+
+      context.CompleteStringWriter();
    }
 
    private static Task<(FileId FileId, string FileName)> RunSort<TSymbol>(
@@ -67,7 +69,7 @@ public sealed class SymbolSortBakeStep : IBakeStep
       var sourceFullPath = Path.Combine(context.OutputDirectoryPath, sourceName);
       var targetFullPath = Path.Combine(context.OutputDirectoryPath, targetName);
       
-      var sorter = new FileSorter<TSymbol>(comparer);
+      using var sorter = new FileSorter<TSymbol>(comparer);
       sorter.Sort(sourceFullPath, targetFullPath);
 
       return Task.FromResult((id, targetName));

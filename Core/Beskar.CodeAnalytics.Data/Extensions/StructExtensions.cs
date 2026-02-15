@@ -15,6 +15,15 @@ public static class StructExtensions
       }
    }
 
+   extension<T>(Span<T> span)
+      where T : unmanaged
+   {
+      public Span<byte> AsBytes()
+      {
+         return MemoryMarshal.AsBytes(span);
+      }      
+   }
+
    extension<T>(T str)
       where T : unmanaged
    {

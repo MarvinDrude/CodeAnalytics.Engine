@@ -14,5 +14,11 @@ public static class SpanExtensions
             ? throw new InvalidOperationException("Buffer is too small for the requested type.") 
             : MemoryMarshal.Read<T>(buffer);
       }
+
+      public Span<T> AsStructSpan<T>()
+         where T : unmanaged
+      {
+         return MemoryMarshal.Cast<byte, T>(buffer);
+      }
    }
 }

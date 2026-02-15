@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 
@@ -19,6 +20,7 @@ public struct NamedTypeSymbolSpec : ISpec
    public StorageView<MethodSymbolSpec> StaticConstructors;
    
    public uint Identifier => SymbolId;
+   public static FileId FileId => FileIds.NamedTypeSymbol;
    
    public bool IsFileLocal
    {

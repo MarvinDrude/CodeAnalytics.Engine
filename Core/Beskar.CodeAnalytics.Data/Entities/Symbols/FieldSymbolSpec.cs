@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
@@ -15,7 +16,8 @@ public struct FieldSymbolSpec : ISpec
    public Flags8 Flags;
    
    public uint Identifier => SymbolId;
-   
+   public static FileId FileId => FileIds.FieldSymbol;
+
    public bool HasConstantValue
    {
       get => Flags[0].Get(0);

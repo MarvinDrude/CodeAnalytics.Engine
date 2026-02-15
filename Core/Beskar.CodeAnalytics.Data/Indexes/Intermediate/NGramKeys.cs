@@ -43,3 +43,21 @@ public struct NGram3
       }
    }
 }
+
+public static class NGramEquality
+{
+   public static unsafe bool EqualsFast<T>(ref T left, ref T right)
+      where T : unmanaged
+   {
+      var size = sizeof(T);
+
+      fixed (T* pLeft = &left)
+      fixed (T* pRight = &right)
+      {
+         var spanLeft = new ReadOnlySpan<byte>(pLeft, size);
+         var spanRight = new ReadOnlySpan<byte>(pRight, size);
+         
+         return spanLeft.SequenceEqual(spanRight);
+      }
+   }
+}

@@ -103,7 +103,8 @@ try
 
    var engine = new BakeEngine(collectOptions.OutputPath, loggerFactory)
       .AddStep(new SymbolSortBakeStep(loggerFactory))
-      .AddStep(new EdgeConnectionBakeStep(loggerFactory));
+      .AddStep(new EdgeConnectionBakeStep(loggerFactory))
+      .AddStep(new IndexBakeStep(loggerFactory));
 
    await engine.Execute(batch.StringDefinitions, workPool, 
       fileNames, collectOptions.DeleteIntermediateFiles, 

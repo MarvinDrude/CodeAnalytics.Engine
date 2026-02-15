@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
@@ -24,6 +25,7 @@ public struct SymbolSpec : ISpec
    public StorageView<SymbolLocationSpec> Locations;
    
    public uint Identifier => Id;
+   public static FileId FileId => FileIds.Symbol;
 
    public bool IsAbstract
    {

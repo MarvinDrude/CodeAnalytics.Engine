@@ -1,5 +1,6 @@
 ﻿using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Hashing;
 using Me.Memory.Threading;
 
@@ -40,5 +41,5 @@ public sealed class BakeContext : IAsyncDisposable
       StringFileWriter?.Dispose();
       
       await WorkPool.DisposeAsync();
-   }   
+   }
 }

@@ -22,6 +22,14 @@ public struct NGram4
          }
       }
    }
+   
+   public unsafe ReadOnlySpan<byte> AsSpan()
+   {
+      fixed (byte* ptr = Bytes)
+      {
+         return new ReadOnlySpan<byte>(ptr, Length);
+      }
+   }
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -42,6 +50,14 @@ public struct NGram3
          }
       }
    }
+   
+   public unsafe ReadOnlySpan<byte> AsSpan()
+   {
+      fixed (byte* ptr = Bytes)
+      {
+         return new ReadOnlySpan<byte>(ptr, Length);
+      }
+   }
 }
 
 public static class NGramEquality
@@ -59,5 +75,29 @@ public static class NGramEquality
          
          return spanLeft.SequenceEqual(spanRight);
       }
+   }
+
+   public static unsafe int CompareFast<T>(ref T x, ref T y, int length)
+      where T : unmanaged
+   {
+      fixed (void* ptrX = &x)
+      fixed (void* ptrY = &y)
+      {
+         var spanX = new ReadOnlySpan<byte>((byte*)ptrX + 1, length);
+         var spanY = new ReadOnlySpan<byte>((byte*)ptrY + 1, length);
+
+         return spanX.SequenceCompareTo(spanY);
+      }
+   }
+
+   public static unsafe int CompareIgnoreCase<T>(ref NGram3 x, ref NGram3 y)
+   {
+      Span<char> charsX = stackalloc char[x.Length];
+      Span<char> charsY = stackalloc char[y.Length];
+
+      Encoding.UTF8.GetChars(x.AsSpan(), charsX);
+      Encoding.UTF8.GetChars(y.AsSpan(), charsY);
+
+      return charsX.CompareTo(charsY, StringComparison.OrdinalIgnoreCase);
    }
 }

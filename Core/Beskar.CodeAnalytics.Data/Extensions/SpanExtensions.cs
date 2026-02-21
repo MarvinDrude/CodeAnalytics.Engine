@@ -25,6 +25,9 @@ public static class SpanExtensions
    extension<T>(scoped in Span<T> buffer)
       where T : IComparable<T>
    {
+      /// <summary>
+      /// Requires both to be sorted
+      /// </summary>
       public int IntersectInPlace(scoped in ReadOnlySpan<T> span)
       {
          var wIdx = 0;

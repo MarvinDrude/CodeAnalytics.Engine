@@ -182,5 +182,5 @@ public sealed class NGramIndexReader : IDisposable
    }
    
    private static readonly Comparer<NGram3> _comparer = Comparer<NGram3>.Create(
-      static (x, y) => x.MaterializedString.CompareTo(y.MaterializedString, StringComparison.Ordinal));
+      static (x, y) => NGramEquality.CompareFast(ref x, ref y, 12));
 }

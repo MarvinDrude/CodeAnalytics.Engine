@@ -103,6 +103,7 @@ public sealed class NGramIndexBuilder<TEntity>
       FileStream postingsStream, FileStream dictionaryStream)
    {
       var isFirst = true;
+      HashSet<uint> already = [];
       var dictionary = new DictionaryEntry<NGram3>()
       {
          Key = default,
@@ -130,6 +131,12 @@ public sealed class NGramIndexBuilder<TEntity>
                dictionary.Offset += sizeof(uint) * dictionary.Count;
                dictionary.Count = 0;
                dictionary.Key = entity.Key;
+
+               already.Clear();
+            }
+            else if (!already.Add(entity.Id)) // no dups
+            {
+               continue;
             }
             
             entity.Id.WriteLittleEndian(idSpan);
@@ -175,7 +182,7 @@ public sealed class NGramIndexBuilder<TEntity>
    private static readonly IComparer<KeyedIndexEntry<NGram3>> _comparer = Comparer<KeyedIndexEntry<NGram3>>.Create(
       static (x, y) =>
       {
-         var first = x.Key.MaterializedString.CompareTo(y.Key.MaterializedString, StringComparison.Ordinal);
+         var first = NGramEquality.CompareFast(ref x.Key, ref y.Key, 12);
          if (first != 0) return first;
          
          return x.Id.CompareTo(y.Id);

@@ -1,9 +1,11 @@
 ﻿using System.Buffers.Binary;
+using System.Runtime.CompilerServices;
 using Beskar.CodeAnalytics.Data.Bake.Models;
 using Beskar.CodeAnalytics.Data.Bake.Sorting;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Beskar.CodeAnalytics.Data.Enums.Indexes;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Beskar.CodeAnalytics.Data.Files;
 using Beskar.CodeAnalytics.Data.Indexes.Intermediate;
@@ -18,8 +20,6 @@ public sealed class NGramIndexBuilder<TEntity>
    private readonly BakeContext _context;
    private readonly Func<TEntity, StringFileView> _selector;
 
-   private readonly string _indexName;
-   
    private readonly string _sourceFullFilePath;
    private readonly string _unorderedFilePath;
    private readonly string _orderedFilePath;
@@ -36,16 +36,18 @@ public sealed class NGramIndexBuilder<TEntity>
    {
       _context = context;
       _selector = selector;
-      _indexName = indexName;
       
       _sourceFullFilePath = Path.Combine(_context.OutputDirectoryPath, _context.FileNames[sourceFileId]);
-      _unorderedFilePath = $"{_sourceFullFilePath}.{_indexName}.tempunordered";
-      _orderedFilePath = $"{_sourceFullFilePath}.{_indexName}.tempordered";
+      var sourceFolder = Path.GetDirectoryName(_sourceFullFilePath) ?? "";
+      var sourceName = Path.GetFileName(_sourceFullFilePath);
       
-      _postingsFilePath = $"{_sourceFullFilePath}.{_indexName}.postings";
-      _dictionaryFilePath = $"{_sourceFullFilePath}.{_indexName}.dictionary";
+      _unorderedFilePath = $"{_sourceFullFilePath}.{indexName}.tempunordered";
+      _orderedFilePath = $"{_sourceFullFilePath}.{indexName}.tempordered";
       
-      _finalFilePath = $"{_sourceFullFilePath}.{_indexName}.index";
+      _postingsFilePath = $"{_sourceFullFilePath}.{indexName}.postings";
+      _dictionaryFilePath = $"{_sourceFullFilePath}.{indexName}.dictionary";
+      
+      _finalFilePath = Path.Combine(sourceFolder, $"index_{sourceName.GetBaseFileName()}.{indexName}.mmb");
    }
 
    public void Build()
@@ -67,13 +69,34 @@ public sealed class NGramIndexBuilder<TEntity>
 
       MergeFinalFile();
       
+      File.Delete(_unorderedFilePath);
+      File.Delete(_orderedFilePath);
       File.Delete(_postingsFilePath);
       File.Delete(_dictionaryFilePath);
    }
 
    private void MergeFinalFile()
    {
+      using var finalFile = new FileStream(_finalFilePath, FileMode.Create, FileAccess.Write);
+      using var dictSource = new FileStream(_dictionaryFilePath, FileMode.Open, FileAccess.Read);
+      using var postingsSource = new FileStream(_postingsFilePath, FileMode.Open, FileAccess.Read);
+
+      var dictSize = dictSource.Length;
       
+      var headerSize = Unsafe.SizeOf<IndexHeader>();
+      var header = new IndexHeader()
+      {
+         Type = IndexType.NGram,
+         DictionaryOffset = (ulong)headerSize,
+         KeySize = (uint)Unsafe.SizeOf<NGram3>(),
+         DataOffset = (ulong)(headerSize + dictSize),
+         EntrySize = sizeof(uint)
+      };
+
+      finalFile.Write(header.AsBytes());
+      
+      dictSource.CopyTo(finalFile);
+      postingsSource.CopyTo(finalFile);
    }
 
    private void WriteTempPairFiles(MmfHandle tempOrderedHandle, 
@@ -132,6 +155,9 @@ public sealed class NGramIndexBuilder<TEntity>
 
    private void WriteUnorderedTempFile(MmfHandle sourceHandle, FileStream tempUnorderedFile)
    {
+      var test = sourceHandle.GetBuffer();
+      ref var t = ref test.GetRef<TEntity>(0);
+      
       sourceHandle.ProcessInBatches(8 * 512, (Span<TEntity> span) =>
       {
          foreach (ref var entity in span)

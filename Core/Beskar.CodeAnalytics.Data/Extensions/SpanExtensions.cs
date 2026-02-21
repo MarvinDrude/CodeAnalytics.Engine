@@ -21,4 +21,36 @@ public static class SpanExtensions
          return MemoryMarshal.Cast<byte, T>(buffer);
       }
    }
+
+   extension<T>(scoped in Span<T> buffer)
+      where T : IComparable<T>
+   {
+      public int IntersectInPlace(scoped in ReadOnlySpan<T> span)
+      {
+         var wIdx = 0;
+         var nIdx = 0;
+         var writeIdx = 0;
+
+         while (wIdx < buffer.Length && nIdx < span.Length)
+         {
+            var comparison = buffer[wIdx].CompareTo(span[nIdx]);
+            
+            if (comparison == 0)
+            {
+               buffer[writeIdx++] = buffer[wIdx];
+               wIdx++;
+               nIdx++;
+            }
+            else if (comparison < 0)
+            {
+               wIdx++;
+            }
+            else
+            {
+               nIdx++;
+            }
+         }
+         return writeIdx;
+      }
+   }
 }

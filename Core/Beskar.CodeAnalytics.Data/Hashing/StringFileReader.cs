@@ -29,6 +29,27 @@ public sealed class StringFileReader : IDisposable
       return Encoding.UTF8.GetString(span);
    }
 
+   public Dictionary<ulong, string> GetAllStrings()
+   {
+      Dictionary<ulong, string> result = [];
+      using var buffer = _handle.GetBuffer();
+      var offset = 0UL;
+
+      while (offset < (ulong)_handle.Length)
+      {
+         var length = buffer.ReadInt32LittleEndian((long)offset);
+         offset += sizeof(int);
+
+         var span = buffer.GetSpan<byte>((long)offset, length);
+         var str = Encoding.UTF8.GetString(span);
+
+         result[offset - sizeof(int)] = str;
+         offset += (uint)length;
+      }
+
+      return result;
+   }
+
    public void Dispose()
    {
       _handle.Dispose();

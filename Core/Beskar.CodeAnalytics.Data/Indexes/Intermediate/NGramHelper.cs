@@ -66,14 +66,14 @@ public static class NGramHelper
       // UTF-8 for '$' is 0x24.
       if (addPadding)
       {
-         byteBufferOwner.Span[..paddingCount].Fill((byte)'$');
+         byteBufferOwner.Span[..paddingCount].Fill((byte)'\u0002');
       }
       var written = Encoding.UTF8.GetBytes(input, byteBufferOwner.Span.Slice(paddingCount, inputByteCount));
       
       // UTF-8 for '$' is 0x24.
       if (addPadding)
       {
-         byteBufferOwner.Span[(paddingCount + written)..].Fill((byte)'$');
+         byteBufferOwner.Span[(paddingCount + written)..].Fill((byte)'\u0002');
       }
 
       // make sure we only stack alloc small sizes

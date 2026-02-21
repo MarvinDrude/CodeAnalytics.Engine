@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Beskar.CodeAnalytics.Data.Files;
-using Beskar.CodeAnalytics.Data.Indexes.Builders;
 using Beskar.CodeAnalytics.Data.Indexes.Intermediate;
 using Beskar.CodeAnalytics.Data.Indexes.Models;
 using Beskar.CodeAnalytics.Data.Indexes.Search;
@@ -33,6 +31,11 @@ public sealed class NGramIndexReader : IDisposable
       
       var processingString = CreateProcessingString(query);
       var queryGrams = NGramHelper.CreateNGrams<NGram3>(processingString.AsSpan(), 0, 3, false).AsSpan();
+
+      if (queryGrams.Length == 0)
+      {
+         return ShortQuerySearch(processingString, query);
+      }
       
       using var buffer = _handle.GetBuffer();
       var dictionary = buffer.GetSpan<DictionaryEntry<NGram3>>((long)_header.DictionaryOffset, _dictionaryCount);
@@ -66,7 +69,10 @@ public sealed class NGramIndexReader : IDisposable
          ref var current = ref results.Span[e];
          var nextSpan = buffer.GetSpan<uint>(current.Offset, current.Count);
 
-         currentCount = shared.Span[..currentCount].IntersectInPlace(nextSpan);
+         var temp = shared.Span[..currentCount];
+         temp.Sort(static (x, y) => x.CompareTo(y));
+         
+         currentCount = temp.IntersectInPlace(nextSpan);
          if (currentCount == 0) break;
       }
 
@@ -74,6 +80,69 @@ public sealed class NGramIndexReader : IDisposable
       if (currentCount == 0) return result;
       
       shared.Span[..currentCount].CopyTo(result.Span);
+      return result;
+   }
+
+   private IndexSearchResult<uint> ShortQuerySearch(
+      string processingString, NGramSearchQuery query)
+   {
+      using var buffer = _handle.GetBuffer();
+      var dictionary = buffer.GetSpan<DictionaryEntry<NGram3>>((long)_header.DictionaryOffset, _dictionaryCount);
+      
+      var startIdx = FindFirstMatch(dictionary, processingString);
+      if (startIdx == -1) return new IndexSearchResult<uint>(0);
+      
+      var uniqueIds = new SortedSet<uint>();
+
+      for (var i = startIdx; i < dictionary.Length; i++)
+      {
+         ref var entry = ref dictionary[i];
+      
+         if (!entry.Key.MaterializedString.StartsWith(processingString, StringComparison.Ordinal))
+            break;
+
+         var postings = buffer.GetSpan<uint>((long)(_header.DataOffset + entry.Offset), (int)entry.Count);
+         foreach (var id in postings)
+         {
+            uniqueIds.Add(id);
+         }
+      }
+
+      var result = new IndexSearchResult<uint>(uniqueIds.Count);
+      var index = 0;
+      
+      foreach (var id in uniqueIds)
+      {
+         result.Span[index++] = id;
+      }
+      
+      return result;
+   }
+   
+   private int FindFirstMatch(scoped in ReadOnlySpan<DictionaryEntry<NGram3>> dictionary, string prefix)
+   {
+      var low = 0;
+      var high = dictionary.Length - 1;
+      var result = -1;
+
+      while (low <= high)
+      {
+         var mid = low + (high - low) / 2;
+         var gram = dictionary[mid].Key.MaterializedString;
+
+         var cmp = string.Compare(gram, 0, prefix, 0, prefix.Length, StringComparison.Ordinal);
+
+         if (cmp >= 0)
+         {
+            if (cmp == 0) result = mid;
+            high = mid - 1; // Try to find an even earlier match
+         }
+         else
+         {
+            low = mid + 1;
+         }
+      }
+      
       return result;
    }
 
@@ -106,8 +175,8 @@ public sealed class NGramIndexReader : IDisposable
    {
       return query.QueryType switch
       {
-         NGramSearchQueryType.StartsWith => "$$" + query.Text,
-         NGramSearchQueryType.EndsWith => query.Text + "$$",
+         NGramSearchQueryType.StartsWith => "\u0002\u0002" + query.Text,
+         NGramSearchQueryType.EndsWith => query.Text + "\u0002\u0002",
          _ => query.Text
       };
    }

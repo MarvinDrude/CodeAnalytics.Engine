@@ -173,5 +173,11 @@ public sealed class NGramIndexBuilder<TEntity>
    }
 
    private static readonly IComparer<KeyedIndexEntry<NGram3>> _comparer = Comparer<KeyedIndexEntry<NGram3>>.Create(
-      static (x, y) => x.Key.MaterializedString.CompareTo(y.Key.MaterializedString, StringComparison.Ordinal));
+      static (x, y) =>
+      {
+         var first = x.Key.MaterializedString.CompareTo(y.Key.MaterializedString, StringComparison.Ordinal);
+         if (first != 0) return first;
+         
+         return x.Id.CompareTo(y.Id);
+      });
 }

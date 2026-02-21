@@ -17,7 +17,7 @@ using var reader = new NGramIndexReader(indexPath);
 
 reader.Search(new NGramSearchQuery()
 {
-   Text = "Test"
+   Text = "Reader"
 });
 
 Console.WriteLine();

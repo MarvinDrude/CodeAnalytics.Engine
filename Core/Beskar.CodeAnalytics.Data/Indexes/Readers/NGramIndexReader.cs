@@ -32,14 +32,14 @@ public sealed class NGramIndexReader : IDisposable
       if (query.Text is { Length: 0 }) return new IndexSearchResult<uint>(0);
       
       var processingString = CreateProcessingString(query);
-      var queryGrams = NGramHelper.CreateNGrams<NGram3>(processingString.AsSpan(), 0, 3).AsSpan();
+      var queryGrams = NGramHelper.CreateNGrams<NGram3>(processingString.AsSpan(), 0, 3, false).AsSpan();
       
       using var buffer = _handle.GetBuffer();
       var dictionary = buffer.GetSpan<DictionaryEntry<NGram3>>((long)_header.DictionaryOffset, _dictionaryCount);
       using var results = queryGrams.Length < 128
          ? new SpanOwner<(long Offset, int Count)>(stackalloc (long, int)[queryGrams.Length])
          : new SpanOwner<(long Offset, int Count)>(queryGrams.Length);
-
+      
       for (var i = 0; i < queryGrams.Length; i++)
       {
          ref var ngram = ref queryGrams[i];
@@ -69,10 +69,12 @@ public sealed class NGramIndexReader : IDisposable
          currentCount = shared.Span[..currentCount].IntersectInPlace(nextSpan);
          if (currentCount == 0) break;
       }
+
+      var result = new IndexSearchResult<uint>(currentCount);
+      if (currentCount == 0) return result;
       
-      
-      
-      return new IndexSearchResult<uint>(0);
+      shared.Span[..currentCount].CopyTo(result.Span);
+      return result;
    }
 
    private int BinarySearchDictionary(

@@ -11,17 +11,9 @@ namespace Beskar.CodeAnalytics.Data.Indexes.Intermediate;
 /// </summary>
 public static class NGramHelper
 {
-   /// <summary>
-   /// Creates N-Grams of specified length from the given input string.
-   /// </summary>
-   /// <typeparam name="T">The type representing the N-Gram, constrained to unmanaged types.</typeparam>
-   /// <param name="input">The input string to process, represented as a <see cref="ReadOnlySpan{T}"/> of characters.</param>
-   /// <param name="id">An identifier associated with the N-Grams.</param>
-   /// <param name="n">The length of the N-Gram to generate.</param>
-   /// <returns>An array of <see cref="KeyedIndexEntry{T}"/> containing the generated N-Grams with their associated ID.</returns>
-   /// <exception cref="NotSupportedException">Thrown if the type <typeparamref name="T"/> is not a supported N-Gram type.</exception>
    public static KeyedIndexEntry<T>[] CreateNGrams<T>(
-      scoped in ReadOnlySpan<char> input, uint id, int n)
+      scoped in ReadOnlySpan<char> input, uint id, int n,
+      bool addPadding = true)
       where T : unmanaged
    {
       // Good estimate on how big the array capacity needs to be
@@ -30,7 +22,7 @@ public static class NGramHelper
       
       // Run the actual algortihm + return a new array that is not rented
       // (since we don't know what the caller wants to do with it)
-      CreateNGrams(arrayBuilder, input, id, n);
+      CreateNGrams(arrayBuilder, input, id, n, addPadding);
       return arrayBuilder.WrittenSpan.ToArray();
    }
 
@@ -49,34 +41,10 @@ public static class NGramHelper
       return expectedCount;
    }
    
-   /// <summary>
-   /// Creates N-Grams of specified length from the given input string and returns them
-   /// as an array of keyed index entries.
-   /// </summary>
-   /// <typeparam name="T">
-   /// The type representing the N-Gram, constrained to unmanaged types. Supported types are <see cref="NGram3"/> and <see cref="NGram4"/>.
-   /// </typeparam>
-   /// /// <param name="resultBuilder">
-   /// The array builder used to write the resulting N-Grams into.
-   /// </param>
-   /// <param name="input">
-   /// The input string to process, represented as a <see cref="ReadOnlySpan{T}"/> of characters.
-   /// </param>
-   /// <param name="id">
-   /// An identifier associated with the N-Grams.
-   /// </param>
-   /// <param name="n">
-   /// The length of each N-Gram to generate.
-   /// </param>
-   /// <returns>
-   /// An array of <see cref="KeyedIndexEntry{T}"/> containing the generated N-Grams with their associated ID.
-   /// </returns>
-   /// <exception cref="NotSupportedException">
-   /// Thrown if the type <typeparamref name="T"/> is not a supported N-Gram type.
-   /// </exception>
    public static unsafe void CreateNGrams<T>(
       ArrayBuilder<KeyedIndexEntry<T>> resultBuilder,
-      scoped in ReadOnlySpan<char> input, uint id, int n)
+      scoped in ReadOnlySpan<char> input, uint id, int n,
+      bool addPadding = true)
       where T : unmanaged
    {
       // make sure the T is always a valid memory layout
@@ -87,7 +55,7 @@ public static class NGramHelper
       }
       
       // lengths and padding
-      var paddingCount = n - 1;
+      var paddingCount = addPadding ? n - 1 : 0;
       // padding is 1 byte per char in utf8 when using dollar sign
       var inputByteCount = Encoding.UTF8.GetByteCount(input);
       var maxByteCount = inputByteCount + (paddingCount * 2);
@@ -96,10 +64,17 @@ public static class NGramHelper
       using var byteBufferOwner = new SpanOwner<byte>(maxByteCount);
       
       // UTF-8 for '$' is 0x24.
-      byteBufferOwner.Span[..paddingCount].Fill((byte)'$');
+      if (addPadding)
+      {
+         byteBufferOwner.Span[..paddingCount].Fill((byte)'$');
+      }
       var written = Encoding.UTF8.GetBytes(input, byteBufferOwner.Span.Slice(paddingCount, inputByteCount));
+      
       // UTF-8 for '$' is 0x24.
-      byteBufferOwner.Span[(paddingCount + written)..].Fill((byte)'$');
+      if (addPadding)
+      {
+         byteBufferOwner.Span[(paddingCount + written)..].Fill((byte)'$');
+      }
 
       // make sure we only stack alloc small sizes
       // bound size is the upper bound, utf8 will use less or equal to that

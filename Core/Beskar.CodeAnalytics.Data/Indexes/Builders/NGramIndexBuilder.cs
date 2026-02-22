@@ -162,9 +162,6 @@ public sealed class NGramIndexBuilder<TEntity>
 
    private void WriteUnorderedTempFile(MmfHandle sourceHandle, FileStream tempUnorderedFile)
    {
-      var test = sourceHandle.GetBuffer();
-      ref var t = ref test.GetRef<TEntity>(0);
-      
       sourceHandle.ProcessInBatches(8 * 512, (Span<TEntity> span) =>
       {
          foreach (ref var entity in span)

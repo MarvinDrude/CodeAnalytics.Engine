@@ -26,7 +26,8 @@ using (new StackTimer(ref time))
    res = reader.Search(new NGramSearchQuery()
    {
       Text = "ary",
-      QueryType = NGramSearchQueryType.Contains
+      QueryType = NGramSearchQueryType.Contains,
+      Limit = 1
    });
 }
 

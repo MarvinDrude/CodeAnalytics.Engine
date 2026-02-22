@@ -3,20 +3,26 @@ using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Indexes;
 using Beskar.CodeAnalytics.Data.Indexes.Builders;
+using Beskar.CodeAnalytics.Data.Indexes.Models;
 
 namespace Beskar.CodeAnalytics.Data.Indexes;
 
 public sealed class IndexBaker<TEntity, TKey>
    where TEntity : unmanaged, ISpec
+   where TKey : unmanaged, IComparable<TKey>
 {
    private readonly Func<TEntity, TKey> _selector;
    private readonly IndexType _indexType;
    private readonly string _name;
+
+   private readonly IComparer<KeyedIndexEntry<TKey>>? _comparer;
    
-   public IndexBaker(Func<TEntity, TKey> selector, IndexType indexType, string name)
+   public IndexBaker(Func<TEntity, TKey> selector, IndexType indexType, string name,
+      IComparer<KeyedIndexEntry<TKey>>? comparer = null)
    {
       _selector = selector;
       _indexType = indexType;
+      _comparer = comparer;
       
       _name = $"{name}_{indexType}".ToLowerInvariant();
    }
@@ -42,6 +48,19 @@ public sealed class IndexBaker<TEntity, TKey>
                   $"but found {typeof(TKey).Name} instead."
                );
             }
+            break;
+         case IndexType.StaticWideBTree:
+            if (_comparer is null)
+            {
+               throw new InvalidOperationException();
+            }
+            new BTreeIndexBuilder<TEntity, TKey>(
+               context, 
+               TEntity.FileId, 
+               _selector, 
+               _name, 
+               _comparer)
+               .Build();
             break;
       }
    }

@@ -27,7 +27,8 @@ public sealed class NGramIndexReader : IDisposable
 
    public IndexSearchResult<uint> Search(NGramSearchQuery query)
    {
-      if (query.Text is { Length: 0 }) return new IndexSearchResult<uint>(0);
+      if (query.Text is { Length: 0 } || query.Limit <= 0) 
+         return new IndexSearchResult<uint>(0);
       
       var processingString = CreateProcessingString(query);
       var queryGrams = NGramHelper.CreateNGrams<NGram3>(processingString.AsSpan(), 0, 3, false).AsSpan();
@@ -75,11 +76,12 @@ public sealed class NGramIndexReader : IDisposable
          currentCount = temp.IntersectInPlace(nextSpan);
          if (currentCount == 0) break;
       }
-
-      var result = new IndexSearchResult<uint>(currentCount);
-      if (currentCount == 0) return result;
       
-      shared.Span[..currentCount].CopyTo(result.Span);
+      var finalCount = Math.Min(currentCount, (int)query.Limit);
+      var result = new IndexSearchResult<uint>(finalCount);
+      if (finalCount == 0) return result;
+      
+      shared.Span[..finalCount].CopyTo(result.Span);
       return result;
    }
 
@@ -107,12 +109,14 @@ public sealed class NGramIndexReader : IDisposable
             uniqueIds.Add(id);
          }
       }
-
-      var result = new IndexSearchResult<uint>(uniqueIds.Count);
+      
+      var finalCount = Math.Min(uniqueIds.Count, (int)query.Limit);
+      var result = new IndexSearchResult<uint>(finalCount);
       var index = 0;
       
       foreach (var id in uniqueIds)
       {
+         if (index >= finalCount) break;
          result.Span[index++] = id;
       }
       

@@ -156,6 +156,10 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
          offsets.Add(new PageBoundary(lastEntry.Key, currentOffset));
 
          header.ItemCount = count;
+         header.NextPageOffset = (sortedFile.Position < sortedFile.Length) 
+            ? currentOffset + PageSize 
+            : 0;
+         
          final.Write(pageSpan);
       }
 

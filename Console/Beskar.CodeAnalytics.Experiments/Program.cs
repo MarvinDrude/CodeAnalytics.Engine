@@ -37,8 +37,8 @@ using (new StackTimer(ref time))
    // });
    res = reader.Search(new BTreeSearchQuery<int>()
    {
-      Keys = [1],
-      Type = BTreeSearchQueryType.ExactMatch,
+      Keys = [2],
+      Type = BTreeSearchQueryType.LessThan,
    });
 }
 
@@ -58,7 +58,7 @@ Console.WriteLine(time);
 //    Console.WriteLine(fullPath);
 // }
 
-using var targetHandle = new MmfHandle(symbolPath, writable: false);
+using var targetHandle = new MmfHandle(methodPath, writable: false);
 using var buffer = targetHandle.GetBuffer();
 var count = (int)(targetHandle.Length / Unsafe.SizeOf<MethodSymbolSpec>());
 var span = buffer.GetSpan<MethodSymbolSpec>(0, count);
@@ -68,6 +68,11 @@ foreach (var resId in res.Span)
    var index = span.BinaryFindIndex(resId);
    ref var spec = ref span[index];
 
+   if (spec.Parameters.Count == -1)
+   {
+      _ = "";
+   }
+   
    //var fullPath = strReader.GetString(spec.FullPathName);
    Console.WriteLine(spec.Parameters.Count);
 }

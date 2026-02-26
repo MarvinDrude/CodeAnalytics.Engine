@@ -31,31 +31,49 @@ public static class TypeParameterConnector
       var targetCount = (int)(targetHandle.Length / Unsafe.SizeOf<TypeParameterSymbolSpec>());
       var targetSymbols = targetBuffer.GetSpan<TypeParameterSymbolSpec>(0, targetCount);
 
-      var currentEdgeIndex = 0;
-      while (currentEdgeIndex < edgeCount)
+      var edgeIndex = 0;
+      var targetIndex = 0;
+
+      while (targetIndex < targetCount)
       {
-         var currentEdge = edges[currentEdgeIndex];
-         var currentSourceId = currentEdge.SourceSymbolId;
-
+         ref var targetSymbol = ref targetSymbols[targetIndex];
+         
          var constraints = new StorageView<TypeSymbolSpec>(-1, 0);
-
-         while (currentEdgeIndex < edgeCount 
-                && currentEdge.SourceSymbolId == currentSourceId)
+         
+         targetSymbol.ConstraintTypes = constraints;
+         
+         if (edgeIndex >= edgeCount)
          {
-            var currentType = currentEdge.Type;
-            var typeStartIndex = currentEdgeIndex;
+            targetIndex++;
+            continue;
+         }
+         
+         var currentSourceId = edges[edgeIndex].SourceSymbolId;
+         if (targetSymbol.Identifier < currentSourceId)
+         {
+            targetIndex++;
+            continue;
+         }
 
-            while (currentEdgeIndex < edgeCount &&
-                   currentEdge.SourceSymbolId == currentSourceId &&
-                   currentEdge.Type == currentType)
+         if (targetSymbol.Identifier > currentSourceId)
+         {
+            edgeIndex++;
+            continue;
+         }
+
+         while (edgeIndex < edgeCount && edges[edgeIndex].SourceSymbolId == currentSourceId)
+         {
+            var currentType = edges[edgeIndex].Type;
+            var typeStartIndex = edgeIndex;
+
+            while (edgeIndex < edgeCount &&
+                   edges[edgeIndex].SourceSymbolId == currentSourceId &&
+                   edges[edgeIndex].Type == currentType)
             {
-               currentEdgeIndex++;
-               
-               if (currentEdgeIndex < edgeCount) 
-                  currentEdge = edges[currentEdgeIndex];
+               edgeIndex++;
             }
             
-            var typeCount = currentEdgeIndex - typeStartIndex;
+            var typeCount = edgeIndex - typeStartIndex;
 
             switch (currentType)
             {
@@ -65,13 +83,9 @@ public static class TypeParameterConnector
             }
          }
 
-         var targetIndex = targetSymbols.BinaryFindIndex(currentSourceId);
-         if (targetIndex != -1)
-         {
-            ref var symbol = ref targetSymbols[targetIndex];
-            
-            symbol.ConstraintTypes = constraints;
-         }
+         targetSymbol.ConstraintTypes = constraints;
+         
+         targetIndex++;
       }
    }
 }

@@ -31,35 +31,55 @@ public static class NamedTypeSymbolConnector
       var targetCount = (int)(targetHandle.Length / Unsafe.SizeOf<NamedTypeSymbolSpec>());
       var targetSymbols = targetBuffer.GetSpan<NamedTypeSymbolSpec>(0, targetCount);
 
-      var currentEdgeIndex = 0;
-      while (currentEdgeIndex < edgeCount)
-      {
-         var currentEdge = edges[currentEdgeIndex];
-         var currentSourceId = currentEdge.SourceSymbolId;
+      var edgeIndex = 0;
+      var targetIndex = 0;
 
-         var typeParameters = new StorageView<TypeParameterSymbolSpec>(-1, 0);
+      while (targetIndex < targetCount)
+      {
+         ref var targetSymbol = ref targetSymbols[targetIndex];
          
+         var typeParameters = new StorageView<TypeParameterSymbolSpec>(-1, 0);
          var methods = new StorageView<MethodSymbolSpec>(-1, 0);
          var instanceConstructors = new StorageView<MethodSymbolSpec>(-1, 0);
          var staticConstructors = new StorageView<MethodSymbolSpec>(-1, 0);
-
-         while (currentEdgeIndex < edgeCount 
-                && currentEdge.SourceSymbolId == currentSourceId)
+         
+         targetSymbol.TypeParameters = typeParameters;
+         targetSymbol.Methods = methods;
+         targetSymbol.InstanceConstructors = instanceConstructors;
+         targetSymbol.StaticConstructors = staticConstructors;
+         
+         if (edgeIndex >= edgeCount)
          {
-            var currentType = currentEdge.Type;
-            var typeStartIndex = currentEdgeIndex;
+            targetIndex++;
+            continue;
+         }
+         
+         var currentSourceId = edges[edgeIndex].SourceSymbolId;
+         if (targetSymbol.Identifier < currentSourceId)
+         {
+            targetIndex++;
+            continue;
+         }
 
-            while (currentEdgeIndex < edgeCount &&
-                   currentEdge.SourceSymbolId == currentSourceId &&
-                   currentEdge.Type == currentType)
+         if (targetSymbol.Identifier > currentSourceId)
+         {
+            edgeIndex++;
+            continue;
+         }
+
+         while (edgeIndex < edgeCount && edges[edgeIndex].SourceSymbolId == currentSourceId)
+         {
+            var currentType = edges[edgeIndex].Type;
+            var typeStartIndex = edgeIndex;
+
+            while (edgeIndex < edgeCount &&
+                   edges[edgeIndex].SourceSymbolId == currentSourceId &&
+                   edges[edgeIndex].Type == currentType)
             {
-               currentEdgeIndex++;
-               
-               if (currentEdgeIndex < edgeCount) 
-                  currentEdge = edges[currentEdgeIndex];
+               edgeIndex++;
             }
             
-            var typeCount = currentEdgeIndex - typeStartIndex;
+            var typeCount = edgeIndex - typeStartIndex;
 
             switch (currentType)
             {
@@ -78,17 +98,12 @@ public static class NamedTypeSymbolConnector
             }
          }
 
-         var targetIndex = targetSymbols.BinaryFindIndex(currentSourceId);
-         if (targetIndex != -1)
-         {
-            ref var symbol = ref targetSymbols[targetIndex];
-            
-            symbol.TypeParameters = typeParameters;
-            
-            symbol.Methods = methods;
-            symbol.InstanceConstructors = instanceConstructors;
-            symbol.StaticConstructors = staticConstructors;
-         }
+         targetSymbol.TypeParameters = typeParameters;
+         targetSymbol.Methods = methods;
+         targetSymbol.InstanceConstructors = instanceConstructors;
+         targetSymbol.StaticConstructors = staticConstructors;
+         
+         targetIndex++;
       }
    }
 }

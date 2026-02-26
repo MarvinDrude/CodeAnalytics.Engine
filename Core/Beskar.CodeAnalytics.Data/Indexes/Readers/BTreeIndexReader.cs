@@ -49,7 +49,7 @@ public sealed class BTreeIndexReader<TKey> : IDisposable
       using var builder = new ArrayBuilder<uint>(32);
 
       var currentOffset = leafOffset;
-      while (currentOffset != 0)
+      while (currentOffset != 0 && builder.Count < query.Limit)
       {
          ref var header = ref buffer.GetRef<BTreePageHeader>(currentOffset);
          var entries = buffer.GetSpan<KeyedIndexEntry<TKey>>(
@@ -58,19 +58,27 @@ public sealed class BTreeIndexReader<TKey> : IDisposable
          
          var startIdx = FindFirstIndex(entries, key);
          if (startIdx == -1) break;
-         
+
+         var isFinished = false;
          for (var i = startIdx; i < entries.Length; i++)
          {
             if (_comparer.Compare(entries[i].Key, key) == 0)
             {
                builder.Add(entries[i].Id);
+
+               if (builder.Count >= query.Limit)
+               {
+                  isFinished = true;
+                  break;
+               }
                continue;
             }
 
             // changed value, abort
             break;
          }
-         
+
+         if (isFinished) break;
          currentOffset = header.NextPageOffset;
       }
       
@@ -92,7 +100,7 @@ public sealed class BTreeIndexReader<TKey> : IDisposable
          ? FindStartingLeafOffset(buffer, _rootOffset, start.Value) 
          : FindLeftmostLeaf(buffer, _rootOffset);
       
-      while (currentOffset != 0)
+      while (currentOffset != 0 && builder.Count < query.Limit)
       {
          ref var header = ref buffer.GetRef<BTreePageHeader>(currentOffset);
          var entries = buffer.GetSpan<KeyedIndexEntry<TKey>>(
@@ -120,6 +128,11 @@ public sealed class BTreeIndexReader<TKey> : IDisposable
             }
          
             builder.Add(entries[i].Id);
+            if (builder.Count >= query.Limit)
+            {
+               isFinished = true;
+               break;
+            }
          }
 
          if (isFinished) break;
@@ -285,11 +298,5 @@ public sealed class BTreeIndexReader<TKey> : IDisposable
    public void Dispose()
    {
       _handle.Dispose();
-   }
-
-   private ref struct LeafPageResult
-   {
-      public BTreePageHeader Header;
-      public Span<KeyedIndexEntry<TKey>> Entries;
    }
 }

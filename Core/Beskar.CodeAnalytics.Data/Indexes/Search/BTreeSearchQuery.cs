@@ -6,8 +6,8 @@ public sealed class BTreeSearchQuery<TKey>
    public required TKey[] Keys { get; set; }
 
    public BTreeSearchQueryType Type { get; set; } = BTreeSearchQueryType.ExactMatch;
-   
-   public long Limit { get; set; }
+
+   public long Limit { get; set; } = long.MaxValue;
 }
 
 public enum BTreeSearchQueryType

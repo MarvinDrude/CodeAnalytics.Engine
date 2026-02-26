@@ -38,7 +38,8 @@ using (new StackTimer(ref time))
    res = reader.Search(new BTreeSearchQuery<int>()
    {
       Keys = [2],
-      Type = BTreeSearchQueryType.LessThan,
+      Type = BTreeSearchQueryType.ExactMatch,
+      Limit = 2
    });
 }
 

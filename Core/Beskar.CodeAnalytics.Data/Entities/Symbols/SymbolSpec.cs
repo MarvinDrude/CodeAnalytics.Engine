@@ -12,6 +12,7 @@ public struct SymbolSpec : ISpec
 {
    public uint Id;
    public uint ContainingId;
+   public uint SourceFileId;
    
    public SymbolType Type;
    public AccessModifier Accessibility;

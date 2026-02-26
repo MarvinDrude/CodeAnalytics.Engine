@@ -1,13 +1,14 @@
-﻿using System.Buffers.Binary;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Beskar.CodeAnalytics.Data.Bake.Models;
 using Beskar.CodeAnalytics.Data.Bake.Sorting;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
-using Beskar.CodeAnalytics.Data.Enums.Indexes;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Beskar.CodeAnalytics.Data.Files;
+using Beskar.CodeAnalytics.Data.Indexes.BTree;
 using Beskar.CodeAnalytics.Data.Indexes.Models;
+using Me.Memory.Buffers;
+using Me.Memory.Extensions;
 
 namespace Beskar.CodeAnalytics.Data.Indexes.Builders;
 
@@ -54,108 +55,111 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
       }
       
       SortTempFileExternally();
-      var levelFilePaths = BuildLevels();
+      
+      using (var orderedSource = new FileStream(_orderedFilePath, FileMode.Open, FileAccess.Read))
+      using (var finalFile = new FileStream(_finalFilePath, FileMode.Create, FileAccess.ReadWrite))
+      {
+         finalFile.SetLength(PageSize); // reserve space
+         finalFile.Position = PageSize;
+
+         var leaveOffsets = WriteLeaves(orderedSource, finalFile);
+         var rootOffset = WriteBranches(leaveOffsets, finalFile);
+
+         finalFile.Position = 0;
+         
+         Span<byte> buffer = stackalloc byte[sizeof(long)];
+         rootOffset.WriteLittleEndian(buffer);
+         
+         finalFile.Write(buffer);
+      }
+      
       File.Delete(_orderedFilePath);
-      
-      MergeFinalFile(levelFilePaths);
-      foreach (var levelFilePath in levelFilePaths)
-      {
-         File.Delete(levelFilePath);
-         File.Delete(levelFilePath + ".parents");
-      }
    }
 
-   private void MergeFinalFile(List<string> levelFilePaths)
+   private long WriteBranches(List<PageBoundary> offsets, FileStream final)
    {
-      using var finalFile = new FileStream(_finalFilePath, FileMode.Create, FileAccess.Write);
-      
-      var internalNodesTotalSize = 0L;
-      for (var i = 1; i < levelFilePaths.Count; i++)
-      {
-         internalNodesTotalSize += new FileInfo(levelFilePaths[i]).Length;
-      }
-      
-      var headerSize = Unsafe.SizeOf<IndexHeader>();
-      var header = new IndexHeader
-      {
-         Type = IndexType.StaticWideBTree,
-         DictionaryOffset = (ulong)headerSize,
-         DataOffset = (ulong)(headerSize + internalNodesTotalSize)
-      };
-      
-      finalFile.Write(header.AsBytes());
-      // Root -> internal -> leaves
-      levelFilePaths.Reverse();
+      if (offsets.Count <= 1) return offsets[0].Offset;
 
-      foreach (var levelFilePath in levelFilePaths)
+      List<PageBoundary> parentOffsets = [];
+      using var pageOwner = new MemoryOwner<byte>(PageSize);
+      var pageSpan = pageOwner.Span;
+      
+      var branchEntrySize = Unsafe.SizeOf<BTreeEntry<TKey>>();
+      var pageHeaderSize = Unsafe.SizeOf<BTreePageHeader>();
+      var maxEntries = (PageSize - Unsafe.SizeOf<BTreePageHeader>()) / branchEntrySize;
+
+      for (var e = 0; e < offsets.Count;)
       {
-         using var src = new FileStream(levelFilePath, FileMode.Open, FileAccess.Read);
-         src.CopyTo(finalFile);
+         var currentOffset = final.Position;
+         pageSpan.Clear();
+
+         ref var header = ref Unsafe.As<byte, BTreePageHeader>(ref pageSpan[0]);
+         header.Type = BTreePageType.Branch;
+
+         var dataSpan = pageSpan[pageHeaderSize..];
+         var count = 0;
+
+         while (count < maxEntries && e < offsets.Count)
+         {
+            var (maxKey, offset) = offsets[e];
+
+            var entry = new BTreeEntry<TKey>()
+            {
+               Key = maxKey,
+               PageOffset = offset
+            };
+            entry.AsBytes().CopyTo(dataSpan[(count * branchEntrySize)..]);
+
+            count++;
+            e++;
+         }
+         
+         ref var lastEntry = ref Unsafe.As<byte, BTreeEntry<TKey>>(ref dataSpan[(count - 1) * branchEntrySize]);
+         parentOffsets.Add(new PageBoundary(lastEntry.Key, currentOffset));
+         
+         header.ItemCount = count;
+         final.Write(pageSpan);
       }
+      
+      return WriteBranches(parentOffsets, final);
    }
 
-   private List<string> BuildLevels()
+   private List<PageBoundary> WriteLeaves(FileStream sortedFile, FileStream final)
    {
-      List<string> levels = [];
-      var currentInput = _orderedFilePath;
-      var levelIndex = 0;
-
-      while (true)
-      {
-         var levelPath = $"{_orderedFilePath}.level{levelIndex}";
-         var parentInputPath = $"{_orderedFilePath}.level{levelIndex}.parents";
-         
-         var pageCount = PackLevel(currentInput, levelPath, parentInputPath);
-         levels.Add(levelPath);
-         
-         if (pageCount <= 1) break;
-         
-         currentInput = parentInputPath;
-         levelIndex++;
-      }
-
-      return levels;
-   }
-
-   private long PackLevel(string inputPath, string outputPath, string parentEntriesPath)
-   {
-      using var reader = new FileStream(inputPath, FileMode.Open, FileAccess.Read);
-      using var writer = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-      using var parentWriter = new FileStream(parentEntriesPath, FileMode.Create, FileAccess.Write);
+      List<PageBoundary> offsets = [];
+      using var pageOwner = new MemoryOwner<byte>(PageSize);
+      var pageSpan = pageOwner.Span;
       
       var entrySize = Unsafe.SizeOf<KeyedIndexEntry<TKey>>();
-      var maxEntriesPerPage = (PageSize - sizeof(int)) / entrySize;
-      
-      var pageBuffer = new byte[PageSize];
-      var entryBuffer = new byte[entrySize];
-      var pageCount = 0L;
-      
-      while (reader.Position < reader.Length)
+      var pageHeaderSize = Unsafe.SizeOf<BTreePageHeader>();
+      var maxEntries = (PageSize - Unsafe.SizeOf<BTreePageHeader>()) / entrySize;
+
+      while (sortedFile.Position < sortedFile.Length)
       {
-         var entriesInPage = 0;
-         TKey firstKeyInPage = default;
+         var currentOffset = final.Position;
+         pageSpan.Clear();
 
-         while (entriesInPage < maxEntriesPerPage && reader.Read(entryBuffer, 0, entrySize) > 0)
+         ref var header = ref Unsafe.As<byte, BTreePageHeader>(ref pageSpan[0]);
+         header.Type = BTreePageType.Leaf;
+
+         var count = 0;
+         var dataSpan = pageSpan[pageHeaderSize..];
+
+         while (count < maxEntries 
+                && sortedFile.Position < sortedFile.Length)
          {
-            if (entriesInPage == 0)
-            {
-               firstKeyInPage = Unsafe.As<byte, KeyedIndexEntry<TKey>>(ref entryBuffer[0]).Key;
-            }
-
-            Array.Copy(entryBuffer, 0, pageBuffer, sizeof(int) + (entriesInPage * entrySize), entrySize);
-            entriesInPage++;
+            sortedFile.ReadExactly(dataSpan.Slice(count * entrySize, entrySize));
+            count++;
          }
+         
+         ref var lastEntry = ref Unsafe.As<byte, KeyedIndexEntry<TKey>>(ref dataSpan[(count - 1) * entrySize]);
+         offsets.Add(new PageBoundary(lastEntry.Key, currentOffset));
 
-         BinaryPrimitives.WriteInt32LittleEndian(pageBuffer.AsSpan(0, 4), entriesInPage);
-         writer.Write(pageBuffer, 0, PageSize);
-
-         var parentEntry = new KeyedIndexEntry<TKey> { Key = firstKeyInPage, Id = (uint)pageCount };
-         parentWriter.Write(parentEntry.AsBytes());
-
-         pageCount++;
+         header.ItemCount = count;
+         final.Write(pageSpan);
       }
 
-      return pageCount;
+      return offsets;
    }
 
    private void SortTempFileExternally()
@@ -184,4 +188,6 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
          }
       });
    }
+
+   private record struct PageBoundary(TKey MaxKey, long Offset);
 }

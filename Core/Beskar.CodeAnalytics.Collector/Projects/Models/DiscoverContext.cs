@@ -5,6 +5,8 @@ namespace Beskar.CodeAnalytics.Collector.Projects.Models;
 
 public sealed class DiscoverContext
 {
+   public required uint ProjectId { get; set; }
+   
    public required CsProjectHandle ProjectHandle { get; set; }
    public Compilation Compilation => ProjectHandle.Compilation;
    

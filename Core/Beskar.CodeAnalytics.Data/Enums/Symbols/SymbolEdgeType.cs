@@ -9,5 +9,9 @@ public enum SymbolEdgeType : byte
    InstanceConstructor = 5,
    StaticConstructor = 6,
    Method = 7,
-   ConstraintType = 8
+   ConstraintType = 8,
+   
+   SolutionProject = 200,
+   ProjectReference = 201,
+   ProjectFile = 202,
 }

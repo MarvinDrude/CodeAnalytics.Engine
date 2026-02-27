@@ -1,5 +1,6 @@
 ﻿using Beskar.CodeAnalytics.Collector.Options;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
+using Beskar.CodeAnalytics.Collector.Symbols.Discovery;
 using Me.Memory.Extensions;
 using Me.Memory.Threading;
 using Me.Memory.Utils;
@@ -51,6 +52,7 @@ public sealed partial class SolutionCollector : IAsyncDisposable
       var projects = _handle.Solution.Projects
          .Where(x => x.SupportsCompilation).ToArray();
       _projectCount = projects.Length;
+      await SolutionDiscovery.Discover(batch, _handle);
 
       var tasks = new Task<bool>[_projectCount];
       for (var index = 0; index < projects.Length; index++)

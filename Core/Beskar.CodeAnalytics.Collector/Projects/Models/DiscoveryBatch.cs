@@ -4,6 +4,7 @@ using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Options;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Discovery.Writers;
+using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Beskar.CodeAnalytics.Data.Hashing;
@@ -13,6 +14,8 @@ namespace Beskar.CodeAnalytics.Collector.Projects.Models;
 
 public sealed class DiscoveryBatch : IAsyncDisposable
 {
+   public required CollectorOptions Options { get; init; }
+   
    public required StringFileWriter StringDefinitions { get; init; }
    public required IdentifierGenerator Identifiers { get; init; }
    
@@ -25,6 +28,10 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    public required SymbolDiscoveryFileWriter<uint, FieldSymbolSpec> FieldSymbolWriter { get; init; }
    public required SymbolDiscoveryFileWriter<uint, PropertySymbolSpec> PropertySymbolWriter { get; init; }
    public required SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec> EdgeWriter { get; init; }
+   
+   public required SymbolDiscoveryFileWriter<uint, SolutionSpec> SolutionWriter { get; init; }
+   public required SymbolDiscoveryFileWriter<uint, ProjectSpec> ProjectWriter { get; init; }
+   public required SymbolDiscoveryFileWriter<uint, FileSpec> FileWriter { get; init; }
    
    public bool TryGetDeterministicId<TSymbol>(TSymbol? symbol, out uint id)
       where TSymbol : ISymbol
@@ -87,6 +94,10 @@ public sealed class DiscoveryBatch : IAsyncDisposable
       await FieldSymbolWriter.DisposeAsync();
       await PropertySymbolWriter.DisposeAsync();
       await EdgeWriter.DisposeAsync();
+      
+      await SolutionWriter.DisposeAsync();
+      await ProjectWriter.DisposeAsync();
+      await FileWriter.DisposeAsync();
    }
 
    public Dictionary<FileId, string> GetFileNames()
@@ -102,6 +113,10 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          [FileIds.FieldSymbol] = FieldSymbolWriter.FileName,
          [FileIds.PropertySymbol] = PropertySymbolWriter.FileName,
          [FileIds.EdgeSymbol] = EdgeWriter.FileName,
+         
+         [FileIds.Solution] = SolutionWriter.FileName,
+         [FileIds.Project] = ProjectWriter.FileName,
+         [FileIds.File] = FileWriter.FileName,
       };
    }
    
@@ -109,6 +124,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    {
       return new DiscoveryBatch()
       {
+         Options = options,
          Identifiers = new IdentifierGenerator(),
          StringDefinitions = new StringFileWriter(Path.Combine(options.OutputPath, FileNames.StringPool)),
          
@@ -120,7 +136,11 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          MethodSymbolWriter = new SymbolDiscoveryFileWriter<uint, MethodSymbolSpec>(options.OutputPath),
          FieldSymbolWriter = new SymbolDiscoveryFileWriter<uint, FieldSymbolSpec>(options.OutputPath),
          PropertySymbolWriter = new SymbolDiscoveryFileWriter<uint, PropertySymbolSpec>(options.OutputPath),
-         EdgeWriter = new SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec>(options.OutputPath)
+         EdgeWriter = new SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec>(options.OutputPath),
+         
+         SolutionWriter = new SymbolDiscoveryFileWriter<uint, SolutionSpec>(options.OutputPath),
+         ProjectWriter = new SymbolDiscoveryFileWriter<uint, ProjectSpec>(options.OutputPath),
+         FileWriter = new SymbolDiscoveryFileWriter<uint, FileSpec>(options.OutputPath),
       };
    }
 }

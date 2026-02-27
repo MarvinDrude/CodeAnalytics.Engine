@@ -32,7 +32,8 @@ public sealed partial class ProjectCollector(
       }
 
       LogCompilationTime(_handle.Project.Name, timeResult.Elapsed);
-
+      var projectId = await ProjectDiscovery.Discover(batch, _handle);
+      
       foreach (var tree in compilation.SyntaxTrees)
       {
          var semanticModel = compilation.GetSemanticModel(tree, ignoreAccessibility: true);
@@ -41,6 +42,7 @@ public sealed partial class ProjectCollector(
          var document = _handle.SolutionHandle.Solution.GetDocument(tree);
          var context = new DiscoverContext()
          {
+            ProjectId = projectId,
             ProjectHandle = _handle,
             SemanticModel = semanticModel,
             SourceText = await tree.GetTextAsync(ct),
@@ -51,6 +53,7 @@ public sealed partial class ProjectCollector(
             DiscoveryBatch = batch
          };
 
+         await FileDiscovery.Discover(context);
          foreach (var node in root.DescendantNodesAndSelf(descendIntoTrivia: false))
          {
             context.SyntaxNode = node;

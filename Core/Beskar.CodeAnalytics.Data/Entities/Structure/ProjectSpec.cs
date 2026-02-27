@@ -13,6 +13,7 @@ public struct ProjectSpec : ISpec
    public StringFileView Name;
    public StringFileView AssemblyName;
    public StringFileView ProjectFilePath;
+   public StringFileView RootNamespace;
    
    public StorageView<ProjectSpec> ProjectReferences;
    public StorageView<SolutionSpec> Solutions;

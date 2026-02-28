@@ -31,7 +31,7 @@ public static class SolutionDiscovery
          Id = id,
          FilePath = stringDef,
          Name = nameDef,
-         Projects = new StorageView<ProjectSpec>(-1, -1)
+         Projects = new StorageView<uint>(-1, -1)
       };
 
       await batch.SolutionWriter.Write(id, solution);

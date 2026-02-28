@@ -144,12 +144,12 @@ public sealed class NGramIndexBuilder<TEntity>
                
             dictionary.Count++;
          }
-
-         if (!isFirst)
-         {
-            dictionaryStream.Write(dictionary.AsBytes());
-         }
       });
+
+      if (!isFirst)
+      {
+         dictionaryStream.Write(dictionary.AsBytes());
+      }
    }
    
    private void SortTempFileExternally()

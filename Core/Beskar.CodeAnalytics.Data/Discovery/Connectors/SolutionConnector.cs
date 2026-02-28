@@ -38,7 +38,7 @@ public static class SolutionConnector
       {
          ref var targetSymbol = ref targetSymbols[targetIndex];
          
-         var projects = new StorageView<ProjectSpec>(-1, 0);
+         var projects = new StorageView<uint>(-1, 0);
          
          targetSymbol.Projects = projects;
          
@@ -78,7 +78,7 @@ public static class SolutionConnector
             switch (currentType)
             {
                case SymbolEdgeType.SolutionProject:
-                  projects = new StorageView<ProjectSpec>(typeStartIndex, typeCount);
+                  projects = new StorageView<uint>(typeStartIndex, typeCount);
                   break;
             }
          }

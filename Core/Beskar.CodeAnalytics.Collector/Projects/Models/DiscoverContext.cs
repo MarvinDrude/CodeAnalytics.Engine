@@ -1,4 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Beskar.CodeAnalytics.Collector.Projects.Models;
@@ -57,7 +59,18 @@ public sealed class DiscoverContext
       {
          return symbol;
       }
+
+      var info = SyntaxNode switch
+      {
+         ExpressionSyntax expr => SemanticModel.GetSymbolInfo(expr, ct),
+         AttributeSyntax attr => SemanticModel.GetSymbolInfo(attr, ct),
+         ConstructorInitializerSyntax init => SemanticModel.GetSymbolInfo(init, ct),
+         CrefSyntax cref => SemanticModel.GetSymbolInfo(cref, ct),
+         OrderingSyntax o => SemanticModel.GetSymbolInfo(o, ct),
+         SelectOrGroupClauseSyntax s => SemanticModel.GetSymbolInfo(s, ct),
+         _ => default
+      };
       
-      return SemanticModel.GetSymbolInfo(SyntaxNode, ct).Symbol;
+      return info.Symbol ?? info.CandidateSymbols.FirstOrDefault();
    }
 }

@@ -1,0 +1,37 @@
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace Beskar.CodeAnalytics.Data.Extensions;
+
+public static class StructExtensions
+{
+   extension<T>(ref T str)
+      where T : unmanaged
+   {
+      public ReadOnlySpan<byte> AsBytes()
+      {
+         var span = MemoryMarshal.CreateReadOnlySpan(ref str, 1);
+         return MemoryMarshal.AsBytes(span);
+      }
+   }
+
+   extension<T>(Span<T> span)
+      where T : unmanaged
+   {
+      public Span<byte> AsBytes()
+      {
+         return MemoryMarshal.AsBytes(span);
+      }      
+   }
+
+   extension<T>(T str)
+      where T : unmanaged
+   {
+      public static T FromBytes(scoped in ReadOnlySpan<byte> bytes)
+      {
+         return bytes.Length < Unsafe.SizeOf<T>() 
+            ? throw new InvalidOperationException("Buffer is too small for the requested type.") 
+            : MemoryMarshal.Read<T>(bytes);
+      }
+   }
+}

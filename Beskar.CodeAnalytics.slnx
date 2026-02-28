@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Console/">
+    <Project Path="Console/Beskar.CodeAnalytics.Collector.Console/Beskar.CodeAnalytics.Collector.Console.csproj" />
+    <Project Path="Console/Beskar.CodeAnalytics.Experiments/Beskar.CodeAnalytics.Experiments.csproj" />
+  </Folder>
+  <Folder Name="/Core/">
+    <Project Path="Core/Beskar.CodeAnalytics.Collector/Beskar.CodeAnalytics.Collector.csproj" />
+    <Project Path="Core/Beskar.CodeAnalytics.Data/Beskar.CodeAnalytics.Data.csproj" />
+  </Folder>
+  <Folder Name="/Web/" />
+</Solution>

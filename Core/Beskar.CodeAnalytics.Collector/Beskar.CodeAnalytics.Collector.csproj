@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+      <RootNamespace>Beskar.CodeAnalytics.Collector</RootNamespace>
+   </PropertyGroup>
+
+   <ItemGroup>
+     <PackageReference Include="Me.Memory" />
+     <PackageReference Include="Microsoft.Build.Framework" ExcludeAssets="runtime" PrivateAssets="all" />
+     <PackageReference Include="Microsoft.Build.Locator" />
+     <PackageReference Include="Microsoft.CodeAnalysis.Common" />
+     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" />
+     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <ProjectReference Include="..\Beskar.CodeAnalytics.Data\Beskar.CodeAnalytics.Data.csproj" />
+   </ItemGroup>
+
+</Project>

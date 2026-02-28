@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+      <OutputType>Exe</OutputType>
+   </PropertyGroup>
+
+   <ItemGroup>
+     <PackageReference Include="Microsoft.Build.Framework" ExcludeAssets="runtime" PrivateAssets="all" />
+     <PackageReference Include="Microsoft.Extensions.Configuration" />
+     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" />
+     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
+     <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+     <PackageReference Include="Serilog" />
+     <PackageReference Include="Serilog.Extensions.Hosting" />
+     <PackageReference Include="Serilog.Settings.Configuration" />
+     <PackageReference Include="Serilog.Sinks.Console" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <None Update="appsettings.json">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </None>
+   </ItemGroup>
+
+   <ItemGroup>
+     <ProjectReference Include="..\..\Core\Beskar.CodeAnalytics.Collector\Beskar.CodeAnalytics.Collector.csproj" />
+     <ProjectReference Include="..\..\Core\Beskar.CodeAnalytics.Data\Beskar.CodeAnalytics.Data.csproj" />
+   </ItemGroup>
+
+</Project>

@@ -1,0 +1,119 @@
+THIRD-PARTY NOTICES
+===================
+
+This product ("CodeAnalytics.Engine") from Marvin Drude may include or depend upon
+certain third-party components listed below. These components are
+licensed to you by their respective authors under their own license
+terms, which are reproduced or referenced here as required. Nothing in
+Marvin Drude's proprietary license for the Software overrides or
+restricts the rights you have under these third-party licenses.
+Where there is any conflict between Marvin Drude's license and a
+third-party license with respect to that third-party component, the
+third-party license controls *only* for that component.
+
+NO ENDORSEMENT
+--------------
+The inclusion of Microsoft components below does **not** imply that
+Microsoft endorses, sponsors, or is affiliated with Marvin Drude or
+this Software. Microsoft and any Microsoft product names are trademarks
+of Microsoft Corporation.
+
+-----------------------------------------------------------------------
+1. Roslyn .NET Compiler Platform (Microsoft.CodeAnalysis.*)
+-----------------------------------------------------------------------
+Name:
+  - Microsoft.CodeAnalysis.Common
+  - Microsoft.CodeAnalysis.CSharp
+  - Microsoft.CodeAnalysis.Workspaces.Common
+  - Microsoft.CodeAnalysis.Workspaces.MSBuild
+  - Microsoft.CodeAnalysis.CSharp.Workspaces
+     (and related sub-packages as referenced in the project)
+Project: .NET Compiler Platform ("Roslyn")
+Source: https://github.com/dotnet/roslyn
+Copyright: (c) Microsoft Corporation
+License: MIT
+
+-----------------------------------------------------------------------
+2. Microsoft.Build.Locator
+-----------------------------------------------------------------------
+Project: https://github.com/dotnet/msbuildLocator
+Author: Microsoft Corporation
+License: MIT
+
+This library assists in locating MSBuild from installed Visual Studio or
+Build Tools instances so Roslyn and related tooling can load projects.
+
+-----------------------------------------------------------------------
+3. Dependency Injection (Microsoft.Extensions.*)
+-----------------------------------------------------------------------
+Packages:
+  - Microsoft.Extensions.DependencyInjection
+  - Microsoft.Extensions.DependencyInjection.Abstractions
+Project: https://github.com/dotnet/runtime (and sub-repos for Extensions)
+Author: Microsoft Corporation
+License: MIT
+
+These packages provide the dependency injection abstractions and default
+container implementation used by .NET applications and frameworks.
+
+-----------------------------------------------------------------------
+4. Blazor (ASP.NET Core / .NET Web UI Components)
+-----------------------------------------------------------------------
+If your application redistributes Blazor framework files (e.g., from
+`Microsoft.AspNetCore.Components.*` packages, WebAssembly runtime assets,
+or server-side Blazor assemblies) they are part of the ASP.NET Core / .NET
+platform, which is licensed under the MIT License (portions may include
+other permissive licenses—see upstream repository for any additional
+NOTICES). If you do not redistribute these assemblies (they are only
+fetched via NuGet or delivered from a shared runtime), this section serves
+as attribution.
+
+Relevant upstream project:
+  - ASP.NET Core / Blazor
+  - Source: https://github.com/dotnet/aspnetcore
+Author: Microsoft Corporation
+License: MIT
+
+-----------------------------------------------------------------------
+5. Serilog Logging Framework (Core & Extensions)
+-----------------------------------------------------------------------
+Packages and its sub packages:
+  - Serilog
+  - Serilog.Sinks.Console
+  - Serilog.Sinks.File
+  - Serilog.Sinks.Async
+  - Serilog.Enrichers.Environment
+  - Serilog.Enrichers.Process
+  - Serilog.Enrichers.Thread
+  - Serilog.Settings.Configuration
+  - Serilog.Extensions.Logging
+Project: https://github.com/serilog/serilog (plus sink/enricher sub-repos)
+Authors: Serilog Contributors (see repository commit history)
+License: Apache License 2.0
+
+The following MIT License or Apache License 2.0 applies to the all components above:
+
+MIT License
+-----------
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice (including the next
+paragraph) shall be included in all copies or substantial portions of the
+Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+APACHE LICENSE 2.0
+-----------
+See https://www.apache.org/licenses/LICENSE-2.0

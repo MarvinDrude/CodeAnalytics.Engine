@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+      <RootNamespace>Beskar.CodeAnalytics.Experiments</RootNamespace>
+      <OutputType>Exe</OutputType>
+   </PropertyGroup>
+
+   <ItemGroup>
+     <ProjectReference Include="..\..\Core\Beskar.CodeAnalytics.Data\Beskar.CodeAnalytics.Data.csproj" />
+   </ItemGroup>
+
+</Project>

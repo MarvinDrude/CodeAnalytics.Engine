@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+      <RootNamespace>Beskar.CodeAnalytics.Data</RootNamespace>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+   </PropertyGroup>
+
+   <ItemGroup>
+     <PackageReference Include="Me.Memory" />
+     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+     <PackageReference Include="System.IO.Hashing" />
+   </ItemGroup>
+
+</Project>

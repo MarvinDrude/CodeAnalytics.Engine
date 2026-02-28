@@ -97,6 +97,7 @@ public sealed class SyntaxDiscoveryFileWriter : IAsyncDisposable
          await contentFile.CopyToAsync(final);
       }
       
+      File.Delete(dictSorted);
       File.Delete(contentPath);
       _disposed = true;
    }

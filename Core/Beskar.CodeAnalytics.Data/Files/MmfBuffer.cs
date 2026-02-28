@@ -53,6 +53,12 @@ public readonly unsafe ref struct MmfBuffer : IDisposable
       return BinaryPrimitives.ReadInt16BigEndian(span);
    }
    
+   public ulong ReadUInt64LittleEndian(long byteOffset)
+   {
+      ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(long));
+      return BinaryPrimitives.ReadUInt64LittleEndian(span);
+   }
+   
    public long ReadInt64LittleEndian(long byteOffset)
    {
       ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(long));

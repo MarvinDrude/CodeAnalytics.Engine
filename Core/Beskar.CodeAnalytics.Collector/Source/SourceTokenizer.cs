@@ -50,7 +50,7 @@ public sealed class SourceTokenizer(
       return new SyntaxFile()
       {
          FileId = fileId,
-         FileName = _context.Document.FilePath ?? "Unknown.cs",
+         FileName = Path.GetFileName(_context.Document.FilePath ?? "Unknown.cs"),
          RawText = rawText,
          Tokens = tokens.ToArray()
       };

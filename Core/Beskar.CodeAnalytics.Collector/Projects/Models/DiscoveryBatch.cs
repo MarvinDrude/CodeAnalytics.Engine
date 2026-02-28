@@ -18,6 +18,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    
    public required StringFileWriter StringDefinitions { get; init; }
    public required IdentifierGenerator Identifiers { get; init; }
+   public required SyntaxDiscoveryFileWriter SyntaxDiscoveryFileWriter { get; init; }
    
    public required SymbolDiscoveryFileWriter<uint, SymbolSpec> SymbolWriter { get; init; }
    public required SymbolDiscoveryFileWriter<uint, TypeSymbolSpec> TypeSymbolWriter { get; init; }
@@ -85,6 +86,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    
    public async ValueTask DisposeAsync()
    {
+      await SyntaxDiscoveryFileWriter.Bake();
+      
       await SymbolWriter.DisposeAsync();
       await TypeSymbolWriter.DisposeAsync();
       await NamedTypeSymbolWriter.DisposeAsync();
@@ -98,6 +101,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
       await SolutionWriter.DisposeAsync();
       await ProjectWriter.DisposeAsync();
       await FileWriter.DisposeAsync();
+
+      await SyntaxDiscoveryFileWriter.DisposeAsync();
    }
 
    public Dictionary<FileId, string> GetFileNames()
@@ -127,6 +132,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          Options = options,
          Identifiers = new IdentifierGenerator(),
          StringDefinitions = new StringFileWriter(Path.Combine(options.OutputPath, FileNames.StringPool)),
+         SyntaxDiscoveryFileWriter = new SyntaxDiscoveryFileWriter(options.OutputPath),
          
          SymbolWriter = new SymbolDiscoveryFileWriter<uint, SymbolSpec>(options.OutputPath),
          TypeSymbolWriter = new SymbolDiscoveryFileWriter<uint, TypeSymbolSpec>(options.OutputPath),

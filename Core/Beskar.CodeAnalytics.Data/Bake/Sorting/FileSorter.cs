@@ -3,21 +3,16 @@ using Beskar.CodeAnalytics.Data.Extensions;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Sorting;
 
-public sealed unsafe class FileSorter<T> : IDisposable
+public sealed unsafe class FileSorter<T>(IComparer<T> comparison) : IDisposable
    where T : unmanaged
 {
    private const long MaxBufferSize = 512 * 1024 * 1024;
    private const int MaxFanIn = 64;
    
    private static readonly int _structSize = sizeof(T);
-   private readonly IComparer<T> _comparison;
+   private readonly IComparer<T> _comparison = comparison;
    
    private readonly List<string> _tempFiles = [];
-
-   public FileSorter(IComparer<T> comparison)
-   {
-      _comparison = comparison;
-   }
 
    public void Sort(string sourceFilePath, string targetFilePath)
    {

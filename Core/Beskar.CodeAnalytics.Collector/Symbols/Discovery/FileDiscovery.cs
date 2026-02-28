@@ -34,8 +34,7 @@ public static class FileDiscovery
 
       var syntaxFile = await new SourceTokenizer(context, spans)
          .Tokenize(id, CancellationToken.None);
-      
-      
+      batch.SyntaxDiscoveryFileWriter.Write(syntaxFile);
       
       return true;
    }

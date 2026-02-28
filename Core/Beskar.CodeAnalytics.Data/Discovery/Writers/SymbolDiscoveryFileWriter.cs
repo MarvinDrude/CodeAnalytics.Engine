@@ -22,6 +22,9 @@ public sealed class SymbolDiscoveryFileWriter<TKey, TSymbol> : IAsyncDisposable
       {
          SingleReader = true
       });
+
+      var file = Path.Combine(directoryPath, _fileName);
+      File.Delete(file);
       
       _fileWriter = new DiscoveryFileWriter<TKey>(Path.Combine(directoryPath, _fileName));
       _runningTask = RunWriting();

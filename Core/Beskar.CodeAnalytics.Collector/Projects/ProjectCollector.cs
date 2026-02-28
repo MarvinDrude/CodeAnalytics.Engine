@@ -1,11 +1,14 @@
 ﻿using Beskar.CodeAnalytics.Collector.Extensions;
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
+using Beskar.CodeAnalytics.Collector.Source;
 using Beskar.CodeAnalytics.Collector.Symbols.Discovery;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Me.Memory.Utils;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Extensions.Logging;
 
 namespace Beskar.CodeAnalytics.Collector.Projects;
@@ -53,21 +56,25 @@ public sealed partial class ProjectCollector(
             DiscoveryBatch = batch
          };
 
-         await FileDiscovery.Discover(context);
+         Dictionary<TextSpan, TextSpanCacheEntry> spans = [];
+         
          foreach (var node in root.DescendantNodesAndSelf(descendIntoTrivia: false))
          {
             context.SyntaxNode = node;
             context.ResetSymbol();
 
-            await HandleNode(context);
+            await HandleNode(spans, context);
          }
+         
+         // syntax file parsing
+         await FileDiscovery.Discover(context);
       }
 
       totalTimer.Dispose();
       LogStop(_handle.Project.Name, totalTimerResult.Elapsed);
    }
 
-   private async Task HandleNode(DiscoverContext context)
+   private async Task HandleNode(Dictionary<TextSpan, TextSpanCacheEntry> spans , DiscoverContext context)
    {
       if (context.Symbol is not { } symbol
           || UniqueIdentifier.Create(symbol) is not { } uniqueIdentifier)
@@ -79,6 +86,8 @@ public sealed partial class ProjectCollector(
 
       var stringDefinition = batch.StringDefinitions.GetStringFileView(uniqueIdentifier);
       var deterministicId = batch.Identifiers.GenerateIdentifier(uniqueIdentifier, stringDefinition);
+
+      spans[GetCorrectSpan(context.SyntaxNode)] = new TextSpanCacheEntry(deterministicId);
 
       uint containingId = 0;
       var hasContaining = false;
@@ -126,6 +135,38 @@ public sealed partial class ProjectCollector(
       await batch.SymbolWriter.Write(deterministicId, symbolDefinition);
       await HandleSpecificSymbol(context, deterministicId);
    }
+
+   private TextSpan GetCorrectSpan(SyntaxNode node) => node switch
+   {
+      // Declarations
+      ClassDeclarationSyntax c => c.Identifier.Span,
+      StructDeclarationSyntax s => s.Identifier.Span,
+      InterfaceDeclarationSyntax i => i.Identifier.Span,
+      EnumDeclarationSyntax e => e.Identifier.Span,
+      MethodDeclarationSyntax m => m.Identifier.Span,
+      PropertyDeclarationSyntax p => p.Identifier.Span,
+      EventDeclarationSyntax e => e.Identifier.Span,
+      VariableDeclaratorSyntax v => v.Identifier.Span,
+      ParameterSyntax p => p.Identifier.Span,
+      ConstructorDeclarationSyntax c => c.Identifier.Span,
+      DestructorDeclarationSyntax d => d.Identifier.Span,
+      EnumMemberDeclarationSyntax em => em.Identifier.Span,
+      TypeParameterSyntax tp => tp.Identifier.Span,
+      ArgumentSyntax a => GetCorrectSpan(a.Expression),
+
+      // Usages & References
+      IdentifierNameSyntax id => id.Identifier.Span,
+      GenericNameSyntax g => g.Identifier.Span,
+      AttributeSyntax a => a.Name.Span,
+      ConstructorInitializerSyntax ci => ci.ThisOrBaseKeyword.Span,
+      NameColonSyntax n => n.Name.Span,
+   
+      // Specialized Types
+      SimpleBaseTypeSyntax sb => sb.Type.Span,
+      QualifiedNameSyntax q => q.Right.Span,
+      
+      _ => node.Span,
+   };
 
    private async Task<bool> HandleSpecificSymbol(DiscoverContext context, uint id)
    {

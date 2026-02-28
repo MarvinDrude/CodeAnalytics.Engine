@@ -14,4 +14,25 @@ public sealed class SyntaxFile
    {
       return RawText.AsSpan(token.Start, token.Length);
    }
+
+   public void Iterate(Action<ReadOnlySpan<char>, SyntaxTokenSpec> action)
+   {
+      foreach (var token in Tokens)
+      {
+         action(GetSpan(token), token);
+      }
+   }
+
+   public string[] GetDebugTokens()
+   {
+      var result = new string[Tokens.Length];
+      var counter = 0;
+      
+      Iterate((chars, token) =>
+      {
+         result[counter++] = $"\"{chars}\" | {token.Color} - {token.SymbolId} | {token.IsDeclaration}";
+      });
+      
+      return result;
+   }
 }

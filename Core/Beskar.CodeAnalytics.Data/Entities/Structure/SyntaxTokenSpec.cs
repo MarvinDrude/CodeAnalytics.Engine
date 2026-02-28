@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Syntax;
 

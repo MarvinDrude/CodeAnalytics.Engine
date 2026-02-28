@@ -1,15 +1,17 @@
 ﻿using System.Text;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
+using Beskar.CodeAnalytics.Collector.Source;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Beskar.CodeAnalytics.Collector.Symbols.Discovery;
 
 public static class FileDiscovery
 {
-   public static async Task<bool> Discover(DiscoverContext context)
+   public static async Task<bool> Discover(DiscoverContext context, Dictionary<TextSpan, TextSpanCacheEntry> spans)
    {
       var batch = context.DiscoveryBatch;
       
@@ -29,6 +31,10 @@ public static class FileDiscovery
       };
 
       await batch.FileWriter.Write(id, spec);
+
+      var syntaxFile = await new SourceTokenizer(context, spans).Tokenize(id, CancellationToken.None);
+      var t = syntaxFile.GetDebugTokens();
+      
       return true;
    }
 

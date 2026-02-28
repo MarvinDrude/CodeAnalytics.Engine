@@ -67,7 +67,7 @@ public sealed partial class ProjectCollector(
          }
          
          // syntax file parsing
-         await FileDiscovery.Discover(context);
+         await FileDiscovery.Discover(context, spans);
       }
 
       totalTimer.Dispose();
@@ -87,7 +87,7 @@ public sealed partial class ProjectCollector(
       var stringDefinition = batch.StringDefinitions.GetStringFileView(uniqueIdentifier);
       var deterministicId = batch.Identifiers.GenerateIdentifier(uniqueIdentifier, stringDefinition);
 
-      spans[GetCorrectSpan(context.SyntaxNode)] = new TextSpanCacheEntry(deterministicId);
+      spans[GetCorrectSpan(context.SyntaxNode)] = new TextSpanCacheEntry(deterministicId, IsSymbolFromSyntax(symbol, context.SyntaxNode));
 
       uint containingId = 0;
       var hasContaining = false;
@@ -179,5 +179,20 @@ public sealed partial class ProjectCollector(
          IFieldSymbol => await FieldDiscovery.Discover(context, id),
          _ => false
       };
+   }
+   
+   private bool IsSymbolFromSyntax(ISymbol symbol, SyntaxNode syntaxNode)
+   {
+      var nodeLocation = syntaxNode.GetLocation();
+      
+      foreach (var reference in symbol.DeclaringSyntaxReferences)
+      {
+         if (reference.GetSyntax().GetLocation().Equals(nodeLocation))
+         {
+            return true;
+         }
+      }
+      
+      return false;
    }
 }

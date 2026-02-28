@@ -9,16 +9,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TextSpanCacheEntry.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TokenColorizer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxFile.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxTokenSpec.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Syntax/SyntaxColor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/DefaultSyntaxColorTheme.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/SyntaxColorTheme.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TextSpanCacheEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TextSpanCacheEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TokenColorizer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TokenColorizer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxFile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxFile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxTokenSpec.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxTokenSpec.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +59,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b2ce756ae4f8b5266132977aeae6764716fa5ccb10d9ff1e11936b37e3c75/CSharpExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b8162dd874966f214c5695ff659ca8060ec5c55bdf10c81198ed93321f71/Classifier.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bb362647ae384e54c5fbe57631a2a77cc3d1a9634c1d4d4548a7fed8b7fb5/Solution.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bf5979885ac5b8485f9f9c4e34d516346c8c02f6750ae316424c43d679dac19/ClassifiedSpan.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fb9476993badd15d4cb239311e212659bb5d85131d54dec196528c0244c70/TextSpan.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
@@ -80,7 +81,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Project.Beskar.CodeAnalytics.Collector.Console.executor": "Run",
+    ".NET Project.Beskar.CodeAnalytics.Collector.Console.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -93,7 +94,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "RiderNuGetOptionsPageId",
+    "settings.editor.selected.configurable": "inlay.hints",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -151,7 +152,7 @@
       <workItem from="1772241840484" duration="36000" />
       <workItem from="1772271713557" duration="742000" />
       <workItem from="1772272470393" duration="467000" />
-      <workItem from="1772272983645" duration="7266000" />
+      <workItem from="1772272983645" duration="13502000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -161,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772274749612</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Syntax token themeing">
+      <option name="closed" value="true" />
+      <created>1772280442275</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1772280442275</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,7 +181,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Fix ambigous error" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix ambigous error" />
+    <MESSAGE value="Syntax token themeing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Syntax token themeing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -191,5 +201,9 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

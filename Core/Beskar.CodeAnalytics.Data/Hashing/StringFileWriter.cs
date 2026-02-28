@@ -115,5 +115,6 @@ public sealed class StringFileWriter : IDisposable
       // Shrink file to actual used size on disk
       using var fs = new FileStream(_filePath, FileMode.Open);
       fs.SetLength(_length);
+      fs.Flush(flushToDisk: true);
    }
 }

@@ -10,6 +10,8 @@ public sealed class StringFileReader : IDisposable
 
    public StringFileReader(string filePath)
    {
+      // Ensure we see the latest size on disk
+      _ = new FileInfo(filePath);
       _handle = new MmfHandle(filePath, writable: false);
    }
 
@@ -20,6 +22,13 @@ public sealed class StringFileReader : IDisposable
 
    public string GetString(ulong offset)
    {
+      if (offset >= (ulong)_handle.Length)
+      {
+         throw new InvalidOperationException(
+            $"String pool offset {offset} is out of bounds for file length {_handle.Length}. " +
+            "The reader may have been initialized before the writer finished flushing.");
+      }
+      
       using var buffer = _handle.GetBuffer();
       
       var length = buffer.ReadInt32LittleEndian((long)offset);

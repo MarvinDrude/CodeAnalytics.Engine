@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Bake.Models;
 using Beskar.CodeAnalytics.Data.Bake.Sorting;
 using Beskar.CodeAnalytics.Data.Constants;
+using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Me.Memory.Extensions;
@@ -36,6 +37,10 @@ public sealed class SymbolSortBakeStep : IBakeStep
          context.WorkPool.Enqueue((_) => RunSort(context, _fieldSymbolComparer, FileIds.FieldSymbol), cancellationToken),
          context.WorkPool.Enqueue((_) => RunSort(context, _propertySymbolComparer, FileIds.PropertySymbol), cancellationToken),
          context.WorkPool.Enqueue((_) => RunSort(context, _edgeSymbolComparer, FileIds.EdgeSymbol), cancellationToken),
+         
+         context.WorkPool.Enqueue((_) => RunSort(context, _solutionComparer, FileIds.Solution), cancellationToken),
+         context.WorkPool.Enqueue((_) => RunSort(context, _projectComparer, FileIds.Project), cancellationToken),
+         context.WorkPool.Enqueue((_) => RunSort(context, _fileComparer, FileIds.File), cancellationToken),
       ];
       
       await Task.WhenAll(tasks)
@@ -91,6 +96,13 @@ public sealed class SymbolSortBakeStep : IBakeStep
       static (x, y) => x.SymbolId.CompareTo(y.SymbolId));
    private static readonly IComparer<PropertySymbolSpec> _propertySymbolComparer = Comparer<PropertySymbolSpec>.Create(
       static (x, y) => x.SymbolId.CompareTo(y.SymbolId));
+
+   private static readonly IComparer<SolutionSpec> _solutionComparer = Comparer<SolutionSpec>.Create(
+      static (x, y) => x.Id.CompareTo(y.Id));
+   private static readonly IComparer<ProjectSpec> _projectComparer = Comparer<ProjectSpec>.Create(
+      static (x, y) => x.Id.CompareTo(y.Id));
+   private static readonly IComparer<FileSpec> _fileComparer = Comparer<FileSpec>.Create(
+      static (x, y) => x.Id.CompareTo(y.Id));
    
    private static readonly IComparer<SymbolEdgeSpec> _edgeSymbolComparer = Comparer<SymbolEdgeSpec>.Create(
       static (x, y) =>

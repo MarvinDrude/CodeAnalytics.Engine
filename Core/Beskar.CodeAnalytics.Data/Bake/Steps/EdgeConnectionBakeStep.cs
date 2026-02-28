@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Steps;
 
-public sealed class EdgeConnectionBakeStep : IBakeStep
+public sealed partial class EdgeConnectionBakeStep : IBakeStep
 {
    public string Name => "Edge Connections";
 
@@ -26,6 +26,8 @@ public sealed class EdgeConnectionBakeStep : IBakeStep
          {
             action(context);
          }
+         
+         LogStep(name, timeTook);
       }
       
       return ValueTask.CompletedTask;
@@ -36,5 +38,7 @@ public sealed class EdgeConnectionBakeStep : IBakeStep
       ("Method Symbols", MethodSymbolConnector.Connect),
       ("Named Type Symbols", NamedTypeSymbolConnector.Connect),
       ("Type Parameter Symbols", TypeParameterConnector.Connect),
+      ("Solution", SolutionConnector.Connect),
+      ("Project", ProjectConnector.Connect),
    ];
 }

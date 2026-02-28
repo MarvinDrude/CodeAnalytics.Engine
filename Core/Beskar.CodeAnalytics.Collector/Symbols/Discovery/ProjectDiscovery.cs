@@ -39,6 +39,12 @@ public static class ProjectDiscovery
          batch.WriteDiscoveryEdge(projectId, refProjectId, SymbolEdgeType.ProjectReference);
       }
       
+      var uniquePath = Path.GetRelativePath(batch.Options.BasePath, project.Solution.FilePath ?? "Unknown.slnx");
+      var stringDef = batch.StringDefinitions.GetStringFileView(uniquePath);
+      var id = batch.Identifiers.GenerateIdentifier(uniquePath, stringDef);
+      
+      batch.WriteDiscoveryEdge(projectId, id, SymbolEdgeType.ProjectSolution);
+      
       var spec = new ProjectSpec()
       {
          Id = projectId,

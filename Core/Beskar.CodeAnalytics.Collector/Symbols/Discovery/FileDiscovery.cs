@@ -24,8 +24,6 @@ public static class FileDiscovery
          Id = id,
          FullPath = filePathDef,
          
-         Projects = new StorageView<ProjectSpec>(-1, -1),
-         
          Declarations = new StorageView<SymbolSpec>(-1, -1),
          Symbols = new StorageView<SymbolSpec>(-1, -1),
       };

@@ -13,8 +13,6 @@ public struct FileSpec : ISpec
 
    public StringFileView FullPath;
    
-   public StorageView<ProjectSpec> Projects;
-   
    public StorageView<SymbolSpec> Symbols;
    public StorageView<SymbolSpec> Declarations;
    

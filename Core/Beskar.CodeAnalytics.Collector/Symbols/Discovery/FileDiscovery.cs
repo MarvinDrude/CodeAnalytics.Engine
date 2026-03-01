@@ -32,8 +32,8 @@ public static class FileDiscovery
 
       await batch.FileWriter.Write(id, spec);
 
-      var syntaxFile = await new SourceTokenizer(context, spans)
-         .Tokenize(id, CancellationToken.None);
+      var syntaxFile = await new SourceTokenizer(id, context, spans)
+         .Tokenize(CancellationToken.None);
       batch.SyntaxDiscoveryFileWriter.Write(syntaxFile);
       
       return true;

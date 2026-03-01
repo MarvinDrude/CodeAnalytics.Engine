@@ -38,6 +38,8 @@ public sealed class SymbolSortBakeStep : IBakeStep
          context.WorkPool.Enqueue((_) => RunSort(context, _propertySymbolComparer, FileIds.PropertySymbol), cancellationToken),
          context.WorkPool.Enqueue((_) => RunSort(context, _edgeSymbolComparer, FileIds.EdgeSymbol), cancellationToken),
          
+         context.WorkPool.Enqueue((_) => RunSort(context, SymbolLocationSpec.Comparer, FileIds.FileLocation), cancellationToken),
+         
          context.WorkPool.Enqueue((_) => RunSort(context, _solutionComparer, FileIds.Solution), cancellationToken),
          context.WorkPool.Enqueue((_) => RunSort(context, _projectComparer, FileIds.Project), cancellationToken),
          context.WorkPool.Enqueue((_) => RunSort(context, _fileComparer, FileIds.File), cancellationToken),
@@ -96,7 +98,7 @@ public sealed class SymbolSortBakeStep : IBakeStep
       static (x, y) => x.SymbolId.CompareTo(y.SymbolId));
    private static readonly IComparer<PropertySymbolSpec> _propertySymbolComparer = Comparer<PropertySymbolSpec>.Create(
       static (x, y) => x.SymbolId.CompareTo(y.SymbolId));
-
+   
    private static readonly IComparer<SolutionSpec> _solutionComparer = Comparer<SolutionSpec>.Create(
       static (x, y) => x.Id.CompareTo(y.Id));
    private static readonly IComparer<ProjectSpec> _projectComparer = Comparer<ProjectSpec>.Create(

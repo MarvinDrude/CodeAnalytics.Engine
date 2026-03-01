@@ -30,6 +30,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    public required SymbolDiscoveryFileWriter<uint, PropertySymbolSpec> PropertySymbolWriter { get; init; }
    public required SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec> EdgeWriter { get; init; }
    
+   public required SymbolDiscoveryFileWriter<uint, SymbolLocationSpec> LocationWriter { get; init; }
+   
    public required SymbolDiscoveryFileWriter<uint, SolutionSpec> SolutionWriter { get; init; }
    public required SymbolDiscoveryFileWriter<uint, ProjectSpec> ProjectWriter { get; init; }
    public required SymbolDiscoveryFileWriter<uint, FileSpec> FileWriter { get; init; }
@@ -98,6 +100,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
       await PropertySymbolWriter.DisposeAsync();
       await EdgeWriter.DisposeAsync();
       
+      await LocationWriter.DisposeAsync();
+      
       await SolutionWriter.DisposeAsync();
       await ProjectWriter.DisposeAsync();
       await FileWriter.DisposeAsync();
@@ -118,6 +122,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          [FileIds.FieldSymbol] = FieldSymbolWriter.FileName,
          [FileIds.PropertySymbol] = PropertySymbolWriter.FileName,
          [FileIds.EdgeSymbol] = EdgeWriter.FileName,
+         
+         [FileIds.FileLocation] = LocationWriter.FileName,
          
          [FileIds.Solution] = SolutionWriter.FileName,
          [FileIds.Project] = ProjectWriter.FileName,
@@ -143,6 +149,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          FieldSymbolWriter = new SymbolDiscoveryFileWriter<uint, FieldSymbolSpec>(options.OutputPath),
          PropertySymbolWriter = new SymbolDiscoveryFileWriter<uint, PropertySymbolSpec>(options.OutputPath),
          EdgeWriter = new SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec>(options.OutputPath),
+         
+         LocationWriter = new SymbolDiscoveryFileWriter<uint, SymbolLocationSpec>(options.OutputPath),
          
          SolutionWriter = new SymbolDiscoveryFileWriter<uint, SolutionSpec>(options.OutputPath),
          ProjectWriter = new SymbolDiscoveryFileWriter<uint, ProjectSpec>(options.OutputPath),

@@ -19,6 +19,8 @@ public struct ProjectSpec : ISpec
    public StorageView<SolutionSpec> Solutions;
    public StorageView<FileSpec> Files;
 
+   public StorageView<FolderSpec> RootFolders;
+
    public uint Identifier => Id;
    public static FileId FileId => FileIds.Project;
 }

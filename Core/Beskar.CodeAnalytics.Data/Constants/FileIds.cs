@@ -18,6 +18,7 @@ public static class FileIds
    public static readonly FileId Project = new("##project##");
    public static readonly FileId File = new("##file##");
    public static readonly FileId FileLocation = new("##file-location##");
+   public static readonly FileId Folder = new("##folder##");
 }
 
 public readonly record struct FileId(string Value);

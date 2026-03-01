@@ -18,6 +18,14 @@ public static class FileDiscovery
       var filePath = GetFilePath(context);
       var filePathDef = batch.StringDefinitions.GetStringFileView(filePath);
 
+      var projectFilePath = Path.GetDirectoryName(context.ProjectHandle.Project.FilePath ?? "") ?? "";
+      var projectRelativePath = Path.GetRelativePath(context.DiscoveryBatch.Options.BasePath, projectFilePath ?? "");
+
+      var folderRelative = Path.GetRelativePath(projectRelativePath, Path.GetDirectoryName(filePath) ?? "");
+      var isInRoot = folderRelative is null or ".";
+      
+      
+      
       var id = batch.Identifiers.GenerateIdentifier(filePath, filePathDef);
       batch.WriteDiscoveryEdge(context.ProjectId, id, SymbolEdgeType.ProjectFile);
       

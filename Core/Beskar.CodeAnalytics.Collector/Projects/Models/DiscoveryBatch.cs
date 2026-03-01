@@ -32,6 +32,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    public required SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec> EdgeWriter { get; init; }
    
    public required SymbolDiscoveryFileWriter<uint, SymbolLocationSpec> LocationWriter { get; init; }
+   public required SymbolDiscoveryFileWriter<uint, FolderSpec> FolderWriter { get; init; }
    
    public required SymbolDiscoveryFileWriter<uint, SolutionSpec> SolutionWriter { get; init; }
    public required SymbolDiscoveryFileWriter<uint, ProjectSpec> ProjectWriter { get; init; }
@@ -103,6 +104,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
       
       await LocationWriter.DisposeAsync();
       await LinePreviewWriter.DisposeAsync();
+      await FolderWriter.DisposeAsync();
       
       await SolutionWriter.DisposeAsync();
       await ProjectWriter.DisposeAsync();
@@ -126,6 +128,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          [FileIds.EdgeSymbol] = EdgeWriter.FileName,
          
          [FileIds.FileLocation] = LocationWriter.FileName,
+         [FileIds.Folder] = FolderWriter.FileName,
          
          [FileIds.Solution] = SolutionWriter.FileName,
          [FileIds.Project] = ProjectWriter.FileName,
@@ -154,6 +157,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          EdgeWriter = new SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec>(options.OutputPath),
          
          LocationWriter = new SymbolDiscoveryFileWriter<uint, SymbolLocationSpec>(options.OutputPath),
+         FolderWriter = new SymbolDiscoveryFileWriter<uint, FolderSpec>(options.OutputPath),
          
          SolutionWriter = new SymbolDiscoveryFileWriter<uint, SolutionSpec>(options.OutputPath),
          ProjectWriter = new SymbolDiscoveryFileWriter<uint, ProjectSpec>(options.OutputPath),

@@ -15,4 +15,9 @@ public enum SymbolEdgeType : byte
    ProjectReference = 201,
    ProjectFile = 202,
    ProjectSolution = 203,
+   
+   FolderToFile = 204,
+   FolderToFolder = 205,
+   FolderToProject = 206,
+   SolutionToFolder = 207
 }

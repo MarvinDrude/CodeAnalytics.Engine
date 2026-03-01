@@ -6,4 +6,5 @@ public static class FileNames
    
    public const string StringPool = $"strpool.{Suffix}";
    public const string SyntaxFiles = $"syntaxfiles.{Suffix}";
+   public const string LinePreviews = $"linepreviews.{Suffix}";
 }

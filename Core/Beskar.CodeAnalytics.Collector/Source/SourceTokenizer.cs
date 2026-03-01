@@ -1,4 +1,5 @@
 ﻿using Beskar.CodeAnalytics.Collector.Projects.Models;
+using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
@@ -16,6 +17,9 @@ public sealed class SourceTokenizer(
    private readonly DiscoverContext _context = context;
    private readonly Dictionary<TextSpan, TextSpanCacheEntry> _spans = spans;
    private readonly uint _fileId = fileId;
+   
+   private int _lastLineIndex = -1;
+   private LinePreviewView _lastPreviewView;
 
    public async Task<SyntaxFile> Tokenize(
       CancellationToken cancellationToken)
@@ -39,16 +43,16 @@ public sealed class SourceTokenizer(
       {
          if (span.TextSpan.Start > pointer)
          {
-            lineNumber = HandleLines(tokens, pointer, span.TextSpan.Start - pointer, lineNumber);
+            lineNumber = await HandleLines(tokens, pointer, span.TextSpan.Start - pointer, lineNumber);
          }
          
-         lineNumber = HandleLines(tokens, span.TextSpan.Start, span.TextSpan.Length, lineNumber, span);
+         lineNumber = await HandleLines(tokens, span.TextSpan.Start, span.TextSpan.Length, lineNumber, span);
          pointer = span.TextSpan.End;
       }
 
       if (pointer < _context.SourceText.Length)
       {
-         HandleLines(tokens, pointer, _context.SourceText.Length - pointer, lineNumber);
+         await HandleLines(tokens, pointer, _context.SourceText.Length - pointer, lineNumber);
       }
 
       return new SyntaxFile()
@@ -60,26 +64,27 @@ public sealed class SourceTokenizer(
       };
    }
 
-   private int HandleLines(List<SyntaxTokenSpec> tokens, int start, int length, int lineNumber, ClassifiedSpan? classified = null)
+   private async Task<int> HandleLines(List<SyntaxTokenSpec> tokens, int start, int length, int lineNumber, ClassifiedSpan? classified = null)
    {
+      char[] lineBreaks = ['\r', '\n', '\u0085', '\u2028', '\u2029'];
       var textSegment = _context.SourceText.ToString(new TextSpan(start, length));
       var currentPos = 0;
       
       while (currentPos < textSegment.Length)
       {
-         var nextNewline = textSegment.IndexOfAny(['\r', '\n'], currentPos);
+         var nextNewline = textSegment.IndexOfAny(lineBreaks, currentPos);
 
          if (nextNewline == -1)
          {
             // no newlines anymore - add rest
-            tokens.Add(CreateToken(start + currentPos, textSegment.Length - currentPos, classified, lineNumber));
+            tokens.Add(await CreateToken(start + currentPos, textSegment.Length - currentPos, classified, lineNumber));
             break;
          }
 
          if (nextNewline > currentPos)
          {
             // text before newline
-            tokens.Add(CreateToken(start + currentPos, nextNewline - currentPos, classified, lineNumber));
+            tokens.Add(await CreateToken(start + currentPos, nextNewline - currentPos, classified, lineNumber));
          }
 
          // Determine newline length (handle \r\n vs \n)
@@ -92,7 +97,7 @@ public sealed class SourceTokenizer(
          }
 
          // Add the line break token
-         var lbToken = CreateToken(start + nextNewline, newlineLength, null, lineNumber);
+         var lbToken = await CreateToken(start + nextNewline, newlineLength, null, lineNumber);
          lbToken.IsLineBreak = true;
          tokens.Add(lbToken);
          
@@ -103,7 +108,7 @@ public sealed class SourceTokenizer(
       return lineNumber;
    }
 
-   private SyntaxTokenSpec CreateToken(int start, int length, ClassifiedSpan? classified, int lineNumber)
+   private async Task<SyntaxTokenSpec> CreateToken(int start, int length, ClassifiedSpan? classified, int lineNumber)
    {
       var hasSymbol = false;
       TextSpanCacheEntry? entry = null;
@@ -129,12 +134,22 @@ public sealed class SourceTokenizer(
 
       if (spec.HasSymbol)
       {
+         var lineIndex = lineNumber - 1;
+         var line = _context.SourceText.Lines[lineIndex];
+         
+         var lineText = line.ToString();
+         var preview = await _context.DiscoveryBatch.LinePreviewWriter.Write(lineText);
+
+         preview.TokenStart = start - line.Start;
+         preview.TokenLength = length;
+         
          var location = new SymbolLocationSpec()
          {
             SymbolId = spec.SymbolId,
             SourceFileId = _fileId,
             
             LineNumber = lineNumber,
+            LinePreview = preview,
             
             IsDeclaration = spec.IsDeclaration
          };

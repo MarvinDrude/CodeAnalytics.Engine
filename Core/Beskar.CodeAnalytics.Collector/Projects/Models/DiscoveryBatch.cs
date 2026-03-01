@@ -19,6 +19,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    public required StringFileWriter StringDefinitions { get; init; }
    public required IdentifierGenerator Identifiers { get; init; }
    public required SyntaxDiscoveryFileWriter SyntaxDiscoveryFileWriter { get; init; }
+   public required LinePreviewWriter LinePreviewWriter { get; init; }
    
    public required SymbolDiscoveryFileWriter<uint, SymbolSpec> SymbolWriter { get; init; }
    public required SymbolDiscoveryFileWriter<uint, TypeSymbolSpec> TypeSymbolWriter { get; init; }
@@ -101,6 +102,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
       await EdgeWriter.DisposeAsync();
       
       await LocationWriter.DisposeAsync();
+      await LinePreviewWriter.DisposeAsync();
       
       await SolutionWriter.DisposeAsync();
       await ProjectWriter.DisposeAsync();
@@ -139,6 +141,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          Identifiers = new IdentifierGenerator(),
          StringDefinitions = new StringFileWriter(Path.Combine(options.OutputPath, FileNames.StringPool)),
          SyntaxDiscoveryFileWriter = new SyntaxDiscoveryFileWriter(options.OutputPath),
+         LinePreviewWriter = new LinePreviewWriter(options.OutputPath),
          
          SymbolWriter = new SymbolDiscoveryFileWriter<uint, SymbolSpec>(options.OutputPath),
          TypeSymbolWriter = new SymbolDiscoveryFileWriter<uint, TypeSymbolSpec>(options.OutputPath),

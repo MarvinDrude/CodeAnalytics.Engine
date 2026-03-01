@@ -48,6 +48,8 @@ public sealed class SymbolSortBakeStep : IBakeStep
       await Task.WhenAll(tasks)
          .WithAggregateException();
       
+      new LinePreviewSorter(context).Sort();
+      
       foreach (var (_, fileName) in context.FileNames)
       {
          if (context.DeleteIntermediateFiles)

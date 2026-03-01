@@ -1,5 +1,6 @@
 ﻿using System.Buffers.Binary;
 using System.IO.MemoryMappedFiles;
+using System.Runtime.CompilerServices;
 using Microsoft.Win32.SafeHandles;
 
 namespace Beskar.CodeAnalytics.Data.Files;
@@ -35,6 +36,13 @@ public readonly unsafe ref struct MmfBuffer : IDisposable
          : new Span<T>(_basePointer + byteOffset, count);
    }
 
+   public Span<T> GetSpanByByteCount<T>(long byteOffset, long byteCount) where T : unmanaged
+   {
+      return byteOffset + byteCount > _capacity 
+         ? throw new ArgumentOutOfRangeException(nameof(byteOffset)) 
+         : new Span<T>(_basePointer + byteOffset, (int)(byteCount / Unsafe.SizeOf<T>()));
+   }
+   
    public long ReadInt64BigEndian(long byteOffset)
    {
       ReadOnlySpan<byte> span = new(_basePointer + byteOffset, sizeof(long));

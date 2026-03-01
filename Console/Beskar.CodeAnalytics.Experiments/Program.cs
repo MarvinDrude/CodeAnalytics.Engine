@@ -12,11 +12,13 @@ using Beskar.CodeAnalytics.Data.Syntax;
 using Me.Memory.Utils;
 
 
-var fileId = 3892382499;
-var filePath = @"C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net10.0\Output\syntaxfiles.mmb";
+// var fileId = 3892382499;
+// var filePath = @"C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net10.0\Output\syntaxfiles.mmb";
+//
+// var reader = new SyntaxFileReader(filePath);
+// var t = reader.GetById(fileId);
 
-var reader = new SyntaxFileReader(filePath);
-var t = reader.GetById(fileId);
+var str = File.ReadAllText(@"C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net10.0\Output\linepreviews.mmb");
 
 _ = "";
 

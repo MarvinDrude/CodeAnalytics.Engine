@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Beskar.CodeAnalytics.Collector.Identifiers;
 using Beskar.CodeAnalytics.Collector.Options;
+using Beskar.CodeAnalytics.Collector.Symbols.Builders;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Discovery.Writers;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
@@ -20,6 +21,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    public required IdentifierGenerator Identifiers { get; init; }
    public required SyntaxDiscoveryFileWriter SyntaxDiscoveryFileWriter { get; init; }
    public required LinePreviewWriter LinePreviewWriter { get; init; }
+   public required FolderTreeBuilder FolderTreeBuilder { get; init; }
    
    public required SymbolDiscoveryFileWriter<uint, SymbolSpec> SymbolWriter { get; init; }
    public required SymbolDiscoveryFileWriter<uint, TypeSymbolSpec> TypeSymbolWriter { get; init; }
@@ -145,6 +147,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          StringDefinitions = new StringFileWriter(Path.Combine(options.OutputPath, FileNames.StringPool)),
          SyntaxDiscoveryFileWriter = new SyntaxDiscoveryFileWriter(options.OutputPath),
          LinePreviewWriter = new LinePreviewWriter(options.OutputPath),
+         FolderTreeBuilder = new FolderTreeBuilder(),
          
          SymbolWriter = new SymbolDiscoveryFileWriter<uint, SymbolSpec>(options.OutputPath),
          TypeSymbolWriter = new SymbolDiscoveryFileWriter<uint, TypeSymbolSpec>(options.OutputPath),

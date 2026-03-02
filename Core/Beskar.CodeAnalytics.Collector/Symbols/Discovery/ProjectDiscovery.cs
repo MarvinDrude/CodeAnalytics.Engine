@@ -60,7 +60,8 @@ public static class ProjectDiscovery
 
       await batch.ProjectWriter.Write(projectId, spec);
       var projectFolder = Path.GetDirectoryName(projectPath) ?? "";
-      
+
+      var folderId = batch.FolderTreeBuilder.GetOrCreateFolder(batch, projectFolder);
       
       return projectId;
    }

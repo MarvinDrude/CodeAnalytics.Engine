@@ -18,4 +18,5 @@ public enum SymbolEdgeType : byte
    
    FolderToFile = 204,
    FolderToFolder = 205,
+   ProjectToFolder = 206,
 }

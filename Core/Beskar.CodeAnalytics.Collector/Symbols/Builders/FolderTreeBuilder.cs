@@ -3,6 +3,7 @@ using System.Text;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
+using Beskar.CodeAnalytics.Data.Enums.Symbols;
 
 namespace Beskar.CodeAnalytics.Collector.Symbols.Builders;
 
@@ -29,7 +30,9 @@ public sealed class FolderTreeBuilder
          }
          
          var root = GetOrCreateRoot(batch);
-         var segments = path.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+
+         if (path.Length == 0) return root.Id;
+         var segments = path.Split([Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], StringSplitOptions.RemoveEmptyEntries);
 
          var currentFullPath = new StringBuilder((int)(path.Length * 1.5f));
          currentFullPath.Append("");
@@ -79,6 +82,8 @@ public sealed class FolderTreeBuilder
                   SubFolders = new StorageView<FolderSpec>(-1, -1)
                });
                if (!task.IsCompletedSuccessfully) throw new InvalidOperationException();
+               
+               batch.WriteDiscoveryEdge(parent.Id, node.Id, SymbolEdgeType.FolderToFolder);
             }
             else
             {

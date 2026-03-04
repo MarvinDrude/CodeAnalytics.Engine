@@ -21,13 +21,20 @@ public static class FileDiscovery
       var projectFilePath = Path.GetDirectoryName(context.ProjectHandle.Project.FilePath ?? "") ?? "";
       var projectRelativePath = Path.GetRelativePath(context.DiscoveryBatch.Options.BasePath, projectFilePath ?? "");
 
-      var folderRelative = Path.GetRelativePath(projectRelativePath, Path.GetDirectoryName(filePath) ?? "");
+      var folderRelative = Path.GetDirectoryName(filePath);
       var isInRoot = folderRelative is null or ".";
-      
-      
-      
+      folderRelative = isInRoot ? "" : folderRelative;
+
+      var folderId = batch.FolderTreeBuilder.GetOrCreateFolder(batch, folderRelative ?? "");
       var id = batch.Identifiers.GenerateIdentifier(filePath, filePathDef);
+
+      if (!_alreadyDiscovered.Add((folderId, id)))
+      {
+         return false;
+      }
+      
       batch.WriteDiscoveryEdge(context.ProjectId, id, SymbolEdgeType.ProjectFile);
+      batch.WriteDiscoveryEdge(folderId, id, SymbolEdgeType.FolderToFile);
       
       var spec = new FileSpec()
       {
@@ -57,4 +64,9 @@ public static class FileDiscovery
       var bytes = context.SourceText.GetChecksum().AsSpan();
       return Encoding.UTF8.GetString(bytes).Replace("-", "");
    }
+   
+   /// <summary>
+   /// Small workaround to avoid duplicate files in case they are referenced in multiple projects / solutions.
+   /// </summary>
+   private static readonly HashSet<(uint FolderId, uint FileId)> _alreadyDiscovered = [];
 }

@@ -62,6 +62,7 @@ public static class ProjectDiscovery
       var projectFolder = Path.GetDirectoryName(projectPath) ?? "";
 
       var folderId = batch.FolderTreeBuilder.GetOrCreateFolder(batch, projectFolder);
+      batch.WriteDiscoveryEdge(projectId, folderId, SymbolEdgeType.ProjectToFolder);
       
       return projectId;
    }

@@ -39,6 +39,7 @@ public sealed class SymbolSortBakeStep : IBakeStep
          context.WorkPool.Enqueue((_) => RunSort(context, _edgeSymbolComparer, FileIds.EdgeSymbol), cancellationToken),
          
          context.WorkPool.Enqueue((_) => RunSort(context, SymbolLocationSpec.Comparer, FileIds.FileLocation), cancellationToken),
+         context.WorkPool.Enqueue((_) => RunSort(context, FolderSpec.Comparer, FileIds.Folder), cancellationToken),
          
          context.WorkPool.Enqueue((_) => RunSort(context, _solutionComparer, FileIds.Solution), cancellationToken),
          context.WorkPool.Enqueue((_) => RunSort(context, _projectComparer, FileIds.Project), cancellationToken),

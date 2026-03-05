@@ -11,4 +11,8 @@
      <PackageReference Include="System.IO.Hashing" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Metadata\Builders\" />
+   </ItemGroup>
+
 </Project>

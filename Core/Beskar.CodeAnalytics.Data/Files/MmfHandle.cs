@@ -28,6 +28,12 @@ public sealed unsafe class MmfHandle : IDisposable
    }
    
    public MmfBuffer GetBuffer() => new(_accessor);
+   
+   public SpanView<T> LeaseSpanView<T>(long byteOffset, int count)
+      where T : unmanaged
+   {
+      return new SpanView<T>(GetBuffer(), byteOffset, count);
+   }
 
    public void ProcessInBatches<T>(int batchSize, Action<Span<T>> processAction)
       where T : unmanaged
@@ -57,5 +63,23 @@ public sealed unsafe class MmfHandle : IDisposable
       
       _mmf.Dispose();
       _fileStream.Dispose();
+   }
+
+   public readonly ref struct SpanView<T> : IDisposable
+      where T : unmanaged
+   {
+      private readonly MmfBuffer _buffer;
+      public readonly Span<T> Span;
+
+      public SpanView(MmfBuffer buffer, long byteOffset, int count)
+      {
+         _buffer = buffer;
+         Span = _buffer.GetSpan<T>(byteOffset, count);
+      }
+      
+      public void Dispose()
+      {
+         _buffer.Dispose();
+      }
    }
 }

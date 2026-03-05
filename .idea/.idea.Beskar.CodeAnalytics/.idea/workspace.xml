@@ -9,12 +9,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/SpecDescriptor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/StructureDescriptor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecReaderCache.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/FolderSpecDescriptor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Builders/FolderTreeBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Builders/FolderTreeBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FolderDiscovery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/ProjectDiscovery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/ProjectDiscovery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Symbols/SymbolEdgeType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Symbols/SymbolEdgeType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/SymbolSortBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/SymbolSortBakeStep.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Beskar.CodeAnalytics.Data.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Beskar.CodeAnalytics.Data.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/FolderSpec.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/FolderSpec.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Files/MmfHandle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Files/MmfHandle.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +32,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="87" />
+    <option name="cachedIndexableFilesCount" value="86" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -46,7 +53,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TokenColorizer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FolderDiscovery.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Sorting/LinePreviewSorter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/LinePreviewWriter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/SyntaxDiscoveryFileWriter.cs" root0="FORCE_HIGHLIGHTING" />
@@ -55,6 +61,12 @@
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxFile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxTokenSpec.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Syntax/SyntaxColor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/SpecDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/StructureDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecReaderCache.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/FolderSpecDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Serialization/SyntaxFileSerializer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/DefaultSyntaxColorTheme.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/Headers/SyntaxDictionaryEntry.cs" root0="FORCE_HIGHLIGHTING" />
@@ -174,7 +186,9 @@
       <workItem from="1772313849391" duration="10389000" />
       <workItem from="1772356397460" duration="27984000" />
       <workItem from="1772474073328" duration="13219000" />
-      <workItem from="1772638875844" duration="10301000" />
+      <workItem from="1772638875844" duration="11117000" />
+      <workItem from="1772731316224" duration="16000" />
+      <workItem from="1772732743683" duration="10710000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -248,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772370526167</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Refactor folder discovery logic and integrate `ProjectToFolder` and `FolderToFolder` edges into discovery process.">
+      <option name="closed" value="true" />
+      <created>1772655669148</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1772655669148</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +289,8 @@
     <MESSAGE value="Add `SyntaxFileReader` implementation with deserialization logic and integrate into experiments." />
     <MESSAGE value="Add `SymbolLocationSpec` with location tracking and integrate into discovery, tokenization, and sorting logic." />
     <MESSAGE value="Add `LinePreviewWriter` and `LinePreviewView` for preview serialization and integrate into tokenization and sorting logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add `LinePreviewWriter` and `LinePreviewView` for preview serialization and integrate into tokenization and sorting logic." />
+    <MESSAGE value="Refactor folder discovery logic and integrate `ProjectToFolder` and `FolderToFolder` edges into discovery process." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor folder discovery logic and integrate `ProjectToFolder` and `FolderToFolder` edges into discovery process." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -286,29 +309,29 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs</url>
-          <line>22</line>
+          <line>25</line>
           <properties documentPath="C:\Code\Console\Beskar.CodeAnalytics.Experiments\Program.cs" containingFunctionPresentation="">
             <startOffsets>
-              <option value="841" />
+              <option value="942" />
             </startOffsets>
             <endOffsets>
-              <option value="848" />
+              <option value="949" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs</url>
-          <line>94</line>
-          <properties documentPath="C:\Code\Core\Beskar.CodeAnalytics.Collector\Projects\Models\DiscoveryBatch.cs" containingFunctionPresentation="Method 'DisposeAsync'">
+          <url>file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs</url>
+          <line>23</line>
+          <properties documentPath="C:\Code\Core\Beskar.CodeAnalytics.Data\Metadata\Models\DatabaseDescriptor.cs" containingFunctionPresentation="Property 'SpecReaderCache'">
             <startOffsets>
-              <option value="4045" />
+              <option value="645" />
             </startOffsets>
             <endOffsets>
-              <option value="4084" />
+              <option value="649" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="16" />
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

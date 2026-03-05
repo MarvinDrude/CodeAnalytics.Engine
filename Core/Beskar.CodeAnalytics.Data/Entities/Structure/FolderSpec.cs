@@ -35,4 +35,6 @@ public struct FolderSpec : ISpec
       get => Flags[0].Get(1);
       set => Flags[0].Set(1, value);
    }
+   
+   public static readonly IComparer<FolderSpec> Comparer = Comparer<FolderSpec>.Create(static (x, y) => x.Id.CompareTo(y.Id));
 }

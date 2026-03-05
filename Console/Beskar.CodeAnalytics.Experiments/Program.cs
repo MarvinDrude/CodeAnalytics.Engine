@@ -8,6 +8,7 @@ using Beskar.CodeAnalytics.Data.Indexes.Intermediate;
 using Beskar.CodeAnalytics.Data.Indexes.Models;
 using Beskar.CodeAnalytics.Data.Indexes.Readers;
 using Beskar.CodeAnalytics.Data.Indexes.Search;
+using Beskar.CodeAnalytics.Data.Metadata.Models;
 using Beskar.CodeAnalytics.Data.Syntax;
 using Me.Memory.Utils;
 
@@ -18,7 +19,9 @@ using Me.Memory.Utils;
 // var reader = new SyntaxFileReader(filePath);
 // var t = reader.GetById(fileId);
 
-var str = File.ReadAllText(@"C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net10.0\Output\linepreviews.mmb");
+//var str = File.ReadAllText(@"C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net10.0\Output\linepreviews.mmb");
+
+//using var database = new DatabaseDescriptor();
 
 _ = "";
 

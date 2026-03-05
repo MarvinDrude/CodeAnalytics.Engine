@@ -9,9 +9,6 @@ public abstract class SpecDescriptor<TSpec>
 {
    public required string FileName { get; set; }
    
-   public required int ItemCount { get; set; }
-   public required ulong ByteCount { get; set; }
-   
    public abstract IComparer<TSpec> Comparer { get; }
    public FileId FileId => TSpec.FileId;
    

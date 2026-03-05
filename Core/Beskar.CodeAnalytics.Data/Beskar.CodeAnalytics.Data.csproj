@@ -12,7 +12,7 @@
    </ItemGroup>
 
    <ItemGroup>
-     <Folder Include="Metadata\Builders\" />
+     <Folder Include="Metadata\Serialization\" />
    </ItemGroup>
 
 </Project>

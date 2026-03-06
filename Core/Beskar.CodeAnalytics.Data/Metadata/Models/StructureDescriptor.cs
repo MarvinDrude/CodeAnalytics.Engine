@@ -42,5 +42,10 @@ public sealed class StructureDescriptor
    public async Task Initialize(DatabaseDescriptor database)
    {
       await Folders.Initialize(database);
+      await Files.Initialize(database);
+      await SymbolLocations.Initialize(database);
+      await Projects.Initialize(database);
+      await Solutions.Initialize(database);
+      await SyntaxFiles.Initialize(database);
    }
 }

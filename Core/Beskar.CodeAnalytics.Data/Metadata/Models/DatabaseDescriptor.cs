@@ -1,6 +1,7 @@
 ﻿
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Metadata.Readers;
+using Beskar.CodeAnalytics.Data.Metadata.Specs.Symbols;
 using Me.Memory.Extensions;
 
 namespace Beskar.CodeAnalytics.Data.Metadata.Models;
@@ -19,6 +20,16 @@ public sealed class DatabaseDescriptor : IDisposable
    /// All descriptors for the structure specs.
    /// </summary>
    public required StructureDescriptor Structure { get; set; }
+   
+   /// <summary>
+   /// All descriptors for the symbols.
+   /// </summary>
+   public required SymbolsDescriptor Symbols { get; set; }
+   
+   /// <summary>
+   /// Edges between symbols.
+   /// </summary>
+   public required SymbolEdgeSpecDescriptor Edges { get; set; }
 
    /// <summary>
    /// Holds all spec readers.
@@ -29,7 +40,9 @@ public sealed class DatabaseDescriptor : IDisposable
    {
       BaseFolderPath = baseFolderPath;
       
+      await Edges.Initialize(this);
       await Structure.Initialize(this);
+      await Symbols.Initialize(this);
    }
 
    public static async Task<DatabaseDescriptor> Create(string baseFolderPath)

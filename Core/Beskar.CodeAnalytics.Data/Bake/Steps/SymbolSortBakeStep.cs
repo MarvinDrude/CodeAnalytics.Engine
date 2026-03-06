@@ -61,6 +61,8 @@ public sealed class SymbolSortBakeStep(ILoggerFactory factory) : IBakeStep
          context.FileNames[fileId] = fileName;
       }
       
+      context.DatabaseBuilder.WithEdgeSpec(context.FileNames[FileIds.EdgeSymbol]);
+      
       // set file names for the structure
       context.DatabaseBuilder.Structure.WithFolderSpec(context.FileNames[FileIds.Folder])
          .WithFileSpec(context.FileNames[FileIds.File])
@@ -69,7 +71,14 @@ public sealed class SymbolSortBakeStep(ILoggerFactory factory) : IBakeStep
          .WithSymbolLocationSpec(context.FileNames[FileIds.FileLocation]);
       
       // set file names for symbols
-      
+      context.DatabaseBuilder.Symbols.WithSymbolSpec(context.FileNames[FileIds.Symbol])
+         .WithTypeSymbolSpec(context.FileNames[FileIds.TypeSymbol])
+         .WithNamedTypeSymbolSpec(context.FileNames[FileIds.NamedTypeSymbol])
+         .WithParameterSymbolSpec(context.FileNames[FileIds.ParameterSymbol])
+         .WithTypeParameterSymbolSpec(context.FileNames[FileIds.TypeParameterSymbol])
+         .WithMethodSymbolSpec(context.FileNames[FileIds.MethodSymbol])
+         .WithFieldSymbolSpec(context.FileNames[FileIds.FieldSymbol])
+         .WithPropertySpec(context.FileNames[FileIds.PropertySymbol]);
       
       context.CompleteStringWriter();
    }

@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Bake.Models;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Hashing;
+using Beskar.CodeAnalytics.Data.Metadata.Builders;
 using Me.Memory.Threading;
 using Me.Memory.Utils;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,7 @@ public sealed partial class BakeEngine
       WorkPool workPool,
       Dictionary<FileId, string> fileNames,
       bool deleteIntermediateFiles,
+      DatabaseBuilder dbBuilder,
       CancellationToken ct = default)
    {
       await using var context = new BakeContext()
@@ -36,6 +38,7 @@ public sealed partial class BakeEngine
          StringFileWriter = stringFileWriter,
          DeleteIntermediateFiles = deleteIntermediateFiles,
          WorkPool = workPool,
+         DatabaseBuilder = dbBuilder,
          FileNames = fileNames
       };
 

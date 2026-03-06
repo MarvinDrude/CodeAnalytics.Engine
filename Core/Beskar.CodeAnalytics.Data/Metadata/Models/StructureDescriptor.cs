@@ -14,9 +14,8 @@ public sealed class StructureDescriptor
    /// </summary>
    public required FolderSpecDescriptor Folders { get; set; }
    
-   public Task Initialize(DatabaseDescriptor database)
+   public async Task Initialize(DatabaseDescriptor database)
    {
-      
-      return Task.CompletedTask;
+      await Folders.Initialize(database);
    }
 }

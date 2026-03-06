@@ -9,6 +9,7 @@ using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Beskar.CodeAnalytics.Data.Hashing;
+using Beskar.CodeAnalytics.Data.Metadata.Builders;
 using Microsoft.CodeAnalysis;
 
 namespace Beskar.CodeAnalytics.Collector.Projects.Models;
@@ -16,6 +17,7 @@ namespace Beskar.CodeAnalytics.Collector.Projects.Models;
 public sealed class DiscoveryBatch : IAsyncDisposable
 {
    public required CollectorOptions Options { get; init; }
+   public required DatabaseBuilder DatabaseBuilder { get; init; }
    
    public required StringFileWriter StringDefinitions { get; init; }
    public required IdentifierGenerator Identifiers { get; init; }
@@ -138,11 +140,13 @@ public sealed class DiscoveryBatch : IAsyncDisposable
       };
    }
    
-   public static DiscoveryBatch CreateEmpty(CollectorOptions options)
+   public static DiscoveryBatch CreateEmpty(CollectorOptions options, DatabaseBuilder builder)
    {
       return new DiscoveryBatch()
       {
          Options = options,
+         DatabaseBuilder = builder,
+         
          Identifiers = new IdentifierGenerator(),
          StringDefinitions = new StringFileWriter(Path.Combine(options.OutputPath, FileNames.StringPool)),
          SyntaxDiscoveryFileWriter = new SyntaxDiscoveryFileWriter(options.OutputPath),

@@ -30,6 +30,7 @@ public sealed class FolderTreeBuilder
          }
          
          var root = GetOrCreateRoot(batch);
+         batch.DatabaseBuilder.Structure.WithRootFolderId(root.Id);
 
          if (path.Length == 0) return root.Id;
          var segments = path.Split([Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], StringSplitOptions.RemoveEmptyEntries);

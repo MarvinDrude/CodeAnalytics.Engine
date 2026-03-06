@@ -23,6 +23,10 @@ using Me.Memory.Utils;
 
 //using var database = new DatabaseDescriptor();
 
+using var descriptor = await DatabaseDescriptor.Create(@"C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net10.0\Output");
+var reader = descriptor.Structure.Folders.GetReader();
+using var lease = reader.Lease(0, 20);
+
 _ = "";
 
 // var path = @"C:\Users\marvi\source\repos\Beskar.CodeAnalytics\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net11.0\Output\strpool.mmb";

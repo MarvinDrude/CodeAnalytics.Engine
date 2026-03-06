@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Hashing;
+using Beskar.CodeAnalytics.Data.Metadata.Builders;
 using Me.Memory.Threading;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Models;
@@ -13,6 +14,8 @@ public sealed class BakeContext : IAsyncDisposable
    public required bool DeleteIntermediateFiles { get; set; }
    
    public required StringFileWriter StringFileWriter { get; set; }
+   
+   public required DatabaseBuilder DatabaseBuilder { get; set; }
    
    public StringFileReader? StringFileReader { get; set; }
    

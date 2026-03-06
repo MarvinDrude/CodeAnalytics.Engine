@@ -9,6 +9,9 @@ using Beskar.CodeAnalytics.Collector.Projects;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Data.Bake.Common;
 using Beskar.CodeAnalytics.Data.Bake.Steps;
+using Beskar.CodeAnalytics.Data.Constants;
+using Beskar.CodeAnalytics.Data.Metadata.Builders;
+using Me.Memory.Extensions;
 using Me.Memory.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,8 +62,10 @@ Console.CancelKeyPress += (_, args) =>
 
 try
 {
+   var dbBuilder = new DatabaseBuilder();
+   
    var firstEncounter = true;
-   var batch = DiscoveryBatch.CreateEmpty(collectOptions);
+   var batch = DiscoveryBatch.CreateEmpty(collectOptions, dbBuilder);
    var workPool = new WorkPool(new WorkPoolOptions()
    {
       MaxDegreeOfParallelism = collectOptions.MaxDegreeOfParallelism
@@ -107,8 +112,13 @@ try
       .AddStep(new IndexBakeStep(loggerFactory));
 
    await engine.Execute(batch.StringDefinitions, workPool, 
-      fileNames, collectOptions.DeleteIntermediateFiles, 
+      fileNames, collectOptions.DeleteIntermediateFiles,
+      dbBuilder,
       cancellationToken);
+   
+   using var descriptor = dbBuilder.Build();
+   await using var metadataFile = File.Open(Path.Combine(collectOptions.OutputPath, $"metadata.{FileNames.Suffix}"), FileMode.Create);
+   descriptor.SerializeStream(metadataFile);
 }
 catch (Exception ex)
 {

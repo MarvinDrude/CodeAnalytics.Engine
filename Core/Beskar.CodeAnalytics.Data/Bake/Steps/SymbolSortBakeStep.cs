@@ -65,7 +65,9 @@ public sealed class SymbolSortBakeStep : IBakeStep
          var (fileId, fileName) = await task;
          context.FileNames[fileId] = fileName;
       }
-
+      
+      context.DatabaseBuilder.Structure.WithFolderSpec(context.FileNames[FileIds.Folder]);
+      
       context.CompleteStringWriter();
    }
 
@@ -81,7 +83,7 @@ public sealed class SymbolSortBakeStep : IBakeStep
       
       using var sorter = new FileSorter<TSymbol>(comparer);
       sorter.Sort(sourceFullPath, targetFullPath);
-
+      
       return Task.FromResult((id, targetName));
    }
    

@@ -4,12 +4,12 @@ using Beskar.CodeAnalytics.Data.Metadata.Readers;
 
 namespace Beskar.CodeAnalytics.Data.Metadata.Models;
 
-public abstract class SpecDescriptor<TSpec>
+public class SpecDescriptor<TSpec>
    where TSpec : unmanaged, ISpec
 {
    public required string FileName { get; set; }
    
-   public abstract IComparer<TSpec> Comparer { get; }
+   public virtual IComparer<TSpec> Comparer { get; } = Comparer<TSpec>.Default;
    public FileId FileId => TSpec.FileId;
    
    private DatabaseDescriptor? _database;

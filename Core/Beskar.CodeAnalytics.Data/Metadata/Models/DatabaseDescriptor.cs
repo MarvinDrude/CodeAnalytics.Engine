@@ -1,5 +1,7 @@
 ﻿
+using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Metadata.Readers;
+using Me.Memory.Extensions;
 
 namespace Beskar.CodeAnalytics.Data.Metadata.Models;
 
@@ -28,6 +30,17 @@ public sealed class DatabaseDescriptor : IDisposable
       BaseFolderPath = baseFolderPath;
       
       await Structure.Initialize(this);
+   }
+
+   public static async Task<DatabaseDescriptor> Create(string baseFolderPath)
+   {
+      var metadataFilePath = Path.Combine(baseFolderPath, $"metadata.{FileNames.Suffix}");
+      await using var metadataFile = File.Open(metadataFilePath, FileMode.Open);
+      
+      var descriptor = DatabaseDescriptor.DeserializeStream(metadataFile);
+      await descriptor.Initialize(baseFolderPath);
+      
+      return descriptor;
    }
 
    public void Dispose()

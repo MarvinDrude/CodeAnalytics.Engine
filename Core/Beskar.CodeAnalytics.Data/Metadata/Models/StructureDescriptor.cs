@@ -2,7 +2,7 @@
 
 namespace Beskar.CodeAnalytics.Data.Metadata.Models;
 
-public sealed class StructureDescriptor
+public sealed class StructureDescriptor : IDisposable
 {
    /// <summary>
    /// The root folder id in folder specs.
@@ -47,5 +47,10 @@ public sealed class StructureDescriptor
       await Projects.Initialize(database);
       await Solutions.Initialize(database);
       await SyntaxFiles.Initialize(database);
+   }
+
+   public void Dispose()
+   {
+      SyntaxFiles.Dispose();
    }
 }

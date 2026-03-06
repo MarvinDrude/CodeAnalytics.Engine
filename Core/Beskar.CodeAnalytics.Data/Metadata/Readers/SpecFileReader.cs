@@ -48,6 +48,11 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
    {
       return _handle.LeaseSpanView<TSpec>(index * _structSize, count);
    }
+
+   public MmfHandle.SpanView<TSpec> LeaseAll()
+   {
+      return _handle.LeaseSpanView<TSpec>(0, _itemCount);
+   }
    
    public void Dispose()
    {

@@ -27,6 +27,23 @@ using var descriptor = await DatabaseDescriptor.Create(@"C:\Code\Console\Beskar.
 var reader = descriptor.Structure.Folders.GetReader();
 using var lease = reader.Lease(0, 20);
 
+var fileReader = descriptor.Structure.Files.GetReader();
+using var fileLease = fileReader.LeaseAll();
+
+var folderReader = descriptor.Structure.Folders.GetReader();
+using var folderLease = folderReader.LeaseAll();
+
+var projectReader = descriptor.Structure.Projects.GetReader();
+using var projectLease = projectReader.LeaseAll();
+
+var solutionReader = descriptor.Structure.Solutions.GetReader();
+using var solutionLease = solutionReader.LeaseAll();
+
+var syntaxFile = descriptor.Structure.SyntaxFiles.Reader.GetById(fileLease.Span[0].Id);
+
+var rootFolderId = descriptor.Structure.RootFolderId;
+
+
 _ = "";
 
 // var path = @"C:\Users\marvi\source\repos\Beskar.CodeAnalytics\Console\Beskar.CodeAnalytics.Collector.Console\bin\Debug\net11.0\Output\strpool.mmb";

@@ -40,5 +40,6 @@ public sealed partial class EdgeConnectionBakeStep : IBakeStep
       ("Type Parameter Symbols", TypeParameterConnector.Connect),
       ("Solution", SolutionConnector.Connect),
       ("Project", ProjectConnector.Connect),
+      ("Folder", FolderConnector.Connect),
    ];
 }

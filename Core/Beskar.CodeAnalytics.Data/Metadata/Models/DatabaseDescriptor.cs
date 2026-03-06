@@ -59,5 +59,6 @@ public sealed class DatabaseDescriptor : IDisposable
    public void Dispose()
    {
       SpecReaderCache.Dispose();
+      Structure.Dispose();
    }
 }

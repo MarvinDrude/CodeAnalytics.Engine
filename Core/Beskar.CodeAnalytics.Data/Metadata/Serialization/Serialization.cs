@@ -18,8 +18,13 @@ public static class Serialization
       
       // Spec descriptors
       SerializerRegistry.Register(new FolderSpecDescriptorSerializer());
+      SerializerRegistry.Register(new ProjectSpecDescriptorSerializer());
+      SerializerRegistry.Register(new SolutionSpecDescriptorSerializer());
+      SerializerRegistry.Register(new FileSpecDescriptorSerializer());
+      SerializerRegistry.Register(new SymbolLocationSpecDescriptorSerializer());
       
       // Descriptors
+      SerializerRegistry.Register(new SyntaxFileDescriptorSerializer());
       SerializerRegistry.Register(new StructureDescriptorSerializer());
       SerializerRegistry.Register(new DatabaseDescriptorSerializer());
    }

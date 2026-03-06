@@ -14,17 +14,12 @@ namespace Beskar.CodeAnalytics.Data.Bake.Steps;
 /// Just sort the files so all base files are ASC ordered by
 /// the symbol id.
 /// </summary>
-public sealed class SymbolSortBakeStep : IBakeStep
+public sealed class SymbolSortBakeStep(ILoggerFactory factory) : IBakeStep
 {
    public string Name => "Symbol Sorting";
 
-   private readonly ILogger<SymbolSortBakeStep> _logger;
-   
-   public SymbolSortBakeStep(ILoggerFactory factory)
-   {
-      _logger = factory.CreateLogger<SymbolSortBakeStep>();
-   }
-   
+   private readonly ILogger<SymbolSortBakeStep> _logger = factory.CreateLogger<SymbolSortBakeStep>();
+
    public async ValueTask Execute(BakeContext context, CancellationToken cancellationToken = default)
    {
       Task<(FileId FileId, string FileName)>[] tasks = [
@@ -66,7 +61,15 @@ public sealed class SymbolSortBakeStep : IBakeStep
          context.FileNames[fileId] = fileName;
       }
       
-      context.DatabaseBuilder.Structure.WithFolderSpec(context.FileNames[FileIds.Folder]);
+      // set file names for the structure
+      context.DatabaseBuilder.Structure.WithFolderSpec(context.FileNames[FileIds.Folder])
+         .WithFileSpec(context.FileNames[FileIds.File])
+         .WithSolutionSpec(context.FileNames[FileIds.Solution])
+         .WithProjectSpec(context.FileNames[FileIds.Project])
+         .WithSymbolLocationSpec(context.FileNames[FileIds.FileLocation]);
+      
+      // set file names for symbols
+      
       
       context.CompleteStringWriter();
    }

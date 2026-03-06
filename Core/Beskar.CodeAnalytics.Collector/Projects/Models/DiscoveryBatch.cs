@@ -95,6 +95,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
    public async ValueTask DisposeAsync()
    {
       await SyntaxDiscoveryFileWriter.Bake();
+      DatabaseBuilder.Structure.WithSyntaxFile(SyntaxDiscoveryFileWriter.FileName);
       
       await SymbolWriter.DisposeAsync();
       await TypeSymbolWriter.DisposeAsync();

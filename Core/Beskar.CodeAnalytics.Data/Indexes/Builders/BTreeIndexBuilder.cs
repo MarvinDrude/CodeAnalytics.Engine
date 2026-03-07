@@ -27,6 +27,8 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
    private readonly string _orderedFilePath;
    private readonly string _finalFilePath;
 
+   private readonly string _finalFileName;
+
    public BTreeIndexBuilder(
       BakeContext context, FileId sourceFileId,
       Func<TEntity, TKey> keySelector, string indexName,
@@ -42,11 +44,12 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
       
       _unorderedFilePath = $"{_sourceFilePath}.{indexName}.tempunordered";
       _orderedFilePath = $"{_sourceFilePath}.{indexName}.tempordered";
-      
-      _finalFilePath = Path.Combine(sourceFolder, $"index_{sourceName.GetBaseFileName()}.{indexName}.mmb");
+
+      _finalFileName = $"index_{sourceName.GetBaseFileName()}.{indexName}.mmb";
+      _finalFilePath = Path.Combine(sourceFolder, _finalFileName);
    }
 
-   public void Build()
+   public string Build()
    {
       using (var sourceHandle = new MmfHandle(_sourceFilePath, writable: false))
       using (var tempUnorderedFile = new FileStream(_unorderedFilePath, FileMode.Create, FileAccess.Write))
@@ -74,6 +77,7 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
       }
       
       File.Delete(_orderedFilePath);
+      return _finalFileName;
    }
 
    private long WriteBranches(List<PageBoundary> offsets, FileStream final)

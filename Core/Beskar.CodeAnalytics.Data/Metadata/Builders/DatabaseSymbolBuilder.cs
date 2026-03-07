@@ -14,6 +14,10 @@ public sealed class DatabaseSymbolBuilder
    private string? _fileNameNamedTypeSymbolSpec;
    private string? _fileNameParameterSymbolSpec;
    
+   public MethodSymbolSpecDescriptor.Indexes? MethodIndexes { get; set; }
+   
+   public SymbolSpecDescriptor.Indexes? SymbolIndexes { get; set; }
+   
    public DatabaseSymbolBuilder WithSymbolSpec(string fileName)
    {
       _fileNameSymbolSpec = fileName;
@@ -69,7 +73,8 @@ public sealed class DatabaseSymbolBuilder
          Symbols = new SymbolSpecDescriptor()
          {
             FileName = _fileNameSymbolSpec 
-               ?? throw new InvalidOperationException("Symbol spec is not set")
+               ?? throw new InvalidOperationException("Symbol spec is not set"),
+            Index = SymbolIndexes ?? throw new InvalidOperationException("Symbol indexes are not set")
          },
          Fields = new FieldSymbolSpecDescriptor()
          {
@@ -79,7 +84,8 @@ public sealed class DatabaseSymbolBuilder
          Methods = new MethodSymbolSpecDescriptor()
          {
             FileName = _fileNameMethodSymbolSpec 
-               ?? throw new InvalidOperationException("Method symbol spec is not set")
+               ?? throw new InvalidOperationException("Method symbol spec is not set"),
+            Index = MethodIndexes ?? throw new InvalidOperationException("Method indexes are not set")
          },
          NamedTypes = new NamedTypeSymbolSpecDescriptor()
          {

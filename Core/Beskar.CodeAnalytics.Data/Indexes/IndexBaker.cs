@@ -27,14 +27,14 @@ public sealed class IndexBaker<TEntity, TKey>
       _name = $"{name}_{indexType}".ToLowerInvariant();
    }
 
-   public void Bake(BakeContext context)
+   public string Bake(BakeContext context)
    {
       switch (_indexType)
       {
          case IndexType.NGram:
             if (_selector is Func<TEntity, StringFileView> stringSelector)
             {
-               new NGramIndexBuilder<TEntity>(
+               return new NGramIndexBuilder<TEntity>(
                   context, 
                   TEntity.FileId, 
                   stringSelector, 
@@ -54,7 +54,7 @@ public sealed class IndexBaker<TEntity, TKey>
             {
                throw new InvalidOperationException();
             }
-            new BTreeIndexBuilder<TEntity, TKey>(
+            return new BTreeIndexBuilder<TEntity, TKey>(
                context, 
                TEntity.FileId, 
                _selector, 
@@ -63,5 +63,7 @@ public sealed class IndexBaker<TEntity, TKey>
                .Build();
             break;
       }
+      
+      return string.Empty;
    }
 }

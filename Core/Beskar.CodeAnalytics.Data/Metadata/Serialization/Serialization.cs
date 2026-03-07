@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using Beskar.CodeAnalytics.Data.Metadata.Readers;
 using Beskar.CodeAnalytics.Data.Metadata.Serialization.Descriptors;
+using Beskar.CodeAnalytics.Data.Metadata.Serialization.Indexes;
 using Beskar.CodeAnalytics.Data.Metadata.Serialization.Specs;
 using Beskar.CodeAnalytics.Data.Metadata.Serialization.Specs.Symbols;
 using Beskar.CodeAnalytics.Data.Metadata.Specs;
@@ -16,6 +18,11 @@ public static class Serialization
    {
       // Defaults
       SerializerRegistry.InitializeDefaults();
+      
+      // Indexes
+      SerializerRegistry.Register(new NGramIndexDescriptorSerializer());
+      SerializerRegistry.Register(new BTreeIndexDescriptorSerializer<uint>());
+      SerializerRegistry.Register(new BTreeIndexDescriptorSerializer<int>());
       
       // Spec descriptors
       SerializerRegistry.Register(new FolderSpecDescriptorSerializer());

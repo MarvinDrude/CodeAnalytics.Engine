@@ -15,7 +15,7 @@ public class SpecDescriptor<TSpec>
    private DatabaseDescriptor? _database;
    private string? _fullFilePath;
    
-   public Task Initialize(DatabaseDescriptor database)
+   public virtual Task Initialize(DatabaseDescriptor database)
    {
       _database = database;
       return Task.CompletedTask;

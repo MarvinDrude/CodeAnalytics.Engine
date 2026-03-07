@@ -42,7 +42,15 @@ using var solutionLease = solutionReader.LeaseAll();
 var syntaxFile = descriptor.Structure.SyntaxFiles.Reader.GetById(fileLease.Span[0].Id);
 
 var rootFolderId = descriptor.Structure.RootFolderId;
+var folderParentIndex = descriptor.Structure.Folders.Index.ParentId.Reader;
+using var res = folderParentIndex.Search(new BTreeSearchQuery<uint>()
+{
+   Keys = [rootFolderId],
+   Type = BTreeSearchQueryType.ExactMatch,
+});
 
+res.Span.Sort();
+var rootFolders = folderReader.GetSpecsBySortedIds(res.Span);
 
 _ = "";
 

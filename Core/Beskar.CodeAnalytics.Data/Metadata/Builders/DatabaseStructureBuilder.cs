@@ -14,6 +14,8 @@ public sealed class DatabaseStructureBuilder
    private string? _fileNameSyntaxFile;
    private string? _fileNameSymbolLocationSpec;
    
+   public FolderSpecDescriptor.Indexes? FolderIndexes { get; set; }
+   
    public DatabaseStructureBuilder WithRootFolderId(uint id)
    {
       _rootFolderId = id;
@@ -64,7 +66,8 @@ public sealed class DatabaseStructureBuilder
          Folders = new FolderSpecDescriptor()
          {
             FileName = _fileNameFolderSpec 
-               ?? throw new InvalidOperationException("Folder spec is not set")
+               ?? throw new InvalidOperationException("Folder spec is not set"),
+            Index = FolderIndexes ?? throw new InvalidOperationException("Folder indexes are not set")
          },
          Files = new FileSpecDescriptor()
          {

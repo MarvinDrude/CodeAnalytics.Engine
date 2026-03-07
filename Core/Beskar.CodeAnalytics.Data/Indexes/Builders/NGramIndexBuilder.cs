@@ -28,6 +28,7 @@ public sealed class NGramIndexBuilder<TEntity>
    private readonly string _dictionaryFilePath;
 
    private readonly string _finalFilePath;
+   private readonly string _finalFileName;
    
    public NGramIndexBuilder(
       BakeContext context, FileId sourceFileId,
@@ -46,11 +47,12 @@ public sealed class NGramIndexBuilder<TEntity>
       
       _postingsFilePath = $"{_sourceFullFilePath}.{indexName}.postings";
       _dictionaryFilePath = $"{_sourceFullFilePath}.{indexName}.dictionary";
-      
-      _finalFilePath = Path.Combine(sourceFolder, $"index_{sourceName.GetBaseFileName()}.{indexName}.mmb");
+
+      _finalFileName = $"index_{sourceName.GetBaseFileName()}.{indexName}.mmb";
+      _finalFilePath = Path.Combine(sourceFolder, _finalFileName);
    }
 
-   public void Build()
+   public string Build()
    {
       using (var sourceHandle = new MmfHandle(_sourceFullFilePath, writable: false))
       using (var tempUnorderedFile = new FileStream(_unorderedFilePath, FileMode.Create, FileAccess.Write))
@@ -73,6 +75,8 @@ public sealed class NGramIndexBuilder<TEntity>
       File.Delete(_orderedFilePath);
       File.Delete(_postingsFilePath);
       File.Delete(_dictionaryFilePath);
+
+      return _finalFileName;
    }
 
    private void MergeFinalFile()

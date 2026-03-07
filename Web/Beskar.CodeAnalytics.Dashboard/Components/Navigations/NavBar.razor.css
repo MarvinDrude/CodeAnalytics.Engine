@@ -75,3 +75,13 @@
     text-align: right;
     color: rgba(255,255,255,0.7);
 }
+
+.nav .right .github a {
+    --icon-size: 34px;
+    --icon-color: var(--text-color);
+    display: flex;
+    line-height: var(--nav-height);
+    height: var(--nav-height);
+    align-items: center;
+    padding: 0 14px;
+}

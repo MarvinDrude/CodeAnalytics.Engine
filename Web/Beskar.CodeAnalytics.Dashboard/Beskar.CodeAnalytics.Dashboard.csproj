@@ -12,4 +12,8 @@
      <Folder Include="wwwroot\images\" />
    </ItemGroup>
 
+   <ItemGroup>
+      <PackageReference Include="Beskar.Blazor.Icons" />
+   </ItemGroup>
+   
 </Project>

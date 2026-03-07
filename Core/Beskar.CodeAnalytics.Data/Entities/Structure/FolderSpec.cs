@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Structure;
 
@@ -14,7 +15,7 @@ public struct FolderSpec : ISpec
    public StringFileView Name;
    public StringFileView FullPath;
 
-   public Flags8 Flags;
+   public PackedBools8 Flags;
 
    public StorageView<FolderSpec> SubFolders;
    public StorageView<FileSpec> Files;
@@ -26,14 +27,14 @@ public struct FolderSpec : ISpec
 
    public bool IsVirtual
    {
-      get => Flags[0].Get(0);
-      set => Flags[0].Set(0, value);
+      get => Flags.Get(0);
+      set => Flags.Set(0, value);
    }
 
    public bool IsRoot
    {
-      get => Flags[0].Get(1);
-      set => Flags[0].Set(1, value);
+      get => Flags.Get(1);
+      set => Flags.Set(1, value);
    }
    
    public static readonly IComparer<FolderSpec> Comparer = Comparer<FolderSpec>.Create(static (x, y) => x.Id.CompareTo(y.Id));

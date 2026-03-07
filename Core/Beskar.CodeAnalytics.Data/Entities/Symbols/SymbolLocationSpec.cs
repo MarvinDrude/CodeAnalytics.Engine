@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
@@ -14,15 +15,15 @@ public struct SymbolLocationSpec : ISpec
    public int LineNumber;
    public LinePreviewView LinePreview;
    
-   public Flags8 Flags;
+   public PackedBools8 Flags;
    
    public uint Identifier => SymbolId;
    public static FileId FileId => FileIds.FileLocation;
 
    public bool IsDeclaration
    {
-      get => Flags[0].Get(0);
-      set => Flags[0].Set(0, value);
+      get => Flags.Get(0);
+      set => Flags.Set(0, value);
    }
    
    public static readonly IComparer<SymbolLocationSpec> Comparer = Comparer<SymbolLocationSpec>.Create(

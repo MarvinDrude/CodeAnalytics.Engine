@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
@@ -11,7 +12,7 @@ public struct NamedTypeSymbolSpec : ISpec
    public uint SymbolId;
    public uint EnumUnderlyingTypeId;
 
-   public Flags8 Flags;
+   public PackedBools8 Flags;
    
    public StorageView<TypeParameterSymbolSpec> TypeParameters;
    
@@ -24,13 +25,13 @@ public struct NamedTypeSymbolSpec : ISpec
    
    public bool IsFileLocal
    {
-      get => Flags[0].Get(0);
-      set => Flags[0].Set(0, value);
+      get => Flags.Get(0);
+      set => Flags.Set(0, value);
    }
    
    public bool IsEnum
    {
-      get => Flags[0].Get(1);
-      set => Flags[0].Set(1, value);
+      get => Flags.Get(1);
+      set => Flags.Set(1, value);
    }
 }

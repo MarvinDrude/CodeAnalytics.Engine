@@ -3,6 +3,7 @@ using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
+using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
@@ -13,7 +14,7 @@ public struct MethodSymbolSpec : ISpec
    public uint ReturnTypeId;
    public uint OverriddenMethodId;
 
-   public Flags8 Flags;
+   public PackedBools8 Flags;
    public MethodType MethodType;
    
    public StorageView<ParameterSymbolSpec> Parameters;
@@ -24,43 +25,43 @@ public struct MethodSymbolSpec : ISpec
    
    public bool HasVoidReturn
    {
-      get => Flags[0].Get(0);
-      set => Flags[0].Set(0, value);
+      get => Flags.Get(0);
+      set => Flags.Set(0, value);
    }
    
    public bool ReturnsByRefReadonly
    {
-      get => Flags[0].Get(2);
-      set => Flags[0].Set(2, value);
+      get => Flags.Get(2);
+      set => Flags.Set(2, value);
    }
    
    public bool ReturnsByRef
    {
-      get => Flags[0].Get(3);
-      set => Flags[0].Set(3, value);
+      get => Flags.Get(3);
+      set => Flags.Set(3, value);
    }
    
    public bool HasOverriddenMethod
    {
-      get => Flags[0].Get(4);
-      set => Flags[0].Set(4, value);
+      get => Flags.Get(4);
+      set => Flags.Set(4, value);
    }
    
    public bool IsReadOnly
    {
-      get => Flags[0].Get(5);
-      set => Flags[0].Set(5, value);
+      get => Flags.Get(5);
+      set => Flags.Set(5, value);
    }
    
    public bool IsIterator
    {
-      get => Flags[0].Get(6);
-      set => Flags[0].Set(6, value);
+      get => Flags.Get(6);
+      set => Flags.Set(6, value);
    }
    
    public bool IsAsync
    {
-      get => Flags[0].Get(7);
-      set => Flags[0].Set(7, value);
+      get => Flags.Get(7);
+      set => Flags.Set(7, value);
    }
 }

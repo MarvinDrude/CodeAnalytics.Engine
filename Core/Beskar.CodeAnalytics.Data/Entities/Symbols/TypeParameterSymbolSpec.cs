@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Me.Memory.Buffers.Dynamic;
 
 namespace Beskar.CodeAnalytics.Data.Entities.Symbols;
 
@@ -11,7 +12,7 @@ public struct TypeParameterSymbolSpec : ISpec
    public uint SymbolId;
 
    public int Ordinal;
-   public Flags8 Flags;
+   public PackedBools8 Flags;
 
    public StorageView<TypeSymbolSpec> ConstraintTypes;
    
@@ -20,37 +21,37 @@ public struct TypeParameterSymbolSpec : ISpec
    
    public bool AllowsRefLikeType
    {
-      get => Flags[0].Get(0);
-      set => Flags[0].Set(0, value);
+      get => Flags.Get(0);
+      set => Flags.Set(0, value);
    }
    
    public bool HasConstructorConstraint
    {
-      get => Flags[0].Get(1);
-      set => Flags[0].Set(1, value);
+      get => Flags.Get(1);
+      set => Flags.Set(1, value);
    }
    
    public bool HasNotNullConstraint
    {
-      get => Flags[0].Get(2);
-      set => Flags[0].Set(2, value);
+      get => Flags.Get(2);
+      set => Flags.Set(2, value);
    }
    
    public bool HasReferenceTypeConstraint
    {
-      get => Flags[0].Get(3);
-      set => Flags[0].Set(3, value);
+      get => Flags.Get(3);
+      set => Flags.Set(3, value);
    }
    
    public bool HasUnmanagedTypeConstraint
    {
-      get => Flags[0].Get(4);
-      set => Flags[0].Set(4, value);
+      get => Flags.Get(4);
+      set => Flags.Set(4, value);
    }
    
    public bool HasValueTypeConstraint
    {
-      get => Flags[0].Get(5);
-      set => Flags[0].Set(5, value);
+      get => Flags.Get(5);
+      set => Flags.Set(5, value);
    }
 }

@@ -16,7 +16,7 @@ public struct SymbolSpec : ISpec
    
    public SymbolType Type;
    public AccessModifier Accessibility;
-   public Flags8 Flags;
+   public PackedBools8 Flags;
 
    public StringFileView Name;
    public StringFileView MetadataName;
@@ -30,49 +30,49 @@ public struct SymbolSpec : ISpec
 
    public bool IsAbstract
    {
-      get => Flags[0].Get(0);
-      set => Flags[0].Set(0, value);
+      get => Flags.Get(0);
+      set => Flags.Set(0, value);
    }
 
    public bool HasContaining
    {
-      get => Flags[0].Get(1);
-      set => Flags[0].Set(1, value);
+      get => Flags.Get(1);
+      set => Flags.Set(1, value);
    }
 
    public bool IsExtern
    {
-      get => Flags[0].Get(2);
-      set => Flags[0].Set(2, value);
+      get => Flags.Get(2);
+      set => Flags.Set(2, value);
    }
    
    public bool IsImplicitlyDeclared
    {
-      get => Flags[0].Get(3);
-      set => Flags[0].Set(3, value);
+      get => Flags.Get(3);
+      set => Flags.Set(3, value);
    }
    
    public bool IsOverride 
    {
-      get => Flags[0].Get(4);
-      set => Flags[0].Set(4, value);
+      get => Flags.Get(4);
+      set => Flags.Set(4, value);
    }
 
    public bool IsSealed
    {
-      get => Flags[0].Get(5);
-      set => Flags[0].Set(5, value);
+      get => Flags.Get(5);
+      set => Flags.Set(5, value);
    }
    
    public bool IsStatic
    {
-      get => Flags[0].Get(6);
-      set => Flags[0].Set(6, value);
+      get => Flags.Get(6);
+      set => Flags.Set(6, value);
    }
    
    public bool IsVirtual
    {
-      get => Flags[0].Get(7);
-      set => Flags[0].Set(7, value);
+      get => Flags.Get(7);
+      set => Flags.Set(7, value);
    }
 }

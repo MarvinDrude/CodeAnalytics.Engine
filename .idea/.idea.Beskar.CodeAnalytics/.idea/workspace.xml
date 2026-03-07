@@ -9,14 +9,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Connectors/FolderConnector.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/IndexNames.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/BTreeIndexDescriptor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/IIndexDescriptor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/IndexDescriptor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/NGramIndexDescriptor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/EdgeConnectionBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/EdgeConnectionBakeStep.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/StructureDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/StructureDescriptor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/SyntaxFileDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/SyntaxFileDescriptor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/FolderSpecDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/FolderSpecDescriptor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,9 +57,14 @@
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxFile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/SyntaxTokenSpec.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Syntax/SyntaxColor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/IndexNames.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseStructureBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseSymbolBuilder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/BTreeIndexDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/IIndexDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/IndexDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Indexes/NGramIndexDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/SpecDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/StructureDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -224,7 +229,7 @@
       <workItem from="1772638875844" duration="11117000" />
       <workItem from="1772731316224" duration="16000" />
       <workItem from="1772732743683" duration="13202000" />
-      <workItem from="1772813713703" duration="21200000" />
+      <workItem from="1772813713703" duration="24268000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -346,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772835838011</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Introduce `FolderConnector` for folder edge connection logic, add `Dispose` implementations to descriptors, and extend `EdgeConnectionBakeStep` with folder support.">
+      <option name="closed" value="true" />
+      <created>1772839628522</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1772839628522</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,7 +384,8 @@
     <MESSAGE value="Add `StructureDescriptorSerializer` and `DatabaseDescriptorSerializer` for serialization. Extend `DatabaseBuilder` usage across baking and folder discovery. Simplify `SpecDescriptor`." />
     <MESSAGE value="Add more spec descriptors and serializers (`FileSpec`, `ProjectSpec`, `SolutionSpec`, `SymbolLocationSpec`, `SyntaxFile`). Extend `DatabaseStructureBuilder` and `StructureDescriptor` for comprehensive metadata handling." />
     <MESSAGE value="Add symbol spec descriptors and serializers (`SymbolSpec`, `TypeSymbolSpec`, `NamedTypeSymbolSpec`, `FieldSymbolSpec`, `PropertySymbolSpec`, `ParameterSymbolSpec`, `MethodSymbolSpec`, `TypeParameterSymbolSpec`, `SymbolEdgeSpec`). Extend `DatabaseBuilder`, `DatabaseDescriptor`, and `Serialization`. Integrate edge spec handling and initialize logic for descriptors." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add symbol spec descriptors and serializers (`SymbolSpec`, `TypeSymbolSpec`, `NamedTypeSymbolSpec`, `FieldSymbolSpec`, `PropertySymbolSpec`, `ParameterSymbolSpec`, `MethodSymbolSpec`, `TypeParameterSymbolSpec`, `SymbolEdgeSpec`). Extend `DatabaseBuilder`, `DatabaseDescriptor`, and `Serialization`. Integrate edge spec handling and initialize logic for descriptors." />
+    <MESSAGE value="Introduce `FolderConnector` for folder edge connection logic, add `Dispose` implementations to descriptors, and extend `EdgeConnectionBakeStep` with folder support." />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduce `FolderConnector` for folder edge connection logic, add `Dispose` implementations to descriptors, and extend `EdgeConnectionBakeStep` with folder support." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -390,13 +404,13 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs</url>
-          <line>45</line>
+          <line>46</line>
           <properties documentPath="C:\Code\Console\Beskar.CodeAnalytics.Experiments\Program.cs" containingFunctionPresentation="">
             <startOffsets>
-              <option value="1734" />
+              <option value="1770" />
             </startOffsets>
             <endOffsets>
-              <option value="1741" />
+              <option value="1777" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="9" />

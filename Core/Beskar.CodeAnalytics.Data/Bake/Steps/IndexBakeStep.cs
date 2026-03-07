@@ -20,15 +20,15 @@ public sealed class IndexBakeStep(ILoggerFactory factory) : IBakeStep
    public ValueTask Execute(BakeContext context, CancellationToken cancellationToken = default)
    {
       // Symbols
-      new IndexBaker<SymbolSpec, StringFileView>(x => x.FullPathName, IndexType.NGram, "fullpathname")
+      new IndexBaker<SymbolSpec, StringFileView>(x => x.FullPathName, IndexType.NGram, IndexNames.Symbol.FullPathName)
          .Bake(context);
       
       // Method Symbols
-      new IndexBaker<MethodSymbolSpec, int>(x => (byte)x.Parameters.Count, IndexType.StaticWideBTree, "parameter_count",
+      new IndexBaker<MethodSymbolSpec, int>(x => (byte)x.Parameters.Count, IndexType.StaticWideBTree, IndexNames.MethodSymbol.ParameterCount,
          Comparer<KeyedIndexEntry<int>>.Create((x, y) => x.Key - y.Key)).Bake(context);
       
       // Folder
-      new IndexBaker<FolderSpec, uint>(x => x.ParentId, IndexType.StaticWideBTree, "parentid",
+      new IndexBaker<FolderSpec, uint>(x => x.ParentId, IndexType.StaticWideBTree, IndexNames.Folder.ParentId,
          Comparer<KeyedIndexEntry<uint>>.Create((x, y) => x.Key.CompareTo(y.Key))).Bake(context);
       
       return ValueTask.CompletedTask;

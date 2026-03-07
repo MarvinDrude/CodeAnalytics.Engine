@@ -1,0 +1,86 @@
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto-VariableFont.woff2') format('woff2-variations'),
+         url('fonts/Roboto-VariableFont.woff2') format('woff2');
+    font-weight: 100 900;
+    font-stretch: 75% 125%;
+}
+
+@font-face {
+    font-family: 'Roboto-Italic';
+    src: url('fonts/Roboto-Italic-VariableFont.woff2') format('woff2-variations'),
+         url('fonts/Roboto-Italic-VariableFont.woff2') format('woff2');
+    font-weight: 100 900;
+    font-stretch: 75% 125%;
+}
+
+@font-face {
+    font-family: 'Roboto-Mono';
+    src: url('fonts/Roboto-VariableFont.woff2') format('woff2-variations'),
+         url('fonts/Roboto-VariableFont.woff2') format('woff2');
+    font-weight: 100 900;
+    font-stretch: 75% 125%;
+}
+
+@font-face {
+    font-family: 'Roboto-Mono-Italic';
+    src: url('fonts/RobotoMono-Italic-VariableFont.woff2') format('woff2-variations'),
+         url('fonts/RobotoMono-Italic-VariableFont.woff2') format('woff2');
+    font-weight: 100 900;
+    font-stretch: 75% 125%;
+}
+
+:root {
+    color-scheme: dark;
+
+    /* Base Neutral Palette (Grays/Blacks) */
+    --bg-black: #010409;         /* Darkest: Header/Tab Bar */
+    --bg-deep: #191a1c;          /* Editor Background */
+    --bg-sidebar: #191a1c;       /* Project Tree Background */
+    --bg-nav: #2b2c31;
+    --text-color: #ffffff;
+
+    /* Borders & Dividers */
+    --border-subtle: #21262d;
+    --border-default: #30363d;
+    --border-active: #8b949e;
+
+    /* The Main Blue (Action/Primary) */
+    --blue-50: #eff6ff;
+    --blue-400: #60a5fa;
+    --blue-500: #3b82f6;         /* Brand Primary */
+    --blue-600: #2563eb;         /* Hover State */
+    --blue-900: #1e3a8a;
+    --blue-glow: rgba(59, 130, 246, 0.15);
+
+    /* The Main Red (Error/Danger) */
+    --red-400: #f87171;
+    --red-500: #ef4444;          /* Brand Error */
+    --red-600: #dc2626;          /* Critical Error */
+    --red-900: #7f1d1d;
+    --red-glow: rgba(239, 68, 68, 0.15);
+
+    /* Supporting Accents (Yellow/Green) */
+    --yellow-500: #eab308;       /* Warnings */
+    --yellow-glow: #eab30822;
+    --green-500: #22c55e;        /* Success/Coverage */
+    --green-glow: #22c55e22;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+body {
+    background-color: var(--bg-deep);
+}
+
+.hidden {
+    display: none !important;
+}

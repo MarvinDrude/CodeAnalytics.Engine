@@ -1,0 +1,17 @@
+
+.page {
+    width: 100svw;
+    height: 100svh;
+    --nav-height: 65px;
+}
+
+.page > .nav {
+    height: var(--nav-height);
+    width: 100%;
+}
+
+.page > .main {
+    height: calc(100svh - var(--nav-height));
+    width: 100%;
+}
+

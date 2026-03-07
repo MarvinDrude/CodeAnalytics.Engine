@@ -15,6 +15,11 @@ public static class ProjectDiscovery
       var projectPath = Path.GetRelativePath(batch.Options.BasePath, project.FilePath ?? $"{Guid.NewGuid()}.csproj");
       var pPathDef = batch.StringDefinitions.GetStringFileView(projectPath);
       var projectId = batch.Identifiers.GenerateIdentifier(projectPath, pPathDef);
+
+      if (!_alreadySeen.Add(projectId))
+      {
+         return projectId;
+      }
       
       var name = Path.GetFileName(projectPath);
       var nameDef = batch.StringDefinitions.GetStringFileView(name);
@@ -68,4 +73,6 @@ public static class ProjectDiscovery
       await batch.ProjectWriter.Write(projectId, spec);
       return projectId;
    }
+
+   private static readonly HashSet<uint> _alreadySeen = [];
 }

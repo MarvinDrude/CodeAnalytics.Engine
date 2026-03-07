@@ -8,8 +8,8 @@
    </PropertyGroup>
 
    <ItemGroup>
-      <ProjectReference Include="..\Beskar.CodeAnalytics.Dashboard.Client\Beskar.CodeAnalytics.Dashboard.Client.csproj" />
-      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+     <Folder Include="wwwroot\fonts\" />
+     <Folder Include="wwwroot\images\" />
    </ItemGroup>
 
 </Project>

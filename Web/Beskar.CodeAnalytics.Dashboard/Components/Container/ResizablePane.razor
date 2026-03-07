@@ -1,0 +1,27 @@
+﻿
+<div class="pane" style="width: @(_state.Width)%">
+   @ChildContent
+</div>
+
+<div class="gutter"></div>
+
+@code {
+   
+   [CascadingParameter] 
+   public ResizableContainer? Parent { get; set; }
+   
+   [Parameter] 
+   public RenderFragment? ChildContent { get; set; }
+   
+   [Parameter] 
+   public double InitialWidth { get; set; }
+
+   private ResizableContainer.PaneState _state = new();
+   private int _myIndex;
+   
+   protected override void OnInitialized()
+   {
+      _state.Width = InitialWidth;
+      Parent?.RegisterPane(_state);
+   }
+}

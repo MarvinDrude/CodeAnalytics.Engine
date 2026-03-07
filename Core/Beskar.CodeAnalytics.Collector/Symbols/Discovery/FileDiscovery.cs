@@ -28,12 +28,18 @@ public static class FileDiscovery
       var folderId = batch.FolderTreeBuilder.GetOrCreateFolder(batch, folderRelative ?? "");
       var id = batch.Identifiers.GenerateIdentifier(filePath, filePathDef);
 
-      if (!_alreadyDiscovered.Add((folderId, id)))
+      if (!_alreadyInProjectDiscovered.Add((context.ProjectId, folderId, id)))
       {
          return false;
       }
       
       batch.WriteDiscoveryEdge(context.ProjectId, id, SymbolEdgeType.ProjectFile);
+
+      if (!_alreadyDiscovered.Add((folderId, id)))
+      {
+         return false;
+      }
+      
       batch.WriteDiscoveryEdge(folderId, id, SymbolEdgeType.FolderToFile);
       
       var spec = new FileSpec()
@@ -68,5 +74,6 @@ public static class FileDiscovery
    /// <summary>
    /// Small workaround to avoid duplicate files in case they are referenced in multiple projects / solutions.
    /// </summary>
+   private static readonly HashSet<(uint ProjectId, uint FolderId, uint FileId)> _alreadyInProjectDiscovered = [];
    private static readonly HashSet<(uint FolderId, uint FileId)> _alreadyDiscovered = [];
 }

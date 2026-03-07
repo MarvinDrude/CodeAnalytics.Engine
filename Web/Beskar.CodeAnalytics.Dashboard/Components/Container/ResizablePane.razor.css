@@ -1,0 +1,26 @@
+﻿.pane {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border-right: 1px solid #333;
+}
+
+.gutter {
+    width: 4px;
+    height: 100%;
+    cursor: col-resize;
+    flex-shrink: 0;
+    background-color: transparent;
+    transition: background-color 0.15s ease;
+    z-index: 10;
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+.gutter:hover,
+.gutter:active {
+    background-color: #007acc;
+    box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
+}

@@ -1,6 +1,7 @@
 ﻿
 using System.Runtime.CompilerServices;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Beskar.CodeAnalytics.Data.Files;
 using Beskar.CodeAnalytics.Data.Hashing;
@@ -51,6 +52,16 @@ using var res = folderParentIndex.Search(new BTreeSearchQuery<uint>()
 
 res.Span.Sort();
 var rootFolders = folderReader.GetSpecsBySortedIds(res.Span);
+
+var rootFileIds = descriptor.Edges.GetTargetIds(rootFolderId, SymbolEdgeType.FolderToFile)
+   .OrderBy(x => x)
+   .ToArray();
+
+var projectRootFolderIds = projectLease.Span.ToArray().Select(x => x.RootFolderId).OrderBy(x => x).ToArray();
+var projectRootFolders = folderReader.GetSpecsBySortedIds(projectRootFolderIds);
+var projectRootFileIds = descriptor.Edges.GetTargetIds(projectRootFolders.Select(x => x.Id), SymbolEdgeType.FolderToFile);
+
+var rootFiles = fileReader.GetSpecsBySortedIds(projectRootFileIds);
 
 _ = "";
 

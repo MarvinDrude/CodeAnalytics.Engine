@@ -45,9 +45,16 @@ public static class ProjectDiscovery
       
       batch.WriteDiscoveryEdge(projectId, id, SymbolEdgeType.ProjectSolution);
       
+      var projectFolder = Path.GetDirectoryName(projectPath) ?? "";
+
+      var folderId = batch.FolderTreeBuilder.GetOrCreateFolder(batch, projectFolder);
+      batch.WriteDiscoveryEdge(projectId, folderId, SymbolEdgeType.ProjectToFolder);
+      
       var spec = new ProjectSpec()
       {
          Id = projectId,
+         RootFolderId = folderId,
+         
          ProjectFilePath = pPathDef,
          Name = nameDef,
          AssemblyName = assemblyNameDef,
@@ -57,13 +64,8 @@ public static class ProjectDiscovery
          ProjectReferences = new StorageView<ProjectSpec>(-1, -1),
          Solutions = new StorageView<SolutionSpec>(-1, -1),
       };
-
-      await batch.ProjectWriter.Write(projectId, spec);
-      var projectFolder = Path.GetDirectoryName(projectPath) ?? "";
-
-      var folderId = batch.FolderTreeBuilder.GetOrCreateFolder(batch, projectFolder);
-      batch.WriteDiscoveryEdge(projectId, folderId, SymbolEdgeType.ProjectToFolder);
       
+      await batch.ProjectWriter.Write(projectId, spec);
       return projectId;
    }
 }

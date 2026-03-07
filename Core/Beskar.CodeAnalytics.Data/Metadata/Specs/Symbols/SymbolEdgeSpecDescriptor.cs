@@ -1,11 +1,121 @@
-﻿using Beskar.CodeAnalytics.Data.Entities.Symbols;
+﻿using System.Runtime.CompilerServices;
+using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Enums.Symbols;
+using Beskar.CodeAnalytics.Data.Files;
 using Beskar.CodeAnalytics.Data.Metadata.Models;
+using Beskar.CodeAnalytics.Data.Metadata.Readers;
+using Me.Memory.Buffers;
 
 namespace Beskar.CodeAnalytics.Data.Metadata.Specs.Symbols;
 
 public sealed class SymbolEdgeSpecDescriptor
    : SpecDescriptor<SymbolEdgeSpec>
 {
+   private static readonly int _structSize = Unsafe.SizeOf<SymbolEdgeSpec>();
+   
+   public MmfHandle.SpanView<SymbolEdgeSpec> LeaseTargetIds<T>(uint sourceId, StorageView<T> view)
+      where T : unmanaged
+   {
+      var reader = GetReader();
+      return reader.Lease(view.Offset * _structSize, view.Count);
+   }
+
+   public uint[] GetTargetIds(uint sourceId, SymbolEdgeType type)
+   {
+      var reader = GetReader();
+      
+      var firstIndex = FindFirstIndex(reader, 0, sourceId, type);
+      if (firstIndex == -1) return [];
+      
+      using ArrayBuilder<uint> result = new (12);
+
+      using var lease = reader.Lease(firstIndex, reader.ItemCount - firstIndex);
+      var span = lease.Span;
+      var offset = 0;
+
+      while (offset < span.Length 
+             && span[offset].SourceSymbolId == sourceId)
+      {
+         var current = span[offset++];
+         if (current.Type != type) break;
+         
+         result.Add(current.TargetSymbolId);
+      }
+      
+      return result.WrittenSpan.ToArray();
+   }
+
+   public uint[] GetTargetIds(IEnumerable<uint> sourceIds, SymbolEdgeType type)
+   {
+      var reader = GetReader();
+      var sortedSources = sourceIds.Distinct().OrderBy(id => id).ToArray();
+      
+      using ArrayBuilder<uint> result = new (12);
+      using var lease = reader.LeaseAll();
+      
+      var span = lease.Span;
+      var currentIdx = 0;
+      
+      foreach (var sourceId in sortedSources)
+      {
+         var firstIndex = FindFirstIndex(reader, currentIdx, sourceId, type);
+         if (firstIndex == -1 || firstIndex >= span.Length) continue;
+         
+         currentIdx = firstIndex;
+         while (currentIdx < span.Length)
+         {
+            ref readonly var entry = ref span[currentIdx];
+            
+            if (entry.SourceSymbolId != sourceId) break;
+            if (entry.Type != type) break;
+            
+            result.Add(entry.TargetSymbolId);
+            currentIdx++;
+         }
+      }
+      
+      return result.WrittenSpan.ToArray();
+   }
+
+   private int FindFirstIndex(SpecFileReader<SymbolEdgeSpec> reader, int startIndex, uint sourceId, SymbolEdgeType type)
+   {
+      var low = startIndex;
+      var high = reader.ItemCount - 1;
+      var result = -1;
+      
+      using var lease = reader.LeaseAll();
+      var span = lease.Span;
+
+      while (low <= high)
+      {
+         var mid = low + ((high - low) / 2);
+         ref readonly var midEntry = ref span[mid];
+
+         var cmp = midEntry.SourceSymbolId.CompareTo(sourceId);
+         if (cmp == 0)
+         {
+            cmp = midEntry.Type.CompareTo(type);
+         }
+
+         if (cmp == 0)
+         {
+            result = mid;
+            high = mid - 1;
+         }
+         else if (cmp < 0)
+         {
+            low = mid + 1;
+         }
+         else
+         {
+            high = mid - 1;
+         }
+      }
+
+      return result;
+   }
+   
    public override IComparer<SymbolEdgeSpec> Comparer => field ??= Comparer<SymbolEdgeSpec>.Create(
       static (x, y) =>
       {

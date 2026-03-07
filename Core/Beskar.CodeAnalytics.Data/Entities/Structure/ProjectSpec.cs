@@ -9,6 +9,7 @@ namespace Beskar.CodeAnalytics.Data.Entities.Structure;
 public struct ProjectSpec : ISpec
 {
    public uint Id;
+   public uint RootFolderId;
    
    public StringFileView Name;
    public StringFileView AssemblyName;

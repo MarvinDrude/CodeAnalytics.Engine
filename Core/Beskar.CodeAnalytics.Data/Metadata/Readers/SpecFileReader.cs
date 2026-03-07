@@ -8,6 +8,8 @@ namespace Beskar.CodeAnalytics.Data.Metadata.Readers;
 public sealed class SpecFileReader<TSpec> : ISpecFileReader
    where TSpec : unmanaged, ISpec
 {
+   public int ItemCount => _itemCount;
+   
    private readonly MmfHandle _handle;
    private readonly int _structSize = Unsafe.SizeOf<TSpec>();
    private readonly int _itemCount;
@@ -81,6 +83,14 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
    public MmfHandle.SpanView<TSpec> LeaseAll()
    {
       return _handle.LeaseSpanView<TSpec>(0, _itemCount);
+   }
+
+   public int FindFirstIndex(uint id)
+   {
+      using var buffer = _handle.GetBuffer();
+      var span = buffer.GetSpan<TSpec>(0, _itemCount);
+      
+      return span.BinaryFindIndex(id);
    }
    
    public void Dispose()

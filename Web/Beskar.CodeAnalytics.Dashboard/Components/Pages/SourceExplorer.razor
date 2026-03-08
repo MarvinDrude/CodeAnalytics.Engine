@@ -20,10 +20,14 @@
       <ResizablePane InitialWidth="60">
          <VerticalResizableContainer>
             <VerticalResizablePane InitialHeight="80">
-               @if (_currentFile is not null)
-               {
-                  <TokenTextViewer SyntaxFile="@_currentFile" />
-               }
+               <div class="code">
+                  <div class="code-header">
+                  </div>
+                  @if (_currentFile is not null)
+                  {
+                     <TokenTextViewer SyntaxFile="@_currentFile"/>
+                  }
+               </div>
             </VerticalResizablePane>
             <VerticalResizablePane InitialHeight="20">
                Bottom 2

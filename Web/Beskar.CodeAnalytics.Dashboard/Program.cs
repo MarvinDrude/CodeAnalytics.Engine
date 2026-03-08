@@ -17,7 +17,8 @@ builder.Services.Configure<DashboardOptions>(
 
 builder.Services.AddSingleton<IDatabaseProvider, DatabaseProvider>()
    .AddSingleton<IDatabaseScheduler, DatabaseScheduler>()
-   .AddSingleton<IFolderService, ImFolderService>();
+   .AddSingleton<IFolderService, ImFolderService>()
+   .AddSingleton<IFileService, FileService>();
 
 var app = builder.Build();
 

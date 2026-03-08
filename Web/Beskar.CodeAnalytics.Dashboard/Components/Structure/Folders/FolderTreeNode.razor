@@ -1,5 +1,6 @@
 ﻿@using Beskar.Blazor.Icons
 @using Beskar.CodeAnalytics.Dashboard.Icons
+@using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Structure
 @using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure
@@ -45,7 +46,10 @@
    <div class="children">
       @if (Item is FolderNodeItem { IsExpanded: true } childOwner)
       {
-         <FolderTreeChildNodes Items="@childOwner.Children" Depth="@(Depth + 1)" />
+         <FolderTreeChildNodes 
+            Items="@childOwner.Children" 
+            Depth="@(Depth + 1)"
+            FileOpen="@FileOpen" />
       }
    </div>
 </div>
@@ -57,6 +61,9 @@
    
    [Parameter]
    public int Depth { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required EventCallback<FileOpenEvent> FileOpen { get; init; }
 
    private bool _loading;
 
@@ -74,6 +81,16 @@
          
          _loading = false;
          await InvokeAsync(StateHasChanged);
+
+         return;
+      }
+
+      if (Item is FileNodeItem file)
+      {
+         await FileOpen.InvokeAsync(new FileOpenEvent()
+         {
+            FileId = file.Id
+         });
       }
    }
 
@@ -81,7 +98,8 @@
    {
       return file.Kind switch
       {
-         FileKind.CSharp => (LanguageIcons.CSharp, "#5fab64")
+         FileKind.CSharp => (LanguageIcons.CSharp, "#5fab64"),
+         _ => throw new ArgumentOutOfRangeException()
       };
    }
 }

@@ -17,8 +17,8 @@
 
 @font-face {
     font-family: 'Roboto-Mono';
-    src: url('fonts/Roboto-VariableFont.woff2') format('woff2-variations'),
-         url('fonts/Roboto-VariableFont.woff2') format('woff2');
+    src: url('fonts/RobotoMono-VariableFont.woff2') format('woff2-variations'),
+         url('fonts/RobotoMono-VariableFont.woff2') format('woff2');
     font-weight: 100 900;
     font-stretch: 75% 125%;
 }

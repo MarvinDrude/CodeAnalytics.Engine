@@ -1,0 +1,55 @@
+﻿@using Beskar.CodeAnalytics.Data.Entities.Structure
+@using Beskar.CodeAnalytics.Data.Syntax
+
+<div class="viewer">
+   @{
+      var lineNumber = 1;
+      var isAtLineStart = true;
+
+      var totalLines = SyntaxFile.Tokens.Count(x => x.IsLineBreak) + 1;
+      var gutterWidth = $"{Math.Max(4, totalLines.ToString().Length)}ch";
+      
+      var tokens = SyntaxFile.Tokens.AsSpan();
+      var start = 0;
+   }
+   @for (var e = 0; e <= tokens.Length; e++)
+   {
+      if (e == tokens.Length || tokens[e].IsLineBreak)
+      {
+         var lineSpan = tokens.Slice(start, e - start);
+
+         <div class="code-line">
+            <div class="line-number" style="--line-number-width: @gutterWidth">@lineNumber</div>
+            <div class="line-content">
+               @foreach (var token in lineSpan)
+               {
+                  var tokenText = SyntaxFile.GetSpan(token);
+                  <span class="token @GetTokenCssClass(token)" 
+                        style="color: @GetColor(token);">@tokenText.ToString()</span>
+               }
+            </div>
+         </div>
+         
+         lineNumber++;
+         start = e + 1;
+      }
+   }
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required SyntaxFile SyntaxFile { get; set; }
+   
+   private static string GetTokenCssClass(SyntaxTokenSpec token)
+   {
+      return string.Empty;
+   }
+
+   private static string GetColor(SyntaxTokenSpec token)
+   {
+      return SyntaxTheme.GetTokenColor(token);
+   }
+
+   private static readonly SyntaxColorTheme SyntaxTheme = new DefaultSyntaxColorTheme();
+}

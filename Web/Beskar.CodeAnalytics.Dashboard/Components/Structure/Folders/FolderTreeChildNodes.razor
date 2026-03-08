@@ -1,9 +1,13 @@
-﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure
+﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
+@using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure
 
 <div>
    @foreach (var item in Items)
    {
-      <FolderTreeNode Item="@item" Depth="@(Depth + 1)" />
+      <FolderTreeNode 
+         Item="@item" 
+         Depth="@(Depth + 1)"
+         FileOpen="@FileOpen" />
    }
 </div>
 
@@ -14,5 +18,8 @@
    
    [Parameter]
    public int Depth { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required EventCallback<FileOpenEvent> FileOpen { get; init; }
    
 }

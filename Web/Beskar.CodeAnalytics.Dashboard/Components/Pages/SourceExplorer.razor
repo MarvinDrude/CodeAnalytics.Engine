@@ -1,18 +1,29 @@
 ﻿@page "/source"
 @using Beskar.CodeAnalytics.Dashboard.Components.Container
+@using Beskar.CodeAnalytics.Dashboard.Components.Source
 @using Beskar.CodeAnalytics.Dashboard.Components.Structure.Folders
+@using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Structure
+@using Beskar.CodeAnalytics.Data.Entities.Structure
+
+@inject IFileService FileService
+@inject IDatabaseScheduler DatabaseScheduler
 
 <PageTitle>Source Explorer</PageTitle>
 
 <div style="width: 100%; height: 100%;">
    <ResizableContainer>
       <ResizablePane InitialWidth="20">
-         <FolderTree></FolderTree>
+         <FolderTree FileOpen="@OnOpenFile"></FolderTree>
       </ResizablePane>
       <ResizablePane InitialWidth="60">
          <VerticalResizableContainer>
             <VerticalResizablePane InitialHeight="80">
-               Top 2
+               @if (_currentFile is not null)
+               {
+                  <TokenTextViewer SyntaxFile="@_currentFile" />
+               }
             </VerticalResizablePane>
             <VerticalResizablePane InitialHeight="20">
                Bottom 2
@@ -26,5 +37,17 @@
 </div>
 
 @code {
-   
+
+   private SyntaxFile? _currentFile;
+
+   private async Task OnOpenFile(FileOpenEvent ev)
+   {
+      await DatabaseScheduler.Schedule(() =>
+      {
+         _currentFile = FileService.GetFile(ev.FileId);
+      });
+      
+      await InvokeAsync(StateHasChanged);
+   }
+
 }

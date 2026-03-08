@@ -1,4 +1,5 @@
-﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
+﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Structure
 @using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure
 
@@ -8,11 +9,17 @@
 <div class="folder-tree-container">
    <h3 class="title">File Tree</h3>
    <div class="scroll">
-      <FolderTreeChildNodes Items="@_rootItems" Depth="@(0)" />
+      <FolderTreeChildNodes 
+         Items="@_rootItems" 
+         Depth="@(0)" 
+         FileOpen="@FileOpen" />
    </div>
 </div>
 
 @code {
+   
+   [Parameter, EditorRequired]
+   public required EventCallback<FileOpenEvent> FileOpen { get; init; }
    
    private List<FileSystemItem> _rootItems = [];
    private bool _isInitialized;

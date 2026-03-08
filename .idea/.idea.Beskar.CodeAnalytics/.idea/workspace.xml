@@ -14,9 +14,7 @@
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -371,7 +369,7 @@
       <workItem from="1772883044603" duration="25007000" />
       <workItem from="1772961351159" duration="4225000" />
       <workItem from="1772968415407" duration="1411000" />
-      <workItem from="1772970042283" duration="20242000" />
+      <workItem from="1772970042283" duration="21060000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -589,7 +587,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772993378699</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Adjust `TokenTextViewer` styling for improved layout and scrolling, refine `SourceExplorer` structure with nested styling updates.">
+      <option name="closed" value="true" />
+      <created>1772994893243</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1772994893243</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -599,7 +605,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="More logic for source tokenizing" />
     <MESSAGE value="Start of syntax discovery writer" />
     <MESSAGE value="Remvoe unused files" />
     <MESSAGE value="Integrate `SyntaxDiscoveryFileWriter`, implement serialization/deserialization for `SyntaxFile`, and update dependencies." />
@@ -624,7 +629,8 @@
     <MESSAGE value="Add folder tree components with hierarchical display for source structure, integrate `DatabaseScheduler` for efficient async operations, and update `SourceExplorer` with folder tree functionality." />
     <MESSAGE value="Enhance folder tree component styling with scrollable content area, improve layout consistency, and adjust spacing in node elements." />
     <MESSAGE value="Add `TokenTextViewer` component for syntax highlighting, integrate file opening logic in `FolderTree`, and enhance `SourceExplorer` with file viewing functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add `TokenTextViewer` component for syntax highlighting, integrate file opening logic in `FolderTree`, and enhance `SourceExplorer` with file viewing functionality." />
+    <MESSAGE value="Adjust `TokenTextViewer` styling for improved layout and scrolling, refine `SourceExplorer` structure with nested styling updates." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adjust `TokenTextViewer` styling for improved layout and scrolling, refine `SourceExplorer` structure with nested styling updates." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

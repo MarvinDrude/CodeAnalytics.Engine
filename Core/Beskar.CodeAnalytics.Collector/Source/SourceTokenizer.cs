@@ -2,7 +2,6 @@
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
-using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Beskar.CodeAnalytics.Data.Enums.Syntax;
 using Microsoft.CodeAnalysis.Classification;
 using Microsoft.CodeAnalysis.Text;
@@ -17,9 +16,6 @@ public sealed class SourceTokenizer(
    private readonly DiscoverContext _context = context;
    private readonly Dictionary<TextSpan, TextSpanCacheEntry> _spans = spans;
    private readonly uint _fileId = fileId;
-   
-   private int _lastLineIndex = -1;
-   private LinePreviewView _lastPreviewView;
 
    public async Task<SyntaxFile> Tokenize(
       CancellationToken cancellationToken)
@@ -31,7 +27,7 @@ public sealed class SourceTokenizer(
          cancellationToken);
       
       var sortedSpans = all.GroupBy(x => x.TextSpan)
-         .Select(g => g.OrderByDescending(c => c.ClassificationType == ClassificationTypeNames.Keyword).First())
+         .Select(g => g.OrderByDescending(c => GetPriority(c.ClassificationType)).First())
          .OrderBy(c => c.TextSpan.Start)
          .ToArray();
       
@@ -57,7 +53,7 @@ public sealed class SourceTokenizer(
 
       return new SyntaxFile()
       {
-         FileId = fileId,
+         FileId = _fileId,
          FileName = Path.GetFileName(_context.Document.FilePath ?? "Unknown.cs"),
          RawText = rawText,
          Tokens = tokens.ToArray()
@@ -159,5 +155,24 @@ public sealed class SourceTokenizer(
       }
 
       return spec;
+   }
+   
+   private static int GetPriority(string classificationType)
+   {
+      return classificationType switch
+      {
+         ClassificationTypeNames.Keyword => 100,
+         ClassificationTypeNames.ControlKeyword => 100,
+         ClassificationTypeNames.MethodName => 90,
+         ClassificationTypeNames.ClassName => 90,
+         ClassificationTypeNames.PropertyName => 90,
+         ClassificationTypeNames.FieldName => 90,
+         ClassificationTypeNames.LocalName => 90,
+         ClassificationTypeNames.ParameterName => 90,
+         ClassificationTypeNames.ConstantName => 90,
+         ClassificationTypeNames.Identifier => 50,
+         ClassificationTypeNames.StaticSymbol => 10,
+         _ => 0
+      };
    }
 }

@@ -13,36 +13,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Structure/FileKind.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/StringPoolDescriptorSerializer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Strings/StringPoolDescriptor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Services/IDatabaseProvider.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Structure/IFolderService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FileNodeItem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FileSystemItem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FolderNodeItem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Options/DashboardOptions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Database/DatabaseProvider.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Structure/ImFolderService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Services/IDatabaseScheduler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeChildNodes.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeChildNodes.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeNode.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeNode.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Icons/Icons.Languages.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Database/DatabaseScheduler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Beskar.CodeAnalytics.slnx" beforeDir="false" afterPath="$PROJECT_DIR$/Beskar.CodeAnalytics.slnx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Experiments/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Misc/StringFileView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Misc/StringFileView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/FileSpec.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/FileSpec.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/DatabaseDescriptorSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/DatabaseDescriptorSerializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/Symbols/SymbolEdgeSpecDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/Symbols/SymbolEdgeSpecDescriptor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Directory.Packages.props" beforeDir="false" afterPath="$PROJECT_DIR$/Directory.Packages.props" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Beskar.CodeAnalytics.Dashboard.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Beskar.CodeAnalytics.Dashboard.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,6 +133,7 @@
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/SyntaxColorTheme.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/SyntaxFileReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Services/IDatabaseProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Services/IDatabaseScheduler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Structure/IFolderService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FileNodeItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FileSystemItem.cs" root0="FORCE_HIGHLIGHTING" />
@@ -161,8 +145,13 @@
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Container/VerticalResizablePane.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeChildNodes.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeNode.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Extensions/Web/JsRuntimeExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Icons/Icons.Languages.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Database/DatabaseProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Database/DatabaseScheduler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/10266c87dbbbc0c3151e404fe3f57ccbf96b369ced95fa558ba13f0ae9a43/TextLineCollection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2033153ba131807d3a368ee629bf2e717494c9b8d9bba160368b6a45ac86d/StringSerializer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/228bff957d5b9f32cfbedd8bf82a5d3e862ec3e051593a67913b95ae288287/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -173,6 +162,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/90edbf813ea8e8f623dd9d57db2ae719e6d584ad33c4515fefecef6c33dc944a/ByteWriter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9ddfdee61c904953fdd1f4ed4478e6cce44296cdfe63bf969d8bb9f67fe40/SafeFileHandle.Windows.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a04e2bec9080a2907fc729c489445fb6464fec83cc9e4025bd314c8ce4f86ca8/Path.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b26778fbf24f6ac99a314d76d69185dbc050b1dd/BeIcon_razor.g.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b2ce756ae4f8b5266132977aeae6764716fa5ccb10d9ff1e11936b37e3c75/CSharpExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b8162dd874966f214c5695ff659ca8060ec5c55bdf10c81198ed93321f71/Classifier.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bb362647ae384e54c5fbe57631a2a77cc3d1a9634c1d4d4548a7fed8b7fb5/Solution.cs" root0="SKIP_HIGHLIGHTING" />
@@ -386,7 +376,7 @@
       <workItem from="1772883044603" duration="25007000" />
       <workItem from="1772961351159" duration="4225000" />
       <workItem from="1772968415407" duration="1411000" />
-      <workItem from="1772970042283" duration="4175000" />
+      <workItem from="1772970042283" duration="11282000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -572,7 +562,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772928577373</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Introduce shared project for Blazor dashboard with models, options, services, and interfaces. Add `StringPoolDescriptor`, extend `DatabaseDescriptor` and `DatabaseBuilder` for string pool handling, and implement folder structure services. Refactor `FileDiscovery` and `SpecFileReader` to support string-based file and folder names. Update dependencies and project references.">
+      <option name="closed" value="true" />
+      <created>1772974309952</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1772974309952</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -605,7 +603,8 @@
     <MESSAGE value="Restructure and update Blazor dashboard with consolidated Razor components, refined routing, navigation enhancements, modernized styles, and standardized project settings." />
     <MESSAGE value="Add GitHub link with icon to NavBar and integrate `Beskar.Blazor.Icons` package." />
     <MESSAGE value="Introduce vertical resizable container and pane components with corresponding styles and JavaScript logic. Integrate into `SourceExplorer` for nested vertical resizing functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Introduce vertical resizable container and pane components with corresponding styles and JavaScript logic. Integrate into `SourceExplorer` for nested vertical resizing functionality." />
+    <MESSAGE value="Introduce shared project for Blazor dashboard with models, options, services, and interfaces. Add `StringPoolDescriptor`, extend `DatabaseDescriptor` and `DatabaseBuilder` for string pool handling, and implement folder structure services. Refactor `FileDiscovery` and `SpecFileReader` to support string-based file and folder names. Update dependencies and project references." />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduce shared project for Blazor dashboard with models, options, services, and interfaces. Add `StringPoolDescriptor`, extend `DatabaseDescriptor` and `DatabaseBuilder` for string pool handling, and implement folder structure services. Refactor `FileDiscovery` and `SpecFileReader` to support string-based file and folder names. Update dependencies and project references." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -634,19 +633,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Program.cs</url>
-          <line>35</line>
-          <properties documentPath="C:\Code\Web\Beskar.CodeAnalytics.Dashboard\Program.cs" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="1245" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1282" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

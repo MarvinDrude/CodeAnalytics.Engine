@@ -1,0 +1,87 @@
+﻿@using Beskar.Blazor.Icons
+@using Beskar.CodeAnalytics.Dashboard.Icons
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Structure
+@using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure
+@using Beskar.CodeAnalytics.Data.Enums.Structure
+
+@inject IDatabaseScheduler DatabaseScheduler
+@inject IFolderService FolderService
+
+<div>
+   <div @onclick="@OnClick" class="node @(Item is FolderNodeItem ? "folder" : "file")">
+      <div class="depth">
+         @for (var i = 0; i < Depth; i++)
+         {
+            <div class="indent"></div>
+         }
+      </div>
+      @if (Item is FolderNodeItem folder)
+      {
+         <div class="chevron">
+            <BeIcon Icon="@(folder.IsExpanded ? BeskarIcon.Normal.KeyboardArrowDown : BeskarIcon.Normal.KeyboardArrowRight)"/>
+         </div>
+         <div class="icon-wrapper">
+            <BeIcon Icon="@(folder.IsExpanded ? BeskarIcon.Outlined.FolderOpen : BeskarIcon.Normal.Folder)"/>
+         </div>
+         <div class="name">
+            @folder.Name
+         </div>
+      }
+      else if (Item is FileNodeItem file)
+      {
+         var (icon, color) = GetFileIcon(file);
+         
+         <div class="chevron-placeholder">
+         </div>
+         <div class="icon-wrapper">
+            <BeIcon Icon="@icon" Color="@color" />
+         </div>
+         <div class="name">
+            @file.Name
+         </div>
+      }
+   </div>
+   <div class="children">
+      @if (Item is FolderNodeItem { IsExpanded: true } childOwner)
+      {
+         <FolderTreeChildNodes Items="@childOwner.Children" Depth="@(Depth + 1)" />
+      }
+   </div>
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required FileSystemItem Item { get; set; }
+   
+   [Parameter]
+   public int Depth { get; set; }
+
+   private bool _loading;
+
+   private async Task OnClick()
+   {
+      if (_loading) return;
+      
+      if (Item is FolderNodeItem folder)
+      {
+         folder.IsExpanded = !folder.IsExpanded;
+         if (folder.IsLoaded) return;
+         
+         _loading = true;
+         await DatabaseScheduler.Schedule(() => FolderService.GetNodesByParent(folder));
+         
+         _loading = false;
+         await InvokeAsync(StateHasChanged);
+      }
+   }
+
+   private (string Icon, string Color) GetFileIcon(FileNodeItem file)
+   {
+      return file.Kind switch
+      {
+         FileKind.CSharp => (LanguageIcons.CSharp, "#5fab64")
+      };
+   }
+}

@@ -1,0 +1,48 @@
+﻿
+.node {
+    --node-height: 35px;
+    display: flex;
+    height: var(--node-height);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.node:hover {
+    background-color: rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+::deep .node.folder .icon-wrapper svg {
+    fill: #f2cd78 !important;
+}
+
+::deep .node.file .icon-wrapper svg {
+    fill: var(--icon-color) !important;
+}
+
+.depth {
+    display: flex;
+}
+
+.depth .indent {
+    width: 12px;
+    height: var(--node-height);
+}
+
+.chevron,
+.icon-wrapper,
+.name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chevron-placeholder {
+    height: var(--node-height);
+    width: 22px;
+}
+
+.icon-wrapper {
+    padding-right: 10px;
+}

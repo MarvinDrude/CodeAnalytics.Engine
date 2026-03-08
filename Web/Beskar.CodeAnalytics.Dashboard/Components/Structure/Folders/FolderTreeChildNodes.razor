@@ -1,0 +1,18 @@
+﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure
+
+<div>
+   @foreach (var item in Items)
+   {
+      <FolderTreeNode Item="@item" Depth="@(Depth + 1)" />
+   }
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required List<FileSystemItem> Items { get; set; }
+   
+   [Parameter]
+   public int Depth { get; set; }
+   
+}

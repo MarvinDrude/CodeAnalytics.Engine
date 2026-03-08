@@ -8,7 +8,7 @@
    </PropertyGroup>
 
    <ItemGroup>
-     <Folder Include="Components\Structure\Folders\" />
+     <Folder Include="Extensions\System\" />
      <Folder Include="wwwroot\fonts\" />
      <Folder Include="wwwroot\images\" />
    </ItemGroup>

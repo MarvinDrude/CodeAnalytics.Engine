@@ -1,12 +1,13 @@
 ﻿@page "/source"
 @using Beskar.CodeAnalytics.Dashboard.Components.Container
+@using Beskar.CodeAnalytics.Dashboard.Components.Structure.Folders
 
 <PageTitle>Source Explorer</PageTitle>
 
 <div style="width: 100%; height: 100%;">
    <ResizableContainer>
       <ResizablePane InitialWidth="20">
-         Test 1
+         <FolderTree></FolderTree>
       </ResizablePane>
       <ResizablePane InitialWidth="60">
          <VerticalResizableContainer>

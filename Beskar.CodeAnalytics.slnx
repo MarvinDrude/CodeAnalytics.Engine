@@ -9,6 +9,7 @@
     <Project Path="Core/Beskar.CodeAnalytics.Data/Beskar.CodeAnalytics.Data.csproj" />
   </Folder>
   <Folder Name="/Web/">
+    <Project Path="Web/Beskar.CodeAnalytics.Dashboard.Shared/Beskar.CodeAnalytics.Dashboard.Shared.csproj" />
     <Project Path="Web/Beskar.CodeAnalytics.Dashboard/Beskar.CodeAnalytics.Dashboard.csproj" />
   </Folder>
 </Solution>

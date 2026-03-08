@@ -43,6 +43,7 @@ public static class Serialization
       SerializerRegistry.Register(new SymbolSpecDescriptorSerializer());
       
       // Descriptors
+      SerializerRegistry.Register(new StringPoolDescriptorSerializer());
       SerializerRegistry.Register(new SyntaxFileDescriptorSerializer());
       SerializerRegistry.Register(new SymbolsDescriptorSerializer());
       SerializerRegistry.Register(new StructureDescriptorSerializer());

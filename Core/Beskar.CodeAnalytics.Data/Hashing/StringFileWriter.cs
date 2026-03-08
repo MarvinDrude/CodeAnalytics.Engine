@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO.MemoryMappedFiles;
 using System.Text;
+using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Me.Memory.Buffers;
@@ -10,6 +11,8 @@ namespace Beskar.CodeAnalytics.Data.Hashing;
 
 public sealed class StringFileWriter : IDisposable
 {
+   public string FileName => FileNames.StringPool;
+   
    private readonly Lock _lock = new();
    private readonly Dictionary<ulong, List<long>> _registry = [];
    

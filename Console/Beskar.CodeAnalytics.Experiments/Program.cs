@@ -53,15 +53,15 @@ using var res = folderParentIndex.Search(new BTreeSearchQuery<uint>()
 res.Span.Sort();
 var rootFolders = folderReader.GetSpecsBySortedIds(res.Span);
 
-var rootFileIds = descriptor.Edges.GetTargetIds(rootFolderId, SymbolEdgeType.FolderToFile)
-   .OrderBy(x => x)
-   .ToArray();
-
-var projectRootFolderIds = projectLease.Span.ToArray().Select(x => x.RootFolderId).OrderBy(x => x).ToArray();
-var projectRootFolders = folderReader.GetSpecsBySortedIds(projectRootFolderIds);
-var projectRootFileIds = descriptor.Edges.GetTargetIds(projectRootFolders.Select(x => x.Id), SymbolEdgeType.FolderToFile);
-
-var rootFiles = fileReader.GetSpecsBySortedIds(projectRootFileIds);
+// var rootFileIds = descriptor.Edges.GetTargetIds(rootFolderId, SymbolEdgeType.FolderToFile)
+//    .OrderBy(x => x)
+//    .ToArray();
+//
+// var projectRootFolderIds = projectLease.Span.ToArray().Select(x => x.RootFolderId).OrderBy(x => x).ToArray();
+// var projectRootFolders = folderReader.GetSpecsBySortedIds(projectRootFolderIds);
+// var projectRootFileIds = descriptor.Edges.GetTargetIds(projectRootFolders.Select(x => x.Id), SymbolEdgeType.FolderToFile);
+//
+// var rootFiles = fileReader.GetSpecsBySortedIds(projectRootFileIds);
 
 _ = "";
 

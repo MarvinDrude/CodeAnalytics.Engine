@@ -4,7 +4,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Me.Memory" Version="1.3.5" />
+    <PackageVersion Include="Me.Memory" Version="1.3.7" />
     <PackageVersion Include="Beskar.Blazor.Icons" Version="1.0.0" />
     <PackageVersion Include="Me.Memory.Embedded.Generator" Version="1.3.3" />
     <PackageVersion Include="Microsoft.Build.Framework" Version="18.3.3" />

@@ -4,6 +4,7 @@ using Beskar.CodeAnalytics.Collector.Source;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Enums.Structure;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Microsoft.CodeAnalysis.Text;
 
@@ -42,10 +43,16 @@ public static class FileDiscovery
       
       batch.WriteDiscoveryEdge(folderId, id, SymbolEdgeType.FolderToFile);
       
+      var fileName = Path.GetFileName(filePath);
+      var fileNameDef = batch.StringDefinitions.GetStringFileView(fileName);
+      
       var spec = new FileSpec()
       {
          Id = id,
          FullPath = filePathDef,
+         Name = fileNameDef,
+         
+         Kind = FileKind.CSharp,
          
          Declarations = new StorageView<SymbolSpec>(-1, -1),
          Symbols = new StorageView<SymbolSpec>(-1, -1),

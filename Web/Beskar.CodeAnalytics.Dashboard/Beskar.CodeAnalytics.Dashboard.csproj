@@ -8,12 +8,17 @@
    </PropertyGroup>
 
    <ItemGroup>
+     <Folder Include="Components\Structure\Folders\" />
      <Folder Include="wwwroot\fonts\" />
      <Folder Include="wwwroot\images\" />
    </ItemGroup>
 
    <ItemGroup>
       <PackageReference Include="Beskar.Blazor.Icons" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <ProjectReference Include="..\Beskar.CodeAnalytics.Dashboard.Shared\Beskar.CodeAnalytics.Dashboard.Shared.csproj" />
    </ItemGroup>
    
 </Project>

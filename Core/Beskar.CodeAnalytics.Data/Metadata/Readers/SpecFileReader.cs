@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Entities.Interfaces;
 using Beskar.CodeAnalytics.Data.Extensions;
 using Beskar.CodeAnalytics.Data.Files;
+using Me.Memory.Buffers;
 
 namespace Beskar.CodeAnalytics.Data.Metadata.Readers;
 
@@ -46,10 +47,9 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
          : span[index];
    }
 
-   public TSpec[] GetSpecsBySortedIds(scoped in ReadOnlySpan<uint> sortedIds)
+   public ArrayBuilderResult<TSpec> GetSpecsBySortedIds(scoped in ReadOnlySpan<uint> sortedIds)
    {
-      var results = new TSpec[sortedIds.Length];
-      var foundCount = 0;
+      var results = new ArrayBuilder<TSpec>(sortedIds.Length);
       
       using var buffer = _handle.GetBuffer();
       var span = buffer.GetSpan<TSpec>(0, _itemCount);
@@ -64,7 +64,7 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
 
          if (sourceIdx < span.Length && span[sourceIdx].Identifier == targetId)
          {
-            results[foundCount++] = span[sourceIdx];
+            results.Add(span[sourceIdx]);
          }
          else
          {

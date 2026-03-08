@@ -120,6 +120,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
 
    public Dictionary<FileId, string> GetFileNames()
    {
+      DatabaseBuilder.WithStringPool(StringDefinitions.FileName);
+      
       return new Dictionary<FileId, string>()
       {
          [FileIds.Symbol] = SymbolWriter.FileName,

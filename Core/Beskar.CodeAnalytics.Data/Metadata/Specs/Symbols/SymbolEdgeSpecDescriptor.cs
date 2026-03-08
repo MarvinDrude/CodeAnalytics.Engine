@@ -21,14 +21,14 @@ public sealed class SymbolEdgeSpecDescriptor
       return reader.Lease(view.Offset * _structSize, view.Count);
    }
 
-   public uint[] GetTargetIds(uint sourceId, SymbolEdgeType type)
+   public ArrayBuilderResult<uint> GetTargetIds(uint sourceId, SymbolEdgeType type)
    {
       var reader = GetReader();
       
       var firstIndex = FindFirstIndex(reader, 0, sourceId, type);
-      if (firstIndex == -1) return [];
+      if (firstIndex == -1) return null;
       
-      using ArrayBuilder<uint> result = new (12);
+      ArrayBuilder<uint> result = new (12);
 
       using var lease = reader.Lease(firstIndex, reader.ItemCount - firstIndex);
       var span = lease.Span;
@@ -43,15 +43,54 @@ public sealed class SymbolEdgeSpecDescriptor
          result.Add(current.TargetSymbolId);
       }
       
-      return result.WrittenSpan.ToArray();
+      return result;
    }
 
-   public uint[] GetTargetIds(IEnumerable<uint> sourceIds, SymbolEdgeType type)
+   public ArrayBuilderResult<uint> GetTargetIds(uint sourceId, params ReadOnlySpan<SymbolEdgeType> types)
+   {
+      if (types.Length == 0) return null;
+      var reader = GetReader();
+      
+      var firstIndex = FindFirstIndex(reader, 0, sourceId, types[0]);
+      if (firstIndex == -1) return null;
+      
+      ArrayBuilder<uint> result = new (12);
+      using var lease = reader.Lease(firstIndex, reader.ItemCount - firstIndex);
+      var span = lease.Span;
+   
+      var offset = 0;
+      var typeIndex = 0;
+      
+      while (offset < span.Length && typeIndex < types.Length)
+      {
+         ref readonly var entry = ref span[offset];
+         if (entry.SourceSymbolId != sourceId) break;
+
+         var currentTargetType = types[typeIndex];
+         if (entry.Type == currentTargetType)
+         {
+            result.Add(entry.TargetSymbolId);
+            offset++;
+         }
+         else if (entry.Type < currentTargetType)
+         {
+            offset++;
+         }
+         else
+         {
+            typeIndex++;
+         }
+      }
+
+      return result;
+   }
+
+   public ArrayBuilderResult<uint> GetTargetIds(IEnumerable<uint> sourceIds, SymbolEdgeType type)
    {
       var reader = GetReader();
       var sortedSources = sourceIds.Distinct().OrderBy(id => id).ToArray();
       
-      using ArrayBuilder<uint> result = new (12);
+      ArrayBuilder<uint> result = new (12);
       using var lease = reader.LeaseAll();
       
       var span = lease.Span;
@@ -75,7 +114,7 @@ public sealed class SymbolEdgeSpecDescriptor
          }
       }
       
-      return result.WrittenSpan.ToArray();
+      return result;
    }
 
    private int FindFirstIndex(SpecFileReader<SymbolEdgeSpec> reader, int startIndex, uint sourceId, SymbolEdgeType type)

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Files;
+using Me.Memory.Buffers;
 
 namespace Beskar.CodeAnalytics.Data.Hashing;
 
@@ -38,6 +39,28 @@ public sealed class StringFileReader : IDisposable
       return Encoding.UTF8.GetString(span);
    }
 
+   public Dictionary<StringFileView, string> GetStrings(scoped in ReadOnlySpan<StringFileView> views)
+   {
+      Dictionary<StringFileView, string> result = [];
+      
+      using var buffer = _handle.GetBuffer();
+      foreach (var view in views)
+      {
+         var offset = (long)view.Offset;
+         
+         var length = buffer.ReadInt32LittleEndian(offset);
+         offset += sizeof(int);
+         
+         var span = buffer.GetSpan<byte>(offset, length);
+         result[view] = Encoding.UTF8.GetString(span);
+      }
+      
+      return result;
+   }
+
+   /// <summary>
+   /// Only for debugging purposes.
+   /// </summary>
    public Dictionary<ulong, string> GetAllStrings()
    {
       Dictionary<ulong, string> result = [];

@@ -5,9 +5,11 @@
 @inject IFolderService FolderService
 @inject IDatabaseScheduler Scheduler
 
-<div>
+<div class="folder-tree-container">
    <h3 class="title">File Tree</h3>
-   <FolderTreeChildNodes Items="@_rootItems" Depth="@(0)" />
+   <div class="scroll">
+      <FolderTreeChildNodes Items="@_rootItems" Depth="@(0)" />
+   </div>
 </div>
 
 @code {

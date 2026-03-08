@@ -43,6 +43,10 @@
     width: 22px;
 }
 
+.name {
+    padding-right: 20px;
+}
+
 .icon-wrapper {
     padding-right: 10px;
 }

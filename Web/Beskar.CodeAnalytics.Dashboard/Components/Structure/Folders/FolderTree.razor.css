@@ -1,7 +1,29 @@
 ﻿
 .title {
-    padding: 10px 20px;
+    padding: 0 20px;
     font-size: 20px;
     background-color: rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid #333;
+    height: 40px;
+    line-height: 40px;
+    flex-shrink: 0;
+}
+
+.folder-tree-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.scroll {
+    flex: 1;
+    overflow: auto;
+}
+
+::deep .scroll > :first-child {
+    min-width: 100%;
+    display: block;
+    width: max-content;
 }

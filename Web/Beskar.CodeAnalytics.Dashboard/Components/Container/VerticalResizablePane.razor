@@ -1,0 +1,25 @@
+﻿<div class="pane" style="height: @(_state.Height)%">
+   @ChildContent
+</div>
+
+<gutter class="gutter-vertical"></gutter>
+
+@code {
+   
+   [CascadingParameter] 
+   public VerticalResizableContainer? Parent { get; set; }
+   
+   [Parameter] 
+   public RenderFragment? ChildContent { get; set; }
+   
+   [Parameter]
+   public double InitialHeight { get; set; }
+
+   private readonly VerticalResizableContainer.PaneState _state = new();
+
+   protected override void OnInitialized()
+   {
+      _state.Height = InitialHeight;
+      Parent?.RegisterPane(_state);
+   }
+}

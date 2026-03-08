@@ -1,0 +1,55 @@
+﻿@using Beskar.CodeAnalytics.Dashboard.Extensions.Web
+@implements IAsyncDisposable
+@inject IJSRuntime JsRuntime
+
+<div class="container-vertical" @ref="@_containerRef">
+   
+   <CascadingValue Value="this" IsFixed="true">
+      @ChildContent
+   </CascadingValue>
+   
+   <div class="drag-overlay-vertical hidden"></div>
+   
+</div>
+
+@code {
+   
+   [Parameter] 
+   public RenderFragment? ChildContent { get; set; }
+   
+   private ElementReference _containerRef;
+   private List<PaneState> _panes = [];
+   
+   private IJSObjectReference? _resizer;
+   private IJSObjectReference? _module;
+   
+   public void RegisterPane(PaneState pane) => _panes.Add(pane);
+
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if (firstRender)
+      {
+         _module = await JsRuntime.GetModule("Container/VerticalResizableContainer.razor.js");
+         _resizer = await _module.InvokeAsync<IJSObjectReference>("initResizer", _containerRef);
+      }
+   }
+
+   public async ValueTask DisposeAsync()
+   {
+      try
+      {
+         if (_resizer != null)
+         {
+            await _resizer.InvokeVoidAsync("dispose");
+            await _resizer.DisposeAsync();
+         }
+         if (_module != null) await _module.DisposeAsync();
+      }
+      catch (JSDisconnectedException) { }
+   }
+
+   public class PaneState
+   {
+      public double Height { get; set; }
+   }
+}

@@ -3,7 +3,7 @@
    @ChildContent
 </div>
 
-<div class="gutter"></div>
+<gutter class="gutter"></gutter>
 
 @code {
    
@@ -16,8 +16,7 @@
    [Parameter] 
    public double InitialWidth { get; set; }
 
-   private ResizableContainer.PaneState _state = new();
-   private int _myIndex;
+   private readonly ResizableContainer.PaneState _state = new();
    
    protected override void OnInitialized()
    {

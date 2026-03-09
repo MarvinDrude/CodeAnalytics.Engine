@@ -10,6 +10,8 @@ public sealed class DatabaseBuilder
    
    public DatabaseSymbolBuilder Symbols { get; } = new();
    
+   public StorageBuilder Storage { get; } = new();
+   
    private string? _fileNameEdgeSpec;
    private string? _stringPoolFileName;
    
@@ -41,7 +43,8 @@ public sealed class DatabaseBuilder
                ?? throw new InvalidOperationException("String pool file name is not specified")
          },
          Structure = Structure.Build(),
-         Symbols = Symbols.Build()
+         Symbols = Symbols.Build(),
+         Storage = Storage.Build()
       };
    }
 }

@@ -1,10 +1,14 @@
-﻿@using Beskar.CodeAnalytics.Data.Entities.Structure
+﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
+@using Beskar.CodeAnalytics.Data.Entities.Structure
 @using Beskar.CodeAnalytics.Data.Syntax
 
-<div class="viewer">
+<script type="module" src="@Assets["Components/Source/TokenTextViewer.razor.js"]"></script>
+
+<div 
+   class="viewer" 
+   @key="@SyntaxFile.FileId">
    @{
       var lineNumber = 1;
-      var isAtLineStart = true;
 
       var totalLines = SyntaxFile.Tokens.Count(x => x.IsLineBreak) + 1;
       var gutterWidth = $"{Math.Max(4, totalLines.ToString().Length)}ch";
@@ -18,14 +22,23 @@
       {
          var lineSpan = tokens.Slice(start, e - start);
 
-         <div class="code-line">
+         <div class="code-line" @key="@lineNumber">
             <div class="line-number" style="--line-number-width: @gutterWidth">@lineNumber</div>
             <div class="line-content">
-               @foreach (var token in lineSpan)
+               @for (var index = 0; index < lineSpan.Length; index++)
                {
+                  var token = lineSpan[index];
+                  var absoluteIndex = start + index;
+                  
                   var tokenText = SyntaxFile.GetSpan(token);
-                  <span class="token @GetTokenCssClass(token)" 
-                        style="color: @GetColor(token);">@tokenText.ToString()</span>
+                  
+                  <span class="token @GetTokenCssClass(token)"
+                        @onclick="@(() => OnCodeClick(absoluteIndex))"
+                        style="color: @GetColor(token);"
+                        @key="@absoluteIndex"
+                        data-index="@(absoluteIndex)">
+                     @tokenText.ToString()
+                  </span>
                }
             </div>
          </div>
@@ -41,9 +54,27 @@
    [Parameter, EditorRequired]
    public required SyntaxFile SyntaxFile { get; set; }
    
+   [Parameter]
+   public EventCallback<TokenClickEvent> TokenClick { get; set; }
+   
+   private async Task OnCodeClick(int index)
+   {
+      var token = SyntaxFile.Tokens[index];
+      if (!token.HasSymbol) return;
+      
+      await TokenClick.InvokeAsync(new TokenClickEvent()
+      {
+         Token = token
+      });
+   }
+   
    private static string GetTokenCssClass(SyntaxTokenSpec token)
    {
-      return string.Empty;
+      return token switch
+      {
+         { HasSymbol: true } => "hoverable",
+         _ => string.Empty
+      };
    }
 
    private static string GetColor(SyntaxTokenSpec token)

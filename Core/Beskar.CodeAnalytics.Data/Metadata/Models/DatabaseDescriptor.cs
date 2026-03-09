@@ -2,6 +2,7 @@
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Metadata.Readers;
 using Beskar.CodeAnalytics.Data.Metadata.Specs.Symbols;
+using Beskar.CodeAnalytics.Data.Metadata.Storage;
 using Beskar.CodeAnalytics.Data.Metadata.Strings;
 using Me.Memory.Extensions;
 
@@ -36,6 +37,11 @@ public sealed class DatabaseDescriptor : IDisposable
    /// String pool descriptor.
    /// </summary>
    public required StringPoolDescriptor StringPool { get; set; }
+   
+   /// <summary>
+   /// Storage descriptor.
+   /// </summary>
+   public required StorageDescriptor Storage { get; set; }
 
    /// <summary>
    /// Holds all spec readers.

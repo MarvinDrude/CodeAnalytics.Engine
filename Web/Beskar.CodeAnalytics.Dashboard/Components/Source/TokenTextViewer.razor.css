@@ -44,3 +44,11 @@
     min-width: max-content;
 }
 
+.viewer .hoverable {
+    cursor: pointer;
+    transition: .3s ease all;
+}
+
+.viewer .hoverable:hover { 
+    background-color: rgba(255,255,255,0.1);
+}

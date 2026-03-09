@@ -84,3 +84,8 @@ body {
 .hidden {
     display: none !important;
 }
+
+.components-reconnect-dialog p,
+.components-reconnect-overlay p {
+    color: #000 !important;
+}

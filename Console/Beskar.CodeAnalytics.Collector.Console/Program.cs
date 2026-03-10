@@ -117,6 +117,7 @@ try
       cancellationToken);
    
    using var descriptor = dbBuilder.Build();
+   
    await using var metadataFile = File.Open(Path.Combine(collectOptions.OutputPath, $"metadata.{FileNames.Suffix}"), FileMode.Create);
    descriptor.SerializeStream(metadataFile);
 }

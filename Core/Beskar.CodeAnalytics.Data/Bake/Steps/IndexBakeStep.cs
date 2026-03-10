@@ -14,6 +14,7 @@ using Beskar.CodeAnalytics.Data.Metadata.Indexes;
 using Beskar.CodeAnalytics.Data.Metadata.Indexes.Cache;
 using Beskar.CodeAnalytics.Data.Metadata.Specs;
 using Beskar.CodeAnalytics.Data.Metadata.Specs.Symbols;
+using Beskar.CodeAnalytics.Data.Metadata.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Beskar.CodeAnalytics.Data.Bake.Steps;
@@ -35,13 +36,17 @@ public sealed class IndexBakeStep(ILoggerFactory factory) : IBakeStep
       // Method Symbols
       context.DatabaseBuilder.Symbols.MethodIndexes = new MethodSymbolSpecDescriptor.Indexes()
       {
-         ParameterCount = CreateBTreeIndex<MethodSymbolSpec, int>(context, IndexNames.MethodSymbol.ParameterCount, x => x.Parameters.Count, Comparer<KeyedIndexEntry<int>>.Create((x, y) => x.Key - y.Key))
+         ParameterCount = CreateBTreeIndex<MethodSymbolSpec, int>(
+            context, IndexNames.MethodSymbol.ParameterCount, x => x.Parameters.Count, 
+            Comparer<KeyedIndexEntry<int>>.Create((x, y) => x.Key - y.Key))
       };
       
       // Folder
-      context.DatabaseBuilder.Structure.FolderIndexes = new FolderSpecDescriptor.Indexes
+      var folderIndexes = context.DatabaseBuilder.Structure.FolderIndexes = new FolderSpecDescriptor.Indexes
       {
-         ParentId = CreateBTreeIndex<FolderSpec, uint>(context, IndexNames.Folder.ParentId, x => x.ParentId, Comparer<KeyedIndexEntry<uint>>.Create((x, y) => x.Key.CompareTo(y.Key)))
+         ParentId = CreateBTreeIndex<FolderSpec, uint>(
+            context, IndexNames.Folder.ParentId, x => x.ParentId, 
+            Comparer<KeyedIndexEntry<uint>>.Create((x, y) => x.Key.CompareTo(y.Key)))
       };
       
       return ValueTask.CompletedTask;
@@ -55,7 +60,11 @@ public sealed class IndexBakeStep(ILoggerFactory factory) : IBakeStep
       where TEntity : unmanaged, ISpec
       where TKey : unmanaged, IComparable<TKey>
    {
+      var storageFiles = context.DatabaseBuilder.Storage.Files;
       var fileName = new IndexBaker<TEntity, TKey>(selector, IndexType.StaticWideBTree, name, comparer).Bake(context);
+      
+      
+      
       return new BTreeIndexDescriptor<TKey>()
       {
          Comparer = IndexComparerRegistry<TKey>.GetComparer(name),
@@ -70,7 +79,11 @@ public sealed class IndexBakeStep(ILoggerFactory factory) : IBakeStep
       Func<TEntity, StringFileView> selector)
       where TEntity : unmanaged, ISpec
    {
+      var storageFiles = context.DatabaseBuilder.Storage.Files;
       var fileName = new IndexBaker<TEntity, StringFileView>(selector, IndexType.NGram, name).Bake(context);
+      
+      
+      
       return new NGramIndexDescriptor()
       {
          FileName = fileName,

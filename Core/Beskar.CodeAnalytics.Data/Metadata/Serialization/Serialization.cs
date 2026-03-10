@@ -5,6 +5,8 @@ using Beskar.CodeAnalytics.Data.Metadata.Serialization.Descriptors;
 using Beskar.CodeAnalytics.Data.Metadata.Serialization.Indexes;
 using Beskar.CodeAnalytics.Data.Metadata.Serialization.Specs;
 using Beskar.CodeAnalytics.Data.Metadata.Serialization.Specs.Symbols;
+using Beskar.CodeAnalytics.Data.Metadata.Serialization.Storage;
+using Beskar.CodeAnalytics.Data.Metadata.Serialization.System;
 using Beskar.CodeAnalytics.Data.Metadata.Specs;
 using Me.Memory.Serialization;
 
@@ -19,10 +21,17 @@ public static class Serialization
       // Defaults
       SerializerRegistry.InitializeDefaults();
       
+      // System
+      SerializerRegistry.Register(new DateTimeOffsetSerializer());
+      
       // Indexes
       SerializerRegistry.Register(new NGramIndexDescriptorSerializer());
       SerializerRegistry.Register(new BTreeIndexDescriptorSerializer<uint>());
       SerializerRegistry.Register(new BTreeIndexDescriptorSerializer<int>());
+      
+      // Storage
+      SerializerRegistry.Register(new StorageDescriptorSerializer());
+      SerializerRegistry.Register(new StorageFileDescriptorSerializer());
       
       // Spec descriptors
       SerializerRegistry.Register(new FolderSpecDescriptorSerializer());

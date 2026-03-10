@@ -13,24 +13,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Storage/StorageFileKind.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/StorageBuilder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageDescriptorSerializer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageFileDescriptorSerializer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Storage/StorageDescriptor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Storage/StorageFileDescriptor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/TokenClickEvent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Layout/ReconnectModal.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Layout/ReconnectModal.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Layout/ReconnectModal.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/DatabaseDescriptorSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/DatabaseDescriptorSerializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/wwwroot/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/wwwroot/app.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/System/DateTimeOffsetSerializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageDescriptorSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageDescriptorSerializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageFileDescriptorSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageFileDescriptorSerializer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,6 +109,7 @@
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Specs/Symbols/TypeSymbolSpecDescriptorSerializer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageDescriptorSerializer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageFileDescriptorSerializer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/System/DateTimeOffsetSerializer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/FileSpecDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/FolderSpecDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/ProjectSpecDescriptor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -395,6 +384,7 @@
       <workItem from="1772970042283" duration="23663000" />
       <workItem from="1773059768994" duration="5056000" />
       <workItem from="1773078844495" duration="9978000" />
+      <workItem from="1773165573736" duration="8352000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />

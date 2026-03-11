@@ -5,66 +5,54 @@
 > This project is currently under active development. APIs and internal data structures are subject to change without notice.
 
 ## About the Project
-**Beskar.CodeAnalytics** is a high-performance engine designed to collect, process, and analyze C# source code using the Roslyn compiler platform. It transforms complex codebases into a queryable, binary format optimized for low-memory environments.
+**Beskar.CodeAnalytics** is a high-performance engine designed to collect, process, and analyze C# source code using the Roslyn compiler platform. It transforms complex codebases into a queryable, binary format optimized for high-speed analysis and low-memory environments.
 
 ### Technical Overview
-* **Collection**: Utilizes `MSBuildWorkspace` and Roslyn's semantic models to discover solutions, projects, and symbols.
-* **Baking Engine**: A multi-step pipeline that sorts symbols, connects edges (relationships), and generates specialized indexes.
-* **Indexing**: Implements custom `NGram` and `StaticWideBTree` indexes for fast searching while maintaining a small memory footprint.
-* **Storage**: Data is stored in memory-mapped files (`.mmb`) using compact, sequential struct layouts with 1-byte packing to ensure zero-overhead access.
+* **Collection**: Utilizes `MSBuildWorkspace` and Roslyn's semantic models to discover solutions, projects, and symbols with deep semantic understanding.
+* **Baking Engine**: A multi-step pipeline that sorts symbols, connects relational edges (e.g., base types, overrides), and generates specialized search indexes.
+* **Indexing**: Implements custom `NGram` and `StaticWideBTree` indexes to enable lightning-fast symbol and text searching with a minimal memory footprint.
+* **Storage**: Data is persisted in memory-mapped files (`.mmb`) using compact, sequential struct layouts with 1-byte packing to ensure zero-overhead, "instant-on" access.
+
+---
+
+## Solution Structure
+The project is organized into three primary layers to separate concerns between data processing, core engine logic, and visualization:
+
+* **Core**:
+   * `Beskar.CodeAnalytics.Collector`: The logic for traversing Roslyn workspaces and extracting symbol data.
+   * `Beskar.CodeAnalytics.Data`: The backbone of the engine, containing the baking logic, indexing structures, and MMF storage implementations.
+* **Web**:
+   * `Beskar.CodeAnalytics.Dashboard`: A Blazor-based UI for visualizing the analyzed code analytics.
+   * `Beskar.CodeAnalytics.Dashboard.Shared`: Shared models and interfaces for the dashboard components.
+* **Console**:
+   * `Beskar.CodeAnalytics.Collector.Console`: A CLI tool to trigger the collection and baking process.
+   * `Beskar.CodeAnalytics.Experiments`: A playground for testing new indexing and analysis algorithms.
 
 ---
 
 ## Memory Layout: Specification Structs
+
 All specification structs use `[StructLayout(LayoutKind.Sequential, Pack = 1)]` to ensure a predictable and minimal binary footprint.
 
-## Flag Bitfield Visualization
-To minimize memory usage, boolean properties are packed into single-byte bitfields (e.g., `Flags8`). Below is the mapping for these bytes:
+### Core Symbol Specifications
 
-### SymbolFlags (1 Byte)
-| Bit | Property | Description |
-| :--- | :--- | :--- |
-| `0000 0001` | **IsStatic** | Symbol is declared with the static keyword |
-| `0000 0010` | **IsAbstract** | Symbol is abstract |
-| `0000 0100` | **IsVirtual** | Symbol is virtual |
-| `0000 1000` | **IsOverride** | Symbol overrides a base member |
-| `0001 0000` | **IsSealed** | Symbol is sealed |
-| `0010 0000` | **IsExtern** | Symbol is defined externally |
-
----
-
-## Memory Layout: Specification Structs
-All specification structs use `[StructLayout(LayoutKind.Sequential, Pack = 1)]`.
-
-### SymbolSpec
-| Field | Type | Size (Bytes) | Description |
+#### SymbolSpec (51 Bytes)
+The base specification for all code symbols.
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **Id** | `uint` | 4 | Unique identifier for the symbol |
 | **ContainingId** | `uint` | 4 | ID of the containing symbol |
 | **Type** | `SymbolType` | 1 | Enum indicating the kind of symbol |
 | **Accessibility** | `AccessModifier` | 1 | Visibility (Public, Private, etc.) |
-| **Flags8** | `SymbolFlags` | 1 | **Bitfield** (See SymbolFlags table above) |
+| **Flags8** | `SymbolFlags` | 1 | **Bitfield** (Static, Abstract, Virtual, etc.) |
 | **Name** | `StringFileView` | 8 | Reference to the symbol name string |
 | **MetadataName** | `StringFileView` | 8 | Reference to the metadata name string |
 | **FullPath** | `StringFileView` | 8 | Reference to the full symbol path string |
 | **Declarations** | `StorageView` | 8 | View into associated declarations |
 | **Locations** | `StorageView` | 8 | View into symbol locations |
-| **Total** | | **51** | |
 
-### MethodSymbolSpec
-| Field | Type | Size (Bytes) | Description |
-| :--- | :--- | :--- | :--- |
-| **SymbolId** | `uint` | 4 | Link to the base SymbolSpec |
-| **ReturnTypeId** | `uint` | 4 | ID of the return type symbol |
-| **OverriddenMethodId** | `uint` | 4 | ID of the method this overrides |
-| **Flags8** | `MethodFlags` | 1 | **Bitfield** (Async, ReadOnly, etc.) |
-| **MethodType** | `MethodType` | 1 | Enum for method kind (Normal, Ctor, etc.) |
-| **Parameters** | `StorageView` | 8 | View into the parameter list |
-| **TypeParameters** | `StorageView` | 8 | View into type parameters |
-| **Total** | | **30** | |
-
-### TypeSymbolSpec
-| Field | Type | Size (Bytes) | Description |
+#### TypeSymbolSpec (31 Bytes)
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **SymbolId** | `uint` | 4 | Link to the base SymbolSpec |
 | **BaseTypeId** | `uint` | 4 | ID of the base type symbol |
@@ -73,19 +61,20 @@ All specification structs use `[StructLayout(LayoutKind.Sequential, Pack = 1)]`.
 | **Flags8** | `TypeFlags` | 1 | **Bitfield** (IsReadOnly, IsRecord, etc.) |
 | **AllInterfaces** | `StorageView` | 8 | View into all implemented interfaces |
 | **DirectInterfaces** | `StorageView` | 8 | View into direct interfaces only |
-| **Total** | | **31** | |
 
-### FieldSymbolSpec
-| Field | Type | Size (Bytes) | Description |
+#### MethodSymbolSpec (30 Bytes)
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **SymbolId** | `uint` | 4 | Link to the base SymbolSpec |
-| **TypeId** | `uint` | 4 | ID of the field type symbol |
-| **RefType** | `RefType` | 1 | Reference kind |
-| **Flags8** | `FieldFlags` | 1 | **Bitfield** (IsReadOnly, IsVolatile, etc.) |
-| **Total** | | **10** | |
+| **ReturnTypeId** | `uint` | 4 | ID of the return type symbol |
+| **OverriddenMethodId** | `uint` | 4 | ID of the method this overrides |
+| **Flags8** | `MethodFlags` | 1 | **Bitfield** (Async, ReadOnly, etc.) |
+| **MethodType** | `MethodType` | 1 | Enum for method kind (Normal, Ctor, etc.) |
+| **Parameters** | `StorageView` | 8 | View into the parameter list |
+| **TypeParameters** | `StorageView` | 8 | View into type parameters |
 
-### PropertySymbolSpec
-| Field | Type | Size (Bytes) | Description |
+#### PropertySymbolSpec (18 Bytes)
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **SymbolId** | `uint` | 4 | Link to the base SymbolSpec |
 | **TypeId** | `uint` | 4 | ID of the property type symbol |
@@ -93,10 +82,17 @@ All specification structs use `[StructLayout(LayoutKind.Sequential, Pack = 1)]`.
 | **SetMethodId** | `uint` | 4 | ID of the setter method |
 | **RefType** | `RefType` | 1 | Reference kind (Ref, Out, In, None) |
 | **Flags8** | `PropertyFlags` | 1 | **Bitfield** (IsIndexer, IsReadOnly, etc.) |
-| **Total** | | **18** | |
 
-### ParameterSymbolSpec
-| Field | Type | Size (Bytes) | Description |
+#### FieldSymbolSpec (10 Bytes)
+| Field | Type | Size | Description |
+| :--- | :--- | :--- | :--- |
+| **SymbolId** | `uint` | 4 | Link to the base SymbolSpec |
+| **TypeId** | `uint` | 4 | ID of the field type symbol |
+| **RefType** | `RefType` | 1 | Reference kind |
+| **Flags8** | `FieldFlags` | 1 | **Bitfield** (IsReadOnly, IsVolatile, etc.) |
+
+#### ParameterSymbolSpec (15 Bytes)
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **SymbolId** | `uint` | 4 | Link to the base SymbolSpec |
 | **TypeId** | `uint` | 4 | ID of the parameter type symbol |
@@ -104,10 +100,13 @@ All specification structs use `[StructLayout(LayoutKind.Sequential, Pack = 1)]`.
 | **ScopeType** | `ScopeType` | 1 | Scope kind (None, Scoped) |
 | **RefType** | `RefType` | 1 | Reference kind |
 | **Flags8** | `ParameterFlags` | 1 | **Bitfield** (IsOptional, IsParams, etc.) |
-| **Total** | | **15** | |
 
-### ProjectSpec
-| Field | Type | Size (Bytes) | Description |
+---
+
+### Project & File Structure
+
+#### ProjectSpec (56 Bytes)
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **Id** | `uint` | 4 | Unique identifier for the project |
 | **Name** | `StringFileView` | 8 | Reference to project name string |
@@ -117,23 +116,35 @@ All specification structs use `[StructLayout(LayoutKind.Sequential, Pack = 1)]`.
 | **References** | `StorageView` | 8 | View into project references |
 | **SolutionId** | `uint` | 4 | ID of the containing solution |
 | **Files** | `StorageView` | 8 | View into project files |
-| **Total** | | **56** | |
 
-### FileSpec
-| Field | Type | Size (Bytes) | Description |
+#### FileSpec (28 Bytes)
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **Id** | `uint` | 4 | Unique identifier for the file |
 | **FullPath** | `StringFileView` | 8 | Reference to full file path string |
 | **Symbols** | `StorageView` | 8 | View into all symbols in this file |
 | **Declarations** | `StorageView` | 8 | View into declarations in this file |
-| **Total** | | **28** | |
 
-### SyntaxTokenSpec
-| Field | Type | Size (Bytes) | Description |
+---
+
+### Syntax & Tokens
+
+#### SyntaxTokenSpec (15 Bytes)
+Represents a single token within a source file for syntax highlighting and symbol mapping.
+| Field | Type | Size | Description |
 | :--- | :--- | :--- | :--- |
 | **Start** | `int` | 4 | Character start position |
 | **Length** | `int` | 4 | Length of the token |
 | **Color** | `SyntaxColor` | 2 | Enum for syntax highlighting |
 | **Flags8** | `SyntaxTokenFlags` | 1 | **Bitfield** (IsKeyword, IsIdentifier, etc.) |
 | **SymbolId** | `uint` | 4 | ID of the associated symbol |
-| **Total** | | **15** | |
+---
+
+## Getting Started
+1. **Prerequisites**: Ensure you have the .NET 8.0 SDK or later installed.
+2. **Clone**: `git clone https://github.com/marvindrude/codeanalytics.engine.git`
+3. **Build**: Run `dotnet build` from the root directory.
+4. **Collect**: Use the `Collector.Console` to point the engine at a `.sln` or `.csproj` file to begin the baking process.
+
+## License
+Distributed under the MIT License. See `LICENSE.md` for more information.

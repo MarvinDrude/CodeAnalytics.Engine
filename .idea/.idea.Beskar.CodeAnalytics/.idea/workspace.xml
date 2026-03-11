@@ -13,13 +13,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Models/IndexBuildResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/SymbolSortBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/SymbolSortBakeStep.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/BTreeIndexBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/BTreeIndexBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/NGramIndexBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/NGramIndexBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/IndexBaker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/IndexBaker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Models/BakeContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Models/BakeContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/SyntaxDiscoveryFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/SyntaxDiscoveryFileWriter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Storage/StorageFileKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Storage/StorageFileKind.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -387,7 +387,7 @@
       <workItem from="1773059768994" duration="5056000" />
       <workItem from="1773078844495" duration="9978000" />
       <workItem from="1773165573736" duration="10152000" />
-      <workItem from="1773248730398" duration="8735000" />
+      <workItem from="1773248730398" duration="12188000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -629,7 +629,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773176320860</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Refactor index-building process to return detailed `IndexBuildResult`, update index builders, and enhance `IndexBakeStep` with storage metadata integration.">
+      <option name="closed" value="true" />
+      <created>1773258323182</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1773258323182</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -650,7 +658,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Integrate `SyntaxDiscoveryFileWriter`, implement serialization/deserialization for `SyntaxFile`, and update dependencies." />
     <MESSAGE value="Add `SyntaxFileReader` implementation with deserialization logic and integrate into experiments." />
     <MESSAGE value="Add `SymbolLocationSpec` with location tracking and integrate into discovery, tokenization, and sorting logic." />
     <MESSAGE value="Add `LinePreviewWriter` and `LinePreviewView` for preview serialization and integrate into tokenization and sorting logic." />
@@ -675,7 +682,8 @@
     <MESSAGE value="Adjust `TokenTextViewer` styling for improved layout and scrolling, refine `SourceExplorer` structure with nested styling updates." />
     <MESSAGE value="Fix constant priority calculation" />
     <MESSAGE value="Add serializers for `StorageDescriptor` and `StorageFileDescriptor`, implement `DateTimeOffsetSerializer`, extend `IndexBakeStep` functionality, and register storage-related serializers in `Serialization`." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add serializers for `StorageDescriptor` and `StorageFileDescriptor`, implement `DateTimeOffsetSerializer`, extend `IndexBakeStep` functionality, and register storage-related serializers in `Serialization`." />
+    <MESSAGE value="Refactor index-building process to return detailed `IndexBuildResult`, update index builders, and enhance `IndexBakeStep` with storage metadata integration." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor index-building process to return detailed `IndexBuildResult`, update index builders, and enhance `IndexBakeStep` with storage metadata integration." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -704,6 +712,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs</url>
+          <line>142</line>
+          <properties documentPath="C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\Program.cs" containingFunctionPresentation="">
+            <startOffsets>
+              <option value="4777" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4908" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

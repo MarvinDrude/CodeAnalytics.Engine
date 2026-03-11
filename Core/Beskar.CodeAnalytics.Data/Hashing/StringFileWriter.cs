@@ -13,6 +13,8 @@ public sealed class StringFileWriter : IDisposable
 {
    public string FileName => FileNames.StringPool;
    
+   public ulong ItemCount { get; set; }
+   
    private readonly Lock _lock = new();
    private readonly Dictionary<ulong, List<long>> _registry = [];
    
@@ -81,6 +83,8 @@ public sealed class StringFileWriter : IDisposable
    
    private long Append(scoped in ReadOnlySpan<byte> bytes, ulong hash)
    {
+      ItemCount++;
+      
       if (_length + bytes.Length > _capacity)
       {
          _capacity *= 2;

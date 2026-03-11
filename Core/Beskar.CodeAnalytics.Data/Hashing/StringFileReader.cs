@@ -7,12 +7,14 @@ namespace Beskar.CodeAnalytics.Data.Hashing;
 
 public sealed class StringFileReader : IDisposable
 {
+   public ulong ByteCount => (ulong)_fileInfo.Length;
+   
+   private readonly FileInfo _fileInfo;
    private readonly MmfHandle _handle;
 
    public StringFileReader(string filePath)
    {
-      // Ensure we see the latest size on disk
-      _ = new FileInfo(filePath);
+      _fileInfo = new FileInfo(filePath);
       _handle = new MmfHandle(filePath, writable: false);
    }
 

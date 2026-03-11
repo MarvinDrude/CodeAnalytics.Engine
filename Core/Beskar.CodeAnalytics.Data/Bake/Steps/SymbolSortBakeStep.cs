@@ -109,7 +109,7 @@ public sealed class SymbolSortBakeStep(ILoggerFactory factory) : IBakeStep
       {
          context.DatabaseBuilder.Storage.Files.Add(new StorageFileDescriptor()
          {
-            FileName = targetFullPath,
+            FileName = targetName,
             Name = id.Value,
             Kind = StorageFileKind.Spec,
             LastModified = DateTimeOffset.UtcNow,

@@ -6,6 +6,5 @@ public enum StorageFileKind : byte
    Metadata = 2,
    Index = 3,
    StringPool = 4,
-   SyntaxFiles = 5,
-   Storage = 6
+   SyntaxFiles = 5
 }

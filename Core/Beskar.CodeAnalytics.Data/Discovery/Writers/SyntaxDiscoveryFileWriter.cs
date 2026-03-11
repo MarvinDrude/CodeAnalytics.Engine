@@ -2,7 +2,10 @@
 using Beskar.CodeAnalytics.Data.Bake.Sorting;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
+using Beskar.CodeAnalytics.Data.Enums.Storage;
 using Beskar.CodeAnalytics.Data.Extensions;
+using Beskar.CodeAnalytics.Data.Metadata.Builders;
+using Beskar.CodeAnalytics.Data.Metadata.Storage;
 using Beskar.CodeAnalytics.Data.Serialization;
 using Beskar.CodeAnalytics.Data.Syntax.Headers;
 using Me.Memory.Buffers;
@@ -13,13 +16,15 @@ namespace Beskar.CodeAnalytics.Data.Discovery.Writers;
 public sealed class SyntaxDiscoveryFileWriter : IAsyncDisposable
 {
    public string FileName => FileNames.SyntaxFiles;
-
+   
    private readonly Channel<SyntaxFile> _channel;
    private readonly Task _runningTask;
 
    private readonly FileStream _fileStream;
    private readonly string _filePath;
    private bool _disposed;
+
+   private ulong _itemCount;
    
    public SyntaxDiscoveryFileWriter(string directoryPath)
    {
@@ -36,7 +41,7 @@ public sealed class SyntaxDiscoveryFileWriter : IAsyncDisposable
       _channel.Writer.TryWrite(syntaxFile);
    }
    
-   public async Task Bake()
+   public async Task Bake(DatabaseBuilder builder)
    {
       _channel.Writer.Complete();
       await _runningTask;
@@ -85,6 +90,8 @@ public sealed class SyntaxDiscoveryFileWriter : IAsyncDisposable
       sorter.Sort(dictPath, dictSorted);
       File.Delete(dictPath);
 
+      ulong finalByteCount;
+      
       await using (var final = new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
       await using (var headerFile = new FileStream(dictSorted, FileMode.Open, FileAccess.Read, FileShare.Read))
       await using (var contentFile = new FileStream(contentPath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -95,10 +102,24 @@ public sealed class SyntaxDiscoveryFileWriter : IAsyncDisposable
 
          await headerFile.CopyToAsync(final);
          await contentFile.CopyToAsync(final);
+         
+         finalByteCount = (ulong)final.Length;
       }
       
       File.Delete(dictSorted);
       File.Delete(contentPath);
+      
+      builder.Storage.Files.Add(new StorageFileDescriptor()
+      {
+         FileName = FileName,
+         Kind = StorageFileKind.SyntaxFiles,
+         LastModified = DateTimeOffset.UtcNow,
+         ParentName = string.Empty,
+         Name = "SyntaxFiles",
+         ByteCount = finalByteCount,
+         RowCount = _itemCount
+      });
+      
       _disposed = true;
    }
    
@@ -106,6 +127,7 @@ public sealed class SyntaxDiscoveryFileWriter : IAsyncDisposable
    {
       await foreach (var file in _channel.Reader.ReadAllAsync())
       {
+         _itemCount++;
          SyntaxFileSerializer.Serialize(file, (bytes) =>
          {
             _fileStream.Write(bytes);

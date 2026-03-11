@@ -10,8 +10,12 @@ using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Data.Bake.Common;
 using Beskar.CodeAnalytics.Data.Bake.Steps;
 using Beskar.CodeAnalytics.Data.Constants;
+using Beskar.CodeAnalytics.Data.Enums.Storage;
 using Beskar.CodeAnalytics.Data.Metadata.Builders;
+using Beskar.CodeAnalytics.Data.Metadata.Models;
+using Beskar.CodeAnalytics.Data.Metadata.Storage;
 using Me.Memory.Extensions;
+using Me.Memory.Serialization;
 using Me.Memory.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -117,6 +121,24 @@ try
       cancellationToken);
    
    using var descriptor = dbBuilder.Build();
+
+   var descriptorLocal = descriptor;
+   var length = SerializerRegistry.For<DatabaseDescriptor>().CalculateByteLength(ref descriptorLocal);
+
+   var fileDescriptor = new StorageFileDescriptor()
+   {
+      FileName = $"metadata.{FileNames.Suffix}",
+      Name = "metadata",
+      LastModified = DateTimeOffset.UtcNow,
+      Kind = StorageFileKind.Metadata,
+      ParentName = string.Empty,
+      ByteCount = (ulong)length,
+      RowCount = (ulong)descriptor.Storage.Files.Count + 1
+   };
+   fileDescriptor.ByteCount += (ulong)SerializerRegistry.For<StorageFileDescriptor>()
+      .CalculateByteLength(ref fileDescriptor);
+   
+   descriptor.Storage.Files.Add(fileDescriptor);
    
    await using var metadataFile = File.Open(Path.Combine(collectOptions.OutputPath, $"metadata.{FileNames.Suffix}"), FileMode.Create);
    descriptor.SerializeStream(metadataFile);

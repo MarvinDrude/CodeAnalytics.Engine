@@ -141,10 +141,10 @@ Represents a single token within a source file for syntax highlighting and symbo
 ---
 
 ## Getting Started
-1. **Prerequisites**: Ensure you have the .NET 8.0 SDK or later installed.
+1. **Prerequisites**: Ensure you have the .NET 10.0 SDK or later installed.
 2. **Clone**: `git clone https://github.com/marvindrude/codeanalytics.engine.git`
 3. **Build**: Run `dotnet build` from the root directory.
 4. **Collect**: Use the `Collector.Console` to point the engine at a `.sln` or `.csproj` file to begin the baking process.
 
 ## License
-Distributed under the MIT License. See `LICENSE.md` for more information.
+See `LICENSE.md` for more information.

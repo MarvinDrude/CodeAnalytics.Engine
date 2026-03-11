@@ -49,15 +49,18 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
       _finalFilePath = Path.Combine(sourceFolder, _finalFileName);
    }
 
-   public string Build()
+   public IndexBuildResult Build()
    {
+      ulong totalRows;
+      
       using (var sourceHandle = new MmfHandle(_sourceFilePath, writable: false))
       using (var tempUnorderedFile = new FileStream(_unorderedFilePath, FileMode.Create, FileAccess.Write))
       {
-         WriteUnorderedTempFile(sourceHandle, tempUnorderedFile);
+         totalRows = WriteUnorderedTempFile(sourceHandle, tempUnorderedFile);
       }
       
       SortTempFileExternally();
+      ulong finalByteCount;
       
       using (var orderedSource = new FileStream(_orderedFilePath, FileMode.Open, FileAccess.Read))
       using (var finalFile = new FileStream(_finalFilePath, FileMode.Create, FileAccess.ReadWrite))
@@ -74,10 +77,16 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
          rootOffset.WriteLittleEndian(buffer);
          
          finalFile.Write(buffer);
+         finalByteCount = (ulong)finalFile.Length;
       }
       
       File.Delete(_orderedFilePath);
-      return _finalFileName;
+      return new IndexBuildResult()
+      {
+         FileName = _finalFileName,
+         ByteCount = finalByteCount,
+         RowCount = totalRows
+      };
    }
 
    private long WriteBranches(List<PageBoundary> offsets, FileStream final)
@@ -178,8 +187,10 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
       File.Delete(_unorderedFilePath);
    }
    
-   private void WriteUnorderedTempFile(MmfHandle sourceHandle, FileStream tempUnorderedFile)
+   private ulong WriteUnorderedTempFile(MmfHandle sourceHandle, FileStream tempUnorderedFile)
    {
+      ulong count = 0;
+      
       sourceHandle.ProcessInBatches(8 * 512, (Span<TEntity> span) =>
       {
          foreach (ref var entity in span)
@@ -193,8 +204,12 @@ public sealed class BTreeIndexBuilder<TEntity, TKey>
             
             var byteSpan = entry.AsBytes();
             tempUnorderedFile.Write(byteSpan);
+            
+            count++;
          }
       });
+      
+      return count;
    }
 
    private record struct PageBoundary(TKey MaxKey, long Offset);

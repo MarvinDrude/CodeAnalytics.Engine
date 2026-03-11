@@ -1,10 +1,13 @@
-﻿using Beskar.CodeAnalytics.Data.Bake.Interfaces;
+﻿using System.Runtime.CompilerServices;
+using Beskar.CodeAnalytics.Data.Bake.Interfaces;
 using Beskar.CodeAnalytics.Data.Bake.Models;
 using Beskar.CodeAnalytics.Data.Bake.Sorting;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
+using Beskar.CodeAnalytics.Data.Enums.Storage;
 using Beskar.CodeAnalytics.Data.Extensions;
+using Beskar.CodeAnalytics.Data.Metadata.Storage;
 using Me.Memory.Extensions;
 using Microsoft.Extensions.Logging;
 
@@ -19,6 +22,7 @@ public sealed class SymbolSortBakeStep(ILoggerFactory factory) : IBakeStep
    public string Name => "Symbol Sorting";
 
    private readonly ILogger<SymbolSortBakeStep> _logger = factory.CreateLogger<SymbolSortBakeStep>();
+   private readonly SemaphoreSlim _lock = new (1, 1);
 
    public async ValueTask Execute(BakeContext context, CancellationToken cancellationToken = default)
    {
@@ -81,9 +85,10 @@ public sealed class SymbolSortBakeStep(ILoggerFactory factory) : IBakeStep
          .WithPropertySpec(context.FileNames[FileIds.PropertySymbol]);
       
       context.CompleteStringWriter();
+      _lock.Dispose();
    }
 
-   private static Task<(FileId FileId, string FileName)> RunSort<TSymbol>(
+   private async Task<(FileId FileId, string FileName)> RunSort<TSymbol>(
       BakeContext context, IComparer<TSymbol> comparer, FileId id)
       where TSymbol : unmanaged
    {
@@ -92,11 +97,33 @@ public sealed class SymbolSortBakeStep(ILoggerFactory factory) : IBakeStep
       
       var sourceFullPath = Path.Combine(context.OutputDirectoryPath, sourceName);
       var targetFullPath = Path.Combine(context.OutputDirectoryPath, targetName);
+
+      using (var sorter = new FileSorter<TSymbol>(comparer))
+      {
+         sorter.Sort(sourceFullPath, targetFullPath);
+      }
+
+      var fileInfo = new FileInfo(targetFullPath);
+      await _lock.WaitAsync();
+      try
+      {
+         context.DatabaseBuilder.Storage.Files.Add(new StorageFileDescriptor()
+         {
+            FileName = targetFullPath,
+            Name = id.Value,
+            Kind = StorageFileKind.Spec,
+            LastModified = DateTimeOffset.UtcNow,
+            ParentName = string.Empty,
+            ByteCount = (ulong)fileInfo.Length,
+            RowCount = (ulong)(fileInfo.Length / Unsafe.SizeOf<TSymbol>())
+         });
+      }
+      finally
+      {
+         _lock.Release();
+      }
       
-      using var sorter = new FileSorter<TSymbol>(comparer);
-      sorter.Sort(sourceFullPath, targetFullPath);
-      
-      return Task.FromResult((id, targetName));
+      return (id, targetName);
    }
    
    private static readonly IComparer<SymbolSpec> _symbolComparer = Comparer<SymbolSpec>.Create(

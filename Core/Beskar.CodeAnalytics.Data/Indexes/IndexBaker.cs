@@ -27,7 +27,7 @@ public sealed class IndexBaker<TEntity, TKey>
       _name = $"{name}_{indexType}".ToLowerInvariant();
    }
 
-   public string Bake(BakeContext context)
+   public IndexBuildResult Bake(BakeContext context)
    {
       switch (_indexType)
       {
@@ -41,14 +41,10 @@ public sealed class IndexBaker<TEntity, TKey>
                   _name
                ).Build();
             }
-            else
-            {
-               throw new InvalidOperationException(
-                  $"IndexType.NGram requires a selector of type Func<{typeof(TEntity).Name}, StringFileView>, " +
-                  $"but found {typeof(TKey).Name} instead."
-               );
-            }
-            break;
+            throw new InvalidOperationException(
+               $"IndexType.NGram requires a selector of type Func<{typeof(TEntity).Name}, StringFileView>, " +
+               $"but found {typeof(TKey).Name} instead."
+            );
          case IndexType.StaticWideBTree:
             if (_comparer is null)
             {
@@ -61,9 +57,8 @@ public sealed class IndexBaker<TEntity, TKey>
                _name, 
                _comparer)
                .Build();
-            break;
       }
       
-      return string.Empty;
+      return new IndexBuildResult();
    }
 }

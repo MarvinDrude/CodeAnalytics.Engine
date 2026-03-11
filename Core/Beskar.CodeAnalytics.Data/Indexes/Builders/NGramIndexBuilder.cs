@@ -52,7 +52,7 @@ public sealed class NGramIndexBuilder<TEntity>
       _finalFilePath = Path.Combine(sourceFolder, _finalFileName);
    }
 
-   public string Build()
+   public IndexBuildResult Build()
    {
       using (var sourceHandle = new MmfHandle(_sourceFullFilePath, writable: false))
       using (var tempUnorderedFile = new FileStream(_unorderedFilePath, FileMode.Create, FileAccess.Write))
@@ -69,17 +69,17 @@ public sealed class NGramIndexBuilder<TEntity>
          WriteTempPairFiles(tempOrderedHandle, postingsStream, dictStream);
       }
 
-      MergeFinalFile();
+      var result = MergeFinalFile();
       
       File.Delete(_unorderedFilePath);
       File.Delete(_orderedFilePath);
       File.Delete(_postingsFilePath);
       File.Delete(_dictionaryFilePath);
 
-      return _finalFileName;
+      return result;
    }
 
-   private void MergeFinalFile()
+   private IndexBuildResult MergeFinalFile()
    {
       using var finalFile = new FileStream(_finalFilePath, FileMode.Create, FileAccess.Write);
       using var dictSource = new FileStream(_dictionaryFilePath, FileMode.Open, FileAccess.Read);
@@ -101,6 +101,15 @@ public sealed class NGramIndexBuilder<TEntity>
       
       dictSource.CopyTo(finalFile);
       postingsSource.CopyTo(finalFile);
+
+      finalFile.Flush();
+      
+      return new IndexBuildResult()
+      {
+         FileName = _finalFileName,
+         ByteCount = (ulong)finalFile.Length,
+         RowCount = (ulong)(dictSource.Length / Unsafe.SizeOf<DictionaryEntry<NGram3>>())
+      };
    }
 
    private void WriteTempPairFiles(MmfHandle tempOrderedHandle, 

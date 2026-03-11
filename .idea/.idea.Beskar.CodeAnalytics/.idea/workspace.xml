@@ -13,12 +13,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/System/DateTimeOffsetSerializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Models/IndexBuildResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/IndexBakeStep.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageDescriptorSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageDescriptorSerializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageFileDescriptorSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Storage/StorageFileDescriptorSerializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/SymbolSortBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/SymbolSortBakeStep.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/BTreeIndexBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/BTreeIndexBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/NGramIndexBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Builders/NGramIndexBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/IndexBaker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/IndexBaker.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +71,7 @@
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Structure/FileKind.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Syntax/SyntaxColor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/IndexNames.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Indexes/Models/IndexBuildResult.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseStructureBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseSymbolBuilder.cs" root0="FORCE_HIGHLIGHTING" />
@@ -217,7 +219,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.Beskar.CodeAnalytics.Dashboard: http (1)">
+  <component name="RunManager" selected=".NET Project.Beskar.CodeAnalytics.Collector.Console">
     <configuration name="Beskar.CodeAnalytics.Collector.Console" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -384,7 +386,8 @@
       <workItem from="1772970042283" duration="23663000" />
       <workItem from="1773059768994" duration="5056000" />
       <workItem from="1773078844495" duration="9978000" />
-      <workItem from="1773165573736" duration="8352000" />
+      <workItem from="1773165573736" duration="10152000" />
+      <workItem from="1773248730398" duration="8735000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -618,7 +621,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772995682399</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Add serializers for `StorageDescriptor` and `StorageFileDescriptor`, implement `DateTimeOffsetSerializer`, extend `IndexBakeStep` functionality, and register storage-related serializers in `Serialization`.">
+      <option name="closed" value="true" />
+      <created>1773176320860</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1773176320860</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -639,7 +650,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Remvoe unused files" />
     <MESSAGE value="Integrate `SyntaxDiscoveryFileWriter`, implement serialization/deserialization for `SyntaxFile`, and update dependencies." />
     <MESSAGE value="Add `SyntaxFileReader` implementation with deserialization logic and integrate into experiments." />
     <MESSAGE value="Add `SymbolLocationSpec` with location tracking and integrate into discovery, tokenization, and sorting logic." />
@@ -664,7 +674,8 @@
     <MESSAGE value="Add `TokenTextViewer` component for syntax highlighting, integrate file opening logic in `FolderTree`, and enhance `SourceExplorer` with file viewing functionality." />
     <MESSAGE value="Adjust `TokenTextViewer` styling for improved layout and scrolling, refine `SourceExplorer` structure with nested styling updates." />
     <MESSAGE value="Fix constant priority calculation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix constant priority calculation" />
+    <MESSAGE value="Add serializers for `StorageDescriptor` and `StorageFileDescriptor`, implement `DateTimeOffsetSerializer`, extend `IndexBakeStep` functionality, and register storage-related serializers in `Serialization`." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add serializers for `StorageDescriptor` and `StorageFileDescriptor`, implement `DateTimeOffsetSerializer`, extend `IndexBakeStep` functionality, and register storage-related serializers in `Serialization`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

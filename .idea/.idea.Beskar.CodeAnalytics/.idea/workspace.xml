@@ -13,13 +13,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Models/BakeContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Models/BakeContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/SyntaxDiscoveryFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/SyntaxDiscoveryFileWriter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/LinePreviewWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/LinePreviewWriter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Storage/StorageFileKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Storage/StorageFileKind.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Hashing/StringFileWriter.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +26,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="43" />
+    <option name="cachedIndexableFilesCount" value="44" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -196,29 +192,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.Beskar.CodeAnalytics.Dashboard: http (1).executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.Beskar.CodeAnalytics.Collector.Console.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.Beskar.CodeAnalytics.Experiments.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.Beskar.CodeAnalytics.Dashboard: http (1).executor": "Debug",
+    ".NET Project.Beskar.CodeAnalytics.Collector.Console.executor": "dotTrace Profiler",
+    ".NET Project.Beskar.CodeAnalytics.Experiments.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CodeLensConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Project.Beskar.CodeAnalytics.Collector.Console">
     <configuration name="Beskar.CodeAnalytics.Collector.Console" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -387,7 +383,8 @@
       <workItem from="1773059768994" duration="5056000" />
       <workItem from="1773078844495" duration="9978000" />
       <workItem from="1773165573736" duration="10152000" />
-      <workItem from="1773248730398" duration="12188000" />
+      <workItem from="1773248730398" duration="14153000" />
+      <workItem from="1773339555575" duration="3447000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -637,7 +634,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773258323182</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Integrate storage metadata handling in file writers, enhance serialization logic, and refactor `SyntaxDiscoveryFileWriter` and `StringFileWriter` with item count and byte tracking updates.">
+      <option name="closed" value="true" />
+      <created>1773262761719</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1773262761719</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -658,7 +663,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add `SyntaxFileReader` implementation with deserialization logic and integrate into experiments." />
     <MESSAGE value="Add `SymbolLocationSpec` with location tracking and integrate into discovery, tokenization, and sorting logic." />
     <MESSAGE value="Add `LinePreviewWriter` and `LinePreviewView` for preview serialization and integrate into tokenization and sorting logic." />
     <MESSAGE value="Refactor folder discovery logic and integrate `ProjectToFolder` and `FolderToFolder` edges into discovery process." />
@@ -683,7 +687,8 @@
     <MESSAGE value="Fix constant priority calculation" />
     <MESSAGE value="Add serializers for `StorageDescriptor` and `StorageFileDescriptor`, implement `DateTimeOffsetSerializer`, extend `IndexBakeStep` functionality, and register storage-related serializers in `Serialization`." />
     <MESSAGE value="Refactor index-building process to return detailed `IndexBuildResult`, update index builders, and enhance `IndexBakeStep` with storage metadata integration." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor index-building process to return detailed `IndexBuildResult`, update index builders, and enhance `IndexBakeStep` with storage metadata integration." />
+    <MESSAGE value="Integrate storage metadata handling in file writers, enhance serialization logic, and refactor `SyntaxDiscoveryFileWriter` and `StringFileWriter` with item count and byte tracking updates." />
+    <option name="LAST_COMMIT_MESSAGE" value="Integrate storage metadata handling in file writers, enhance serialization logic, and refactor `SyntaxDiscoveryFileWriter` and `StringFileWriter` with item count and byte tracking updates." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -712,19 +717,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Console/Beskar.CodeAnalytics.Collector.Console/Program.cs</url>
-          <line>142</line>
-          <properties documentPath="C:\Code\Console\Beskar.CodeAnalytics.Collector.Console\Program.cs" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="4777" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4908" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -13,6 +13,7 @@ public sealed class LinePreviewWriter : IAsyncDisposable
    private readonly Task _runningTask;
 
    private readonly FileStream _fileStream;
+   private readonly BufferedStream _bufferedStream;
 
    public LinePreviewWriter(string directoryPath)
    {
@@ -20,36 +21,50 @@ public sealed class LinePreviewWriter : IAsyncDisposable
       
       _channel = Channel.CreateUnbounded<WriteRequest>();
       _fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+      _bufferedStream = new BufferedStream(_fileStream, 65536);
       
       _runningTask = RunWriting();
    }
 
-   public async Task<LinePreviewView> Write(string line)
+   public ValueTask<LinePreviewView> Write(string line)
    {
       var cts = new TaskCompletionSource<LinePreviewView>(TaskCreationOptions.RunContinuationsAsynchronously);
-      await _channel.Writer.WriteAsync(new WriteRequest(line, cts));
+      _channel.Writer.TryWrite(new WriteRequest(line, cts));
       
-      return await cts.Task;
+      return new ValueTask<LinePreviewView>(cts.Task);
    }
 
    private async Task RunWriting()
    {
-      await foreach (var request in _channel.Reader.ReadAllAsync())
+      var buffer = new byte[4096];
+
+      while (await _channel.Reader.WaitToReadAsync())
       {
-         try
+         while (_channel.Reader.TryRead(out var request))
          {
-            var bytes = Encoding.UTF8.GetBytes(request.Line);
-            var offset = _fileStream.Position;
+            try
+            {
+               var byteCount = Encoding.UTF8.GetByteCount(request.Line);
+               if (byteCount > buffer.Length)
+               {
+                  buffer = new byte[Math.Max(buffer.Length * 2, byteCount)];
+               }
+            
+               var span = buffer.AsSpan(0, byteCount);
+               Encoding.UTF8.GetBytes(request.Line, span);
+            
+               var offset = _fileStream.Position + _bufferedStream.Position;
 
-            await _fileStream.WriteAsync(bytes);
-            var length = bytes.Length;
-
-            request.CompletionSource.SetResult(new LinePreviewView((ulong)offset, length));
+               _bufferedStream.Write(span);
+               request.CompletionSource.SetResult(new LinePreviewView((ulong)offset, span.Length));
+            }
+            catch (Exception e)
+            {
+               request.CompletionSource.SetException(e);
+            }
          }
-         catch (Exception e)
-         {
-            request.CompletionSource.SetException(e);
-         }
+         
+         await _bufferedStream.FlushAsync();
       }
    }
    

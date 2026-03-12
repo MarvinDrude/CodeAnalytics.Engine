@@ -49,8 +49,18 @@ public sealed partial class SolutionCollector : IAsyncDisposable
       var totalTimerResult = new AsyncTimerResult();
       var totalTimer = new AsyncTimer(totalTimerResult);
       
-      var projects = _handle.Solution.Projects
-         .Where(x => x.SupportsCompilation).ToArray();
+      var graph = _handle.Solution.GetProjectDependencyGraph();
+      var sortedProjectIds = graph.GetTopologicallySortedProjects(ct);
+      
+      var projectsLookup = _handle.Solution.Projects
+         .Where(x => x.SupportsCompilation)
+         .ToDictionary(p => p.Id);
+      
+      var projects = sortedProjectIds
+         .Where(id => projectsLookup.ContainsKey(id))
+         .Select(id => projectsLookup[id])
+         .ToArray();
+      
       _projectCount = projects.Length;
       await SolutionDiscovery.Discover(batch, _handle);
 

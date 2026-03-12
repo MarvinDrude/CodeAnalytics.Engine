@@ -1,4 +1,5 @@
-﻿using Beskar.CodeAnalytics.Collector.Projects.Models;
+﻿using System.Collections.Concurrent;
+using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
@@ -16,7 +17,7 @@ public static class ProjectDiscovery
       var pPathDef = batch.StringDefinitions.GetStringFileView(projectPath);
       var projectId = batch.Identifiers.GenerateIdentifier(projectPath, pPathDef);
 
-      if (!_alreadySeen.Add(projectId))
+      if (!_alreadySeen.TryAdd(projectId, true))
       {
          return projectId;
       }
@@ -74,5 +75,5 @@ public static class ProjectDiscovery
       return projectId;
    }
 
-   private static readonly HashSet<uint> _alreadySeen = [];
+   private static readonly ConcurrentDictionary<uint, bool> _alreadySeen = [];
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Concurrent;
+using System.Text;
 using Beskar.CodeAnalytics.Collector.Projects.Models;
 using Beskar.CodeAnalytics.Collector.Source;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
@@ -29,14 +30,14 @@ public static class FileDiscovery
       var folderId = batch.FolderTreeBuilder.GetOrCreateFolder(batch, folderRelative ?? "");
       var id = batch.Identifiers.GenerateIdentifier(filePath, filePathDef);
 
-      if (!_alreadyInProjectDiscovered.Add((context.ProjectId, folderId, id)))
+      if (!_alreadyInProjectDiscovered.TryAdd((context.ProjectId, folderId, id), true))
       {
          return false;
       }
       
       batch.WriteDiscoveryEdge(context.ProjectId, id, SymbolEdgeType.ProjectFile);
 
-      if (!_alreadyDiscovered.Add((folderId, id)))
+      if (!_alreadyDiscovered.TryAdd((folderId, id), true))
       {
          return false;
       }
@@ -81,6 +82,6 @@ public static class FileDiscovery
    /// <summary>
    /// Small workaround to avoid duplicate files in case they are referenced in multiple projects / solutions.
    /// </summary>
-   private static readonly HashSet<(uint ProjectId, uint FolderId, uint FileId)> _alreadyInProjectDiscovered = [];
-   private static readonly HashSet<(uint FolderId, uint FileId)> _alreadyDiscovered = [];
+   private static readonly ConcurrentDictionary<(uint ProjectId, uint FolderId, uint FileId), bool> _alreadyInProjectDiscovered = [];
+   private static readonly ConcurrentDictionary<(uint FolderId, uint FileId), bool> _alreadyDiscovered = [];
 }

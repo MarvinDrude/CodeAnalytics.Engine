@@ -14,8 +14,9 @@
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/LinePreviewWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/LinePreviewWriter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Storage/StorageFileKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Enums/Storage/StorageFileKind.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +196,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Launch Settings Profile.Beskar.CodeAnalytics.Dashboard: http (1).executor": "Debug",
-    ".NET Project.Beskar.CodeAnalytics.Collector.Console.executor": "dotTrace Profiler",
+    ".NET Project.Beskar.CodeAnalytics.Collector.Console.executor": "Debug",
     ".NET Project.Beskar.CodeAnalytics.Experiments.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
@@ -215,7 +216,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected=".NET Project.Beskar.CodeAnalytics.Collector.Console">
+  <component name="RunManager" selected=".NET Launch Settings Profile.Beskar.CodeAnalytics.Dashboard: http (1)">
     <configuration name="Beskar.CodeAnalytics.Collector.Console" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -384,7 +385,7 @@
       <workItem from="1773078844495" duration="9978000" />
       <workItem from="1773165573736" duration="10152000" />
       <workItem from="1773248730398" duration="14153000" />
-      <workItem from="1773339555575" duration="3447000" />
+      <workItem from="1773339555575" duration="5926000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -642,7 +643,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773262761719</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Add `LinePreviewWriter` improvements with buffered streaming, refactor write logic, and extend `StorageFileKind` with `LinePreviews`.">
+      <option name="closed" value="true" />
+      <created>1773343591215</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1773343591216</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -663,7 +672,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add `SymbolLocationSpec` with location tracking and integrate into discovery, tokenization, and sorting logic." />
     <MESSAGE value="Add `LinePreviewWriter` and `LinePreviewView` for preview serialization and integrate into tokenization and sorting logic." />
     <MESSAGE value="Refactor folder discovery logic and integrate `ProjectToFolder` and `FolderToFolder` edges into discovery process." />
     <MESSAGE value="Introduce metadata system with `DatabaseDescriptor`, `StructureDescriptor`, and readers for folder and spec management. Integrate folder indexing and sorting logic." />
@@ -688,7 +696,8 @@
     <MESSAGE value="Add serializers for `StorageDescriptor` and `StorageFileDescriptor`, implement `DateTimeOffsetSerializer`, extend `IndexBakeStep` functionality, and register storage-related serializers in `Serialization`." />
     <MESSAGE value="Refactor index-building process to return detailed `IndexBuildResult`, update index builders, and enhance `IndexBakeStep` with storage metadata integration." />
     <MESSAGE value="Integrate storage metadata handling in file writers, enhance serialization logic, and refactor `SyntaxDiscoveryFileWriter` and `StringFileWriter` with item count and byte tracking updates." />
-    <option name="LAST_COMMIT_MESSAGE" value="Integrate storage metadata handling in file writers, enhance serialization logic, and refactor `SyntaxDiscoveryFileWriter` and `StringFileWriter` with item count and byte tracking updates." />
+    <MESSAGE value="Add `LinePreviewWriter` improvements with buffered streaming, refactor write logic, and extend `StorageFileKind` with `LinePreviews`." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add `LinePreviewWriter` improvements with buffered streaming, refactor write logic, and extend `StorageFileKind` with `LinePreviews`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

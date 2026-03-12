@@ -153,7 +153,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          Identifiers = new IdentifierGenerator(),
          StringDefinitions = new StringFileWriter(Path.Combine(options.OutputPath, FileNames.StringPool)),
          SyntaxDiscoveryFileWriter = new SyntaxDiscoveryFileWriter(options.OutputPath),
-         LinePreviewWriter = new LinePreviewWriter(options.OutputPath),
+         LinePreviewWriter = new LinePreviewWriter(builder, options.OutputPath),
          FolderTreeBuilder = new FolderTreeBuilder(),
          
          SymbolWriter = new SymbolDiscoveryFileWriter<uint, SymbolSpec>(options.OutputPath),

@@ -2,6 +2,9 @@
 using System.Threading.Channels;
 using Beskar.CodeAnalytics.Data.Constants;
 using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Beskar.CodeAnalytics.Data.Enums.Storage;
+using Beskar.CodeAnalytics.Data.Metadata.Builders;
+using Beskar.CodeAnalytics.Data.Metadata.Storage;
 
 namespace Beskar.CodeAnalytics.Data.Discovery.Writers;
 
@@ -14,10 +17,15 @@ public sealed class LinePreviewWriter : IAsyncDisposable
 
    private readonly FileStream _fileStream;
    private readonly BufferedStream _bufferedStream;
+   
+   private ulong _itemCount;
+   private DatabaseBuilder _databaseBuilder;
 
-   public LinePreviewWriter(string directoryPath)
+   public LinePreviewWriter(DatabaseBuilder builder, string directoryPath)
    {
       var filePath = Path.Combine(directoryPath, FileName);
+
+      _databaseBuilder = builder;
       
       _channel = Channel.CreateUnbounded<WriteRequest>();
       _fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -44,6 +52,8 @@ public sealed class LinePreviewWriter : IAsyncDisposable
          {
             try
             {
+               _itemCount++;
+               
                var byteCount = Encoding.UTF8.GetByteCount(request.Line);
                if (byteCount > buffer.Length)
                {
@@ -53,7 +63,7 @@ public sealed class LinePreviewWriter : IAsyncDisposable
                var span = buffer.AsSpan(0, byteCount);
                Encoding.UTF8.GetBytes(request.Line, span);
             
-               var offset = _fileStream.Position + _bufferedStream.Position;
+               var offset = _bufferedStream.Position;
 
                _bufferedStream.Write(span);
                request.CompletionSource.SetResult(new LinePreviewView((ulong)offset, span.Length));
@@ -73,7 +83,21 @@ public sealed class LinePreviewWriter : IAsyncDisposable
       _channel.Writer.Complete();
       
       await _runningTask;
+
+      var length = _fileStream.Position;
+      await _bufferedStream.DisposeAsync();
       await _fileStream.DisposeAsync();
+      
+      _databaseBuilder.Storage.Files.Add(new StorageFileDescriptor()
+      {
+         FileName = FileName,
+         Kind = StorageFileKind.LinePreviews,
+         LastModified = DateTimeOffset.UtcNow,
+         ParentName = string.Empty,
+         Name = "LinePreviews",
+         ByteCount = (ulong)length,
+         RowCount = _itemCount
+      });
    }
 
    private readonly record struct WriteRequest(

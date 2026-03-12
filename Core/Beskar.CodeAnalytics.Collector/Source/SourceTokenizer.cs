@@ -1,5 +1,4 @@
 ﻿using Beskar.CodeAnalytics.Collector.Projects.Models;
-using Beskar.CodeAnalytics.Data.Entities.Misc;
 using Beskar.CodeAnalytics.Data.Entities.Structure;
 using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Enums.Syntax;
@@ -16,6 +15,10 @@ public sealed class SourceTokenizer(
    private readonly DiscoverContext _context = context;
    private readonly Dictionary<TextSpan, TextSpanCacheEntry> _spans = spans;
    private readonly uint _fileId = fileId;
+   
+   private string? _cachedPreview;
+   private int _cachedLineIndex = -1;
+   private int _lineStart;
 
    public async Task<SyntaxFile> Tokenize(
       CancellationToken cancellationToken)
@@ -131,12 +134,19 @@ public sealed class SourceTokenizer(
       if (spec.HasSymbol)
       {
          var lineIndex = lineNumber - 1;
-         var line = _context.SourceText.Lines[lineIndex];
+         if (_cachedLineIndex != lineIndex)
+         {
+            var line = _context.SourceText.Lines[lineIndex];
+            
+            _cachedPreview = line.ToString();
+            _cachedLineIndex = lineIndex;
+            _lineStart = line.Start;
+         }
          
-         var lineText = line.ToString();
-         var preview = await _context.DiscoveryBatch.LinePreviewWriter.Write(lineText);
+         var preview = await _context.DiscoveryBatch.LinePreviewWriter.Write(
+            _cachedPreview ?? throw new InvalidOperationException());
 
-         preview.TokenStart = start - line.Start;
+         preview.TokenStart = start - _lineStart;
          preview.TokenLength = length;
          
          var location = new SymbolLocationSpec()

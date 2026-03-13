@@ -5,6 +5,8 @@ namespace Beskar.CodeAnalytics.Dashboard.Shared.Models.Syntax;
 public sealed class SourceExplorerTokenInfo : SourceExplorerTokenInfoBase
 {
    public required SyntaxTokenSpec Token { get; set; }
+   
+   public required TokenLocationModel[] Locations { get; set; }
 }
 
 public sealed class SourceExplorerTokenEmptyInfo 

@@ -31,6 +31,12 @@ public sealed class LinePreviewReader : IDisposable
          ? new SpanOwner<(long Offset, int Length)>(stackalloc (long Offset, int Length)[views.Length])
          : new SpanOwner<(long Offset, int Length)>(views.Length);
 
+      for (var index = 0; index < views.Length; index++)
+      {
+         var view = views[index];
+         owner.Span[index] = ((long)view.Offset, view.Length);
+      }
+
       using var strs = buffer.GetStrings(owner.Span, Encoding.UTF8);
       return strs.WrittenSpan.ToArray();
    }

@@ -13,23 +13,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Connectors/SymbolConnector.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/Syntax/LinePreviewsDescriptor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/LinePreviewsDescriptorSerializer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/Readers/LinePreviewReader.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/LocationNavigateEvent.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/TokenLocationModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/Models/DiscoveryBatch.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/EdgeConnectionBakeStep.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Steps/EdgeConnectionBakeStep.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/DiscoveryFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/DiscoveryFileWriter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/SymbolDiscoveryFileWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Writers/SymbolDiscoveryFileWriter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Files/MmfBuffer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Files/MmfBuffer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Builders/DatabaseBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Models/DatabaseDescriptor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/DatabaseDescriptorSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Descriptors/DatabaseDescriptorSerializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Serialization/Serialization.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/Symbols/SymbolEdgeSpecDescriptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Specs/Symbols/SymbolEdgeSpecDescriptor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/Readers/LinePreviewReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/Readers/LinePreviewReader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Syntax/ILocationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Syntax/ILocationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/SourceExplorerTokenInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/SourceExplorerTokenInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Syntax/LocationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Syntax/LocationService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,6 +142,7 @@
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/SyntaxColorTheme.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/SyntaxFileReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/FileOpenEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/LocationNavigateEvent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/TokenClickEvent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Services/IDatabaseProvider.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Services/IDatabaseScheduler.cs" root0="FORCE_HIGHLIGHTING" />
@@ -160,6 +153,7 @@
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FileSystemItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FolderNodeItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/SourceExplorerTokenInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/TokenLocationModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Options/DashboardOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Container/ResizableContainer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Container/ResizablePane.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -167,6 +161,7 @@
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Container/VerticalResizablePane.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeChildNodes.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -182,6 +177,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/228bff957d5b9f32cfbedd8bf82a5d3e862ec3e051593a67913b95ae288287/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3cca26e6dd627c1a7919bec86cb05b6d975a30287456f7daa8773a92451a/List.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/573a3652e408b4d47fc97a6359a31afd4ae4379a489b4437a2d6b92e55765f/AsyncMethodBuilderCore.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5aab3b4920d799ffb6d5838a547240cb2fcddad946165a25fafee611c4c4b224/ArraySortHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/621b4b4379c190834a28c431b82c6de6477215930fd582c5fdb8142f317441/SemanticModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/62e34689609e8fcc7914e758c3f7bb64e81f0e468806393966da03ac0a48110/SourceText.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/90edbf813ea8e8f623dd9d57db2ae719e6d584ad33c4515fefecef6c33dc944a/ByteWriter.cs" root0="FORCE_HIGHLIGHTING" />
@@ -409,7 +405,7 @@
       <workItem from="1773165573736" duration="10152000" />
       <workItem from="1773248730398" duration="14153000" />
       <workItem from="1773339555575" duration="6707000" />
-      <workItem from="1773420466812" duration="17560000" />
+      <workItem from="1773420466812" duration="21989000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -691,7 +687,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773431192710</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Introduce `LinePreviewsDescriptor` and related serializers, integrate `LinePreviewReader` for efficient symbol location previews, and enhance storage metadata handling with line preview support.">
+      <option name="closed" value="true" />
+      <created>1773438986290</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1773438986290</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -712,7 +716,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Introduce metadata system with `DatabaseDescriptor`, `StructureDescriptor`, and readers for folder and spec management. Integrate folder indexing and sorting logic." />
     <MESSAGE value="Add `DatabaseBuilder` and `DatabaseStructureBuilder` for constructing metadata. Simplify `SpecDescriptor` by removing unused properties." />
     <MESSAGE value="Add `StructureDescriptorSerializer` and `DatabaseDescriptorSerializer` for serialization. Extend `DatabaseBuilder` usage across baking and folder discovery. Simplify `SpecDescriptor`." />
     <MESSAGE value="Add more spec descriptors and serializers (`FileSpec`, `ProjectSpec`, `SolutionSpec`, `SymbolLocationSpec`, `SyntaxFile`). Extend `DatabaseStructureBuilder` and `StructureDescriptor` for comprehensive metadata handling." />
@@ -737,7 +740,8 @@
     <MESSAGE value="Add `LinePreviewWriter` improvements with buffered streaming, refactor write logic, and extend `StorageFileKind` with `LinePreviews`." />
     <MESSAGE value="Refactor `LinePreviewWriter` to support `DatabaseBuilder`, optimize line caching in `SourceTokenizer`, and track item/byte counts for storage metadata integration." />
     <MESSAGE value="Add `LocationService` and integrate token click handling in `SourceExplorer` for symbol location tracking" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add `LocationService` and integrate token click handling in `SourceExplorer` for symbol location tracking" />
+    <MESSAGE value="Introduce `LinePreviewsDescriptor` and related serializers, integrate `LinePreviewReader` for efficient symbol location previews, and enhance storage metadata handling with line preview support." />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduce `LinePreviewsDescriptor` and related serializers, integrate `LinePreviewReader` for efficient symbol location previews, and enhance storage metadata handling with line preview support." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

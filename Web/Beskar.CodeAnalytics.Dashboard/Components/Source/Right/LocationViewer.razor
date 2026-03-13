@@ -1,0 +1,32 @@
+﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
+@using Beskar.CodeAnalytics.Dashboard.Shared.Models.Syntax
+
+<div>
+   <h3>@Title</h3>
+   <div>
+      @foreach (var location in Locations)
+      {
+         <p @onclick="@(() => OnClick(location))">@location.PreviewLine</p>
+      }
+   </div>
+</div>
+
+@code {
+   
+   [Parameter, EditorRequired]
+   public required string Title { get; set; }
+   
+   [Parameter, EditorRequired]
+   public required TokenLocationModel[] Locations { get; set; }
+   
+   [Parameter]
+   public EventCallback<LocationNavigateEvent> LocationNavigate { get; set; }
+
+   private async Task OnClick(TokenLocationModel location)
+   {
+      await LocationNavigate.InvokeAsync(new LocationNavigateEvent
+      {
+         Location = location
+      });
+   }
+}

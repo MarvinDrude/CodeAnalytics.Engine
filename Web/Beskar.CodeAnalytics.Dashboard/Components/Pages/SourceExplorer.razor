@@ -1,6 +1,7 @@
 ﻿@page "/source"
 @using Beskar.CodeAnalytics.Dashboard.Components.Container
 @using Beskar.CodeAnalytics.Dashboard.Components.Source
+@using Beskar.CodeAnalytics.Dashboard.Components.Source.Right
 @using Beskar.CodeAnalytics.Dashboard.Components.Structure.Folders
 @using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
@@ -40,7 +41,17 @@
          </VerticalResizableContainer>
       </ResizablePane>
       <ResizablePane InitialWidth="20">
-         Test 3
+         @if (_currentTokenInfo is SourceExplorerTokenInfo info)
+         {
+            <LocationViewer 
+               Title="Symbol Declarations" 
+               Locations="@info.Locations.Where(l => l.Location.IsDeclaration).ToArray()"
+               LocationNavigate="@OnNavigateLocation" />
+            <LocationViewer 
+               Title="Symbol Occurrences" 
+               Locations="@info.Locations.Where(l => !l.Location.IsDeclaration).ToArray()"
+               LocationNavigate="@OnNavigateLocation" />
+         }
       </ResizablePane>
    </ResizableContainer>
 </div>
@@ -61,18 +72,27 @@
       
       await InvokeAsync(StateHasChanged);
    }
+
+   private async Task OnNavigateLocation(LocationNavigateEvent ev)
+   {
+      await DatabaseScheduler.Schedule(() =>
+      {
+         _currentFile = FileService.GetFile(ev.Location.Location.SourceFileId);
+      });
+      
+      await InvokeAsync(StateHasChanged);
+   }
    
    private async Task OnCodeClick(TokenClickEvent ev)
    {
       _lastClickEvent = ev;
       
-      await DatabaseScheduler.Schedule((db) =>
+      await DatabaseScheduler.Schedule(() =>
       {
-         LocationService.GetLocations(ev.Token.SymbolId);
-         
          _currentTokenInfo = new SourceExplorerTokenInfo()
          {
-            Token = ev.Token
+            Token = ev.Token,
+            Locations = LocationService.GetLocations(ev.Token.SymbolId)
          };
       });
       

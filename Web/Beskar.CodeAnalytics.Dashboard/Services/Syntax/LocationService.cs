@@ -12,7 +12,10 @@ public sealed class LocationService(IDatabaseProvider provider) : ILocationServi
       var db = _provider.GetDescriptor();
       var reader = db.Structure.SymbolLocations.GetReader();
       
-      var locations = reader.LeaseById(symbolId);
+      using var locations = reader.LeaseById(symbolId);
+      
+      
+      
       _ = "";
    }
 }

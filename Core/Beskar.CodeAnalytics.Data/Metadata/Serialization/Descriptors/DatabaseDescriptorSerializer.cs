@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Beskar.CodeAnalytics.Data.Metadata.Models;
+using Beskar.CodeAnalytics.Data.Metadata.Models.Syntax;
 using Beskar.CodeAnalytics.Data.Metadata.Specs.Symbols;
 using Beskar.CodeAnalytics.Data.Metadata.Storage;
 using Beskar.CodeAnalytics.Data.Metadata.Strings;
@@ -16,6 +17,7 @@ public sealed class DatabaseDescriptorSerializer : ISerializer<DatabaseDescripto
    private readonly ISerializer<SymbolEdgeSpecDescriptor> _symbolSpecSerializer = SerializerRegistry.For<SymbolEdgeSpecDescriptor>();
    private readonly ISerializer<StringPoolDescriptor> _stringPoolSerializer = SerializerRegistry.For<StringPoolDescriptor>();
    private readonly ISerializer<StorageDescriptor> _storageSerializer = SerializerRegistry.For<StorageDescriptor>();
+   private readonly ISerializer<LinePreviewsDescriptor> _linePreviewSerializer = SerializerRegistry.For<LinePreviewsDescriptor>();
    
    public void Write(ref ByteWriter writer, ref DatabaseDescriptor value)
    {
@@ -33,6 +35,9 @@ public sealed class DatabaseDescriptorSerializer : ISerializer<DatabaseDescripto
       
       var storage = value.Storage;
       _storageSerializer.Write(ref writer, ref storage);
+      
+      var linePreviews = value.LinePreviews;
+      _linePreviewSerializer.Write(ref writer, ref linePreviews);
     }
 
    public bool TryRead(ref ByteReader reader, [MaybeNullWhen(false)] out DatabaseDescriptor value)
@@ -42,7 +47,8 @@ public sealed class DatabaseDescriptorSerializer : ISerializer<DatabaseDescripto
           || !_symbolsSerializer.TryRead(ref reader, out var symbols)
           || !_symbolSpecSerializer.TryRead(ref reader, out var symbolSpecs)
           || !_stringPoolSerializer.TryRead(ref reader, out var strPool)
-          || !_storageSerializer.TryRead(ref reader, out var storage))
+          || !_storageSerializer.TryRead(ref reader, out var storage)
+          || !_linePreviewSerializer.TryRead(ref reader, out var linePreviews))
       {
          return false;
       }
@@ -54,6 +60,7 @@ public sealed class DatabaseDescriptorSerializer : ISerializer<DatabaseDescripto
          Edges = symbolSpecs,
          StringPool = strPool,
          Storage = storage,
+         LinePreviews = linePreviews,
          BaseFolderPath = string.Empty
       };
       
@@ -66,10 +73,12 @@ public sealed class DatabaseDescriptorSerializer : ISerializer<DatabaseDescripto
       var edges = value.Edges;
       var symbols = value.Symbols;
       var storage = value.Storage;
+      var linePreviews = value.LinePreviews;
       
       return _structureSerializer.CalculateByteLength(ref structure)
          + _symbolSpecSerializer.CalculateByteLength(ref edges)
          + _symbolsSerializer.CalculateByteLength(ref symbols)
-         + _storageSerializer.CalculateByteLength(ref storage);
+         + _storageSerializer.CalculateByteLength(ref storage)
+         + _linePreviewSerializer.CalculateByteLength(ref linePreviews);
    }
 }

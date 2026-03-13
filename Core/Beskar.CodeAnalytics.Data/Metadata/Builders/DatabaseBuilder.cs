@@ -1,4 +1,5 @@
 ﻿using Beskar.CodeAnalytics.Data.Metadata.Models;
+using Beskar.CodeAnalytics.Data.Metadata.Models.Syntax;
 using Beskar.CodeAnalytics.Data.Metadata.Specs.Symbols;
 using Beskar.CodeAnalytics.Data.Metadata.Strings;
 
@@ -14,6 +15,7 @@ public sealed class DatabaseBuilder
    
    private string? _fileNameEdgeSpec;
    private string? _stringPoolFileName;
+   private string? _linePreviewFileName;
    
    public DatabaseBuilder WithEdgeSpec(string fileName)
    {
@@ -24,6 +26,12 @@ public sealed class DatabaseBuilder
    public DatabaseBuilder WithStringPool(string fileName)
    {
       _stringPoolFileName = fileName;
+      return this;
+   }
+   
+   public DatabaseBuilder WithLinePreview(string fileName)
+   {
+      _linePreviewFileName = fileName;
       return this;
    }
    
@@ -41,6 +49,11 @@ public sealed class DatabaseBuilder
          {
             FileName = _stringPoolFileName
                ?? throw new InvalidOperationException("String pool file name is not specified")
+         },
+         LinePreviews = new LinePreviewsDescriptor()
+         {
+            FileName = _linePreviewFileName
+               ?? throw new InvalidOperationException("Line preview file name is not specified")
          },
          Structure = Structure.Build(),
          Symbols = Symbols.Build(),

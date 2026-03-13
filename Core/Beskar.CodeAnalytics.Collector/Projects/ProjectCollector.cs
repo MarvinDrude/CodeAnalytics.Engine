@@ -106,7 +106,7 @@ public sealed partial class ProjectCollector(
       var fullPathDef =
          batch.StringDefinitions.GetStringFileView(
             context.Symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
-
+      
       var symbolDefinition = new SymbolSpec()
       {
          Id = deterministicId,

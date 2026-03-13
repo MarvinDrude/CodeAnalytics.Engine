@@ -120,7 +120,8 @@ public sealed class DiscoveryBatch : IAsyncDisposable
 
    public Dictionary<FileId, string> GetFileNames()
    {
-      DatabaseBuilder.WithStringPool(StringDefinitions.FileName);
+      DatabaseBuilder.WithStringPool(StringDefinitions.FileName)
+         .WithLinePreview(LinePreviewWriter.FileName);
       
       return new Dictionary<FileId, string>()
       {
@@ -166,7 +167,7 @@ public sealed class DiscoveryBatch : IAsyncDisposable
          PropertySymbolWriter = new SymbolDiscoveryFileWriter<uint, PropertySymbolSpec>(options.OutputPath),
          EdgeWriter = new SymbolDiscoveryFileWriter<SymbolEdgeKey, SymbolEdgeSpec>(options.OutputPath),
          
-         LocationWriter = new SymbolDiscoveryFileWriter<uint, SymbolLocationSpec>(options.OutputPath),
+         LocationWriter = new SymbolDiscoveryFileWriter<uint, SymbolLocationSpec>(options.OutputPath, true),
          FolderWriter = new SymbolDiscoveryFileWriter<uint, FolderSpec>(options.OutputPath),
          
          SolutionWriter = new SymbolDiscoveryFileWriter<uint, SolutionSpec>(options.OutputPath),

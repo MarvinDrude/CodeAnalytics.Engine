@@ -51,28 +51,36 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
    {
       var results = new ArrayBuilder<TSpec>(sortedIds.Length);
       
-      using var buffer = _handle.GetBuffer();
-      var span = buffer.GetSpan<TSpec>(0, _itemCount);
-
-      var sourceIdx = 0;
-      foreach (var targetId in sortedIds)
+      try
       {
-         while (sourceIdx < span.Length && span[sourceIdx].Identifier < targetId)
+         using var buffer = _handle.GetBuffer();
+         var span = buffer.GetSpan<TSpec>(0, _itemCount);
+
+         var sourceIdx = 0;
+         foreach (var targetId in sortedIds)
          {
-            sourceIdx++;
+            while (sourceIdx < span.Length && span[sourceIdx].Identifier < targetId)
+            {
+               sourceIdx++;
+            }
+
+            if (sourceIdx < span.Length && span[sourceIdx].Identifier == targetId)
+            {
+               results.Add(span[sourceIdx]);
+            }
+            else
+            {
+               throw new KeyNotFoundException($"ID {targetId} not found in spec file.");
+            }
          }
 
-         if (sourceIdx < span.Length && span[sourceIdx].Identifier == targetId)
-         {
-            results.Add(span[sourceIdx]);
-         }
-         else
-         {
-            throw new KeyNotFoundException($"ID {targetId} not found in spec file.");
-         }
+         return results;
       }
-
-      return results;
+      catch (Exception)
+      {
+         results.Dispose();
+         throw;
+      }
    }
 
    public MmfHandle.SpanView<TSpec> LeaseById(uint id)

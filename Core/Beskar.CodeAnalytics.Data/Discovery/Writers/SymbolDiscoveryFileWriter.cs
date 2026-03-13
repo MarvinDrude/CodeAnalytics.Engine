@@ -16,7 +16,7 @@ public sealed class SymbolDiscoveryFileWriter<TKey, TSymbol> : IAsyncDisposable
    private readonly Task _runningTask;
    private readonly DiscoveryFileWriter<TKey> _fileWriter;
 
-   public SymbolDiscoveryFileWriter(string directoryPath)
+   public SymbolDiscoveryFileWriter(string directoryPath, bool allowDuplicates = false)
    {
       _channel = Channel.CreateUnbounded<(TKey id, TSymbol symbol)>(new UnboundedChannelOptions()
       {
@@ -26,7 +26,7 @@ public sealed class SymbolDiscoveryFileWriter<TKey, TSymbol> : IAsyncDisposable
       var file = Path.Combine(directoryPath, _fileName);
       File.Delete(file);
       
-      _fileWriter = new DiscoveryFileWriter<TKey>(Path.Combine(directoryPath, _fileName));
+      _fileWriter = new DiscoveryFileWriter<TKey>(Path.Combine(directoryPath, _fileName), allowDuplicates);
       _runningTask = RunWriting();
    }
 

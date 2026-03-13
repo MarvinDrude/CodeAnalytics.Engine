@@ -1,5 +1,6 @@
 ﻿
 using Beskar.CodeAnalytics.Data.Constants;
+using Beskar.CodeAnalytics.Data.Metadata.Models.Syntax;
 using Beskar.CodeAnalytics.Data.Metadata.Readers;
 using Beskar.CodeAnalytics.Data.Metadata.Specs.Symbols;
 using Beskar.CodeAnalytics.Data.Metadata.Storage;
@@ -42,6 +43,11 @@ public sealed class DatabaseDescriptor : IDisposable
    /// Storage descriptor.
    /// </summary>
    public required StorageDescriptor Storage { get; set; }
+   
+   /// <summary>
+   /// Line previews descriptor.
+   /// </summary>
+   public required LinePreviewsDescriptor LinePreviews { get; set; }
 
    /// <summary>
    /// Holds all spec readers.
@@ -56,6 +62,7 @@ public sealed class DatabaseDescriptor : IDisposable
       await Structure.Initialize(this);
       await Symbols.Initialize(this);
       await StringPool.Initialize(this);
+      await LinePreviews.Initialize(this);
    }
 
    public static async Task<DatabaseDescriptor> Create(string baseFolderPath)

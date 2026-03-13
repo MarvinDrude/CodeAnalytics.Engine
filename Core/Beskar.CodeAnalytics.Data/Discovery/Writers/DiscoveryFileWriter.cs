@@ -1,6 +1,6 @@
 ﻿namespace Beskar.CodeAnalytics.Data.Discovery.Writers;
 
-public sealed class DiscoveryFileWriter<TKey>(string filePath) : IDisposable
+public sealed class DiscoveryFileWriter<TKey>(string filePath, bool allowDuplicates = false) : IDisposable
    where TKey : IEquatable<TKey>
 {
    private readonly FileStream _file = new (filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
@@ -8,7 +8,7 @@ public sealed class DiscoveryFileWriter<TKey>(string filePath) : IDisposable
 
    public ValueTask<bool> Write(TKey id, Func<FileStream, ValueTask> writeAction)
    {
-      return !_offsets.TryAdd(id, _file.Position) 
+      return !_offsets.TryAdd(id, _file.Position) && !allowDuplicates
          ? new ValueTask<bool>(false) 
          : Run();
 

@@ -1,8 +1,10 @@
 using Beskar.CodeAnalytics.Dashboard.Components;
 using Beskar.CodeAnalytics.Dashboard.Services.Database;
 using Beskar.CodeAnalytics.Dashboard.Services.Structure;
+using Beskar.CodeAnalytics.Dashboard.Services.Syntax;
 using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services;
 using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Structure;
+using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Syntax;
 using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure;
 using Beskar.CodeAnalytics.Dashboard.Shared.Options;
 
@@ -18,7 +20,8 @@ builder.Services.Configure<DashboardOptions>(
 builder.Services.AddSingleton<IDatabaseProvider, DatabaseProvider>()
    .AddSingleton<IDatabaseScheduler, DatabaseScheduler>()
    .AddSingleton<IFolderService, ImFolderService>()
-   .AddSingleton<IFileService, FileService>();
+   .AddSingleton<IFileService, FileService>()
+   .AddSingleton<ILocationService, LocationService>();
 
 var app = builder.Build();
 

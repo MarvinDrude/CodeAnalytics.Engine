@@ -5,10 +5,13 @@
 @using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Structure
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Syntax
+@using Beskar.CodeAnalytics.Dashboard.Shared.Models.Syntax
 @using Beskar.CodeAnalytics.Data.Entities.Structure
 
 @inject IFileService FileService
 @inject IDatabaseScheduler DatabaseScheduler
+@inject ILocationService LocationService
 
 <PageTitle>Source Explorer</PageTitle>
 
@@ -25,7 +28,9 @@
                   </div>
                   @if (_currentFile is not null)
                   {
-                     <TokenTextViewer SyntaxFile="@_currentFile"/>
+                     <TokenTextViewer 
+                        SyntaxFile="@_currentFile"
+                        TokenClick="@OnCodeClick"/>
                   }
                </div>
             </VerticalResizablePane>
@@ -43,7 +48,10 @@
 @code {
 
    private SyntaxFile? _currentFile;
+   private TokenClickEvent? _lastClickEvent;
 
+   private SourceExplorerTokenInfoBase _currentTokenInfo = new SourceExplorerTokenEmptyInfo();
+   
    private async Task OnOpenFile(FileOpenEvent ev)
    {
       await DatabaseScheduler.Schedule(() =>
@@ -53,5 +61,21 @@
       
       await InvokeAsync(StateHasChanged);
    }
-
+   
+   private async Task OnCodeClick(TokenClickEvent ev)
+   {
+      _lastClickEvent = ev;
+      
+      await DatabaseScheduler.Schedule((db) =>
+      {
+         LocationService.GetLocations(ev.Token.SymbolId);
+         
+         _currentTokenInfo = new SourceExplorerTokenInfo()
+         {
+            Token = ev.Token
+         };
+      });
+      
+      await InvokeAsync(StateHasChanged);
+   }
 }

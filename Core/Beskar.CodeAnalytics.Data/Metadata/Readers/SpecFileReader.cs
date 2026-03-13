@@ -75,6 +75,18 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
       return results;
    }
 
+   public MmfHandle.SpanView<TSpec> LeaseById(uint id)
+   {
+      var buffer = _handle.GetBuffer();
+      var span = buffer.GetSpan<TSpec>(0, _itemCount);
+      
+      var (start, length) = FindRange(span, id);
+
+      return length == 0 
+         ? new MmfHandle.SpanView<TSpec>(buffer, 0, 0) 
+         : new MmfHandle.SpanView<TSpec>(buffer, start * _structSize, length);
+   }
+
    public MmfHandle.SpanView<TSpec> Lease(int index, int count)
    {
       return _handle.LeaseSpanView<TSpec>(index * _structSize, count);
@@ -91,6 +103,51 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
       var span = buffer.GetSpan<TSpec>(0, _itemCount);
       
       return span.BinaryFindIndex(id);
+   }
+   
+   private (int start, int length) FindRange(
+      scoped in ReadOnlySpan<TSpec> span, uint id)
+   {
+      int first = -1;
+      int last = -1;
+
+      // Find the first occurrence
+      int low = 0;
+      int high = span.Length - 1;
+      while (low <= high)
+      {
+         int mid = low + (high - low) / 2;
+         if (span[mid].Identifier >= id)
+         {
+            if (span[mid].Identifier == id) first = mid;
+            high = mid - 1;
+         }
+         else
+         {
+            low = mid + 1;
+         }
+      }
+
+      if (first == -1) return (0, 0);
+
+      // Find the last occurrence
+      low = first;
+      high = span.Length - 1;
+      while (low <= high)
+      {
+         int mid = low + (high - low) / 2;
+         if (span[mid].Identifier <= id)
+         {
+            if (span[mid].Identifier == id) last = mid;
+            low = mid + 1;
+         }
+         else
+         {
+            high = mid - 1;
+         }
+      }
+
+      return (first, last - first + 1);
    }
    
    public void Dispose()

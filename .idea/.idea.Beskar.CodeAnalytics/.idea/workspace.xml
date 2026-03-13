@@ -13,15 +13,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/LocationNavigateEvent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/TokenLocationModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/Readers/LinePreviewReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/Readers/LinePreviewReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Syntax/ILocationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Syntax/ILocationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/SourceExplorerTokenInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/SourceExplorerTokenInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/TokenLocationModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/TokenLocationModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Syntax/LocationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Syntax/LocationService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -405,7 +397,7 @@
       <workItem from="1773165573736" duration="10152000" />
       <workItem from="1773248730398" duration="14153000" />
       <workItem from="1773339555575" duration="6707000" />
-      <workItem from="1773420466812" duration="21989000" />
+      <workItem from="1773420466812" duration="22926000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -695,7 +687,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773438986290</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Introduce `LocationViewer` component and enhance symbol navigation with location previews and click handling.">
+      <option name="closed" value="true" />
+      <created>1773443180002</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1773443180002</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -716,7 +716,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add `DatabaseBuilder` and `DatabaseStructureBuilder` for constructing metadata. Simplify `SpecDescriptor` by removing unused properties." />
     <MESSAGE value="Add `StructureDescriptorSerializer` and `DatabaseDescriptorSerializer` for serialization. Extend `DatabaseBuilder` usage across baking and folder discovery. Simplify `SpecDescriptor`." />
     <MESSAGE value="Add more spec descriptors and serializers (`FileSpec`, `ProjectSpec`, `SolutionSpec`, `SymbolLocationSpec`, `SyntaxFile`). Extend `DatabaseStructureBuilder` and `StructureDescriptor` for comprehensive metadata handling." />
     <MESSAGE value="Add symbol spec descriptors and serializers (`SymbolSpec`, `TypeSymbolSpec`, `NamedTypeSymbolSpec`, `FieldSymbolSpec`, `PropertySymbolSpec`, `ParameterSymbolSpec`, `MethodSymbolSpec`, `TypeParameterSymbolSpec`, `SymbolEdgeSpec`). Extend `DatabaseBuilder`, `DatabaseDescriptor`, and `Serialization`. Integrate edge spec handling and initialize logic for descriptors." />
@@ -741,7 +740,8 @@
     <MESSAGE value="Refactor `LinePreviewWriter` to support `DatabaseBuilder`, optimize line caching in `SourceTokenizer`, and track item/byte counts for storage metadata integration." />
     <MESSAGE value="Add `LocationService` and integrate token click handling in `SourceExplorer` for symbol location tracking" />
     <MESSAGE value="Introduce `LinePreviewsDescriptor` and related serializers, integrate `LinePreviewReader` for efficient symbol location previews, and enhance storage metadata handling with line preview support." />
-    <option name="LAST_COMMIT_MESSAGE" value="Introduce `LinePreviewsDescriptor` and related serializers, integrate `LinePreviewReader` for efficient symbol location previews, and enhance storage metadata handling with line preview support." />
+    <MESSAGE value="Introduce `LocationViewer` component and enhance symbol navigation with location previews and click handling." />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduce `LocationViewer` component and enhance symbol navigation with location previews and click handling." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

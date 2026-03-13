@@ -19,23 +19,33 @@ public sealed class LocationService(IDatabaseProvider provider) : ILocationServi
       using var locations = reader.LeaseById(symbolId);
       
       using var owner = new MemoryOwner<LinePreviewView>(locations.Span.Length);
+      using var fileIdOwner = new MemoryOwner<uint>(locations.Span.Length);
+      
       for (var index = 0; index < locations.Span.Length; index++)
       {
          var location = locations.Span[index];
          owner.Span[index] = location.LinePreview;
+         fileIdOwner.Span[index] = location.SourceFileId;
       }
 
       owner.Span.Sort(static (x, y) => x.Offset.CompareTo(y.Offset));
+      fileIdOwner.Span.Sort(static (x, y) => x.CompareTo(y));
       
       var result = new TokenLocationModel[locations.Span.Length];
       var previews = previewReader.GetStrings(owner.Span);
       
+      var fileReader = db.Structure.Files.GetReader();
+      using var files = fileReader.GetSpecsBySortedIds(fileIdOwner.Span);
+      
       for (var index = 0; index < locations.Span.Length; index++)
       {
+         var file = files.WrittenSpan[index];
+         
          result[index] = new TokenLocationModel()
          {
             PreviewLine = previews[index],
-            Location = locations.Span[index]
+            Location = locations.Span[index],
+            File = file
          };
       }
       

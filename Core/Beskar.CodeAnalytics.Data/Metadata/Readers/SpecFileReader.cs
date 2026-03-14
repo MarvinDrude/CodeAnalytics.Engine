@@ -116,15 +116,15 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
    private (int start, int length) FindRange(
       scoped in ReadOnlySpan<TSpec> span, uint id)
    {
-      int first = -1;
-      int last = -1;
+      var first = -1;
+      var last = -1;
 
       // Find the first occurrence
-      int low = 0;
-      int high = span.Length - 1;
+      var low = 0;
+      var high = span.Length - 1;
       while (low <= high)
       {
-         int mid = low + (high - low) / 2;
+         var mid = low + (high - low) / 2;
          if (span[mid].Identifier >= id)
          {
             if (span[mid].Identifier == id) first = mid;
@@ -143,7 +143,7 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
       high = span.Length - 1;
       while (low <= high)
       {
-         int mid = low + (high - low) / 2;
+         var mid = low + (high - low) / 2;
          if (span[mid].Identifier <= id)
          {
             if (span[mid].Identifier == id) last = mid;

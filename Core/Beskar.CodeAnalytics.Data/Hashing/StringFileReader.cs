@@ -44,8 +44,8 @@ public sealed class StringFileReader : IDisposable
    public Dictionary<StringFileView, string> GetStrings(scoped in ReadOnlySpan<StringFileView> views)
    {
       Dictionary<StringFileView, string> result = [];
-      
       using var buffer = _handle.GetBuffer();
+      
       foreach (var view in views)
       {
          var offset = (long)view.Offset;
@@ -55,6 +55,39 @@ public sealed class StringFileReader : IDisposable
          
          var span = buffer.GetSpan<byte>(offset, length);
          result[view] = Encoding.UTF8.GetString(span);
+      }
+      
+      return result;
+   }
+
+   public Dictionary<StringFileView, string> GetStrings<T>(scoped in ReadOnlySpan<T> entities, Func<T, ulong> getOffset)
+   {
+      using var orderOwner = entities.Length < 64 
+         ? new SpanOwner<ulong>(stackalloc ulong[entities.Length]) 
+         : new SpanOwner<ulong>(entities.Length);
+
+      for (var index = 0; index < entities.Length; index++)
+      {
+         var entity = entities[index];
+         var offset = getOffset(entity);
+         
+         orderOwner.Span[index] = offset;
+      }
+      
+      orderOwner.Span.Sort(static (x, y) => x.CompareTo(y));
+
+      Dictionary<StringFileView, string> result = [];
+      using var buffer = _handle.GetBuffer();
+
+      foreach (var offset in orderOwner.Span)
+      {
+         var longOffset = (long)offset;
+         
+         var length = buffer.ReadInt32LittleEndian(longOffset);
+         longOffset += sizeof(int);
+         
+         var span = buffer.GetSpan<byte>(longOffset, length);
+         result[new StringFileView(offset)] = Encoding.UTF8.GetString(span);
       }
       
       return result;

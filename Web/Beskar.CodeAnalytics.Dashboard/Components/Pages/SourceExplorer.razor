@@ -21,7 +21,7 @@
       <ResizablePane InitialWidth="20">
          <FolderTree FileOpen="@OnOpenFile"></FolderTree>
       </ResizablePane>
-      <ResizablePane InitialWidth="60">
+      <ResizablePane InitialWidth="55">
          <VerticalResizableContainer>
             <VerticalResizablePane InitialHeight="80">
                <div class="code">
@@ -40,16 +40,16 @@
             </VerticalResizablePane>
          </VerticalResizableContainer>
       </ResizablePane>
-      <ResizablePane InitialWidth="20">
+      <ResizablePane InitialWidth="25">
          @if (_currentTokenInfo is SourceExplorerTokenInfo info)
          {
             <LocationViewer 
                Title="Symbol Declarations" 
-               Locations="@info.Locations.Where(l => l.Location.IsDeclaration).ToArray()"
+               Locations="@info.Locations.Where(l => l.Location.IsDeclaration)"
                LocationNavigate="@OnNavigateLocation" />
             <LocationViewer 
                Title="Symbol Occurrences" 
-               Locations="@info.Locations.Where(l => !l.Location.IsDeclaration).ToArray()"
+               Locations="@info.Locations.Where(l => !l.Location.IsDeclaration)"
                LocationNavigate="@OnNavigateLocation" />
          }
       </ResizablePane>
@@ -59,9 +59,7 @@
 @code {
 
    private SyntaxFile? _currentFile;
-   private TokenClickEvent? _lastClickEvent;
-
-   private SourceExplorerTokenInfoBase _currentTokenInfo = new SourceExplorerTokenEmptyInfo();
+   private ISourceExplorerTokenInfoBase _currentTokenInfo = new SourceExplorerTokenEmptyInfo();
    
    private async Task OnOpenFile(FileOpenEvent ev)
    {
@@ -85,8 +83,6 @@
    
    private async Task OnCodeClick(TokenClickEvent ev)
    {
-      _lastClickEvent = ev;
-      
       await DatabaseScheduler.Schedule(() =>
       {
          _currentTokenInfo = new SourceExplorerTokenInfo()

@@ -1,0 +1,32 @@
+﻿
+.header {
+    padding: 0 15px 0 15px;
+    display: flex;
+    position: relative;
+    height: 55px;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    width: calc(100% - 30px);
+    height: 1px;
+    border-bottom: 1px solid #333;
+}
+
+.header .name {
+    flex-grow: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header .icon-wrapper {
+    padding-top: 5px;
+    margin-left: 10px;
+}

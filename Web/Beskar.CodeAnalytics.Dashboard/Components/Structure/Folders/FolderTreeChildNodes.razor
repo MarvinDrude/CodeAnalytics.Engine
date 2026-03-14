@@ -2,7 +2,7 @@
 @using Beskar.CodeAnalytics.Dashboard.Shared.Models.Structure
 
 <div>
-   @foreach (var item in Items)
+   @foreach (var item in Items.OrderBy(x => x is not FolderNodeItem).ThenBy(x => x.Name))
    {
       <FolderTreeNode 
          Item="@item" 

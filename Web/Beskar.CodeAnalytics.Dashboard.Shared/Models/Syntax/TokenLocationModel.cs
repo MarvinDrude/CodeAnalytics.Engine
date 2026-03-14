@@ -10,4 +10,6 @@ public sealed class TokenLocationModel
    public required FileSpec File { get; set; }
    
    public required string PreviewLine { get; set; }
+   
+   public required string FilePath { get; set; }
 }

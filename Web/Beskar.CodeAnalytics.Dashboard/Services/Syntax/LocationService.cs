@@ -28,7 +28,7 @@ public sealed class LocationService(IDatabaseProvider provider) : ILocationServi
          fileIdOwner.Span[index] = location.SourceFileId;
       }
 
-      owner.Span.Sort(static (x, y) => x.Offset.CompareTo(y.Offset));
+      //owner.Span.Sort(static (x, y) => x.Offset.CompareTo(y.Offset));
       fileIdOwner.Span.Sort(static (x, y) => x.CompareTo(y));
       
       var result = new TokenLocationModel[locations.Span.Length];
@@ -36,6 +36,7 @@ public sealed class LocationService(IDatabaseProvider provider) : ILocationServi
       
       var fileReader = db.Structure.Files.GetReader();
       using var files = fileReader.GetSpecsBySortedIds(fileIdOwner.Span);
+      var filePaths = db.StringPool.Reader.GetStrings(files.WrittenSpan, (f) => f.FullPath.Offset);
       
       for (var index = 0; index < locations.Span.Length; index++)
       {
@@ -45,7 +46,8 @@ public sealed class LocationService(IDatabaseProvider provider) : ILocationServi
          {
             PreviewLine = previews[index],
             Location = locations.Span[index],
-            File = file
+            File = file,
+            FilePath = filePaths[file.FullPath]
          };
       }
       

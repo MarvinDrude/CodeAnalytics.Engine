@@ -2,13 +2,30 @@
 @using Beskar.CodeAnalytics.Dashboard.Shared.Models.Syntax
 
 <div>
-   <h3>@Title</h3>
-   <div>
-      @foreach (var location in Locations)
-      {
-         <p @onclick="@(() => OnClick(location))">@location.PreviewLine</p>
-      }
-   </div>
+   <RightHeader Name="@Title" @bind-IsExpanded="@_isExpanded">
+      <div>
+         @foreach (var grpName in _locationsPerFile.Keys.OrderBy(k => k))
+         {
+            var locations = _locationsPerFile[grpName];
+            
+            <h4>&#x200E @grpName</h4>
+            <div>
+               @foreach (var location in locations)
+               {
+                  var preview = location.Location.LinePreview;
+                  var (display, start) = GetFormattedPreview(location);
+                  
+                  <div class="line" @onclick="@(() => OnClick(location))">
+                     <div class="number">@location.Location.LineNumber</div>
+                     <div class="content">
+                        @display[..start]<span class="highlight">@display.Substring(start, preview.TokenLength)</span>@display[(start + preview.TokenLength)..]
+                     </div>
+                  </div>
+               }
+            </div>
+         }
+      </div>
+   </RightHeader>
 </div>
 
 @code {
@@ -17,10 +34,21 @@
    public required string Title { get; set; }
    
    [Parameter, EditorRequired]
-   public required TokenLocationModel[] Locations { get; set; }
+   public required IEnumerable<TokenLocationModel> Locations { get; set; }
    
    [Parameter]
    public EventCallback<LocationNavigateEvent> LocationNavigate { get; set; }
+
+   private Dictionary<string, TokenLocationModel[]> _locationsPerFile = [];
+   private bool _isExpanded = true;
+   private int _maxDisplayLength = 80;
+   
+   protected override void OnParametersSet()
+   {
+      _locationsPerFile = Locations
+         .GroupBy(x => x.FilePath)
+         .ToDictionary(l => l.Key, l => l.ToArray());
+   }
 
    private async Task OnClick(TokenLocationModel location)
    {
@@ -28,5 +56,24 @@
       {
          Location = location
       });
+   }
+   
+   private (string Text, int HighlightStart) GetFormattedPreview(TokenLocationModel model)
+   {
+      var text = model.PreviewLine ?? "";
+      var start = model.Location.LinePreview.TokenStart;
+      var length = model.Location.LinePreview.TokenLength;
+
+      if (text.Length <= _maxDisplayLength)
+         return (text, start);
+
+      var halfBuffer = (_maxDisplayLength - length) / 2;
+      var startIndex = Math.Max(0, start - halfBuffer);
+      
+      if (startIndex + _maxDisplayLength > text.Length)
+         startIndex = Math.Max(0, text.Length - _maxDisplayLength);
+
+      var truncatedText = text.Substring(startIndex, Math.Min(_maxDisplayLength, text.Length - startIndex));
+      return (truncatedText, start - startIndex);
    }
 }

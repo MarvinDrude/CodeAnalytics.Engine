@@ -1,0 +1,40 @@
+﻿@using Beskar.Blazor.Icons
+
+<div>
+   <div class="header" @onclick="OnClick">
+      <div class="name">
+         @Name
+      </div>
+      <div class="icon-wrapper">
+         <BeIcon Icon="@(IsExpanded ? BeskarIcon.Outlined.KeyboardArrowDown : BeskarIcon.Outlined.KeyboardArrowLeft)"/>
+      </div>
+   </div>
+   <div class="content">
+      @if (IsExpanded)
+      {
+         @ChildContent
+      }
+   </div>
+</div>
+
+@code {
+ 
+   [Parameter, EditorRequired]
+   public required string Name { get; set; }
+   
+   [Parameter]
+   public bool IsExpanded { get; set; }
+   
+   [Parameter]
+   public EventCallback<bool> IsExpandedChanged { get; set; }
+    
+   [Parameter]
+   public RenderFragment? ChildContent { get; set; }
+
+   private async Task OnClick()
+   {
+      IsExpanded = !IsExpanded;
+      await IsExpandedChanged.InvokeAsync(IsExpanded);
+   }
+   
+}

@@ -1,1 +1,42 @@
-﻿
+﻿.line {
+    display: flex;
+    cursor: pointer;
+    font-family: monospace;
+    white-space: nowrap;
+    padding: 6px 4px;
+}
+
+.line:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.line .number {
+    min-width: 40px;
+    color: #858585;
+    text-align: right;
+    margin-right: 12px;
+    user-select: none;
+}
+
+.line .content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+.line .highlight {
+    background-color: var(--blue-glow-dark);
+    color: inherit;
+}
+
+h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 40px;
+    line-height: 40px;
+    background-color: var(--blue-glow);
+    direction: rtl;
+    padding: 0 15px;
+    text-align: left;
+}

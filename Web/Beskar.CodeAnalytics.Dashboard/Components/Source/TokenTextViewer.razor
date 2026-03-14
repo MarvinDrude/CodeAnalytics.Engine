@@ -2,6 +2,8 @@
 @using Beskar.CodeAnalytics.Data.Entities.Structure
 @using Beskar.CodeAnalytics.Data.Syntax
 
+@inject IJSRuntime JsRuntime
+
 <script type="module" src="@Assets["Components/Source/TokenTextViewer.razor.js"]"></script>
 
 <div 
@@ -67,8 +69,11 @@
    
    [Parameter]
    public HashSet<int> HighlightedLineNumbers { get; set; } = [];
+
+   [Parameter] public int ClickedLineNumber { get; set; } = -1;
    
    private readonly Dictionary<int, string> _highlights = [];
+   private int _lastScrolledLine = -1;
    
    protected override void OnParametersSet()
    {
@@ -81,6 +86,15 @@
             var index = highlight.Start + e;
             _highlights[index] = highlight.ClassName;
          }
+      }
+   }
+
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if (ClickedLineNumber != -1 && ClickedLineNumber != _lastScrolledLine)
+      {
+         _lastScrolledLine = ClickedLineNumber;
+         await JsRuntime.InvokeVoidAsync("scrollToLine", ClickedLineNumber);
       }
    }
 

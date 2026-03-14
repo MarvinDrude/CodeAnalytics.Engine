@@ -46,7 +46,7 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
          ? throw new KeyNotFoundException() 
          : span[index];
    }
-
+   
    public ArrayBuilderResult<TSpec> GetSpecsBySortedIds(scoped in ReadOnlySpan<uint> sortedIds)
    {
       var results = new ArrayBuilder<TSpec>(sortedIds.Length);
@@ -55,18 +55,16 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
       {
          using var buffer = _handle.GetBuffer();
          var span = buffer.GetSpan<TSpec>(0, _itemCount);
-
-         var sourceIdx = 0;
+         var window = span;
+         
          foreach (var targetId in sortedIds)
          {
-            while (sourceIdx < span.Length && span[sourceIdx].Identifier < targetId)
-            {
-               sourceIdx++;
-            }
+            var index = window.BinaryFindIndex(targetId);
 
-            if (sourceIdx < span.Length && span[sourceIdx].Identifier == targetId)
+            if (index >= 0)
             {
-               results.Add(span[sourceIdx]);
+               results.Add(window[index]);
+               window = window[index..];
             }
             else
             {
@@ -81,6 +79,32 @@ public sealed class SpecFileReader<TSpec> : ISpecFileReader
          results.Dispose();
          throw;
       }
+   }
+
+   public Dictionary<uint, TSpec> GetLookupBySortedIds(scoped in ReadOnlySpan<uint> sortedIds)
+   {
+      Dictionary<uint, TSpec> result = [];
+
+      using var buffer = _handle.GetBuffer();
+      var span = buffer.GetSpan<TSpec>(0, _itemCount);
+      var window = span;
+         
+      foreach (var targetId in sortedIds)
+      {
+         var index = window.BinaryFindIndex(targetId);
+
+         if (index >= 0)
+         {
+            result[targetId] = window[index];
+            window = window[index..];
+         }
+         else
+         {
+            throw new KeyNotFoundException($"ID {targetId} not found in spec file.");
+         }
+      }
+      
+      return result;
    }
 
    public MmfHandle.SpanView<TSpec> LeaseById(uint id)

@@ -13,24 +13,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/wwwroot/js/Utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Symbols/Discovery/FileDiscovery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/FileSpec.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Structure/FileSpec.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Symbols/SymbolLocationSpec.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Symbols/SymbolLocationSpec.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/TokenClickEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/TokenClickEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Structure/IFolderService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Structure/IFolderService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FileSystemItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Structure/FileSystemItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/SourceExplorerTokenInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Syntax/SourceExplorerTokenInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Metadata/Readers/SpecFileReader.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeNode.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeNode.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeNode.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTreeNode.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Structure/ImFolderService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Structure/ImFolderService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Syntax/LocationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Syntax/LocationService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -421,7 +412,7 @@
       <workItem from="1773248730398" duration="14153000" />
       <workItem from="1773339555575" duration="6707000" />
       <workItem from="1773420466812" duration="23971000" />
-      <workItem from="1773477053809" duration="20262000" />
+      <workItem from="1773477053809" duration="29697000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -735,7 +726,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773488316334</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Enhance symbol navigation with token highlights, expand folder navigation capabilities, and add `TokenIndex` tracking to `SymbolLocationSpec` for improved location handling.">
+      <option name="closed" value="true" />
+      <created>1773498519301</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1773498519301</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -756,7 +755,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add symbol spec descriptors and serializers (`SymbolSpec`, `TypeSymbolSpec`, `NamedTypeSymbolSpec`, `FieldSymbolSpec`, `PropertySymbolSpec`, `ParameterSymbolSpec`, `MethodSymbolSpec`, `TypeParameterSymbolSpec`, `SymbolEdgeSpec`). Extend `DatabaseBuilder`, `DatabaseDescriptor`, and `Serialization`. Integrate edge spec handling and initialize logic for descriptors." />
     <MESSAGE value="Introduce `FolderConnector` for folder edge connection logic, add `Dispose` implementations to descriptors, and extend `EdgeConnectionBakeStep` with folder support." />
     <MESSAGE value="Extend index handling by introducing serializers (`NGramIndexDescriptorSerializer`, `BTreeIndexDescriptorSerializer`), enhancing `IndexBakeStep`, and adding index management to descriptors and builders." />
     <MESSAGE value="Replace `Flags` structures with `PackedBools` utility, refactor flag handling across entities, and drop unused `Flags.cs`." />
@@ -781,7 +779,8 @@
     <MESSAGE value="Introduce `LocationViewer` component and enhance symbol navigation with location previews and click handling." />
     <MESSAGE value="Add `FileSpec` property to `TokenLocationModel` and enhance `LocationService` to include file metadata alongside location previews." />
     <MESSAGE value="Add grouped file-based layout to `LocationViewer` with collapsible headers and enhanced preview formatting. Refactor `TokenLocationModel` and `LocationService` for file-path-based grouping and metadata inclusion." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add grouped file-based layout to `LocationViewer` with collapsible headers and enhanced preview formatting. Refactor `TokenLocationModel` and `LocationService` for file-path-based grouping and metadata inclusion." />
+    <MESSAGE value="Enhance symbol navigation with token highlights, expand folder navigation capabilities, and add `TokenIndex` tracking to `SymbolLocationSpec` for improved location handling." />
+    <option name="LAST_COMMIT_MESSAGE" value="Enhance symbol navigation with token highlights, expand folder navigation capabilities, and add `TokenIndex` tracking to `SymbolLocationSpec` for improved location handling." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

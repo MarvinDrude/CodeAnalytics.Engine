@@ -35,12 +35,14 @@ public sealed class LocationService(IDatabaseProvider provider) : ILocationServi
       var previews = previewReader.GetStrings(owner.Span);
       
       var fileReader = db.Structure.Files.GetReader();
-      using var files = fileReader.GetSpecsBySortedIds(fileIdOwner.Span);
-      var filePaths = db.StringPool.Reader.GetStrings(files.WrittenSpan, (f) => f.FullPath.Offset);
+      var files = fileReader.GetLookupBySortedIds(fileIdOwner.Span);
+      // optimize in future
+      var filePaths = db.StringPool.Reader.GetStrings(files.Values.ToArray(), (f) => f.FullPath.Offset);
       
       for (var index = 0; index < locations.Span.Length; index++)
       {
-         var file = files.WrittenSpan[index];
+         var location = locations.Span[index];
+         var file = files[location.SourceFileId];
          
          result[index] = new TokenLocationModel()
          {

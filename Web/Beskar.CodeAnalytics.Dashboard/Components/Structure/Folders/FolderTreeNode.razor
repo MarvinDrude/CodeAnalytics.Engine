@@ -8,9 +8,10 @@
 
 @inject IDatabaseScheduler DatabaseScheduler
 @inject IFolderService FolderService
+@inject IJSRuntime JsRuntime
 
 <div>
-   <div @onclick="OnClick" class="node @(Item is FolderNodeItem ? "folder" : "file") @(Item.IsHighlighted ? "hl" : "")">
+   <div @ref="_nodeElement" @onclick="OnClick" class="node @(Item is FolderNodeItem ? "folder" : "file") @(Item.IsHighlighted ? "hl" : "")">
       <div class="depth">
          @for (var i = 0; i < Depth; i++)
          {
@@ -56,6 +57,9 @@
 
 @code {
    
+   private ElementReference _nodeElement;
+   private IJSObjectReference? _module;
+   
    [Parameter, EditorRequired]
    public required FileSystemItem Item { get; set; }
    
@@ -67,6 +71,14 @@
 
    private bool _loading;
 
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if (Item.IsHighlighted)
+      {
+         await ScrollToMe();
+      }
+   }
+   
    private async Task OnClick()
    {
       if (_loading) return;
@@ -101,5 +113,11 @@
          FileKind.CSharp => (LanguageIcons.CSharp, "#5fab64"),
          _ => throw new ArgumentOutOfRangeException()
       };
+   }
+   
+   private async Task ScrollToMe()
+   {
+      _module ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/Utils.js");
+      await _module.InvokeVoidAsync("scrollIntoView", _nodeElement);
    }
 }

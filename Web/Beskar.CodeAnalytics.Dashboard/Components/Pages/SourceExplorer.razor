@@ -34,7 +34,8 @@
                         SyntaxFile="@_currentFile"
                         TokenClick="@OnCodeClick"
                         Highlights="@CreateHighlights()"
-                        HighlightedLineNumbers="@_highlightedLineNumbers" />
+                        HighlightedLineNumbers="@_highlightedLineNumbers"
+                        ClickedLineNumber="@(LineNumber ?? -1)" />
                   }
                </div>
             </VerticalResizablePane>
@@ -44,16 +45,18 @@
          </VerticalResizableContainer>
       </ResizablePane>
       <ResizablePane InitialWidth="25">
-         <LocationViewer 
-            Title="Symbol Declarations" 
-            Locations="@_currentTokenInfo.Locations.Where(l => l.Location.IsDeclaration)"
-            IsEmpty="@_currentTokenInfo.IsEmpty"
-            LocationNavigate="@OnNavigateLocation" />
-         <LocationViewer 
-            Title="Symbol Occurrences" 
-            Locations="@_currentTokenInfo.Locations.Where(l => !l.Location.IsDeclaration)"
-            IsEmpty="@_currentTokenInfo.IsEmpty"
-            LocationNavigate="@OnNavigateLocation" />
+         <div class="right">
+            <LocationViewer
+               Title="Symbol Declarations"
+               Locations="@_currentTokenInfo.Locations.Where(l => l.Location.IsDeclaration)"
+               IsEmpty="@_currentTokenInfo.IsEmpty"
+               LocationNavigate="@OnNavigateLocation"/>
+            <LocationViewer
+               Title="Symbol Occurrences"
+               Locations="@_currentTokenInfo.Locations.Where(l => !l.Location.IsDeclaration)"
+               IsEmpty="@_currentTokenInfo.IsEmpty"
+               LocationNavigate="@OnNavigateLocation"/>
+         </div>
       </ResizablePane>
    </ResizableContainer>
 </div>
@@ -107,6 +110,8 @@
          _currentTokenInfo = new SourceExplorerTokenEmptyInfo();
       }
    }
+   
+   
 
    private async Task OnOpenFile(FileOpenEvent ev)
    {

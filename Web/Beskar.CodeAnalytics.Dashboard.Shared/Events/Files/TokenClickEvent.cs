@@ -5,4 +5,6 @@ namespace Beskar.CodeAnalytics.Dashboard.Shared.Events.Files;
 public sealed class TokenClickEvent
 {
    public SyntaxTokenSpec Token { get; set; }
+   
+   public int LineNumber { get; set; }
 }

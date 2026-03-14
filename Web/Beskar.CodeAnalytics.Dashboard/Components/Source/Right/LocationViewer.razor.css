@@ -25,7 +25,7 @@
 }
 
 .line .highlight {
-    background-color: var(--blue-glow-dark);
+    background-color: #ffd33d44;
     color: inherit;
 }
 
@@ -39,4 +39,9 @@ h4 {
     direction: rtl;
     padding: 0 15px;
     text-align: left;
+}
+
+.text {
+    padding: 0 15px;
+    color: rgba(255,255,255,0.8);
 }

@@ -75,9 +75,100 @@ public sealed class ImFolderService(IDatabaseProvider dbProvider) : IFolderServi
       return result;
    }
 
-   public List<FileSystemItem> GetRootNodes()
+   public List<FileSystemItem> GetRootNodes(uint childIdExpandTo, bool isFolder, bool highlight = true)
    {
       var provider = _databaseProvider.GetDescriptor().Structure.RootFolderId;
-      return GetNodesByParentId(provider);
+      var roots = GetNodesByParentId(provider);
+
+      using var pathIds = GetPathToRoot(childIdExpandTo, isFolder);
+      
+      var path = pathIds.WrittenSpan;
+      if (path.Length is 0 or 1) return roots;
+
+      var current = roots;
+      for (var e = path.Length - 2; e >= 0; e--)
+      {
+         var folderId = path[e];
+         var node = current.OfType<FolderNodeItem>().FirstOrDefault(x => x.Id == folderId);
+
+         if (node != null)
+         {
+            var children = GetNodesByParent(node);
+            node.IsExpanded = true;
+            
+            current = children;
+         }
+      }
+      
+      var highlightNode = current.FirstOrDefault(x => x.Id == childIdExpandTo);
+      highlightNode?.IsHighlighted = highlight;
+
+      return roots;
+   }
+
+   public ArrayBuilderResult<uint> GetPathToRoot(uint childId, bool isFolder)
+   {
+      var rootId = _databaseProvider.GetDescriptor().Structure.RootFolderId;
+      var builder = new ArrayBuilder<uint>(20);
+
+      try
+      {
+         var parentId = GetParentFolderId(childId, isFolder);
+         builder.Add(parentId);
+         
+         while (parentId != rootId)
+         {
+            parentId = GetParentFolderId(parentId, true);
+            builder.Add(parentId);
+         }
+      }
+      catch (Exception)
+      {
+         builder.Dispose();
+         throw;
+      }
+      
+      return builder;
+   }
+
+   public List<FileSystemItem> GetRootNodes(int depth)
+   {
+      var rootFolderId = _databaseProvider.GetDescriptor().Structure.RootFolderId;
+      var rootNodes = GetNodesByParentId(rootFolderId);
+
+      foreach (var node in rootNodes)
+      {
+         ExpandNodeRecursive(node, depth);
+      }
+      
+      return rootNodes;
+   }
+   
+   private void ExpandNodeRecursive(FileSystemItem item, int depth)
+   {
+      if (depth <= 0 || item is not FolderNodeItem folder)
+      {
+         return;
+      }
+
+      folder.IsExpanded = true;
+   
+      var children = GetNodesByParentId(folder.Id);
+      folder.Children = children; 
+
+      foreach (var child in children)
+      {
+         ExpandNodeRecursive(child, depth - 1);
+      }
+   }
+   
+   private uint GetParentFolderId(uint childId, bool isFolder)
+   {
+      var db = _databaseProvider.GetDescriptor();
+      var parentId = isFolder 
+         ? db.Structure.Folders.GetReader().GetSpecById(childId).ParentId 
+         : db.Structure.Files.GetReader().GetSpecById(childId).ParentId;
+      
+      return parentId;
    }
 }

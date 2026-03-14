@@ -32,6 +32,11 @@
     height: calc(var(--font-size) * 1.3);
 }
 
+.viewer .line-number.hl {
+    color: #fff !important;
+    background-color: #ffd33d44;
+}
+
 .viewer .line-content {
     flex-grow: 1;
     display: flex;
@@ -44,6 +49,10 @@
     min-width: max-content;
 }
 
+.viewer .line-content.hl {
+    background-color: #ffd33d11;
+}
+
 .viewer .hoverable {
     cursor: pointer;
     transition: .3s ease all;
@@ -51,4 +60,9 @@
 
 .viewer .hoverable:hover { 
     background-color: rgba(255,255,255,0.1);
+}
+
+.viewer .oc {
+    color: #fff !important;
+    background-color: #ffd33d44;
 }

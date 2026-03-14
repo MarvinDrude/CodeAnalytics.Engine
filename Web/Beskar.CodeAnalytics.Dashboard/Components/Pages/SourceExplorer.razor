@@ -13,6 +13,7 @@
 @inject IFileService FileService
 @inject IDatabaseScheduler DatabaseScheduler
 @inject ILocationService LocationService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Source Explorer</PageTitle>
 
@@ -31,7 +32,9 @@
                   {
                      <TokenTextViewer 
                         SyntaxFile="@_currentFile"
-                        TokenClick="@OnCodeClick"/>
+                        TokenClick="@OnCodeClick"
+                        Highlights="@CreateHighlights()"
+                        HighlightedLineNumbers="@_highlightedLineNumbers" />
                   }
                </div>
             </VerticalResizablePane>
@@ -41,31 +44,76 @@
          </VerticalResizableContainer>
       </ResizablePane>
       <ResizablePane InitialWidth="25">
-         @if (_currentTokenInfo is SourceExplorerTokenInfo info)
-         {
-            <LocationViewer 
-               Title="Symbol Declarations" 
-               Locations="@info.Locations.Where(l => l.Location.IsDeclaration)"
-               LocationNavigate="@OnNavigateLocation" />
-            <LocationViewer 
-               Title="Symbol Occurrences" 
-               Locations="@info.Locations.Where(l => !l.Location.IsDeclaration)"
-               LocationNavigate="@OnNavigateLocation" />
-         }
+         <LocationViewer 
+            Title="Symbol Declarations" 
+            Locations="@_currentTokenInfo.Locations.Where(l => l.Location.IsDeclaration)"
+            IsEmpty="@_currentTokenInfo.IsEmpty"
+            LocationNavigate="@OnNavigateLocation" />
+         <LocationViewer 
+            Title="Symbol Occurrences" 
+            Locations="@_currentTokenInfo.Locations.Where(l => !l.Location.IsDeclaration)"
+            IsEmpty="@_currentTokenInfo.IsEmpty"
+            LocationNavigate="@OnNavigateLocation" />
       </ResizablePane>
    </ResizableContainer>
 </div>
 
 @code {
 
+   [Parameter]
+   [SupplyParameterFromQuery(Name = "ln")]
+   public int? LineNumber { get; set; }
+   
+   [Parameter]
+   [SupplyParameterFromQuery(Name = "sid")]
+   public long? SymbolId { get; set; }
+   
+   [Parameter]
+   [SupplyParameterFromQuery(Name = "fid")]
+   public long? FileId { get; set; }
+   
    private SyntaxFile? _currentFile;
    private ISourceExplorerTokenInfoBase _currentTokenInfo = new SourceExplorerTokenEmptyInfo();
+   private HashSet<int> _highlightedLineNumbers => [_currentTokenInfo.LineNumber];
    
+   protected override async Task OnParametersSetAsync()
+   {
+      if (FileId.HasValue && (_currentFile == null || _currentFile.FileId != FileId.Value))
+      {
+         await DatabaseScheduler.Schedule(() =>
+         {
+            _currentFile = FileService.GetFile((uint)FileId.Value);
+         });
+      }
+      
+      if (SymbolId.HasValue)
+      {
+         await DatabaseScheduler.Schedule(() =>
+         {
+            var locations = LocationService.GetLocations((uint)SymbolId.Value);
+            _currentTokenInfo = new SourceExplorerTokenInfo()
+            {
+               Locations = locations,
+               LineNumber = LineNumber ?? -1,
+               Token = new SyntaxTokenSpec()
+               {
+                  SymbolId = (uint)SymbolId.Value
+               }
+            };
+         });
+      }
+      else
+      {
+         _currentTokenInfo = new SourceExplorerTokenEmptyInfo();
+      }
+   }
+
    private async Task OnOpenFile(FileOpenEvent ev)
    {
       await DatabaseScheduler.Schedule(() =>
       {
          _currentFile = FileService.GetFile(ev.FileId);
+         NavigationManager.NavigateTo(CreateUrl(-1));
       });
       
       await InvokeAsync(StateHasChanged);
@@ -76,6 +124,7 @@
       await DatabaseScheduler.Schedule(() =>
       {
          _currentFile = FileService.GetFile(ev.Location.Location.SourceFileId);
+         NavigationManager.NavigateTo(CreateUrl(ev.Location.Location.LineNumber));
       });
       
       await InvokeAsync(StateHasChanged);
@@ -88,10 +137,42 @@
          _currentTokenInfo = new SourceExplorerTokenInfo()
          {
             Token = ev.Token,
-            Locations = LocationService.GetLocations(ev.Token.SymbolId)
+            Locations = LocationService.GetLocations(ev.Token.SymbolId),
+            LineNumber = ev.LineNumber
          };
+         
+         NavigationManager.NavigateTo(CreateUrl(ev.LineNumber));
       });
       
       await InvokeAsync(StateHasChanged);
+   }
+
+   private IEnumerable<TokenTextViewer.HighlightInfo> CreateHighlights()
+   {
+      if (_currentTokenInfo.IsEmpty) return [];
+      var relevant = _currentTokenInfo.Locations.Where(x => x.File.Id == _currentFile?.FileId);
+
+      return relevant.Select(x => new TokenTextViewer.HighlightInfo()
+      {
+         ClassName = "oc",
+         Start = x.Location.TokenIndex,
+         Length = 1
+      });
+   }
+
+   private string CreateUrl(int lineNumber)
+   {
+      if (_currentTokenInfo.IsEmpty)
+      {
+         return new Uri(NavigationManager.Uri)
+            .GetLeftPart(UriPartial.Path);
+      }
+
+      return NavigationManager.GetUriWithQueryParameters(new Dictionary<string, object?>()
+      {
+         ["sid"] = _currentTokenInfo.Token.SymbolId.ToString(),
+         ["fid"] = ((long)(_currentFile is null ? -1 : _currentFile.FileId)).ToString(),
+         ["ln"] = lineNumber.ToString()
+      });
    }
 }

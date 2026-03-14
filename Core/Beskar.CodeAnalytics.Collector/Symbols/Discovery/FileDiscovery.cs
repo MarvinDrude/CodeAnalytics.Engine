@@ -50,6 +50,8 @@ public static class FileDiscovery
       var spec = new FileSpec()
       {
          Id = id,
+         ParentId = folderId,
+         
          FullPath = filePathDef,
          Name = fileNameDef,
          

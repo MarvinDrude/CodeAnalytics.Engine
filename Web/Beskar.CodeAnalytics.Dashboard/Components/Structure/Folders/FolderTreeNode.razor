@@ -10,7 +10,7 @@
 @inject IFolderService FolderService
 
 <div>
-   <div @onclick="@OnClick" class="node @(Item is FolderNodeItem ? "folder" : "file")">
+   <div @onclick="OnClick" class="node @(Item is FolderNodeItem ? "folder" : "file") @(Item.IsHighlighted ? "hl" : "")">
       <div class="depth">
          @for (var i = 0; i < Depth; i++)
          {

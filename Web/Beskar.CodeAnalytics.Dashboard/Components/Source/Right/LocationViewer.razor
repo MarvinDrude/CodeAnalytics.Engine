@@ -25,6 +25,18 @@
             </div>
          }
       </div>
+      @if (IsEmpty)
+      {
+         <div class="text">
+            Click on any relevant symbol in the source code to see entries.
+         </div>
+      } 
+      else if (_locationsPerFile.Count == 0)
+      {
+         <div class="text">
+            No entries found for this symbol.
+         </div>
+      }
    </RightHeader>
 </div>
 
@@ -35,6 +47,9 @@
    
    [Parameter, EditorRequired]
    public required IEnumerable<TokenLocationModel> Locations { get; set; }
+   
+   [Parameter]
+   public bool IsEmpty { get; set; }
    
    [Parameter]
    public EventCallback<LocationNavigateEvent> LocationNavigate { get; set; }

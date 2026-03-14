@@ -13,6 +13,7 @@ public struct SymbolLocationSpec : ISpec
    public uint SourceFileId;
 
    public int LineNumber;
+   public int TokenIndex;
    public LinePreviewView LinePreview;
    
    public PackedBools8 Flags;

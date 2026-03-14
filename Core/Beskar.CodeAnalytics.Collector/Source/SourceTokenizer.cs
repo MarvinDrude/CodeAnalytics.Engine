@@ -19,6 +19,8 @@ public sealed class SourceTokenizer(
    private string? _cachedPreview;
    private int _cachedLineIndex = -1;
    private int _lineStart;
+   
+   private int _tokenIndex = 0;
 
    public async Task<SyntaxFile> Tokenize(
       CancellationToken cancellationToken)
@@ -130,6 +132,7 @@ public sealed class SourceTokenizer(
          HasSymbol = hasSymbol,
          SymbolId = span?.SymbolId ?? 0
       };
+      _tokenIndex++;
 
       if (spec.HasSymbol)
       {
@@ -156,6 +159,7 @@ public sealed class SourceTokenizer(
             
             LineNumber = lineNumber,
             LinePreview = preview,
+            TokenIndex = _tokenIndex - 1,
             
             IsDeclaration = spec.IsDeclaration
          };

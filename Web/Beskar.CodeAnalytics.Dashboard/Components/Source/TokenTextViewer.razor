@@ -21,21 +21,26 @@
       if (e == tokens.Length || tokens[e].IsLineBreak)
       {
          var lineSpan = tokens.Slice(start, e - start);
+         var isLineHighlighted = HighlightedLineNumbers.Contains(lineNumber);
 
-         <div class="code-line" @key="@lineNumber">
-            <div class="line-number" style="--line-number-width: @gutterWidth">@lineNumber</div>
-            <div class="line-content">
+         <div class="code-line" @key="@((lineNumber, isLineHighlighted))">
+            <div class="line-number@(isLineHighlighted ? " hl" : "")" style="--line-number-width: @gutterWidth">
+               @lineNumber
+            </div>
+            <div class="line-content@(isLineHighlighted ? " hl" : "")">
                @for (var index = 0; index < lineSpan.Length; index++)
                {
                   var token = lineSpan[index];
                   var absoluteIndex = start + index;
                   
                   var tokenText = SyntaxFile.GetSpan(token);
+                  var className = GetTokenCssClass(token, absoluteIndex);
+                  var innerLineNumber = lineNumber;
                   
-                  <span class="token @GetTokenCssClass(token)"
-                        @onclick="@(() => OnCodeClick(absoluteIndex))"
+                  <span class="token @className"
+                        @onclick="@(() => OnCodeClick(absoluteIndex, innerLineNumber))"
                         style="color: @GetColor(token);"
-                        @key="@absoluteIndex"
+                        @key="@((absoluteIndex, className))"
                         data-index="@(absoluteIndex)">
                      @tokenText.ToString()
                   </span>
@@ -57,30 +62,67 @@
    [Parameter]
    public EventCallback<TokenClickEvent> TokenClick { get; set; }
    
-   private async Task OnCodeClick(int index)
+   [Parameter, EditorRequired]
+   public required IEnumerable<HighlightInfo> Highlights { get; set; }
+   
+   [Parameter]
+   public HashSet<int> HighlightedLineNumbers { get; set; } = [];
+   
+   private readonly Dictionary<int, string> _highlights = [];
+   
+   protected override void OnParametersSet()
+   {
+      _highlights.Clear();
+      
+      foreach (var highlight in Highlights)
+      {
+         for (var e = 0; e < highlight.Length; e++)
+         {
+            var index = highlight.Start + e;
+            _highlights[index] = highlight.ClassName;
+         }
+      }
+   }
+
+   private async Task OnCodeClick(int index, int lineNumber)
    {
       var token = SyntaxFile.Tokens[index];
       if (!token.HasSymbol) return;
       
       await TokenClick.InvokeAsync(new TokenClickEvent()
       {
-         Token = token
+         Token = token,
+         LineNumber = lineNumber
       });
    }
    
-   private static string GetTokenCssClass(SyntaxTokenSpec token)
+   private string GetTokenCssClass(SyntaxTokenSpec token, int index)
    {
-      return token switch
+      var before = string.Empty;
+      if (_highlights.TryGetValue(index, out var className))
+      {
+         before = className + " ";
+      }
+      
+      return before + (token switch
       {
          { HasSymbol: true } => "hoverable",
          _ => string.Empty
-      };
+      });
    }
 
    private static string GetColor(SyntaxTokenSpec token)
    {
       return SyntaxTheme.GetTokenColor(token);
    }
-
+   
    private static readonly SyntaxColorTheme SyntaxTheme = new DefaultSyntaxColorTheme();
+
+   public class HighlightInfo
+   {
+      public required int Start { get; init; }
+      public required int Length { get; init; }
+      
+      public required string ClassName { get; init; }
+   }
 }

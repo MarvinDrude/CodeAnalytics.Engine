@@ -18,15 +18,40 @@
 
 @code {
    
+   [Parameter]
+   [SupplyParameterFromQuery(Name = "fid")]
+   public long? FileId { get; set; }
+   
    [Parameter, EditorRequired]
    public required EventCallback<FileOpenEvent> FileOpen { get; init; }
    
    private List<FileSystemItem> _rootItems = [];
    private bool _isInitialized;
 
-   protected override async Task OnInitializedAsync()
+   private uint _expandToId;
+   private bool _hasExpandToId;
+   
+   protected override async Task OnParametersSetAsync()
    {
-      _rootItems = await Scheduler.Schedule(() => FolderService.GetRootNodes());
+      if (FileId.HasValue)
+      {
+         if (FileId.Value != _expandToId)
+         {
+            _expandToId = (uint)FileId.Value;
+            _hasExpandToId = true;
+         
+            _rootItems = await Scheduler.Schedule(() => FolderService.GetRootNodes(_expandToId, false));
+         }
+      }
+      else
+      {
+         _rootItems = await Scheduler.Schedule(() => FolderService.GetRootNodes(1));
+      }
+   }
+
+   protected override Task OnInitializedAsync()
+   {
       _isInitialized = true;
+      return Task.CompletedTask;
    }
 }

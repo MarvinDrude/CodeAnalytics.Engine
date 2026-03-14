@@ -9,6 +9,8 @@ public sealed class SourceExplorerTokenInfo : ISourceExplorerTokenInfoBase
    public required SyntaxTokenSpec Token { get; set; }
    
    public required TokenLocationModel[] Locations { get; set; }
+   
+   public int LineNumber { get; set; }
 }
 
 public sealed class SourceExplorerTokenEmptyInfo
@@ -19,6 +21,8 @@ public sealed class SourceExplorerTokenEmptyInfo
    public SyntaxTokenSpec Token { get; } = new();
    
    public TokenLocationModel[] Locations { get; } = [];
+   
+   public int LineNumber => -1;
 }
 
 public interface ISourceExplorerTokenInfoBase
@@ -28,4 +32,6 @@ public interface ISourceExplorerTokenInfoBase
    public SyntaxTokenSpec Token { get; }
    
    public TokenLocationModel[] Locations { get; }
+   
+   public int LineNumber { get; }
 }

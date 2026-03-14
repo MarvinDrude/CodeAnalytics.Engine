@@ -11,6 +11,7 @@ namespace Beskar.CodeAnalytics.Data.Entities.Structure;
 public struct FileSpec : ISpec
 {
    public uint Id;
+   public uint ParentId;
 
    public FileKind Kind;
    

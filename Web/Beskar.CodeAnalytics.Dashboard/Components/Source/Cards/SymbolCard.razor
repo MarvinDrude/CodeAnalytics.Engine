@@ -1,0 +1,44 @@
+﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Symbols
+@using Beskar.CodeAnalytics.Data.Enums.Symbols
+
+@inject ISymbolService SymbolService
+@inject IDatabaseScheduler Scheduler
+
+<div class="card">
+   @switch (_symbolType)
+   {
+      case SymbolType.NamedType when SymbolId.HasValue:
+         <NamedTypeCard SymbolId="@SymbolId.Value" />
+         break;
+      default:
+         <div class="text-notice">Select / click on a valid symbol to see information about it here.</div>
+         break;
+   }
+</div>
+
+@code {
+   
+   [Parameter]
+   public uint? SymbolId { get; set; }
+
+   private SymbolType? _symbolType;
+   
+   private uint _lastSymbolId;
+   private bool _fetched;
+   
+   protected override async Task OnParametersSetAsync()
+   {
+      if (SymbolId.HasValue && (!_fetched || _lastSymbolId != SymbolId.Value))
+      {
+         await Scheduler.Schedule(() =>
+         {
+            _symbolType = SymbolService.GetSymbolType(SymbolId.Value);
+         });
+         
+         _lastSymbolId = SymbolId.Value;
+         _fetched = true;
+      }
+   }
+
+}

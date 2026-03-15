@@ -1,6 +1,7 @@
 ﻿@page "/source"
 @using Beskar.CodeAnalytics.Dashboard.Components.Container
 @using Beskar.CodeAnalytics.Dashboard.Components.Source
+@using Beskar.CodeAnalytics.Dashboard.Components.Source.Cards
 @using Beskar.CodeAnalytics.Dashboard.Components.Source.Right
 @using Beskar.CodeAnalytics.Dashboard.Components.Structure.Folders
 @using Beskar.CodeAnalytics.Dashboard.Shared.Events.Files
@@ -40,7 +41,7 @@
                </div>
             </VerticalResizablePane>
             <VerticalResizablePane InitialHeight="20">
-               Bottom 2
+               <SymbolCard SymbolId="@(SymbolId.HasValue ? (uint)SymbolId.Value : null)"></SymbolCard>
             </VerticalResizablePane>
          </VerticalResizableContainer>
       </ResizablePane>
@@ -110,8 +111,6 @@
          _currentTokenInfo = new SourceExplorerTokenEmptyInfo();
       }
    }
-   
-   
 
    private async Task OnOpenFile(FileOpenEvent ev)
    {

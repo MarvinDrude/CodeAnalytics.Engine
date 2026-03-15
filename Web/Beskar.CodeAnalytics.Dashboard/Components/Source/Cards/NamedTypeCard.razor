@@ -1,8 +1,37 @@
-﻿
+﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Symbols
+@using Beskar.CodeAnalytics.Dashboard.Shared.Models.Symbols
+@using Beskar.CodeAnalytics.Data.Entities.Archetypes
 
+@inject ISymbolService SymbolService
+@inject IDatabaseScheduler Scheduler
+
+<div>
+   @SymbolId
+</div>
 
 @code {
    
-   
-   
+   [Parameter, EditorRequired]
+   public required uint SymbolId { get; set; }
+
+   private ArchetypeCardModel<NamedTypeArchetype>? _model;
+      
+   private uint _lastSymbolId;
+   private bool _fetched;
+
+   protected override async Task OnParametersSetAsync()
+   {
+      if (!_fetched || (SymbolId != _lastSymbolId))
+      {
+         await Scheduler.Schedule(() =>
+         {
+            _model = SymbolService.GetNamedTypeCard(SymbolId);
+         });
+
+         _lastSymbolId = SymbolId;
+         _fetched = true;
+      }
+   }
+
 }

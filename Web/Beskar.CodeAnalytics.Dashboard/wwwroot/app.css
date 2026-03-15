@@ -67,6 +67,19 @@
     --yellow-glow: #eab30822;
     --green-500: #22c55e;        /* Success/Coverage */
     --green-glow: #22c55e22;
+    
+    /* Symbol Kind Colors */
+    --kind-field: #3b82f6;
+    --kind-method: #DCDCAA;
+    --kind-class: #4EC9B0;
+    --kind-interface: #b0bf31;
+    --kind-enum: #a9b7c6;
+    --kind-struct: #c77dbb;
+    --kind-namespace: #c090dd;
+    --kind-parameter: #287bde;
+    --kind-property: #c77dbb;
+    --kind-type: #a9b7c6;
+    --kind-type-parameter: #507874;
 }
 
 * {

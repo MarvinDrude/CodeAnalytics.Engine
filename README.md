@@ -15,6 +15,14 @@
 
 ---
 
+## Dashboard Previews
+
+Some images of the Dashboard:
+* Source Explorer
+![dashboard](https://github.com/MarvinDrude/CodeAnalytics.Engine/blob/master/Images/Dashboard/Preview_Dashboard_SourceExplorer.png)
+
+---
+
 ## Solution Structure
 The project is organized into three primary layers to separate concerns between data processing, core engine logic, and visualization:
 

@@ -24,3 +24,17 @@ public enum SymbolType : byte
    Discard = 19,
    FunctionPointerType = 20
 }
+
+public static class SymbolTypeExtensions
+{
+   extension(SymbolType type)
+   {
+      public bool IsType => type is SymbolType.ArrayType 
+         or SymbolType.NamedType
+         or SymbolType.PointerType
+         or SymbolType.FunctionPointerType
+         or SymbolType.ErrorType
+         or SymbolType.DynamicType
+         or SymbolType.TypeParameter;
+   }
+}

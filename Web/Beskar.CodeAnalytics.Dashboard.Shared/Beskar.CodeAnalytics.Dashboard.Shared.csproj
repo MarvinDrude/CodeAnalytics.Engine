@@ -12,6 +12,7 @@
 
    <ItemGroup>
      <Folder Include="Enums\Structure\" />
+     <Folder Include="Models\Symbols\" />
    </ItemGroup>
 
 </Project>

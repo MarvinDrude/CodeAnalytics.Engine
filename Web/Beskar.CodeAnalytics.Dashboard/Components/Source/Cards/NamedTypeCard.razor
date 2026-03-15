@@ -1,13 +1,33 @@
 ﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Symbols
 @using Beskar.CodeAnalytics.Dashboard.Shared.Models.Symbols
+@using Beskar.CodeAnalytics.Dashboard.Utils
 @using Beskar.CodeAnalytics.Data.Entities.Archetypes
 
 @inject ISymbolService SymbolService
 @inject IDatabaseScheduler Scheduler
 
 <div>
-   @SymbolId
+   @if (_model is { } model)
+   {
+      var symbol = model.Archetype.Symbol;
+      var type = model.Archetype.Type;
+      var namedType = model.Archetype.NamedType;
+
+      var (color, fontColor) = ColorUtils.GetSymbolColor(symbol.Type, type.Kind);
+      
+      <div class="actions">
+         <a>🌿 Show Dependency Graph</a>
+         <a>🔍 Deep Search</a>
+      </div>
+      <div class="header" style="--tag-color: var(@(color)); --tag-text-color: var(@(fontColor));">
+         <div class="type"><SymbolTypeTag Type="@symbol.Type" TypeKind="@type.Kind" /></div>
+         <div class="name">
+            <div class="metadata lets-dots">&#x200E @model.Strings[symbol.MetadataName] (ID: @SymbolId)</div>
+            <div class="fullname lets-dots">&#x200E @model.Strings[symbol.FullPathName]</div>
+         </div>
+      </div>
+   }
 </div>
 
 @code {
@@ -33,5 +53,4 @@
          _fetched = true;
       }
    }
-
 }

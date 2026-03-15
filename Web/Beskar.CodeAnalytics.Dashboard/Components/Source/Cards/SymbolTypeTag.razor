@@ -1,12 +1,69 @@
-﻿@using Beskar.CodeAnalytics.Data.Enums.Symbols
+﻿@using Beskar.CodeAnalytics.Data.Entities.Archetypes
+@using Beskar.CodeAnalytics.Data.Entities.Symbols
+@using Beskar.CodeAnalytics.Data.Enums.Symbols
 
-<span>
-   
+<span class="tag">
+   @switch (Type)
+   {
+      case SymbolType.Field:
+         <span>Field</span>
+         break;
+      case SymbolType.Method:
+         <span>Method</span>
+         break;
+      case SymbolType.Parameter:
+         <span>Parameter</span>
+         break;
+      case SymbolType.Property:
+         <span>Property</span>
+         break;
+      case SymbolType.TypeParameter:
+         <span>Type Parameter</span>
+         break;
+      case SymbolType.NamedType:
+         @GetNamedType();
+         break;
+      default:
+         if (Type.IsType)
+         {
+            @GetNormalType();
+         }
+         break;
+   }
 </span>
 
 @code {
    
-   [Parameter, EditorRequired]
-   public required SymbolType Type { get; set; }
+   [Parameter]
+   public SymbolType Type { get; set; }
+   
+   [Parameter]
+   public TypeStorageKind? TypeKind { get; set; }
+
+   private RenderFragment GetNamedType()
+   {
+      return TypeKind switch
+      {
+         TypeStorageKind.Class => @<span>Class</span>,
+         TypeStorageKind.Struct => @<span>Struct</span>,
+         TypeStorageKind.Interface => @<span>Interface</span>,
+         TypeStorageKind.Enum => @<span>Enum</span>,
+         TypeStorageKind.Delegate => @<span>Delegate</span>,
+         TypeStorageKind.Module => @<span>Module</span>,
+         _ => @<span>Unknown</span>,
+      };
+   }
+
+   private RenderFragment GetNormalType()
+   {
+      return TypeKind switch
+      {
+         TypeStorageKind.Array => @<span>Array</span>,
+         TypeStorageKind.Pointer => @<span>Pointer</span>,
+         TypeStorageKind.FunctionPointer => @<span>Function Pointer</span>,
+         TypeStorageKind.Dynamic => @<span>Dynamic</span>,
+         _ => @<span>Unknown</span>,
+      };
+   }
    
 }

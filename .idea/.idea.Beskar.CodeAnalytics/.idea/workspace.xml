@@ -13,16 +13,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Symbols/ISymbolService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Symbols/ArchetypeCardModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Symbols/SymbolService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Utils/ColorUtils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Beskar.CodeAnalytics.Dashboard.Shared.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Beskar.CodeAnalytics.Dashboard.Shared.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Symbols/ArchetypeCardModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Models/Symbols/ArchetypeCardModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/NamedTypeCard.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/NamedTypeCard.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/NamedTypeCard.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/NamedTypeCard.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolTypeTag.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolTypeTag.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolTypeTag.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolTypeTag.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/RightHeader.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/RightHeader.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Symbols/SymbolService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Symbols/SymbolService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/wwwroot/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/wwwroot/app.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -172,6 +175,7 @@
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolTypeTag.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/LocationViewer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Right/RightHeader.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/TokenTextViewer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -185,11 +189,13 @@
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Structure/FileService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Symbols/SymbolService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Syntax/LocationService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Utils/ColorUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/10266c87dbbbc0c3151e404fe3f57ccbf96b369ced95fa558ba13f0ae9a43/TextLineCollection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1fe4a1c5fe745590314b4ad86db8c4bc75c255d6ba296a572ee9ddc1a79a6999/VirtualDispatchHelpers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2033153ba131807d3a368ee629bf2e717494c9b8d9bba160368b6a45ac86d/StringSerializer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/228bff957d5b9f32cfbedd8bf82a5d3e862ec3e051593a67913b95ae288287/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3cca26e6dd627c1a7919bec86cb05b6d975a30287456f7daa8773a92451a/List.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4448be0649aef127ed174c5356857e39af9ab35eda7fe8cc596c656c217c15/TypeKind.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/573a3652e408b4d47fc97a6359a31afd4ae4379a489b4437a2d6b92e55765f/AsyncMethodBuilderCore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5aab3b4920d799ffb6d5838a547240cb2fcddad946165a25fafee611c4c4b224/ArraySortHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5af9fc9e4e9656f37613efe36625f832168e8333f86d484aaca47099ae6238/Debugger.cs" root0="FORCE_HIGHLIGHTING" />
@@ -199,6 +205,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/99c32020cb38b51da0122b84a8dfd54f5d1bbd6ac327af1dd4da89595c27cd/String.Manipulation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9ddfdee61c904953fdd1f4ed4478e6cce44296cdfe63bf969d8bb9f67fe40/SafeFileHandle.Windows.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a04e2bec9080a2907fc729c489445fb6464fec83cc9e4025bd314c8ce4f86ca8/Path.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/afb72eb5caca377764e23947e9ff516333f3acfb9cd7e596ba0f93f8ac8ddf/ITypeSymbol.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b26778fbf24f6ac99a314d76d69185dbc050b1dd/BeIcon_razor.g.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b2ce756ae4f8b5266132977aeae6764716fa5ccb10d9ff1e11936b37e3c75/CSharpExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b8162dd874966f214c5695ff659ca8060ec5c55bdf10c81198ed93321f71/Classifier.cs" root0="FORCE_HIGHLIGHTING" />
@@ -426,7 +433,7 @@
       <workItem from="1773339555575" duration="6707000" />
       <workItem from="1773420466812" duration="23971000" />
       <workItem from="1773477053809" duration="41681000" />
-      <workItem from="1773566328591" duration="4000000" />
+      <workItem from="1773566328591" duration="17681000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -756,7 +763,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773511592521</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Introduce `SymbolCard` and `NamedTypeCard` components, add `ISymbolService` with symbol retrieval methods, and enhance `SourceExplorer` with dynamic symbol visualization.">
+      <option name="closed" value="true" />
+      <created>1773570478804</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1773570478804</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -777,7 +792,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Extend index handling by introducing serializers (`NGramIndexDescriptorSerializer`, `BTreeIndexDescriptorSerializer`), enhancing `IndexBakeStep`, and adding index management to descriptors and builders." />
     <MESSAGE value="Replace `Flags` structures with `PackedBools` utility, refactor flag handling across entities, and drop unused `Flags.cs`." />
     <MESSAGE value="Add `GetTargetIds` methods to `SymbolEdgeSpecDescriptor` for retrieving target IDs by type or source, refactor `ProjectDiscovery` to manage root folders, and extend `SpecFileReader` with `ItemCount` and binary search functionality." />
     <MESSAGE value="Introduce Blazor WebAssembly dashboard project with Razor components, client-server structure, routing, and base styles." />
@@ -802,7 +816,8 @@
     <MESSAGE value="Add grouped file-based layout to `LocationViewer` with collapsible headers and enhanced preview formatting. Refactor `TokenLocationModel` and `LocationService` for file-path-based grouping and metadata inclusion." />
     <MESSAGE value="Enhance symbol navigation with token highlights, expand folder navigation capabilities, and add `TokenIndex` tracking to `SymbolLocationSpec` for improved location handling." />
     <MESSAGE value="Implement smooth scrolling for token highlights, enhance folder and source navigation with JavaScript integration, and optimize `LocationService` file lookup logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement smooth scrolling for token highlights, enhance folder and source navigation with JavaScript integration, and optimize `LocationService` file lookup logic." />
+    <MESSAGE value="Introduce `SymbolCard` and `NamedTypeCard` components, add `ISymbolService` with symbol retrieval methods, and enhance `SourceExplorer` with dynamic symbol visualization." />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduce `SymbolCard` and `NamedTypeCard` components, add `ISymbolService` with symbol retrieval methods, and enhance `SourceExplorer` with dynamic symbol visualization." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

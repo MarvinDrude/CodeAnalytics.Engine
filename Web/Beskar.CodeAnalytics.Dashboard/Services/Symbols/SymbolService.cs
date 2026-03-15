@@ -2,8 +2,11 @@
 using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Symbols;
 using Beskar.CodeAnalytics.Dashboard.Shared.Models.Symbols;
 using Beskar.CodeAnalytics.Data.Entities.Archetypes;
+using Beskar.CodeAnalytics.Data.Entities.Misc;
+using Beskar.CodeAnalytics.Data.Entities.Symbols;
 using Beskar.CodeAnalytics.Data.Enums.Symbols;
 using Beskar.CodeAnalytics.Data.Metadata.Models;
+using Me.Memory.Buffers;
 
 namespace Beskar.CodeAnalytics.Dashboard.Services.Symbols;
 
@@ -43,10 +46,15 @@ public sealed class SymbolService(IDatabaseProvider provider) : ISymbolService
    {
       var db = Descriptor.Symbols;
       
-      return new ArchetypeCardModel<NamedTypeArchetype>()
+      var model = new ArchetypeCardModel<NamedTypeArchetype>()
       {
          Archetype = db.GetNamedTypeArchetype(symbolId),
       };
+
+      var symbol = model.Archetype.Symbol;
+      FillSymbolStrings(model, ref symbol);
+      
+      return model;
    }
    
    public ArchetypeCardModel<PropertyArchetype> GetPropertyCard(uint symbolId)
@@ -77,5 +85,26 @@ public sealed class SymbolService(IDatabaseProvider provider) : ISymbolService
       {
          Archetype = db.GetTypeParameterArchetype(symbolId),
       };
+   }
+
+   private void FillSymbolStrings<T>(ArchetypeCardModel<T> model, ref SymbolSpec symbol)
+      where T : unmanaged
+   {
+      var strPool = Descriptor.StringPool;
+      
+      using var ownerStrs = new SpanOwner<StringFileView>(stackalloc StringFileView[3]);
+      var span = ownerStrs.Span;
+
+      span[0] = symbol.Name;
+      span[1] = symbol.MetadataName;
+      span[2] = symbol.FullPathName;
+
+      span.Sort(static (x, y) => x.Offset.CompareTo(y.Offset));
+      var strings = strPool.Reader.GetStrings(span);
+
+      foreach (var off in span)
+      {
+         model.Strings[off] = strings[off];
+      }
    }
 }

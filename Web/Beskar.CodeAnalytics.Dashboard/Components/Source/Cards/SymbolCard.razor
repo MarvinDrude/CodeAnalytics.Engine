@@ -1,11 +1,12 @@
 ﻿@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
 @using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Symbols
+@using Beskar.CodeAnalytics.Dashboard.Utils
 @using Beskar.CodeAnalytics.Data.Enums.Symbols
 
 @inject ISymbolService SymbolService
 @inject IDatabaseScheduler Scheduler
 
-<div class="card">
+<div class="card" style="">
    @switch (_symbolType)
    {
       case SymbolType.NamedType when SymbolId.HasValue:

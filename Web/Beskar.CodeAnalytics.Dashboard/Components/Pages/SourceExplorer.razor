@@ -47,14 +47,18 @@
       </ResizablePane>
       <ResizablePane InitialWidth="25">
          <div class="right">
+            @{
+               var declarations = _currentTokenInfo.Locations.Where(l => l.Location.IsDeclaration).ToArray();
+               var occurrences = _currentTokenInfo.Locations.Where(l => !l.Location.IsDeclaration).ToArray();
+            }
             <LocationViewer
                Title="Symbol Declarations"
-               Locations="@_currentTokenInfo.Locations.Where(l => l.Location.IsDeclaration)"
+               Locations="@declarations"
                IsEmpty="@_currentTokenInfo.IsEmpty"
                LocationNavigate="@OnNavigateLocation"/>
             <LocationViewer
                Title="Symbol Occurrences"
-               Locations="@_currentTokenInfo.Locations.Where(l => !l.Location.IsDeclaration)"
+               Locations="@occurrences"
                IsEmpty="@_currentTokenInfo.IsEmpty"
                LocationNavigate="@OnNavigateLocation"/>
          </div>

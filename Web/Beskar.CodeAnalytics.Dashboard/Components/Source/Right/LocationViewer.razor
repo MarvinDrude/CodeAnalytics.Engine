@@ -2,7 +2,7 @@
 @using Beskar.CodeAnalytics.Dashboard.Shared.Models.Syntax
 
 <div>
-   <RightHeader Name="@Title" @bind-IsExpanded="@_isExpanded">
+   <RightHeader Name="@Title" Number="@Locations.Length" @bind-IsExpanded="@_isExpanded">
       <div>
          @foreach (var grpName in _locationsPerFile.Keys.OrderBy(k => k))
          {
@@ -46,7 +46,7 @@
    public required string Title { get; set; }
    
    [Parameter, EditorRequired]
-   public required IEnumerable<TokenLocationModel> Locations { get; set; }
+   public required TokenLocationModel[] Locations { get; set; }
    
    [Parameter]
    public bool IsEmpty { get; set; }

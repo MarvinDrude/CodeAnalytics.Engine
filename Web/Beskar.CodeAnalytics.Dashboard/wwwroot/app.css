@@ -70,16 +70,29 @@
     
     /* Symbol Kind Colors */
     --kind-field: #3b82f6;
+    --kind-field-text: #ffffff;
     --kind-method: #DCDCAA;
+    --kind-method-text: #000000;
     --kind-class: #4EC9B0;
+    --kind-class-text: #000000;
     --kind-interface: #b0bf31;
+    --kind-interface-text: #000000;
     --kind-enum: #a9b7c6;
+    --kind-enum-text: #000000;
     --kind-struct: #c77dbb;
+    --kind-struct-text: #000000;
     --kind-namespace: #c090dd;
+    --kind-namespace-text: #000000;
     --kind-parameter: #287bde;
+    --kind-parameter-text: #ffffff;
     --kind-property: #c77dbb;
+    --kind-property-text: #000000;
     --kind-type: #a9b7c6;
+    --kind-type-text: #000000;
     --kind-type-parameter: #507874;
+    --kind-type-parameter-text: #ffffff;
+    --kind-unknown: #ffffff;
+    --kind-unknown-text: #000000;
 }
 
 * {
@@ -102,4 +115,12 @@ body {
 .components-reconnect-dialog p,
 .components-reconnect-overlay p {
     color: #000 !important;
+}
+
+.lets-dots {
+    direction: rtl;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

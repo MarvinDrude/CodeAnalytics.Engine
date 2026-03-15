@@ -1,1 +1,15 @@
 ﻿
+.tag {
+    display: block;
+    padding: 8px 10px;
+    background-color: color-mix(in srgb, var(--tag-color), transparent 50%);
+    border-radius: 5px;
+    color: var(--tag-text-color);
+    text-transform: uppercase;
+    font-size: 17px;
+    text-align: center;
+}
+
+.tag span {
+    font-weight: 600;
+}

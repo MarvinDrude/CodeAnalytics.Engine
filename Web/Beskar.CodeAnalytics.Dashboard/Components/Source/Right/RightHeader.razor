@@ -3,7 +3,7 @@
 <div>
    <div class="header" @onclick="OnClick">
       <div class="name">
-         @Name
+         @Name @(Number.HasValue ? $"({Number})" : "")
       </div>
       <div class="icon-wrapper">
          <BeIcon Icon="@(IsExpanded ? BeskarIcon.Outlined.KeyboardArrowDown : BeskarIcon.Outlined.KeyboardArrowLeft)"/>
@@ -24,6 +24,9 @@
    
    [Parameter]
    public bool IsExpanded { get; set; }
+   
+   [Parameter]
+   public int? Number { get; set; }
    
    [Parameter]
    public EventCallback<bool> IsExpandedChanged { get; set; }

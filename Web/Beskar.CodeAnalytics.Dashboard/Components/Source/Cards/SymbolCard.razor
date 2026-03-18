@@ -12,7 +12,24 @@
       case SymbolType.NamedType when SymbolId.HasValue:
          <NamedTypeCard SymbolId="@SymbolId.Value" />
          break;
+      case SymbolType.Method when SymbolId.HasValue:
+         <MethodCard SymbolId="@SymbolId.Value" />
+         break;
+      case SymbolType.TypeParameter when SymbolId.HasValue:
+         <TypeParameterCard SymbolId="@SymbolId.Value" />
+         break;
+      case SymbolType.Field when SymbolId.HasValue:
+         <FieldCard SymbolId="@SymbolId.Value" />
+         break;
+      case SymbolType.Property when SymbolId.HasValue:
+         <PropertyCard SymbolId="@SymbolId.Value" />
+         break;
       default:
+         if (_symbolType is { IsType: true } && SymbolId.HasValue)
+         {
+            <TypeCard SymbolId="@SymbolId.Value"/>
+            return;
+         }
          <div class="text-notice">Select / click on a valid symbol to see information about it here.</div>
          break;
    }

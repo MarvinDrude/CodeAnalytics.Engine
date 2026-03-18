@@ -103,9 +103,19 @@ public sealed partial class ProjectCollector(
 
       var nameDef = batch.StringDefinitions.GetStringFileView(context.Symbol.Name);
       var metadataDef = batch.StringDefinitions.GetStringFileView(context.Symbol.MetadataName);
-      var fullPathDef =
-         batch.StringDefinitions.GetStringFileView(
-            context.Symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+
+      var fullPath = context.Symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+      fullPath = context.Symbol switch
+      {
+         IMethodSymbol m => m.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "." + fullPath,
+         IPropertySymbol p => p.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "." + fullPath,
+         IFieldSymbol f => f.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "." + fullPath,
+         ITypeParameterSymbol tp => tp.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "." + fullPath,
+         IParameterSymbol p => p.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "." + fullPath,
+         _ => fullPath,
+      };
+      
+      var fullPathDef = batch.StringDefinitions.GetStringFileView(fullPath);
       
       var symbolDefinition = new SymbolSpec()
       {

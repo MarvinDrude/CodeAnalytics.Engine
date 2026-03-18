@@ -26,20 +26,30 @@ public sealed class SymbolService(IDatabaseProvider provider) : ISymbolService
    {
       var db = Descriptor.Symbols;
 
-      return new ArchetypeCardModel<FieldArchetype>()
+      var model = new ArchetypeCardModel<FieldArchetype>()
       {
          Archetype = db.GetFieldArchetype(symbolId),
       };
+      
+      var symbol = model.Archetype.Symbol;
+      FillSymbolStrings(model, ref symbol);
+
+      return model;
    }
 
    public ArchetypeCardModel<MethodArchetype> GetMethodCard(uint symbolId)
    {
       var db = Descriptor.Symbols;
 
-      return new ArchetypeCardModel<MethodArchetype>()
+      var model = new ArchetypeCardModel<MethodArchetype>()
       {
          Archetype = db.GetMethodArchetype(symbolId),
       };
+      
+      var symbol = model.Archetype.Symbol;
+      FillSymbolStrings(model, ref symbol);
+
+      return model;
    }
 
    public ArchetypeCardModel<NamedTypeArchetype> GetNamedTypeCard(uint symbolId)
@@ -61,30 +71,45 @@ public sealed class SymbolService(IDatabaseProvider provider) : ISymbolService
    {
       var db = Descriptor.Symbols;
       
-      return new ArchetypeCardModel<PropertyArchetype>()
+      var model = new ArchetypeCardModel<PropertyArchetype>()
       {
          Archetype = db.GetPropertyArchetype(symbolId),
       };
+      
+      var symbol = model.Archetype.Symbol;
+      FillSymbolStrings(model, ref symbol);
+      
+      return model;
    }
 
    public ArchetypeCardModel<TypeArchetype> GetTypeCard(uint symbolId)
    {
       var db = Descriptor.Symbols;
       
-      return new ArchetypeCardModel<TypeArchetype>()
+      var model = new ArchetypeCardModel<TypeArchetype>()
       {
          Archetype = db.GetTypeArchetype(symbolId),
       };
+      
+      var symbol = model.Archetype.Symbol;
+      FillSymbolStrings(model, ref symbol);
+      
+      return model;
    }
    
    public ArchetypeCardModel<TypeParameterArchetype> GetTypeParameterCard(uint symbolId)
    {
       var db = Descriptor.Symbols;
       
-      return new ArchetypeCardModel<TypeParameterArchetype>()
+      var model = new ArchetypeCardModel<TypeParameterArchetype>()
       {
          Archetype = db.GetTypeParameterArchetype(symbolId),
       };
+      
+      var symbol = model.Archetype.Symbol;
+      FillSymbolStrings(model, ref symbol);
+
+      return model;
    }
 
    private void FillSymbolStrings<T>(ArchetypeCardModel<T> model, ref SymbolSpec symbol)

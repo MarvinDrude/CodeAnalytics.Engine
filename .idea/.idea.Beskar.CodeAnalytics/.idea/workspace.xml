@@ -13,22 +13,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/FieldCard.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/FieldCard.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/MethodCard.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/MethodCard.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/PropertyCard.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/PropertyCard.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/TypeCard.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/TypeCard.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/TypeParameterCard.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/TypeParameterCard.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Utils/Formatting/NumberStrings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Utils/Models/ByteSize.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Misc/StringFileView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Entities/Misc/StringFileView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/NamedTypeCard.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/NamedTypeCard.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/SymbolCard.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Symbols/SymbolService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Symbols/SymbolService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +29,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="49" />
+    <option name="cachedIndexableFilesCount" value="50" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -154,6 +144,8 @@
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/Readers/LinePreviewReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/SyntaxColorTheme.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Syntax/SyntaxFileReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Utils/Formatting/NumberStrings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Utils/Models/ByteSize.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/FileOpenEvent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/LocationNavigateEvent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Events/Files/TokenClickEvent.cs" root0="FORCE_HIGHLIGHTING" />
@@ -176,6 +168,7 @@
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Container/VerticalResizablePane.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/FieldCard.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/MethodCard.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Source/Cards/PropertyCard.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -441,7 +434,9 @@
       <workItem from="1773420466812" duration="23971000" />
       <workItem from="1773477053809" duration="41681000" />
       <workItem from="1773566328591" duration="18164000" />
-      <workItem from="1773858549330" duration="4299000" />
+      <workItem from="1773858549330" duration="6530000" />
+      <workItem from="1774004341047" duration="10125000" />
+      <workItem from="1774082894774" duration="8634000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -787,7 +782,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773584706513</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Add `SymbolTypeTag` to various symbol cards (`MethodCard`, `TypeCard`, `PropertyCard`, etc.) with color-coded headers, dependency graph links, and improved layouts. Extend `SymbolCard` logic for dynamic symbol views.">
+      <option name="closed" value="true" />
+      <created>1773863360036</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1773863360036</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -808,7 +811,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add `GetTargetIds` methods to `SymbolEdgeSpecDescriptor` for retrieving target IDs by type or source, refactor `ProjectDiscovery` to manage root folders, and extend `SpecFileReader` with `ItemCount` and binary search functionality." />
     <MESSAGE value="Introduce Blazor WebAssembly dashboard project with Razor components, client-server structure, routing, and base styles." />
     <MESSAGE value="Restructure and update Blazor dashboard with consolidated Razor components, refined routing, navigation enhancements, modernized styles, and standardized project settings." />
     <MESSAGE value="Add GitHub link with icon to NavBar and integrate `Beskar.Blazor.Icons` package." />
@@ -833,7 +835,8 @@
     <MESSAGE value="Implement smooth scrolling for token highlights, enhance folder and source navigation with JavaScript integration, and optimize `LocationService` file lookup logic." />
     <MESSAGE value="Introduce `SymbolCard` and `NamedTypeCard` components, add `ISymbolService` with symbol retrieval methods, and enhance `SourceExplorer` with dynamic symbol visualization." />
     <MESSAGE value="Add `SymbolTypeTag` and improve `NamedTypeCard` visualization with color-coded headers, dependency graph links, and better structured layouts. Introduce `ColorUtils` for dynamic symbol styling and enhance `LocationViewer` with symbol count display." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add `SymbolTypeTag` and improve `NamedTypeCard` visualization with color-coded headers, dependency graph links, and better structured layouts. Introduce `ColorUtils` for dynamic symbol styling and enhance `LocationViewer` with symbol count display." />
+    <MESSAGE value="Add `SymbolTypeTag` to various symbol cards (`MethodCard`, `TypeCard`, `PropertyCard`, etc.) with color-coded headers, dependency graph links, and improved layouts. Extend `SymbolCard` logic for dynamic symbol views." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add `SymbolTypeTag` to various symbol cards (`MethodCard`, `TypeCard`, `PropertyCard`, etc.) with color-coded headers, dependency graph links, and improved layouts. Extend `SymbolCard` logic for dynamic symbol views." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

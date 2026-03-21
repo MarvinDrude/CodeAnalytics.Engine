@@ -1,0 +1,138 @@
+﻿@page "/storage-info"
+@using Beskar.Blazor.Icons
+@using Beskar.CodeAnalytics.Dashboard.Shared.Interfaces.Services
+@using Beskar.CodeAnalytics.Data.Enums.Storage
+@using Beskar.CodeAnalytics.Data.Metadata.Storage
+@using Beskar.CodeAnalytics.Data.Utils.Formatting
+@using Beskar.CodeAnalytics.Data.Utils.Models
+
+@inject IDatabaseProvider DatabaseProvider
+@inject IDatabaseScheduler DatabaseScheduler
+
+<div class="storage">
+   <div class="total">
+      <div class="icon"><BeIcon Icon="@BeskarIcon.Outlined.Storage" /></div>
+      <div class="size">
+         <span class="name">Total Storage: </span>
+         <span class="value">@(new ByteSize(_totalStats.ByteCount).ToString(ByteSizeUnitFormat.Full))</span>
+      </div>
+      <div class="rows">
+         <span class="name">Total Rows: </span>
+         <span class="value">@_totalStats.RowCount.ToDotString(0)</span>
+      </div>
+      <div class="files">
+         <span class="name">Files: </span>
+         <span class="value">@_totalStats.FileCount.ToDotString(0)</span>
+      </div>
+   </div>
+
+   @foreach (var file in _rootFiles.OrderByDescending(x => x.Kind).ThenBy(x => x.FileName))
+   {
+      <div class="file">
+         <div class="header">
+            <div class="icon"><BeIcon Icon="@BeskarIcon.Outlined.Storage" /></div>
+            <div class="right">
+               <span class="filename">@file.FileName</span>
+               <span class="kind">(@GetFileKind(file.Kind))</span>
+            </div>
+         </div>
+         <div class="body">
+            <div class="info">
+               <div class="size">
+                  <span class="icon"><BeIcon Icon="@BeskarIcon.Outlined.InsertDriveFile" /></span>
+                  <span class="value">@(new ByteSize(file.ByteCount).ToString(ByteSizeUnitFormat.Full))</span>
+               </div>
+               <div class="rows">
+                  <span class="icon"><BeIcon Icon="@BeskarIcon.Outlined.TableRows" /></span>
+                  <span class="value">@(file.RowCount.ToDotString(0))</span>
+               </div>
+               <div class="modified">
+                  <span class="icon"><BeIcon Icon="@BeskarIcon.Outlined.CalendarMonth" /></span>
+                  <span class="value">@(file.LastModified.ToString("dd-MM-yyyy"))</span>
+               </div>
+            </div>
+         </div>
+         @{
+            var children = _childrenLookup[file.Name].ToArray();
+            if (children.Length > 0)
+            {
+               <div class="children">
+                  @foreach (var child in children.OrderByDescending(x => x.Kind).ThenBy(x => x.FileName))
+                  {
+                     <div class="child">
+                        <div class="c-filename">@child.FileName <span>(@GetFileKind(child.Kind))</span></div>
+                        <div class="size stack">
+                           <span class="icon"><BeIcon Icon="@BeskarIcon.Outlined.InsertDriveFile" /></span>
+                           <span class="value">@(new ByteSize(file.ByteCount).ToString(ByteSizeUnitFormat.Full))</span>
+                        </div>
+                        <div class="rows stack">
+                           <span class="icon"><BeIcon Icon="@BeskarIcon.Outlined.TableRows" /></span>
+                           <span class="value">@(file.RowCount.ToDotString(0))</span>
+                        </div>
+                     </div>
+                  }
+               </div>
+            }
+         }
+      </div>
+   }
+</div>
+
+@code {
+
+   private List<StorageFileDescriptor> _files = [];
+   private StorageFileDescriptor[] _rootFiles = [];
+   
+   private ILookup<string, StorageFileDescriptor> _childrenLookup;
+   private TotalStorageStats _totalStats = new ();
+   
+   protected override async Task OnInitializedAsync()
+   {
+      await DatabaseScheduler.Schedule(() =>
+      {
+         var storage = DatabaseProvider.GetDescriptor().Storage;
+         _files = storage.Files;
+      });
+
+      _childrenLookup = _files.ToLookup(x => x.ParentName);
+      
+      var allNames = new HashSet<string>(_files.Select(x => x.Name));
+      _rootFiles = _files.Where(f => !allNames.Contains(f.ParentName)).ToArray();
+
+      CalculateStats();
+   }
+
+   private void CalculateStats()
+   {
+      foreach (var file in _files)
+      {
+         _totalStats.FileCount++;
+         
+         _totalStats.ByteCount += file.ByteCount;
+         _totalStats.RowCount += file.RowCount;
+      }
+   }
+
+   private static string GetFileKind(StorageFileKind kind)
+   {
+      return kind switch
+      {
+         StorageFileKind.Index => "Index",
+         StorageFileKind.LinePreviews => "Line Previews",
+         StorageFileKind.Metadata => "Metadata",
+         StorageFileKind.Spec => "Specs",
+         StorageFileKind.StringPool => "String Pool",
+         StorageFileKind.SyntaxFiles => "Syntax Files",
+         _ => "Unknown"
+      };
+   }
+   
+   private class TotalStorageStats
+   {
+      public ulong ByteCount { get; set; }
+      
+      public ulong RowCount { get; set; }
+      
+      public int FileCount { get; set; }
+   }
+}

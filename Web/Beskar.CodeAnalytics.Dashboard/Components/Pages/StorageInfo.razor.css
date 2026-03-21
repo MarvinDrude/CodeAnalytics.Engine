@@ -1,0 +1,107 @@
+﻿
+.storage {
+    padding: 20px;
+}
+
+.total {
+    background-color: var(--bg-nav);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 20px;
+}
+
+.total .icon {
+    --icon-size: 30px;
+    --text-color: #9f8861;
+    transform: translate(0px, 3px);
+}
+
+.file {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.file .header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.file .header .icon {
+    --icon-size: 30px;
+    --text-color: var(--blue-500);
+}
+
+.file .header .right {
+    display: block;
+    flex-grow: 1;
+}
+
+.file .header .right > span {
+    display: block;
+}
+
+.file .header .filename {
+    text-transform: uppercase;
+}
+
+.file .header .kind {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.file .body {
+    padding: 15px;
+}
+
+.file .body .info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.file .body .info > div {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.children {
+    padding: 0 15px 15px 15px;
+}
+
+.child {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.child:last-child {
+    padding-bottom: 5px;
+}
+
+.child .c-filename {
+    text-transform: uppercase;
+}
+
+.child .c-filename span {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.child .stack {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.child .stack .icon {
+    transform: translate(0px, 3px);
+}

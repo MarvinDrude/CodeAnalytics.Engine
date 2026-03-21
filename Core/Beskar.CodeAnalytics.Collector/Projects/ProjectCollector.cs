@@ -149,6 +149,7 @@ public sealed partial class ProjectCollector(
    private TextSpan GetCorrectSpan(SyntaxNode node) => node switch
    {
       // Declarations
+      RecordDeclarationSyntax r => r.Identifier.Span,
       ClassDeclarationSyntax c => c.Identifier.Span,
       StructDeclarationSyntax s => s.Identifier.Span,
       InterfaceDeclarationSyntax i => i.Identifier.Span,

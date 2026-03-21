@@ -14,9 +14,7 @@
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Structure/IFolderService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard.Shared/Interfaces/Structure/IFolderService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Structure/Folders/FolderTree.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Structure/ImFolderService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Services/Structure/ImFolderService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -434,7 +432,7 @@
       <workItem from="1773566328591" duration="18164000" />
       <workItem from="1773858549330" duration="6530000" />
       <workItem from="1774004341047" duration="10125000" />
-      <workItem from="1774082894774" duration="11397000" />
+      <workItem from="1774082894774" duration="11774000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -804,7 +802,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774092419662</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Refactor folder tree structure to support selected item tracking and implement `ExpandRootNodes` logic in `IFolderService`.">
+      <option name="closed" value="true" />
+      <created>1774094474156</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1774094474156</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -825,7 +831,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add GitHub link with icon to NavBar and integrate `Beskar.Blazor.Icons` package." />
     <MESSAGE value="Introduce vertical resizable container and pane components with corresponding styles and JavaScript logic. Integrate into `SourceExplorer` for nested vertical resizing functionality." />
     <MESSAGE value="Introduce shared project for Blazor dashboard with models, options, services, and interfaces. Add `StringPoolDescriptor`, extend `DatabaseDescriptor` and `DatabaseBuilder` for string pool handling, and implement folder structure services. Refactor `FileDiscovery` and `SpecFileReader` to support string-based file and folder names. Update dependencies and project references." />
     <MESSAGE value="Add folder tree components with hierarchical display for source structure, integrate `DatabaseScheduler` for efficient async operations, and update `SourceExplorer` with folder tree functionality." />
@@ -850,7 +855,8 @@
     <MESSAGE value="Add `SymbolTypeTag` to various symbol cards (`MethodCard`, `TypeCard`, `PropertyCard`, etc.) with color-coded headers, dependency graph links, and improved layouts. Extend `SymbolCard` logic for dynamic symbol views." />
     <MESSAGE value="Add basic storage info about the total storages needed for display and formatting." />
     <MESSAGE value="fix title and scrollbar in storage info" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix title and scrollbar in storage info" />
+    <MESSAGE value="Refactor folder tree structure to support selected item tracking and implement `ExpandRootNodes` logic in `IFolderService`." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor folder tree structure to support selected item tracking and implement `ExpandRootNodes` logic in `IFolderService`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

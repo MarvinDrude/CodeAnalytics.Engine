@@ -75,15 +75,12 @@ public sealed class ImFolderService(IDatabaseProvider dbProvider) : IFolderServi
       return result;
    }
 
-   public List<FileSystemItem> GetRootNodes(uint childIdExpandTo, bool isFolder, bool highlight = true)
+   public FileSystemItem? ExpandRootNodes(List<FileSystemItem> roots, uint childIdExpandTo, bool isFolder, bool highlight = true)
    {
-      var provider = _databaseProvider.GetDescriptor().Structure.RootFolderId;
-      var roots = GetNodesByParentId(provider);
-
       using var pathIds = GetPathToRoot(childIdExpandTo, isFolder);
       
       var path = pathIds.WrittenSpan;
-      if (path.Length is 0 or 1) return roots;
+      if (path.Length is 0 or 1) return null;
 
       var current = roots;
       for (var e = path.Length - 2; e >= 0; e--)
@@ -93,15 +90,27 @@ public sealed class ImFolderService(IDatabaseProvider dbProvider) : IFolderServi
 
          if (node != null)
          {
-            var children = GetNodesByParent(node);
-            node.IsExpanded = true;
+            var children = node.IsLoaded 
+               ? node.Children 
+               : GetNodesByParent(node);
             
+            node.IsExpanded = true;
             current = children;
          }
       }
       
       var highlightNode = current.FirstOrDefault(x => x.Id == childIdExpandTo);
       highlightNode?.IsHighlighted = highlight;
+
+      return highlightNode;
+   }
+
+   public List<FileSystemItem> GetRootNodes(uint childIdExpandTo, bool isFolder, bool highlight = true)
+   {
+      var provider = _databaseProvider.GetDescriptor().Structure.RootFolderId;
+      var roots = GetNodesByParentId(provider);
+      
+      ExpandRootNodes(roots, childIdExpandTo, isFolder, highlight);
 
       return roots;
    }

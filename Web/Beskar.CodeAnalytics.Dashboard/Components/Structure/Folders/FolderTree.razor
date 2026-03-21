@@ -31,6 +31,8 @@
    private uint _expandToId;
    private bool _hasExpandToId;
    
+   private FileSystemItem? _selectedItem;
+   
    protected override async Task OnParametersSetAsync()
    {
       if (FileId.HasValue)
@@ -39,8 +41,16 @@
          {
             _expandToId = (uint)FileId.Value;
             _hasExpandToId = true;
-         
-            _rootItems = await Scheduler.Schedule(() => FolderService.GetRootNodes(_expandToId, false));
+
+            if (_rootItems.Count == 0)
+            {
+               _rootItems = await Scheduler.Schedule(() => FolderService.GetRootNodes(1));
+            }
+
+            var before = _selectedItem;
+            
+            _selectedItem = await Scheduler.Schedule(() => FolderService.ExpandRootNodes(_rootItems, _expandToId, false));
+            before?.IsHighlighted = false;
          }
       }
       else

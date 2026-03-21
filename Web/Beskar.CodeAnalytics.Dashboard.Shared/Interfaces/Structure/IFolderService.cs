@@ -10,5 +10,7 @@ public interface IFolderService
 
    public List<FileSystemItem> GetRootNodes(uint childIdExpandTo, bool isFolder, bool highlight = true);
 
+   public FileSystemItem? ExpandRootNodes(List<FileSystemItem> roots, uint childIdExpandTo, bool isFolder, bool highlight = true);
+
    public List<FileSystemItem> GetRootNodes(int depth);
 }

@@ -1,6 +1,9 @@
 ﻿
 .storage {
     padding: 20px;
+    width: 100svw;
+    height: calc(100svh - var(--nav-height));
+    overflow: auto;
 }
 
 .total {

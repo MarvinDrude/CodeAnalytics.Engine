@@ -13,12 +13,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Utils/Formatting/NumberStrings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Utils/Models/ByteSize.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Navigations/NavBar.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/NotFound.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/NotFound.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/SourceExplorer.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Beskar.CodeAnalytics.Dashboard/Components/Pages/StorageInfo.razor.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -436,7 +436,7 @@
       <workItem from="1773566328591" duration="18164000" />
       <workItem from="1773858549330" duration="6530000" />
       <workItem from="1774004341047" duration="10125000" />
-      <workItem from="1774082894774" duration="8634000" />
+      <workItem from="1774082894774" duration="9394000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -790,7 +790,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773863360036</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Add basic storage info about the total storages needed for display and formatting.">
+      <option name="closed" value="true" />
+      <created>1774091849796</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1774091849796</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -811,7 +819,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Introduce Blazor WebAssembly dashboard project with Razor components, client-server structure, routing, and base styles." />
     <MESSAGE value="Restructure and update Blazor dashboard with consolidated Razor components, refined routing, navigation enhancements, modernized styles, and standardized project settings." />
     <MESSAGE value="Add GitHub link with icon to NavBar and integrate `Beskar.Blazor.Icons` package." />
     <MESSAGE value="Introduce vertical resizable container and pane components with corresponding styles and JavaScript logic. Integrate into `SourceExplorer` for nested vertical resizing functionality." />
@@ -836,7 +843,8 @@
     <MESSAGE value="Introduce `SymbolCard` and `NamedTypeCard` components, add `ISymbolService` with symbol retrieval methods, and enhance `SourceExplorer` with dynamic symbol visualization." />
     <MESSAGE value="Add `SymbolTypeTag` and improve `NamedTypeCard` visualization with color-coded headers, dependency graph links, and better structured layouts. Introduce `ColorUtils` for dynamic symbol styling and enhance `LocationViewer` with symbol count display." />
     <MESSAGE value="Add `SymbolTypeTag` to various symbol cards (`MethodCard`, `TypeCard`, `PropertyCard`, etc.) with color-coded headers, dependency graph links, and improved layouts. Extend `SymbolCard` logic for dynamic symbol views." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add `SymbolTypeTag` to various symbol cards (`MethodCard`, `TypeCard`, `PropertyCard`, etc.) with color-coded headers, dependency graph links, and improved layouts. Extend `SymbolCard` logic for dynamic symbol views." />
+    <MESSAGE value="Add basic storage info about the total storages needed for display and formatting." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add basic storage info about the total storages needed for display and formatting." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

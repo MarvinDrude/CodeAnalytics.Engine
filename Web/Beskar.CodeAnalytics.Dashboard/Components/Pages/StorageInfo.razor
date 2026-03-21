@@ -9,6 +9,8 @@
 @inject IDatabaseProvider DatabaseProvider
 @inject IDatabaseScheduler DatabaseScheduler
 
+<PageTitle>Beskar - Storage Info</PageTitle>
+
 <div class="storage">
    <div class="total">
       <div class="icon"><BeIcon Icon="@BeskarIcon.Outlined.Storage" /></div>
@@ -26,6 +28,7 @@
       </div>
    </div>
 
+   <div class="files">
    @foreach (var file in _rootFiles.OrderByDescending(x => x.Kind).ThenBy(x => x.FileName))
    {
       <div class="file">
@@ -76,6 +79,7 @@
          }
       </div>
    }
+   </div>
 </div>
 
 @code {

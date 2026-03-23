@@ -13,8 +13,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f903f5-5db3-4c97-b286-60148e1460f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Analytics/Internal/Interfaces/IProvider.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Analytics/Internal/Models/CombineNode.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Analytics/Internal/Models/PipelineContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Analytics/Internal/Models/TransformNode.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Beskar.CodeAnalytics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Projects/ProjectCollector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Beskar.CodeAnalytics.Data.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Beskar.CodeAnalytics.Data.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +58,9 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/SourceTokenizer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Collector/Source/TokenColorizer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Analytics/Internal/Interfaces/IProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Analytics/Internal/Models/CombineNode.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Analytics/Internal/Models/PipelineContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Bake/Sorting/LinePreviewSorter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Connectors/FolderConnector.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Core/Beskar.CodeAnalytics.Data/Discovery/Connectors/SymbolConnector.cs" root0="FORCE_HIGHLIGHTING" />
@@ -432,7 +439,9 @@
       <workItem from="1773566328591" duration="18164000" />
       <workItem from="1773858549330" duration="6530000" />
       <workItem from="1774004341047" duration="10125000" />
-      <workItem from="1774082894774" duration="11774000" />
+      <workItem from="1774082894774" duration="15305000" />
+      <workItem from="1774185258347" duration="8908000" />
+      <workItem from="1774288498909" duration="8418000" />
     </task>
     <task id="LOCAL-00001" summary="Fix ambigous error">
       <option name="closed" value="true" />
@@ -810,7 +819,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774094474156</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Add support for `RecordDeclarationSyntax` span retrieval in `ProjectCollector`">
+      <option name="closed" value="true" />
+      <created>1774094830422</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1774094830422</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -831,7 +848,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Introduce vertical resizable container and pane components with corresponding styles and JavaScript logic. Integrate into `SourceExplorer` for nested vertical resizing functionality." />
     <MESSAGE value="Introduce shared project for Blazor dashboard with models, options, services, and interfaces. Add `StringPoolDescriptor`, extend `DatabaseDescriptor` and `DatabaseBuilder` for string pool handling, and implement folder structure services. Refactor `FileDiscovery` and `SpecFileReader` to support string-based file and folder names. Update dependencies and project references." />
     <MESSAGE value="Add folder tree components with hierarchical display for source structure, integrate `DatabaseScheduler` for efficient async operations, and update `SourceExplorer` with folder tree functionality." />
     <MESSAGE value="Enhance folder tree component styling with scrollable content area, improve layout consistency, and adjust spacing in node elements." />
@@ -856,7 +872,8 @@
     <MESSAGE value="Add basic storage info about the total storages needed for display and formatting." />
     <MESSAGE value="fix title and scrollbar in storage info" />
     <MESSAGE value="Refactor folder tree structure to support selected item tracking and implement `ExpandRootNodes` logic in `IFolderService`." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor folder tree structure to support selected item tracking and implement `ExpandRootNodes` logic in `IFolderService`." />
+    <MESSAGE value="Add support for `RecordDeclarationSyntax` span retrieval in `ProjectCollector`" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add support for `RecordDeclarationSyntax` span retrieval in `ProjectCollector`" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

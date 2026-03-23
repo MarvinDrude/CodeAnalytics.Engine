@@ -11,4 +11,8 @@
      <PackageReference Include="System.IO.Hashing" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Analytics\Internal\Providers\" />
+   </ItemGroup>
+
 </Project>
